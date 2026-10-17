@@ -1,0 +1,50 @@
+"use client";
+
+import Link from "next/link";
+import { Heart, Plus } from "lucide-react";
+import type { Product } from "@/lib/types";
+import { formatPrice } from "@/lib/data";
+import { ProductVisual } from "./ProductVisual";
+import { useStore } from "@/components/store/StoreProvider";
+
+const palettes: Record<string, [string, string]> = {
+  "customized-name-slips": ["#58b8aa", "#e5f5f1"],
+  "waterproof-stickers": ["#4d9fce", "#e6f3fa"],
+  "personalized-pencils-pens": ["#e5a82e", "#fff3d7"],
+  "school-labels": ["#8e71c1", "#f1ebfa"],
+  "personalized-notebooks": ["#e17274", "#fceaea"],
+  "bottle-tiffin-labels": ["#3ca393", "#e2f4f1"],
+  "personalized-gifts": ["#de756d", "#fff0ed"],
+};
+
+export function ProductCard({ product }: { product: Product }) {
+  const { toggleWishlist, isWishlisted, addItem } = useStore();
+  const saved = isWishlisted(product.id);
+  const [accent, background] = palettes[product.categorySlug] || ["#4da99c", "#e8f5f2"];
+
+  return (
+    <article className="product-card">
+      <Link href={`/products/${product.slug}`} className="product-card-media" aria-label={`View ${product.name}`}>
+        <ProductVisual artwork={product.artwork} name={product.name} accent={accent} background={background} />
+        {product.badge && <span className="product-badge">{product.badge}</span>}
+      </Link>
+      <button className={`wishlist-button ${saved ? "active" : ""}`} onClick={() => toggleWishlist(product.id)} aria-label={saved ? "Remove from wishlist" : "Add to wishlist"}><Heart /></button>
+      <div className="product-card-body">
+        <div className="product-meta">
+          {product.customizable ? <span className="customisable">Personalise it</span> : <span>{product.category}</span>}
+          <span>{product.stockStatus === "made_to_order" ? "Made to order" : product.newArrival ? "New" : "Available"}</span>
+        </div>
+        <h3><Link href={`/products/${product.slug}`}>{product.name}</Link></h3>
+        <div className="product-price-row"><span className="product-price">{formatPrice(product.price)}</span>{product.compareAtPrice && <span className="compare-price">{formatPrice(product.compareAtPrice)}</span>}</div>
+        <div className="card-actions">
+          <Link className="button button-primary" href={`/products/${product.slug}`}>{product.customizable ? "Customise now" : "View product"}</Link>
+          {product.customizable ? (
+            <Link className="card-quick-add" href={`/products/${product.slug}`} aria-label={`Customise ${product.name}`}><Plus /></Link>
+          ) : (
+            <button className="card-quick-add" aria-label={`Quick add ${product.name}`} onClick={() => addItem({ productId: product.id, variantId: product.variants[0]?.id, slug: product.slug, name: product.name, price: product.price, quantity: 1, visual: product.artwork })}><Plus /></button>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
