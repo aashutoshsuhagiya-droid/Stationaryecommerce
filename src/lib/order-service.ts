@@ -1,20 +1,12 @@
 import { createHash, randomUUID } from "node:crypto";
 
-import { designTemplates, getProductById, sampleOrder } from "./data";
-import type { Order, OrderItemSnapshot, Product } from "./types";
+import { CommerceError } from "./commerce-error";
+import { sampleOrder } from "./data";
+import { priceCatalogItem } from "./pricing-service";
+import type { Order, OrderItemSnapshot } from "./types";
 import type { CreateOrderInput, OrderItemInput } from "./validation";
 
-export class CommerceError extends Error {
-  constructor(
-    public readonly status: number,
-    public readonly code: string,
-    message: string,
-    public readonly details?: unknown,
-  ) {
-    super(message);
-    this.name = "CommerceError";
-  }
-}
+export { CommerceError } from "./commerce-error";
 
 interface DemoOrderStore {
   orders: Map<string, Order>;
@@ -37,179 +29,24 @@ if (process.env.NODE_ENV !== "production") {
   globalThis.__naamlyDemoOrderStore = demoStore;
 }
 
-const toPaise = (rupees: number) => Math.round(rupees * 100);
 const normalizeOrderNumber = (orderNumber: string) => orderNumber.trim().toUpperCase();
 
-function validateCustomization(product: Product, input: OrderItemInput) {
-  const customization = input.customization;
-  if (!product.customizable && customization) {
-    throw new CommerceError(
-      422,
-      "CUSTOMIZATION_NOT_SUPPORTED",
-      `${product.name} does not accept personalization.`,
-      { productId: product.id },
-    );
-  }
-
-  const supportedFieldIds = new Set(
-    product.customizationFields
-      .filter((field) => field.type !== "template")
-      .map((field) => field.id),
-  );
-  const unsupportedFieldIds = Object.keys(customization?.fields ?? {}).filter(
-    (fieldId) => !supportedFieldIds.has(fieldId),
-  );
-  if (unsupportedFieldIds.length > 0) {
-    throw new CommerceError(
-      422,
-      "CUSTOMIZATION_FIELDS_INVALID",
-      "The customization contains fields that are not available for this product.",
-      { productId: product.id, fieldIds: unsupportedFieldIds },
-    );
-  }
-
-  const requiredFields = product.customizationFields.filter(
-    (field) => field.required && field.type !== "template",
-  );
-
-  if (requiredFields.length > 0 && !customization) {
-    throw new CommerceError(
-      422,
-      "CUSTOMIZATION_REQUIRED",
-      `Personalization is required for ${product.name}.`,
-      { productId: product.id },
-    );
-  }
-
-  const requiresTemplate = product.customizationFields.some(
-    (field) => field.required && field.type === "template",
-  );
-  if (requiresTemplate && !customization?.templateId) {
-    throw new CommerceError(
-      422,
-      "TEMPLATE_REQUIRED",
-      `Choose a design for ${product.name}.`,
-      { productId: product.id },
-    );
-  }
-
-  let templatePricePaise = 0;
-  if (customization?.templateId) {
-    const template = designTemplates.find((candidate) => candidate.id === customization.templateId);
-    if (
-      !template ||
-      !template.active ||
-      !product.templateIds.includes(template.id) ||
-      !template.compatibleProductIds.includes(product.id)
-    ) {
-      throw new CommerceError(
-        422,
-        "INVALID_TEMPLATE",
-        "The selected design is not available for this product.",
-        { productId: product.id, templateId: customization.templateId },
-      );
-    }
-    templatePricePaise = toPaise(template.premiumPrice);
-  }
-
-  for (const field of product.customizationFields) {
-    if (field.type === "template") continue;
-    const rawValue = customization?.fields[field.id] ?? "";
-    const value = rawValue.trim();
-
-    if (field.required && !value) {
-      throw new CommerceError(
-        422,
-        "CUSTOMIZATION_FIELD_REQUIRED",
-        `${field.label} is required for ${product.name}.`,
-        { productId: product.id, fieldId: field.id },
-      );
-    }
-    if (!value) continue;
-
-    if (field.minLength && value.length < field.minLength) {
-      throw new CommerceError(422, "CUSTOMIZATION_TOO_SHORT", `${field.label} is too short.`, {
-        productId: product.id,
-        fieldId: field.id,
-        minLength: field.minLength,
-      });
-    }
-    if (field.maxLength && value.length > field.maxLength) {
-      throw new CommerceError(422, "CUSTOMIZATION_TOO_LONG", `${field.label} is too long.`, {
-        productId: product.id,
-        fieldId: field.id,
-        maxLength: field.maxLength,
-      });
-    }
-    if (field.allowedPattern && !new RegExp(field.allowedPattern, "u").test(value)) {
-      throw new CommerceError(
-        422,
-        "CUSTOMIZATION_UNSUPPORTED_CHARACTERS",
-        `${field.label} contains unsupported characters.`,
-        { productId: product.id, fieldId: field.id },
-      );
-    }
-    if (
-      field.options?.length &&
-      !field.options.some((option) => option.value === value)
-    ) {
-      throw new CommerceError(
-        422,
-        "CUSTOMIZATION_OPTION_INVALID",
-        `${field.label} is not an available option.`,
-        { productId: product.id, fieldId: field.id },
-      );
-    }
-  }
-
-  return templatePricePaise;
-}
-
 function createOrderItem(input: OrderItemInput): OrderItemSnapshot {
-  const product = getProductById(input.productId);
-  if (!product) {
-    throw new CommerceError(404, "PRODUCT_NOT_FOUND", "One of the selected products no longer exists.", {
-      productId: input.productId,
-    });
-  }
-
-  const variant = product.variants.find((candidate) => candidate.id === input.variantId);
-  if (!variant) {
-    throw new CommerceError(422, "VARIANT_NOT_FOUND", "The selected product option is unavailable.", {
-      productId: product.id,
-      variantId: input.variantId,
-    });
-  }
-  if (variant.stockStatus === "out_of_stock") {
-    throw new CommerceError(409, "OUT_OF_STOCK", `${variant.name} is currently unavailable.`, {
-      productId: product.id,
-      variantId: variant.id,
-    });
-  }
-
-  const templatePricePaise = validateCustomization(product, input);
-  const unitPricePaise = toPaise(variant.price) + templatePricePaise;
-  const lineTotalPaise = unitPricePaise * input.quantity;
+  const priced = priceCatalogItem(input);
 
   return {
     id: randomUUID(),
-    productId: product.id,
-    variantId: variant.id,
-    productName: product.name,
-    productSlug: product.slug,
-    sku: variant.sku,
-    image: product.image,
-    quantity: input.quantity,
-    unitPricePaise,
+    productId: priced.productId,
+    variantId: priced.variantId,
+    productName: priced.productName,
+    productSlug: priced.productSlug,
+    sku: priced.sku,
+    image: priced.image,
+    quantity: priced.quantity,
+    unitPricePaise: priced.unitPricePaise,
     ...(input.customization ? { customization: input.customization } : {}),
-    lineTotalPaise,
-    productSnapshot: {
-      name: product.name,
-      sku: variant.sku,
-      variantName: variant.name,
-      material: variant.material ?? product.material,
-      dimensions: product.dimensions,
-    },
+    lineTotalPaise: priced.lineTotalPaise,
+    productSnapshot: priced.productSnapshot,
   };
 }
 

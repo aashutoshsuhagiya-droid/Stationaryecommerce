@@ -1,10 +1,13 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import type { ArtworkDocument } from "@/components/configurator/artwork-types";
 
 export type Customization = {
+  configurationId?: string;
   name: string;
   detail?: string;
+  fields?: Record<string, string>;
   templateId?: string;
   template: string;
   font: string;
@@ -12,6 +15,16 @@ export type Customization = {
   backgroundColor: string;
   pack: string;
   material: string;
+  dimensionPresetId?: string;
+  dimensionLabel?: string;
+  displayUnit?: "mm" | "cm" | "in";
+  artwork?: ArtworkDocument;
+  quote?: {
+    id: string;
+    pricingVersion: string;
+    calculatedAt: string;
+    unitPricePaise: number;
+  };
 };
 
 export type CartItem = {
@@ -93,9 +106,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [wishlist, hydrated]);
 
   const addItem = useCallback((item: Omit<CartItem, "key">) => {
-    const signature = JSON.stringify([item.productId, item.customization]);
+    const signature = JSON.stringify([item.productId, item.variantId, item.customization]);
     setCart((current) => {
-      const match = current.find((entry) => JSON.stringify([entry.productId, entry.customization]) === signature);
+      const match = current.find((entry) => JSON.stringify([entry.productId, entry.variantId, entry.customization]) === signature);
       if (match) {
         return current.map((entry) => entry.key === match.key ? { ...entry, quantity: entry.quantity + item.quantity } : entry);
       }

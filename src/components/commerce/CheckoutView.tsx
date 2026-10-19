@@ -49,9 +49,11 @@ export function CheckoutView() {
           ...(item.customization ? { customization: {
             ...(templateId ? { templateId } : {}),
             fields: {
-              name: item.customization.name,
-              ...(item.customization.detail ? { "class-details": item.customization.detail } : {}),
-              font: Object.entries({ rounded: "Friendly rounded", clean: "Clean sans", serif: "Classic serif" }).find(([, label]) => label === item.customization?.font)?.[0] ?? item.customization.font,
+              ...(item.customization.fields ?? {
+                name: item.customization.name,
+                ...(item.customization.detail ? { "class-details": item.customization.detail } : {}),
+                font: Object.entries({ rounded: "Friendly rounded", clean: "Clean sans", serif: "Classic serif" }).find(([, label]) => label === item.customization?.font)?.[0] ?? item.customization.font,
+              }),
             },
             previewVersion: 1,
           } } : {}),

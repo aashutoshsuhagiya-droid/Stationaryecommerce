@@ -7,7 +7,9 @@ This repository is deliberately split into a polished demonstration layer and a 
 - `src/lib/data.ts` is the deterministic storefront catalog and the shared UI contract. Prices in this file are rupees for convenient display.
 - `src/lib/catalog.ts` provides real filtering, sorting, pagination, suggestions and lightweight typo tolerance over that catalog.
 - `src/lib/validation.ts` is the Zod boundary for all public API input.
-- `src/lib/order-service.ts` performs server-side catalog lookup, customization validation, price recomputation and idempotent demo order creation. It never accepts a browser-calculated total.
+- `src/lib/product-configuration.ts` projects each catalog product into the reusable configurator contract. Unsupported manufacturing capabilities remain explicit instead of being simulated.
+- `src/lib/pricing-service.ts` performs shared server-side catalog lookup, customization validation and integer-paise pricing for both quotes and orders.
+- `src/lib/order-service.ts` performs idempotent demo order creation from the shared authoritative pricing result. It never accepts a browser-calculated total.
 - `src/lib/payment.ts` performs constant-time HMAC comparisons using Node's crypto implementation.
 - `prisma/schema.prisma` is the normalized PostgreSQL target. All database amounts are integer paise.
 - `prisma/seed.ts` seeds catalog and configuration data, not fabricated customers, reviews, sales or revenue.
@@ -20,7 +22,10 @@ The in-memory order map is intentionally labelled `process-memory-demo` in API r
 | --- | --- | --- | --- |
 | `/api/products` | `GET` | Filtered and paginated catalog | 5 minutes at edge |
 | `/api/products/:slug` | `GET` | Product, compatible templates and related products | 5 minutes at edge |
+| `/api/products/:slug/configuration` | `GET` | Product-specific configurator schema and capability status | 5 minutes at edge |
 | `/api/search?q=` | `GET` | Product/category suggestions with simple typo tolerance | 1 minute at edge |
+| `/api/quotes` | `POST` | Validate configuration and calculate current catalog item totals | no-store |
+| `/api/bulk-requests` | `POST` | Validate and temporarily record a bulk/custom-size brief | no-store |
 | `/api/orders` | `POST` | Validate, reprice and create a demo order | no-store |
 | `/api/orders?orderNumber=&email=` | `GET` | Demo order lookup with contact verification | no-store |
 | `/api/orders/:number?email=` | `GET` | Equivalent route-friendly order lookup | no-store |
@@ -75,6 +80,41 @@ Errors use one stable envelope:
   }
 }
 ```
+
+## Configurator and quote contracts
+
+The configuration endpoint returns catalog variants, compatible templates, personalization fields,
+quantity bounds, dimension presets and capability status. Current products use `fixed_catalog`
+dimensions. Exact numeric dimensions are exposed in canonical millimetres only when the existing
+catalog is unambiguous; `custom.supported` remains `false` until the merchant supplies manufacturing
+limits and rates. Artwork uploads, 3D geometry and production export are similarly marked blocked
+until their production dependencies exist.
+
+`POST /api/quotes` accepts the same item shape used by order creation:
+
+```json
+{
+  "items": [{
+    "productId": "prod-everyday-name-slips",
+    "variantId": "var-everyday-72",
+    "quantity": 2,
+    "customization": {
+      "templateId": "tpl-geo-pop",
+      "fields": { "name": "Aarav Mehta", "font": "rounded" },
+      "previewVersion": 1
+    }
+  }]
+}
+```
+
+The response contains `pricingVersion`, integer-paise line prices, catalog adjustments and
+`subtotalPaise`. `shippingPaise`, `taxPaise` and `totalPaise` are `null` because the quote has no
+delivery address; checkout recalculates the items and applies the configured delivery rules. Clients
+must not treat a quote ID as authorization to charge, and must submit only product/configuration IDs
+to checkout. Unknown fields such as browser-supplied prices are rejected.
+
+Quote and bulk-request routes use a bounded process-memory rate limiter with hashed client identifiers.
+Production must use a shared rate-limit store and accept forwarding headers only from trusted proxies.
 
 ## Money and historical truth
 

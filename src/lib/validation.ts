@@ -85,8 +85,13 @@ export const orderItemInputSchema = z.object({
         .default({}),
       previewVersion: z.number().int().min(1).max(100).default(1),
     })
+    .strict()
     .optional(),
-});
+}).strict();
+
+export const catalogQuoteSchema = z.object({
+  items: z.array(orderItemInputSchema).min(1).max(50),
+}).strict();
 
 export const createOrderSchema = z.object({
   items: z.array(orderItemInputSchema).min(1).max(50),
@@ -119,3 +124,4 @@ export const razorpayVerificationSchema = z.object({
 
 export type CreateOrderInput = z.infer<typeof createOrderSchema>;
 export type OrderItemInput = z.infer<typeof orderItemInputSchema>;
+export type CatalogQuoteInput = z.infer<typeof catalogQuoteSchema>;

@@ -26,10 +26,13 @@ npm.cmd run db:seed
 
 - `/` — storefront home
 - `/products` and `/search` — searchable, filterable catalog
-- `/products/everyday-name-slips-72-pack` — live customisation studio
+- `/products/everyday-name-slips-72-pack` — data-driven artwork and product configuration studio
 - `/cart` and `/checkout` — persistent cart and guided demo checkout
 - `/account`, `/wishlist`, `/track-order`, `/bulk-orders` — customer workflows
 - `/admin` — operations dashboard and management modules
+
+The configurator contract, pricing boundary, bulk quote API and production dependencies are documented
+in `docs/CONFIGURATOR.md`.
 
 ## Production cutover
 

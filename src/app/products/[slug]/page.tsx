@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { CustomizationStudio } from "@/components/commerce/CustomizationStudio";
 import { designTemplates, getProductBySlug, products } from "@/lib/data";
+import { buildProductConfiguration } from "@/lib/product-configuration";
 
 export function generateStaticParams() { return products.map((product) => ({ slug: product.slug })); }
 
@@ -18,8 +19,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const product = getProductBySlug(slug);
   if (!product) notFound();
   const templates = designTemplates.filter((template) => product.templateIds.includes(template.id) && template.active);
+  const configuration = buildProductConfiguration(product);
   return <>
     <div className="product-breadcrumb shell"><div className="breadcrumbs"><Link href="/">Home</Link><ChevronRight /><Link href="/products">Products</Link><ChevronRight /><Link href={`/products?category=${product.categorySlug}`}>{product.category}</Link><ChevronRight /><span>{product.name}</span></div></div>
-    <CustomizationStudio product={product} templates={templates} />
+    <CustomizationStudio product={product} templates={templates} configuration={configuration} />
   </>;
 }
