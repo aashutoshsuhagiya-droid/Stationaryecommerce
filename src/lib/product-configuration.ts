@@ -7,6 +7,12 @@ import type {
 } from "./types";
 
 export type MeasurementUnit = "mm" | "cm" | "in";
+export type ProductCustomizationMode =
+  | "standard"
+  | "personalized"
+  | "specification_based"
+  | "design_studio"
+  | "bulk_order";
 
 export interface DimensionPreset {
   id: string;
@@ -48,6 +54,7 @@ export interface ProductConfigurationSchema {
     structuralDesign: string;
     currency: CurrencyCode;
   };
+  modes: ProductCustomizationMode[];
   dimensions: {
     mode: "fixed_catalog";
     catalogDescription: string;
@@ -142,6 +149,9 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
     }),
   );
   const hasNumericDimensions = presets.some((preset) => preset.dimensionsMm !== null);
+  const modes: ProductCustomizationMode[] = ["standard", "specification_based"];
+  if (product.customizable) modes.push("personalized", "design_studio");
+  if (productSupportsMultipleNames(product)) modes.push("bulk_order");
 
   return {
     schemaVersion: "1.0",
@@ -153,6 +163,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
       structuralDesign: product.artwork,
       currency: "INR",
     },
+    modes,
     dimensions: {
       mode: "fixed_catalog",
       catalogDescription: product.dimensions,

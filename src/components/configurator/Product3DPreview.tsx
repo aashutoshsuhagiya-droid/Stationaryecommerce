@@ -354,6 +354,15 @@ export function Product3DPreview({
         // A small set makes the selected product read as a pack, not one generic cylinder.
         const pencilLength = 2.8;
         const pencilRadius = 0.14;
+        const pencilTexture = texture.clone();
+        pencilTexture.center.set(0.5, 0.5);
+        pencilTexture.rotation = Math.PI / 2;
+        pencilTexture.needsUpdate = true;
+        const pencilPrintMaterial = new THREE.MeshStandardMaterial({
+          map: pencilTexture,
+          roughness,
+          metalness,
+        });
         for (let index = -1; index <= 1; index += 1) {
           const pencilGeo = new THREE.CylinderGeometry(pencilRadius, pencilRadius, pencilLength, 6);
           const pencilMat = new THREE.MeshStandardMaterial({ color: background || "#f59e0b", roughness: 0.4 });
@@ -378,7 +387,7 @@ export function Product3DPreview({
           pencil.add(eraser);
 
           if (index === 0) {
-            const printStrip = new THREE.Mesh(new THREE.PlaneGeometry(0.25, 1.45), printMaterial);
+            const printStrip = new THREE.Mesh(new THREE.PlaneGeometry(0.28, 1.8), pencilPrintMaterial);
             printStrip.position.set(0, -0.1, pencilRadius + 0.006);
             pencil.add(printStrip);
           }

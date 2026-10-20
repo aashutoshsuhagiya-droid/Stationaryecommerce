@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   Box,
   Check,
@@ -22,7 +23,6 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArtworkEditor } from "@/components/configurator/ArtworkEditor";
-import { Product3DPreview } from "@/components/configurator/Product3DPreview";
 import {
   createArtworkDocument,
   keepArtworkLayerInForeground,
@@ -34,6 +34,14 @@ import { useStore } from "@/components/store/StoreProvider";
 import { formatPrice } from "@/lib/data";
 import type { ProductConfigurationSchema } from "@/lib/product-configuration";
 import type { PersonalizationTemplate, Product } from "@/lib/types";
+
+const Product3DPreview = dynamic(
+  () => import("@/components/configurator/Product3DPreview").then((module) => module.Product3DPreview),
+  {
+    ssr: false,
+    loading: () => <div className={configuratorStyles.previewLoading} role="status">Loading interactive 3D preview…</div>,
+  },
+);
 
 type QuoteLine = {
   quantity: number;
@@ -91,7 +99,15 @@ function surfaceDefinitions(
 ): PrintableSurfaceDefinition[] {
   const physicalWidthMm = preset?.dimensionsMm?.width;
   const physicalHeightMm = preset?.dimensionsMm?.height;
-  const ratio = physicalWidthMm && physicalHeightMm ? physicalWidthMm / physicalHeightMm : 5 / 3;
+  const designKey = configuration.product.structuralDesign.toLowerCase();
+  const fallbackRatio = designKey.includes("pencil")
+    ? 6
+    : designKey.includes("notebook")
+      ? 148 / 210
+      : designKey.includes("geometry-box")
+        ? 2.5
+        : 5 / 3;
+  const ratio = physicalWidthMm && physicalHeightMm ? physicalWidthMm / physicalHeightMm : fallbackRatio;
   const width = ratio >= 1 ? 600 : Math.max(240, Math.round(600 * ratio));
   const height = ratio >= 1 ? Math.max(180, Math.round(600 / ratio)) : 600;
   return configuration.artwork.surfaces.map((surface) => ({
@@ -130,7 +146,7 @@ function createInitialArtwork(configuration: ProductConfigurationSchema) {
                 opacity: 1,
                 text: "Your name",
                 color: "#17324d",
-                fontSize: 40,
+                fontSize: Math.max(14, Math.min(40, primary.height * 0.22)),
                 fontFamily: "rounded" as const,
               },
             ],
@@ -158,6 +174,16 @@ function displayMeasurement(valueMm: number, unit: "mm" | "cm" | "in") {
   const value = unit === "mm" ? valueMm : unit === "cm" ? valueMm / 10 : valueMm / 25.4;
   const precision = unit === "mm" ? 0 : unit === "cm" ? 1 : 2;
   return `${value.toFixed(precision)} ${unit}`;
+}
+
+function customizationModeLabel(mode: ProductConfigurationSchema["modes"][number]) {
+  return {
+    standard: "Standard product",
+    personalized: "Personalization",
+    specification_based: "Specifications",
+    design_studio: "Design studio",
+    bulk_order: "Bulk ordering",
+  }[mode];
 }
 
 function validateFields(configuration: ProductConfigurationSchema, fields: Record<string, string>, templateId: string) {
@@ -488,6 +514,10 @@ export function CustomizationStudio({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={product.image} alt="" />
               <div><span>SKU {selectedVariant?.sku ?? product.sku}</span><strong>{selectedVariant?.label ?? product.name}</strong></div>
+            </div>
+
+            <div className={configuratorStyles.modeSummary} aria-label="Customization capabilities">
+              {configuration.modes.map((mode) => <span key={mode}>{customizationModeLabel(mode)}</span>)}
             </div>
 
             {savedDesigns.length > 0 && (

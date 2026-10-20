@@ -48,3 +48,24 @@ test("configuration exposes multi-name capability only for supported products", 
   assert.equal(buildProductConfiguration(bulkProduct).personalization.supportsMultipleNames, true);
   assert.equal(buildProductConfiguration(singleNameProduct).personalization.supportsMultipleNames, false);
 });
+
+test("configuration exposes only the composable customization modes supported by each product", () => {
+  const standardProduct = getProductById("prod-waterproof-adventure");
+  const bulkProduct = getProductById("prod-classroom-bulk");
+  assert.ok(standardProduct);
+  assert.ok(bulkProduct);
+
+  assert.deepEqual(buildProductConfiguration(standardProduct).modes, [
+    "standard",
+    "specification_based",
+    "personalized",
+    "design_studio",
+  ]);
+  assert.deepEqual(buildProductConfiguration(bulkProduct).modes, [
+    "standard",
+    "specification_based",
+    "personalized",
+    "design_studio",
+    "bulk_order",
+  ]);
+});

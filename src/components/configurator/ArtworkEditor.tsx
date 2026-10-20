@@ -193,6 +193,19 @@ export function ArtworkEditor({
     updateLayer(layer.id, axis === "width" ? { width: value, height: value / aspect } : { height: value, width: value * aspect });
   }
 
+  function fitTextToBox(layer: ArtworkLayer) {
+    const characterCount = Math.max(1, layer.text?.trim().length ?? 1);
+    const widthLimitedSize = layer.width / (characterCount * 0.62);
+    const heightLimitedSize = layer.height * 0.78;
+    updateLayer(layer.id, {
+      fontSize: Math.max(8, Math.min(180, Math.floor(Math.min(widthLimitedSize, heightLimitedSize)))),
+    });
+  }
+
+  function setLayerRotation(layer: ArtworkLayer, rotation: number) {
+    updateLayer(layer.id, { rotation: Math.max(-180, Math.min(180, rotation)) });
+  }
+
   function addText() {
     const id = newId();
     apply(
@@ -591,17 +604,33 @@ export function ArtworkEditor({
               </label>
             )}
             <div className={styles.propertyGrid}>
+              <label><span>Position X</span><input type="number" min={-canvasWidth} max={canvasWidth} value={Math.round(selectedLayer.x)} onChange={(event) => updateLayer(selectedLayer.id, { x: Number(event.target.value) || 0 })} /></label>
+              <label><span>Position Y</span><input type="number" min={-canvasHeight} max={canvasHeight} value={Math.round(selectedLayer.y)} onChange={(event) => updateLayer(selectedLayer.id, { y: Number(event.target.value) || 0 })} /></label>
               <label><span>Width</span><input type="number" min="20" max={canvasWidth} value={Math.round(selectedLayer.width)} onChange={(event) => resizeLayer(selectedLayer, "width", Number(event.target.value))} /></label>
               <label><span>Height</span><input type="number" min="20" max={canvasHeight} value={Math.round(selectedLayer.height)} onChange={(event) => resizeLayer(selectedLayer, "height", Number(event.target.value))} /></label>
-              <label><span>Rotation</span><input type="number" min="-180" max="180" value={selectedLayer.rotation} onChange={(event) => updateLayer(selectedLayer.id, { rotation: Number(event.target.value) })} /></label>
+              <label><span>Rotation (degrees)</span><input type="number" min="-180" max="180" value={selectedLayer.rotation} onChange={(event) => setLayerRotation(selectedLayer, Number(event.target.value) || 0)} /></label>
               <label><span>Opacity</span><input type="number" min="10" max="100" value={Math.round(selectedLayer.opacity * 100)} onChange={(event) => updateLayer(selectedLayer.id, { opacity: Math.max(0.1, Math.min(1, Number(event.target.value) / 100)) })} /></label>
             </div>
+            <label className={styles.rotationControl}>
+              <span>Rotate freely: {Math.round(selectedLayer.rotation)}°</span>
+              <input type="range" min="-180" max="180" step="1" value={selectedLayer.rotation} onChange={(event) => setLayerRotation(selectedLayer, Number(event.target.value))} />
+            </label>
+            <div className={styles.rotationPresets} aria-label="Rotation presets">
+              <button type="button" onClick={() => setLayerRotation(selectedLayer, selectedLayer.rotation - 15)}>−15°</button>
+              <button type="button" onClick={() => setLayerRotation(selectedLayer, -90)}>−90°</button>
+              <button type="button" onClick={() => setLayerRotation(selectedLayer, 0)}>0°</button>
+              <button type="button" onClick={() => setLayerRotation(selectedLayer, 90)}>90°</button>
+              <button type="button" onClick={() => setLayerRotation(selectedLayer, selectedLayer.rotation + 15)}>+15°</button>
+            </div>
             {selectedLayer.type === "text" && (
-              <div className={styles.propertyGrid}>
-                <label><span>Font</span><select value={selectedLayer.fontFamily} onChange={(event) => updateLayer(selectedLayer.id, { fontFamily: event.target.value as ArtworkLayer["fontFamily"] })}><option value="rounded">Rounded</option><option value="sans">Sans</option><option value="serif">Serif</option></select></label>
-                <label><span>Colour</span><input type="color" value={selectedLayer.color} onChange={(event) => updateLayer(selectedLayer.id, { color: event.target.value })} /></label>
-                <label><span>Font size</span><input type="number" min="8" max="180" value={selectedLayer.fontSize ?? 34} onChange={(event) => updateLayer(selectedLayer.id, { fontSize: Math.max(8, Number(event.target.value) || 8) })} /></label>
-              </div>
+              <>
+                <div className={styles.propertyGrid}>
+                  <label><span>Font</span><select value={selectedLayer.fontFamily} onChange={(event) => updateLayer(selectedLayer.id, { fontFamily: event.target.value as ArtworkLayer["fontFamily"] })}><option value="rounded">Rounded</option><option value="sans">Sans</option><option value="serif">Serif</option></select></label>
+                  <label><span>Colour</span><input type="color" value={selectedLayer.color} onChange={(event) => updateLayer(selectedLayer.id, { color: event.target.value })} /></label>
+                  <label><span>Font size</span><input type="number" min="8" max="180" value={selectedLayer.fontSize ?? 34} onChange={(event) => updateLayer(selectedLayer.id, { fontSize: Math.max(8, Number(event.target.value) || 8) })} /></label>
+                </div>
+                <button type="button" className={styles.fitTextButton} onClick={() => fitTextToBox(selectedLayer)}>Fit text inside selected area</button>
+              </>
             )}
             <div className={styles.iconActions}>
               <button type="button" onClick={() => updateLayer(selectedLayer.id, { x: (canvasWidth - selectedLayer.width) / 2 })} title="Centre horizontally"><AlignCenterHorizontal /></button>
