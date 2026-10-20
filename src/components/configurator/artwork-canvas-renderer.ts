@@ -77,7 +77,26 @@ export function renderLayerToContext(
   if (layer.type === "image" && layer.src) {
     const img = imageCache.get(layer.src);
     if (img && img.complete) {
-      ctx.drawImage(img, drawX, drawY, renderW, renderH);
+      const fit = layer.imageFit ?? "contain";
+      if (fit === "stretch") {
+        ctx.drawImage(img, drawX, drawY, renderW, renderH);
+      } else {
+        const imageAspect = img.naturalWidth / img.naturalHeight;
+        const targetAspect = renderW / renderH;
+        const scaleFactor = fit === "cover"
+          ? (imageAspect > targetAspect ? renderH / img.naturalHeight : renderW / img.naturalWidth)
+          : (imageAspect > targetAspect ? renderW / img.naturalWidth : renderH / img.naturalHeight);
+        const width = img.naturalWidth * scaleFactor;
+        const height = img.naturalHeight * scaleFactor;
+        if (fit === "cover") {
+          ctx.save();
+          ctx.beginPath();
+          ctx.rect(drawX, drawY, renderW, renderH);
+          ctx.clip();
+        }
+        ctx.drawImage(img, drawX + (renderW - width) / 2, drawY + (renderH - height) / 2, width, height);
+        if (fit === "cover") ctx.restore();
+      }
     }
   } else if (layer.type === "text" && layer.text) {
     const fontSize = Math.max(12, (layer.fontSize ?? 32) * scale);

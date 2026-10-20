@@ -185,12 +185,39 @@ export function ArtworkEditor({
 
   function resizeLayer(layer: ArtworkLayer, axis: "width" | "height", rawValue: number) {
     const value = Math.max(20, rawValue || 20);
-    if (layer.type !== "image") {
+    if (layer.type !== "image" || layer.aspectLocked === false) {
       updateLayer(layer.id, { [axis]: value });
       return;
     }
     const aspect = layer.width / layer.height || (layer.sourceWidth ?? 1) / (layer.sourceHeight ?? 1);
     updateLayer(layer.id, axis === "width" ? { width: value, height: value / aspect } : { height: value, width: value * aspect });
+  }
+
+  function fitImageToPrintArea(layer: ArtworkLayer, fill: boolean) {
+    if (layer.type !== "image") return;
+    const availableWidth = canvasWidth - safeInset * 2;
+    const availableHeight = canvasHeight - safeInset * 2;
+    if (fill) {
+      updateLayer(layer.id, {
+        x: safeInset,
+        y: safeInset,
+        width: availableWidth,
+        height: availableHeight,
+        imageFit: "cover",
+      });
+      return;
+    }
+    const aspect = (layer.sourceWidth ?? layer.width) / (layer.sourceHeight ?? layer.height);
+    const width = Math.min(availableWidth, availableHeight * aspect);
+    const height = width / aspect;
+    updateLayer(layer.id, {
+      x: (canvasWidth - width) / 2,
+      y: (canvasHeight - height) / 2,
+      width,
+      height,
+      aspectLocked: true,
+      imageFit: "contain",
+    });
   }
 
   function fitTextToBox(layer: ArtworkLayer) {
@@ -266,6 +293,8 @@ export function ArtworkEditor({
             src,
             sourceWidth: imageSize.width,
             sourceHeight: imageSize.height,
+            imageFit: "contain",
+            aspectLocked: true,
           };
           return insertArtworkBelowText(layers, imageLayer);
         }),
@@ -541,7 +570,12 @@ export function ArtworkEditor({
                 onPointerDown={(event) => beginDrag(event, layer)}
               >
                 {layer.type === "image" && layer.src ? (
-                  <image href={layer.src} width={layer.width} height={layer.height} preserveAspectRatio="xMidYMid meet" />
+                  <image
+                    href={layer.src}
+                    width={layer.width}
+                    height={layer.height}
+                    preserveAspectRatio={layer.imageFit === "stretch" ? "none" : layer.imageFit === "cover" ? "xMidYMid slice" : "xMidYMid meet"}
+                  />
                 ) : (
                   <text
                     x={layer.width / 2}
@@ -631,6 +665,13 @@ export function ArtworkEditor({
                 </div>
                 <button type="button" className={styles.fitTextButton} onClick={() => fitTextToBox(selectedLayer)}>Fit text inside selected area</button>
               </>
+            )}
+            {selectedLayer.type === "image" && (
+              <div className={styles.imageControls}>
+                <label><span>Image fit</span><select value={selectedLayer.imageFit ?? "contain"} onChange={(event) => updateLayer(selectedLayer.id, { imageFit: event.target.value as ArtworkLayer["imageFit"] })}><option value="contain">Contain (no crop)</option><option value="cover">Cover (fill area)</option><option value="stretch">Stretch to size</option></select></label>
+                <label className={styles.aspectToggle}><input type="checkbox" checked={selectedLayer.aspectLocked !== false} onChange={(event) => updateLayer(selectedLayer.id, { aspectLocked: event.target.checked })} /><span>Keep image proportions while resizing</span></label>
+                <div className={styles.imageActions}><button type="button" onClick={() => fitImageToPrintArea(selectedLayer, false)}>Fit print area</button><button type="button" onClick={() => fitImageToPrintArea(selectedLayer, true)}>Fill print area</button></div>
+              </div>
             )}
             <div className={styles.iconActions}>
               <button type="button" onClick={() => updateLayer(selectedLayer.id, { x: (canvasWidth - selectedLayer.width) / 2 })} title="Centre horizontally"><AlignCenterHorizontal /></button>

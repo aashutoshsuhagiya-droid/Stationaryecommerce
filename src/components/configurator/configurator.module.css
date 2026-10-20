@@ -169,6 +169,13 @@
 .rotationPresets button, .fitTextButton { min-height: 30px; border: 1px solid #d5e0e2; border-radius: 5px; color: #17324d; background: #f8fbfb; cursor: pointer; font-size: .52rem; font-weight: 750; }
 .rotationPresets button:hover, .fitTextButton:hover { border-color: #168c80; background: #eef9f7; }
 .fitTextButton { width: 100%; }
+.imageControls { display: grid; gap: 9px; }
+.aspectToggle { grid-template-columns: auto 1fr; align-items: center; gap: 7px; cursor: pointer; }
+.aspectToggle input { width: 15px; height: 15px; margin: 0; accent-color: #168c80; }
+.aspectToggle > span { color: #43576a !important; font-size: .55rem !important; }
+.imageActions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.imageActions button { min-height: 31px; border: 1px solid #d5e0e2; border-radius: 5px; color: #17324d; background: #f8fbfb; cursor: pointer; font-size: .52rem; font-weight: 750; }
+.imageActions button:hover { border-color: #168c80; background: #eef9f7; }
 .iconActions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
 .iconActions button { width: 100%; border-color: #dbe5e7; }
 .iconActions button:last-child { color: #b33f49; }

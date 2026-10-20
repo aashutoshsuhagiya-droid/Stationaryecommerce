@@ -41,6 +41,8 @@ const artwork = {
         src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB",
         sourceWidth: 1,
         sourceHeight: 1,
+        imageFit: "stretch" as const,
+        aspectLocked: false,
       },
     ],
   }],
@@ -100,6 +102,8 @@ test("validated customization metadata survives the authoritative order snapshot
   assert.deepEqual(item.customization, parsed.items[0].customization);
   assert.equal(item.customization?.configurationId, "configuration-test-1");
   assert.equal(item.customization?.artwork?.surfaces[0].layers.length, 2);
+  const imageLayer = item.customization?.artwork?.surfaces[0].layers.find((layer) => layer.type === "image");
+  assert.equal(imageLayer?.imageFit, "stretch");
   assert.equal(item.customization?.presentation?.templateLabel, "Geo Pop");
   assert.equal(item.customization?.quote?.unitPricePaise, 1);
   assert.equal(item.unitPricePaise, 38_900);
@@ -111,9 +115,12 @@ test("artwork layers are strict discriminated records with validated image data 
   Object.assign(textWithImageSource.surfaces[0].layers[0], { src: artwork.surfaces[0].layers[1].src });
   const invalidImage = structuredClone(artwork);
   invalidImage.surfaces[0].layers[1].src = "data:image/png;base64,not-a-png";
+  const invalidImageFit = structuredClone(artwork);
+  Object.assign(invalidImageFit.surfaces[0].layers[1], { imageFit: "repeat" });
 
   assert.equal(artworkDocumentSchema.safeParse(textWithImageSource).success, false);
   assert.equal(artworkDocumentSchema.safeParse(invalidImage).success, false);
+  assert.equal(artworkDocumentSchema.safeParse(invalidImageFit).success, false);
 });
 
 test("artwork documents enforce surface and layer limits", () => {

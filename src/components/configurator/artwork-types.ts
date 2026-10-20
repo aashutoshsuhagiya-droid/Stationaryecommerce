@@ -17,6 +17,8 @@ export interface ArtworkLayer {
   fontFamily?: "sans" | "serif" | "rounded";
   sourceWidth?: number;
   sourceHeight?: number;
+  imageFit?: "contain" | "cover" | "stretch";
+  aspectLocked?: boolean;
 }
 
 export interface ArtworkSurface {

@@ -97,6 +97,8 @@ export const artworkLayerSchema = z.discriminatedUnion("type", [
     src: imageDataUrlSchema,
     sourceWidth: z.number().int().min(1).max(50_000),
     sourceHeight: z.number().int().min(1).max(50_000),
+    imageFit: z.enum(["contain", "cover", "stretch"]).optional(),
+    aspectLocked: z.boolean().optional(),
   }).strict(),
 ]);
 

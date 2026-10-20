@@ -178,6 +178,8 @@ export type ArtworkLayerSnapshot =
       src: string;
       sourceWidth: number;
       sourceHeight: number;
+      imageFit?: "contain" | "cover" | "stretch";
+      aspectLocked?: boolean;
     };
 
 export interface ArtworkDocumentSnapshot {
