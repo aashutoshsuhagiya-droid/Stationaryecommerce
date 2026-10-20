@@ -1,0 +1,177 @@
+.container {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  background: radial-gradient(circle at 50% 40%, #ffffff 0%, #f1f5f9 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02);
+  user-select: none;
+  touch-action: none;
+}
+
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  border-radius: 0;
+  border: none;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+
+.canvas:active {
+  cursor: grabbing;
+}
+
+.controlsBar {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.viewButtons,
+.actionButtons {
+  display: flex;
+  gap: 6px;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.viewButtons button,
+.actionButtons button {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #475569;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.viewButtons button:hover,
+.actionButtons button:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.activeAngle,
+.activeToggle {
+  background: #0f172a !important;
+  color: #ffffff !important;
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+}
+
+.badgeOverlay {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  pointer-events: none;
+}
+
+.materialBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.badgeIcon {
+  width: 18px;
+  height: 18px;
+  color: #2563eb;
+}
+
+.materialBadge div {
+  display: flex;
+  flex-direction: column;
+}
+
+.materialBadge strong {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  line-height: 1;
+}
+
+.materialBadge small {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.interactionHint {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6px);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 500;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.webGlFallback {
+  padding: 40px;
+  text-align: center;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+}
+
+@media (max-width: 768px) {
+  .container {
+    height: 380px;
+  }
+  .interactionHint {
+    display: none;
+  }
+  .controlsBar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -23,6 +23,7 @@ import type {
   ArtworkLayer,
   PrintableSurfaceDefinition,
 } from "./artwork-types";
+import { insertArtworkBelowText } from "./artwork-types";
 import styles from "./configurator.module.css";
 
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
@@ -238,9 +239,8 @@ export function ArtworkEditor({
       const width = Math.min(canvasWidth * 0.42, imageSize.width);
       const height = width / aspect;
       apply(
-        replaceLayers(document, activeSurface.id, (layers) => [
-          ...layers,
-          {
+        replaceLayers(document, activeSurface.id, (layers) => {
+          const imageLayer: ArtworkLayer = {
             id,
             type: "image",
             name: file.name.slice(0, 80),
@@ -253,8 +253,9 @@ export function ArtworkEditor({
             src,
             sourceWidth: imageSize.width,
             sourceHeight: imageSize.height,
-          },
-        ]),
+          };
+          return insertArtworkBelowText(layers, imageLayer);
+        }),
       );
       setSelectedId(id);
     } catch (error) {
@@ -282,6 +283,10 @@ export function ArtworkEditor({
 
   function duplicateSelected() {
     if (!selectedLayer) return;
+    if (selectedLayer.id === "personalization-name") {
+      setMessage("The required personalized name cannot be duplicated.");
+      return;
+    }
     const id = newId();
     apply(
       replaceLayers(document, activeSurface.id, (layers) => [
@@ -294,6 +299,10 @@ export function ArtworkEditor({
 
   function deleteSelected() {
     if (!selectedLayer) return;
+    if (selectedLayer.id === "personalization-name") {
+      setMessage("The required personalized name cannot be deleted.");
+      return;
+    }
     apply(
       replaceLayers(document, activeSurface.id, (layers) =>
         layers.filter((layer) => layer.id !== selectedLayer.id),
@@ -304,6 +313,10 @@ export function ArtworkEditor({
 
   function reorder(toFront: boolean) {
     if (!selectedLayer) return;
+    if (!toFront && selectedLayer.id === "personalization-name") {
+      setMessage("The required personalized name stays in front of uploaded artwork.");
+      return;
+    }
     apply(
       replaceLayers(document, activeSurface.id, (layers) => {
         const remaining = layers.filter((layer) => layer.id !== selectedLayer.id);
@@ -314,8 +327,20 @@ export function ArtworkEditor({
 
   function resetSurface() {
     if (!activeSurface.layers.length || !window.confirm("Reset this artwork surface?")) return;
-    apply(replaceLayers(document, activeSurface.id, () => []));
-    setSelectedId(null);
+    const hasRequiredName = activeSurface.layers.some((layer) => layer.id === "personalization-name");
+    apply(replaceLayers(document, activeSurface.id, (layers) => {
+      const requiredName = layers.find((layer) => layer.id === "personalization-name");
+      return requiredName ? [{
+        ...requiredName,
+        x: canvasWidth * 0.2,
+        y: canvasHeight * 0.4,
+        width: canvasWidth * 0.6,
+        height: Math.min(70, canvasHeight * 0.2),
+        rotation: 0,
+        opacity: 1,
+      }] : [];
+    }));
+    setSelectedId(hasRequiredName ? "personalization-name" : null);
   }
 
   function pointerPosition(event: React.PointerEvent<SVGSVGElement>) {
@@ -582,9 +607,9 @@ export function ArtworkEditor({
               <button type="button" onClick={() => updateLayer(selectedLayer.id, { x: (canvasWidth - selectedLayer.width) / 2 })} title="Centre horizontally"><AlignCenterHorizontal /></button>
               <button type="button" onClick={() => updateLayer(selectedLayer.id, { y: (canvasHeight - selectedLayer.height) / 2 })} title="Centre vertically"><AlignCenterVertical /></button>
               <button type="button" onClick={() => reorder(true)} title="Bring to front"><BringToFront /></button>
-              <button type="button" onClick={() => reorder(false)} title="Send to back"><SendToBack /></button>
-              <button type="button" onClick={duplicateSelected} title="Duplicate"><Copy /></button>
-              <button type="button" onClick={deleteSelected} title="Delete"><Trash2 /></button>
+              <button type="button" onClick={() => reorder(false)} disabled={selectedLayer.id === "personalization-name"} title={selectedLayer.id === "personalization-name" ? "Required name stays in front" : "Send to back"}><SendToBack /></button>
+              <button type="button" onClick={duplicateSelected} disabled={selectedLayer.id === "personalization-name"} title={selectedLayer.id === "personalization-name" ? "Required name cannot be duplicated" : "Duplicate"}><Copy /></button>
+              <button type="button" onClick={deleteSelected} disabled={selectedLayer.id === "personalization-name"} title={selectedLayer.id === "personalization-name" ? "Required name cannot be deleted" : "Delete"}><Trash2 /></button>
             </div>
           </div>
         )}

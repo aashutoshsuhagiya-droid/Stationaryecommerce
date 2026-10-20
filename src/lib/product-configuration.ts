@@ -65,6 +65,7 @@ export interface ProductConfigurationSchema {
   variants: ConfiguratorVariant[];
   personalization: {
     supported: boolean;
+    supportsMultipleNames: boolean;
     fields: CustomizationField[];
     templates: ConfiguratorTemplate[];
   };
@@ -126,6 +127,10 @@ function activeTemplates(product: Product): ConfiguratorTemplate[] {
     }));
 }
 
+export function productSupportsMultipleNames(product: Product) {
+  return product.categorySlug === "bulk-orders" || product.tags.includes("multiple names");
+}
+
 export function buildProductConfiguration(product: Product): ProductConfigurationSchema {
   const sizeLabels = product.sizes?.length ? product.sizes : [product.dimensions];
   const presets = sizeLabels.map((label, index) => ({
@@ -174,6 +179,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
     })),
     personalization: {
       supported: product.customizable,
+      supportsMultipleNames: productSupportsMultipleNames(product),
       fields: product.customizationFields,
       templates: activeTemplates(product),
     },

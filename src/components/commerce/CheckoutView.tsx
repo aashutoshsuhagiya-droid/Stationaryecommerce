@@ -48,6 +48,11 @@ export function CheckoutView() {
           quantity: item.quantity,
           ...(item.customization ? { customization: {
             ...(templateId ? { templateId } : {}),
+            ...(item.customization.configurationId ? { configurationId: item.customization.configurationId } : {}),
+            ...(item.customization.dimensionPresetId ? { dimensionPresetId: item.customization.dimensionPresetId } : {}),
+            ...(item.customization.dimensionLabel ? { dimensionLabel: item.customization.dimensionLabel } : {}),
+            ...(item.customization.displayUnit ? { displayUnit: item.customization.displayUnit } : {}),
+            ...(item.customization.artwork ? { artwork: item.customization.artwork } : {}),
             fields: {
               ...(item.customization.fields ?? {
                 name: item.customization.name,
@@ -56,6 +61,17 @@ export function CheckoutView() {
               }),
             },
             previewVersion: 1,
+            presentation: {
+              name: item.customization.name,
+              ...(item.customization.detail ? { detail: item.customization.detail } : {}),
+              templateLabel: item.customization.template,
+              fontLabel: item.customization.font,
+              textColor: item.customization.textColor,
+              backgroundColor: item.customization.backgroundColor,
+              packLabel: item.customization.pack,
+              materialLabel: item.customization.material,
+            },
+            ...(item.customization.quote ? { quote: item.customization.quote } : {}),
           } } : {}),
         };
       });

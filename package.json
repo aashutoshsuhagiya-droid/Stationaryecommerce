@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:domain": "tsx --test src/lib/*.test.ts",
+    "test:domain": "tsx --test src/lib/*.test.ts src/components/configurator/*.test.ts",
     "typecheck": "tsc --noEmit",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
@@ -14,11 +14,13 @@
   },
   "dependencies": {
     "@prisma/client": "latest",
+    "@types/three": "^0.186.0",
     "clsx": "latest",
     "lucide-react": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "three": "^0.186.1",
     "zod": "latest"
   },
   "devDependencies": {
@@ -29,5 +31,7 @@
     "tsx": "latest",
     "typescript": "latest"
   },
-  "prisma": { "seed": "tsx prisma/seed.ts" }
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
 }

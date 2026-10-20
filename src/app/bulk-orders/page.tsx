@@ -4,6 +4,7 @@ import BulkQuoteForm from "@/components/customer/BulkQuoteForm";
 import { Breadcrumbs, PageHero, SecondaryLink, styles } from "@/components/customer/CustomerUI";
 import { products } from "@/lib/data";
 import { bulkRequestPolicy } from "@/lib/bulk-request-validation";
+import { productSupportsMultipleNames } from "@/lib/product-configuration";
 
 export const metadata: Metadata = {
   title: "Bulk & institutional orders",
@@ -18,7 +19,13 @@ export default async function BulkOrdersPage({
   const query = await searchParams;
   const productOptions = products
     .filter((product) => product.stockStatus !== "out_of_stock")
-    .map(({ id, name, dimensions, material }) => ({ id, name, dimensions, material }));
+    .map((product) => ({
+      id: product.id,
+      name: product.name,
+      dimensions: product.dimensions,
+      material: product.material,
+      supportsMultipleNames: productSupportsMultipleNames(product),
+    }));
 
   return (
     <div className={styles.page}>

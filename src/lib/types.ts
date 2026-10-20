@@ -126,6 +126,69 @@ export interface PersonalizationValues {
   templateId?: string;
   fields: Record<string, string>;
   previewVersion: number;
+  configurationId?: string;
+  dimensionPresetId?: string;
+  dimensionLabel?: string;
+  displayUnit?: "mm" | "cm" | "in";
+  artwork?: ArtworkDocumentSnapshot;
+  presentation?: {
+    name: string;
+    detail?: string;
+    templateLabel: string;
+    fontLabel: string;
+    textColor: string;
+    backgroundColor: string;
+    packLabel: string;
+    materialLabel: string;
+  };
+  quote?: {
+    id: string;
+    pricingVersion: string;
+    calculatedAt: string;
+    unitPricePaise: number;
+  };
+}
+
+export type ArtworkLayerSnapshot =
+  | {
+      id: string;
+      type: "text";
+      name: string;
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      rotation: number;
+      opacity: number;
+      text: string;
+      color: string;
+      fontSize: number;
+      fontFamily: "sans" | "serif" | "rounded";
+    }
+  | {
+      id: string;
+      type: "image";
+      name: string;
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      rotation: number;
+      opacity: number;
+      src: string;
+      sourceWidth: number;
+      sourceHeight: number;
+    };
+
+export interface ArtworkDocumentSnapshot {
+  version: 1;
+  activeSurfaceId: string;
+  surfaces: Array<{
+    id: string;
+    label: string;
+    layers: ArtworkLayerSnapshot[];
+  }>;
+  updatedAt: string;
 }
 
 export interface CartItem {

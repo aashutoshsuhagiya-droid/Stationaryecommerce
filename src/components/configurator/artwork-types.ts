@@ -63,3 +63,27 @@ export function createArtworkDocument(surfaces: PrintableSurfaceDefinition[]): A
     updatedAt: new Date().toISOString(),
   };
 }
+
+export function keepArtworkLayerInForeground(document: ArtworkDocument, layerId: string): ArtworkDocument {
+  let changed = false;
+  const surfaces = document.surfaces.map((surface) => {
+      const foregroundLayer = surface.layers.find((layer) => layer.id === layerId);
+      if (!foregroundLayer || surface.layers.at(-1)?.id === foregroundLayer.id) return surface;
+      changed = true;
+      return {
+        ...surface,
+        layers: [
+          ...surface.layers.filter((layer) => layer.id !== foregroundLayer.id),
+          foregroundLayer,
+        ],
+      };
+    });
+  return changed ? { ...document, surfaces } : document;
+}
+
+export function insertArtworkBelowText(layers: ArtworkLayer[], layer: ArtworkLayer) {
+  const firstTextIndex = layers.findIndex((candidate) => candidate.type === "text");
+  return firstTextIndex < 0
+    ? [...layers, layer]
+    : [...layers.slice(0, firstTextIndex), layer, ...layers.slice(firstTextIndex)];
+}

@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import {
+  Box,
   Check,
   ChevronDown,
   CircleAlert,
   Clock3,
   Heart,
+  Layers3,
   LockKeyhole,
   Minus,
   PackageCheck,
@@ -20,8 +22,10 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArtworkEditor } from "@/components/configurator/ArtworkEditor";
+import { Product3DPreview } from "@/components/configurator/Product3DPreview";
 import {
   createArtworkDocument,
+  keepArtworkLayerInForeground,
   type ArtworkDocument,
   type PrintableSurfaceDefinition,
 } from "@/components/configurator/artwork-types";
@@ -197,6 +201,7 @@ export function CustomizationStudio({
   const { cart, isHydrated, addItem, removeItem, toggleWishlist, isWishlisted } = useStore();
   const firstVariant = configuration.variants[0];
   const firstTemplate = configuration.personalization.templates[0];
+  const [previewMode, setPreviewMode] = useState<"3d" | "2d">("3d");
   const [configurationId, setConfigurationId] = useState(uniqueId);
   const [variantId, setVariantId] = useState(firstVariant?.id ?? "");
   const [templateId, setTemplateId] = useState(firstTemplate?.id ?? "");
@@ -251,11 +256,16 @@ export function CustomizationStudio({
         ...(custom.detail ? { "class-details": custom.detail } : {}),
         font: Object.entries({ rounded: "Friendly rounded", clean: "Clean sans", serif: "Classic serif" }).find(([, label]) => label === custom.font)?.[0] ?? custom.font,
       });
-      if (custom.artwork) setArtwork(custom.artwork);
+      if (custom.artwork) setArtwork(keepArtworkLayerInForeground(custom.artwork, "personalization-name"));
     } else if (saved) {
       loadDesign(saved);
     }
   }, [cart, configuration, firstTemplate?.id, firstVariant?.id, isHydrated, product.id]);
+
+  useEffect(() => {
+    const normalized = keepArtworkLayerInForeground(artwork, "personalization-name");
+    if (normalized !== artwork) setArtwork(normalized);
+  }, [artwork]);
 
   useEffect(() => {
     if (Object.keys(errors).length || !selectedVariant) {
@@ -314,8 +324,9 @@ export function CustomizationStudio({
   }
 
   function updateArtwork(next: ArtworkDocument) {
-    setArtwork(next);
-    const nameLayer = next.surfaces.flatMap((surface) => surface.layers).find((layer) => layer.id === "personalization-name");
+    const normalized = keepArtworkLayerInForeground(next, "personalization-name");
+    setArtwork(normalized);
+    const nameLayer = normalized.surfaces.flatMap((surface) => surface.layers).find((layer) => layer.id === "personalization-name");
     if (nameLayer?.text && nameLayer.text !== "Your name" && nameLayer.text !== fields.name) {
       setFields((current) => ({ ...current, name: nameLayer.text ?? current.name }));
     }
@@ -329,7 +340,7 @@ export function CustomizationStudio({
     setDisplayUnit(design.displayUnit);
     setQuantity(design.quantity);
     setFields(design.fields);
-    setArtwork(design.artwork);
+    setArtwork(keepArtworkLayerInForeground(design.artwork, "personalization-name"));
     setSaveMessage(`Loaded ${design.title}.`);
   }
 
@@ -571,18 +582,52 @@ export function CustomizationStudio({
 
           <main className={configuratorStyles.designArea}>
             <div className={configuratorStyles.designHeading}>
-              <div><Sparkles /><span><strong>Live 2D artwork studio</strong><small>Drag elements on the print area. Dashed guides mark the safe zone.</small></span></div>
-              <span>Draft preview</span>
+              <div><Sparkles /><span><strong>{previewMode === "3d" ? "Interactive 3D preview" : "Live 2D artwork studio"}</strong><small>{previewMode === "3d" ? "Rotate and inspect your customized product in 3D." : "Drag elements on the print area. Dashed guides mark the safe zone."}</small></span></div>
+              <div className={configuratorStyles.viewModeToggle} role="group" aria-label="Preview mode">
+                <button
+                  type="button"
+                  className={previewMode === "3d" ? configuratorStyles.viewModeActive : ""}
+                  onClick={() => setPreviewMode("3d")}
+                  title="3D interactive model"
+                >
+                  <Box className="w-3.5 h-3.5" /> 3D View
+                </button>
+                <button
+                  type="button"
+                  className={previewMode === "2d" ? configuratorStyles.viewModeActive : ""}
+                  onClick={() => setPreviewMode("2d")}
+                  title="2D design editor"
+                >
+                  <Layers3 className="w-3.5 h-3.5" /> 2D Studio
+                </button>
+              </div>
             </div>
             {configuration.personalization.supported ? (
-              <ArtworkEditor
-                document={artwork}
-                surfaces={surfaceDefinitions(configuration, selectedPreset)}
-                background={templateBackground}
-                accent={templateAccent}
-                onChange={updateArtwork}
-                footer={purchasePanel}
-              />
+              previewMode === "3d" ? (
+                <div className={configuratorStyles.preview3dContainer}>
+                  <Product3DPreview
+                    document={artwork}
+                    surfaces={surfaceDefinitions(configuration, selectedPreset)}
+                    background={templateBackground}
+                    accent={templateAccent}
+                    structuralDesign={product.artwork}
+                    productType={product.categorySlug}
+                    dimensionsMm={selectedPreset?.dimensionsMm}
+                    materialName={selectedVariant?.material || product.material}
+                    productName={product.name}
+                  />
+                  {purchasePanel}
+                </div>
+              ) : (
+                <ArtworkEditor
+                  document={artwork}
+                  surfaces={surfaceDefinitions(configuration, selectedPreset)}
+                  background={templateBackground}
+                  accent={templateAccent}
+                  onChange={updateArtwork}
+                  footer={purchasePanel}
+                />
+              )
             ) : (
               <div className={configuratorStyles.standardPreview}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}

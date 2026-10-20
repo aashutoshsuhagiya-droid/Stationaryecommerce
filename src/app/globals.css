@@ -737,7 +737,13 @@ main { min-height: 62vh; }
 .coupon-box form { margin-top: 11px; display: grid; grid-template-columns: 1fr auto; }
 .coupon-box input { min-width: 0; height: 39px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px 0 0 8px; outline: 0; font-size: .64rem; }
 .coupon-box button { border: 0; border-radius: 0 8px 8px 0; color: white; background: var(--navy); font-size: .6rem; font-weight: 800; cursor: pointer; }
+.coupon-box button:disabled { opacity: .7; cursor: wait; }
 .coupon-box small { margin-top: 6px; display: block; color: var(--slate); font-size: .5rem; }
+.coupon-message { margin: 7px 0 0; padding: 7px 9px; border-radius: 6px; font-size: .55rem; line-height: 1.45; }
+.coupon-message[data-tone="error"] { color: #8a3038; background: #fff0f1; }
+.coupon-message[data-tone="success"] { color: #176259; background: var(--mint); }
+.coupon-spinner { width: 13px; animation: coupon-spin .8s linear infinite; }
+@keyframes coupon-spin { to { transform: rotate(360deg); } }
 .cart-total { margin-bottom: 18px; display: flex; align-items: start; justify-content: space-between; gap: 15px; }
 .cart-total > span { display: grid; color: var(--navy); font-size: .77rem; font-weight: 850; }
 .cart-total small { margin-top: 3px; color: var(--slate); font-size: .5rem; font-weight: 500; }

@@ -332,7 +332,41 @@
 .readinessGrid svg { width: 16px; flex: 0 0 auto; color: #168c80; }
 .readinessGrid span { min-width: 0; display: grid; gap: 3px; }
 .readinessGrid strong { color: #17324d; font-size: .53rem; }
-.readinessGrid small { color: #64748b; font-size: .46rem; line-height: 1.45; }
+.viewModeToggle {
+  display: flex;
+  background: #e2e8f0;
+  padding: 3px;
+  border-radius: 8px;
+  gap: 4px;
+}
+.viewModeToggle button {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+.viewModeToggle button:hover {
+  color: #0f172a;
+}
+.viewModeActive {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.preview3dContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 .mobileBuyBar { display: none; }
 
 @media (max-width: 1180px) {

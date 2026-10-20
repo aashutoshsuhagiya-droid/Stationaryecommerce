@@ -56,6 +56,12 @@ type StoreContextValue = {
 const StoreContext = createContext<StoreContextValue | null>(null);
 const CART_KEY = "naamly-cart-v1";
 const WISHLIST_KEY = "naamly-wishlist-v1";
+export const MAX_CART_ITEM_QUANTITY = 100;
+
+function clampCartItemQuantity(quantity: number) {
+  if (!Number.isFinite(quantity)) return 1;
+  return Math.min(MAX_CART_ITEM_QUANTITY, Math.max(1, Math.trunc(quantity)));
+}
 
 function isStoredCartItem(value: unknown): value is CartItem {
   if (!value || typeof value !== "object") return false;
@@ -71,7 +77,8 @@ function isStoredCartItem(value: unknown): value is CartItem {
     item.price >= 0 &&
     typeof item.quantity === "number" &&
     Number.isInteger(item.quantity) &&
-    item.quantity > 0
+    item.quantity > 0 &&
+    item.quantity <= MAX_CART_ITEM_QUANTITY
   );
 }
 
@@ -107,18 +114,25 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const addItem = useCallback((item: Omit<CartItem, "key">) => {
     const signature = JSON.stringify([item.productId, item.variantId, item.customization]);
+    const quantity = clampCartItemQuantity(item.quantity);
     setCart((current) => {
       const match = current.find((entry) => JSON.stringify([entry.productId, entry.variantId, entry.customization]) === signature);
       if (match) {
-        return current.map((entry) => entry.key === match.key ? { ...entry, quantity: entry.quantity + item.quantity } : entry);
+        return current.map((entry) => entry.key === match.key ? {
+          ...entry,
+          quantity: clampCartItemQuantity(entry.quantity + quantity),
+        } : entry);
       }
       const uniquePart = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
-      return [...current, { ...item, key: `${item.productId}-${uniquePart}` }];
+      return [...current, { ...item, quantity, key: `${item.productId}-${uniquePart}` }];
     });
   }, []);
 
   const updateQuantity = useCallback((key: string, quantity: number) => {
-    setCart((current) => current.map((item) => item.key === key ? { ...item, quantity: Math.max(1, quantity) } : item));
+    setCart((current) => current.map((item) => item.key === key ? {
+      ...item,
+      quantity: clampCartItemQuantity(quantity),
+    } : item));
   }, []);
 
   const removeItem = useCallback((key: string) => {

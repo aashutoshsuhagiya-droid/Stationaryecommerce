@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { bulkRequestPolicy, bulkRequestSchema } from "./bulk-request-validation";
+import { bulkPersonalizationPolicy } from "./bulk-personalization";
 
 const validRequest = {
   customerName: "Test Customer",
@@ -36,4 +37,77 @@ test("bulk request rejects quantities outside configured policy", () => {
     quantity: bulkRequestPolicy.minimumQuantity - 1,
   });
   assert.equal(result.success, false);
+});
+
+test("bulk request accepts validated personalization rows", () => {
+  const result = bulkRequestSchema.parse({
+    ...validRequest,
+    quantity: 3,
+    personalizationRows: [
+      { rowNumber: 2, name: "Aarav", details: "Class 4", quantity: 2 },
+      { rowNumber: 3, name: "Mira", details: "", quantity: 1 },
+    ],
+    allowDuplicateNames: false,
+  });
+  assert.equal(result.personalizationRows.length, 2);
+});
+
+test("bulk request rejects personalization quantities above the requested quantity", () => {
+  const result = bulkRequestSchema.safeParse({
+    ...validRequest,
+    quantity: 2,
+    personalizationRows: [
+      { rowNumber: 2, name: "Aarav", details: "", quantity: 2 },
+      { rowNumber: 3, name: "Mira", details: "", quantity: 1 },
+    ],
+  });
+  assert.equal(result.success, false);
+  if (!result.success) {
+    assert.ok(result.error.issues.some((issue) => issue.path.join(".") === "personalizationRows"));
+  }
+});
+
+test("bulk request applies the duplicate-name policy on normalized names", () => {
+  const rows = [
+    { rowNumber: 2, name: "Aarav  Mehta", details: "", quantity: 1 },
+    { rowNumber: 3, name: " aarav mehta ", details: "", quantity: 1 },
+  ];
+  const rejected = bulkRequestSchema.safeParse({
+    ...validRequest,
+    quantity: 2,
+    personalizationRows: rows,
+    allowDuplicateNames: false,
+  });
+  const accepted = bulkRequestSchema.safeParse({
+    ...validRequest,
+    quantity: 2,
+    personalizationRows: rows,
+    allowDuplicateNames: true,
+  });
+  assert.equal(rejected.success, false);
+  assert.equal(accepted.success, true);
+});
+
+test("bulk request revalidates row lengths, quantities and row count", () => {
+  const invalidRow = bulkRequestSchema.safeParse({
+    ...validRequest,
+    quantity: bulkPersonalizationPolicy.maximumRowQuantity,
+    personalizationRows: [{
+      rowNumber: 2,
+      name: "N".repeat(bulkPersonalizationPolicy.maxNameLength + 1),
+      details: "",
+      quantity: bulkPersonalizationPolicy.maximumRowQuantity + 1,
+    }],
+  });
+  const tooManyRows = bulkRequestSchema.safeParse({
+    ...validRequest,
+    quantity: bulkRequestPolicy.maximumQuantity,
+    personalizationRows: Array.from(
+      { length: bulkPersonalizationPolicy.maxRows + 1 },
+      (_, index) => ({ rowNumber: index + 2, name: `Name ${index}`, details: "", quantity: 1 }),
+    ),
+    allowDuplicateNames: false,
+  });
+  assert.equal(invalidRow.success, false);
+  assert.equal(tooManyRows.success, false);
 });

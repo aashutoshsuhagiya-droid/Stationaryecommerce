@@ -38,3 +38,13 @@ test("configuration uses an exact catalog dimension behind a named paper size", 
     height: 210,
   });
 });
+
+test("configuration exposes multi-name capability only for supported products", () => {
+  const bulkProduct = getProductById("prod-classroom-bulk");
+  const singleNameProduct = getProductById("prod-waterproof-adventure");
+  assert.ok(bulkProduct);
+  assert.ok(singleNameProduct);
+
+  assert.equal(buildProductConfiguration(bulkProduct).personalization.supportsMultipleNames, true);
+  assert.equal(buildProductConfiguration(singleNameProduct).personalization.supportsMultipleNames, false);
+});

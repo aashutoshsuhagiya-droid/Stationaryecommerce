@@ -3,6 +3,9 @@
 import { FormEvent, useState } from "react";
 import { Building2, CheckCircle2, LoaderCircle, Paperclip } from "lucide-react";
 
+import BulkPersonalizationCsv, {
+  type BulkPersonalizationSelection,
+} from "./BulkPersonalizationCsv";
 import styles from "./customer.module.css";
 
 export interface BulkProductOption {
@@ -10,11 +13,19 @@ export interface BulkProductOption {
   name: string;
   dimensions: string;
   material: string;
+  supportsMultipleNames: boolean;
 }
 
 type SubmissionResult = {
   data?: { reference: string; status: "received"; receivedAt: string };
   error?: { message?: string; details?: Array<{ path?: string; message?: string }> };
+};
+
+const emptyPersonalization: BulkPersonalizationSelection = {
+  rows: [],
+  allowDuplicateNames: false,
+  isValid: true,
+  totalQuantity: 0,
 };
 
 export default function BulkQuoteForm({
@@ -37,21 +48,33 @@ export default function BulkQuoteForm({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [reference, setReference] = useState("");
+  const [personalization, setPersonalization] = useState<BulkPersonalizationSelection>(emptyPersonalization);
+  const selectedProduct = products.find((option) => option.id === selectedProductId);
 
   function selectProduct(productId: string) {
     const product = products.find((option) => option.id === productId);
     setSelectedProductId(productId);
     setDimensions(product?.dimensions ?? "");
     setMaterial(product?.material ?? "");
+    setPersonalization(emptyPersonalization);
   }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitting(true);
     setError("");
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const quantity = Number(formData.get("quantity"));
+    if (selectedProduct?.supportsMultipleNames && !personalization.isValid) {
+      setError("Fix the CSV name-list issues before submitting this request.");
+      return;
+    }
+    if (selectedProduct?.supportsMultipleNames && personalization.totalQuantity > quantity) {
+      setError("The name-list quantity cannot be greater than the estimated order quantity.");
+      return;
+    }
+    setSubmitting(true);
     const body = {
       customerName: formData.get("customerName"),
       businessName: formData.get("businessName"),
@@ -59,12 +82,15 @@ export default function BulkQuoteForm({
       phone: formData.get("phone"),
       productId: formData.get("productId"),
       dimensions: formData.get("dimensions"),
-      quantity: Number(formData.get("quantity")),
+      quantity,
       material: formData.get("material"),
       printing: formData.get("printing"),
       finishing: formData.get("finishing"),
       postcode: formData.get("postcode"),
       notes: formData.get("notes"),
+      personalizationRows: selectedProduct?.supportsMultipleNames ? personalization.rows : [],
+      allowDuplicateNames:
+        selectedProduct?.supportsMultipleNames && personalization.allowDuplicateNames,
       acceptedPrivacy: formData.get("acceptedPrivacy") === "on",
     };
 
@@ -84,6 +110,7 @@ export default function BulkQuoteForm({
       setSelectedProductId("");
       setDimensions("");
       setMaterial("");
+      setPersonalization(emptyPersonalization);
     } catch (submissionError) {
       setError(
         submissionError instanceof Error
@@ -136,7 +163,7 @@ export default function BulkQuoteForm({
             <label htmlFor="bulk-product">Catalog product</label>
             <select id="bulk-product" name="productId" value={selectedProductId} onChange={(event) => selectProduct(event.target.value)} required>
               <option value="" disabled>Select a product</option>
-              {products.map((product) => <option key={product.id} value={product.id}>{product.name}</option>)}
+              {products.map((product) => <option key={product.id} value={product.id}>{product.name}{product.supportsMultipleNames ? " - CSV name list supported" : ""}</option>)}
             </select>
           </div>
           <div className={styles.field}>
@@ -178,9 +205,15 @@ export default function BulkQuoteForm({
             <label htmlFor="bulk-notes">Project notes <span aria-hidden="true">(optional)</span></label>
             <textarea id="bulk-notes" name="notes" maxLength={1500} placeholder="Names or variants needed, delivery plan, artwork details, timing, or other requirements." />
           </div>
+          {selectedProduct?.supportsMultipleNames && (
+            <BulkPersonalizationCsv
+              key={selectedProduct.id}
+              onChange={setPersonalization}
+            />
+          )}
           <div className={`${styles.attachmentNotice} ${styles.fullSpan}`}>
             <Paperclip aria-hidden="true" />
-            <div><strong>Attachments are unavailable in this demo</strong><p>A live upload requires private object storage, file limits, malware scanning, and access controls. The team can request artwork or a name list after reviewing this brief.</p></div>
+            <div><strong>Artwork attachments are unavailable in this demo</strong><p>Name-list CSV files are parsed locally and submitted as validated rows. Logos and other artwork still require private storage, malware scanning, and access controls before launch.</p></div>
           </div>
           <label className={`${styles.consentRow} ${styles.fullSpan}`}>
             <input type="checkbox" name="acceptedPrivacy" required />

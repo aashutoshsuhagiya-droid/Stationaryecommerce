@@ -1,11 +1,42 @@
 import { NextResponse } from "next/server";
 
-import { apiError, readJson, validationError } from "@/lib/http";
+import { apiError, validationError } from "@/lib/http";
 import { CommerceError, createDemoOrder, getDemoOrder } from "@/lib/order-service";
 import { createOrderSchema, orderLookupSchema } from "@/lib/validation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maximumOrderJsonBytes = 3_500_000;
+
+class RequestTooLargeError extends Error {}
+
+async function readLimitedJson(request: Request): Promise<unknown> {
+  if (!request.body) throw new SyntaxError("The request body must be valid JSON.");
+  const reader = request.body.getReader();
+  const decoder = new TextDecoder("utf-8", { fatal: true });
+  let totalBytes = 0;
+  let body = "";
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > maximumOrderJsonBytes) {
+        await reader.cancel();
+        throw new RequestTooLargeError();
+      }
+      body += decoder.decode(value, { stream: true });
+    }
+    body += decoder.decode();
+    return JSON.parse(body) as unknown;
+  } catch (error) {
+    if (error instanceof RequestTooLargeError) throw error;
+    throw new SyntaxError("The request body must be valid UTF-8 JSON.");
+  } finally {
+    reader.releaseLock();
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -18,7 +49,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const body = await readJson(request);
+    const contentType = request.headers.get("content-type") ?? "";
+    if (!contentType.toLowerCase().includes("application/json")) {
+      return apiError(415, "UNSUPPORTED_MEDIA_TYPE", "Submit the order request as JSON.");
+    }
+
+    const contentLength = Number(request.headers.get("content-length") ?? 0);
+    if (Number.isFinite(contentLength) && contentLength > maximumOrderJsonBytes) {
+      return apiError(
+        413,
+        "REQUEST_TOO_LARGE",
+        "The order request is too large. Reduce embedded preview artwork and try again.",
+      );
+    }
+
+    const body = await readLimitedJson(request);
     const parsed = createOrderSchema.safeParse(body);
     if (!parsed.success) return validationError(parsed.error);
 
@@ -39,6 +84,13 @@ export async function POST(request: Request) {
       },
     );
   } catch (error) {
+    if (error instanceof RequestTooLargeError) {
+      return apiError(
+        413,
+        "REQUEST_TOO_LARGE",
+        "The order request is too large. Reduce embedded preview artwork and try again.",
+      );
+    }
     if (error instanceof SyntaxError) {
       return apiError(400, "INVALID_JSON", error.message);
     }

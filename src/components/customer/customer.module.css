@@ -385,6 +385,63 @@ a.contactMethod:hover { border-color: #86c8c0; box-shadow: 0 8px 22px rgba(23,50
 .attachmentNotice strong { display: block; color: #26384a; font-size: 13px; }
 .attachmentNotice p { margin: 4px 0 0; font-size: 11px; line-height: 1.55; }
 .formError { margin-bottom: 16px; padding: 12px 14px; border: 1px solid #f0cccc; border-radius: 8px; color: #7f3030; background: #fff2f2; font-size: 12px; line-height: 1.5; }
+.csvImport { grid-column: 1 / -1; min-width: 0; margin-bottom: 22px; padding-top: 24px; border-top: 1px solid #dfe7ed; }
+.csvHeading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 16px; }
+.csvHeading .eyebrow { margin-bottom: 6px; }
+.csvHeading h3 { margin: 0; color: #17324d; font-size: 18px; }
+.csvHeading p:not(.eyebrow) { margin: 6px 0 0; color: #64748b; font-size: 12px; line-height: 1.55; }
+.csvDownload, .csvAddRow { min-height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 12px; border: 1px solid #cbd8df; border-radius: 7px; color: #17324d; background: #fff; font: inherit; font-size: 11px; font-weight: 800; text-decoration: none; cursor: pointer; white-space: nowrap; }
+.csvDownload:hover, .csvAddRow:hover { color: #10776d; border-color: #60b7ad; }
+.csvDownload svg, .csvAddRow svg { width: 15px; height: 15px; }
+.csvDropzone { min-height: 88px; position: relative; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px; border: 1px dashed #93a7b8; border-radius: 8px; color: #526174; background: #f6f9fb; text-align: left; cursor: pointer; }
+.csvDropzone:hover { border-color: #168c80; background: #f0f8f6; }
+.csvDropzone:focus-within { outline: 3px solid rgba(22,140,128,.16); outline-offset: 2px; }
+.csvDropzone input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.csvDropzone > svg { width: 24px; height: 24px; flex: 0 0 24px; color: #168c80; }
+.csvDropzone strong, .csvDropzone small { display: block; }
+.csvDropzone strong { color: #26384a; font-size: 13px; }
+.csvDropzone small { margin-top: 3px; color: #738294; font-size: 10px; line-height: 1.4; }
+.csvFileError { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 12px 14px; border: 1px solid #eabfc4; border-radius: 7px; color: #7f3038; background: #fff3f4; font-size: 11px; line-height: 1.5; }
+.csvFileError > svg { width: 17px; height: 17px; flex: 0 0 17px; margin-top: 1px; }
+.csvFileError strong { font-size: 12px; }
+.csvFileError ul { margin: 5px 0 0; padding-left: 17px; }
+.csvFileError button { margin-top: 8px; padding: 0; border: 0; color: #126f66; background: transparent; font: inherit; font-weight: 800; text-decoration: underline; cursor: pointer; }
+.csvSummary { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 18px; margin-top: 14px; padding: 10px 12px; border: 1px solid #d9e2e8; border-radius: 7px; color: #59697a; background: #f8fafc; font-size: 11px; }
+.csvSummary span { display: inline-flex; align-items: center; gap: 5px; }
+.csvSummary span svg { width: 14px; height: 14px; }
+.csvSummarySuccess { color: #126f66; }
+.csvSummaryError { color: #a33b45; }
+.csvSummary button { display: inline-flex; align-items: center; gap: 5px; margin-left: auto; padding: 4px 6px; border: 0; color: #64748b; background: transparent; font: inherit; font-weight: 750; cursor: pointer; }
+.csvSummary button:hover { color: #9c303a; }
+.csvSummary button svg { width: 14px; height: 14px; }
+.csvDuplicatePolicy { margin: 12px 0 0; padding: 11px 12px; border: 1px solid #e6d39e; border-radius: 7px; color: #66511c; background: #fff9e9; }
+.csvTableWrap { max-width: 100%; margin-top: 12px; overflow-x: auto; border: 1px solid #d8e1e7; border-radius: 7px; background: #fff; }
+.csvTable { width: 100%; min-width: 760px; border-collapse: collapse; table-layout: fixed; }
+.csvTable th { height: 38px; padding: 0 9px; color: #64748b; background: #f3f6f8; font-size: 9px; font-weight: 850; text-align: left; text-transform: uppercase; }
+.csvTable th:nth-child(1) { width: 62px; }
+.csvTable th:nth-child(2) { width: 160px; }
+.csvTable th:nth-child(3) { width: 190px; }
+.csvTable th:nth-child(4) { width: 82px; }
+.csvTable th:nth-child(5) { width: 190px; }
+.csvTable th:nth-child(6) { width: 44px; }
+.csvTable td { padding: 8px 9px; border-top: 1px solid #e5ebef; color: #526174; font-size: 11px; vertical-align: middle; }
+.csvTable td input { width: 100%; min-height: 36px; padding: 0 9px; border: 1px solid #cdd8e0; border-radius: 6px; color: #202b38; background: #fff; font: inherit; outline: none; }
+.csvTable td input:focus { border-color: #168c80; box-shadow: 0 0 0 2px rgba(22,140,128,.12); }
+.csvInvalidRow { background: #fffafb; }
+.csvInvalidRow td input { border-color: #df9ea5; }
+.csvRowIssue, .csvRowWarning, .csvRowValid { display: inline-flex; align-items: flex-start; gap: 5px; line-height: 1.35; }
+.csvRowIssue { color: #9b3540; }
+.csvRowWarning { color: #765b16; }
+.csvRowValid { color: #126f66; }
+.csvRowIssue svg, .csvRowWarning svg, .csvRowValid svg { width: 14px; height: 14px; flex: 0 0 14px; }
+.csvTable td:last-child button, .csvPagination button { width: 32px; height: 32px; display: grid; place-items: center; padding: 0; border: 1px solid #d5dfe6; border-radius: 6px; color: #64748b; background: #fff; cursor: pointer; }
+.csvTable td:last-child button:hover { color: #a2343f; border-color: #d79ca2; }
+.csvTable td:last-child button svg, .csvPagination button svg { width: 14px; height: 14px; }
+.csvTableFooter { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.csvAddRow:disabled, .csvPagination button:disabled { opacity: .45; cursor: not-allowed; }
+.csvPagination { display: flex; align-items: center; gap: 8px; color: #64748b; font-size: 10px; }
+.csvBlockingMessage { margin: 10px 0 0; color: #8d343d; font-size: 11px; font-weight: 700; line-height: 1.45; }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .quoteSuccess { padding: 18px 0; text-align: center; }
 .quoteSuccess > svg { width: 48px; height: 48px; margin-bottom: 18px; color: #168c80; }
 .quoteSuccess > p:not(.eyebrow) { color: #64748b; font-size: 13px; line-height: 1.6; }

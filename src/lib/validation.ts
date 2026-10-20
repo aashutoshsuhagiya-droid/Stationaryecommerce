@@ -57,6 +57,120 @@ const postalCodeSchema = z
   .trim()
   .regex(/^[1-9][0-9]{5}$/, "Enter a valid 6-digit Indian PIN code");
 
+const boundedCoordinateSchema = z.number().finite().min(-100_000).max(100_000);
+const boundedSizeSchema = z.number().finite().min(1).max(100_000);
+const colorSchema = z.string().regex(/^#[0-9a-f]{6}$/i, "Expected a six-digit hex colour");
+const identifierSchema = z.string().trim().min(1).max(128);
+const imageDataUrlSchema = z
+  .string()
+  .max(2_800_000, "Artwork images must be no larger than 2 MB before encoding")
+  .refine(
+    (value) =>
+      /^data:image\/png;base64,iVBORw0KGgo[A-Za-z0-9+/]*={0,2}$/.test(value) ||
+      /^data:image\/jpeg;base64,\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(value),
+    "Expected a genuine PNG or JPEG data URL",
+  );
+
+const artworkLayerBase = {
+  id: identifierSchema,
+  name: z.string().trim().min(1).max(80),
+  x: boundedCoordinateSchema,
+  y: boundedCoordinateSchema,
+  width: boundedSizeSchema,
+  height: boundedSizeSchema,
+  rotation: z.number().finite().min(-360).max(360),
+  opacity: z.number().finite().min(0).max(1),
+};
+
+export const artworkLayerSchema = z.discriminatedUnion("type", [
+  z.object({
+    ...artworkLayerBase,
+    type: z.literal("text"),
+    text: z.string().max(80),
+    color: colorSchema,
+    fontSize: z.number().finite().min(1).max(1_000),
+    fontFamily: z.enum(["sans", "serif", "rounded"]),
+  }).strict(),
+  z.object({
+    ...artworkLayerBase,
+    type: z.literal("image"),
+    src: imageDataUrlSchema,
+    sourceWidth: z.number().int().min(1).max(50_000),
+    sourceHeight: z.number().int().min(1).max(50_000),
+  }).strict(),
+]);
+
+const artworkSurfaceSchema = z.object({
+  id: identifierSchema,
+  label: z.string().trim().min(1).max(80),
+  layers: z.array(artworkLayerSchema).max(40),
+}).strict().superRefine((surface, context) => {
+  const layerIds = new Set<string>();
+  surface.layers.forEach((layer, index) => {
+    if (layerIds.has(layer.id)) {
+      context.addIssue({
+        code: "custom",
+        path: ["layers", index, "id"],
+        message: "Artwork layer IDs must be unique within a surface",
+      });
+    }
+    layerIds.add(layer.id);
+  });
+});
+
+export const artworkDocumentSchema = z.object({
+  version: z.literal(1),
+  activeSurfaceId: identifierSchema,
+  surfaces: z.array(artworkSurfaceSchema).min(1).max(8),
+  updatedAt: z.string().datetime({ offset: true }),
+}).strict().superRefine((document, context) => {
+  const surfaceIds = new Set<string>();
+  let layerCount = 0;
+  document.surfaces.forEach((surface, index) => {
+    if (surfaceIds.has(surface.id)) {
+      context.addIssue({
+        code: "custom",
+        path: ["surfaces", index, "id"],
+        message: "Artwork surface IDs must be unique",
+      });
+    }
+    surfaceIds.add(surface.id);
+    layerCount += surface.layers.length;
+  });
+  if (!surfaceIds.has(document.activeSurfaceId)) {
+    context.addIssue({
+      code: "custom",
+      path: ["activeSurfaceId"],
+      message: "The active artwork surface must exist in the document",
+    });
+  }
+  if (layerCount > 100) {
+    context.addIssue({
+      code: "custom",
+      path: ["surfaces"],
+      message: "An artwork document can contain at most 100 layers",
+    });
+  }
+});
+
+const presentationSchema = z.object({
+  name: z.string().trim().min(1).max(180),
+  detail: z.string().trim().max(180).optional(),
+  templateLabel: z.string().trim().min(1).max(140),
+  fontLabel: z.string().trim().min(1).max(100),
+  textColor: colorSchema,
+  backgroundColor: colorSchema,
+  packLabel: z.string().trim().min(1).max(160),
+  materialLabel: z.string().trim().min(1).max(160),
+}).strict();
+
+const quoteAuditSchema = z.object({
+  id: identifierSchema,
+  pricingVersion: z.string().trim().min(1).max(100),
+  calculatedAt: z.string().datetime({ offset: true }),
+  unitPricePaise: z.number().int().nonnegative().max(100_000_000),
+}).strict();
+
 export const addressSchema = z.object({
   fullName: z.string().trim().min(2).max(100),
   mobile: mobileSchema,
@@ -84,6 +198,13 @@ export const orderItemInputSchema = z.object({
         })
         .default({}),
       previewVersion: z.number().int().min(1).max(100).default(1),
+      configurationId: identifierSchema.optional(),
+      dimensionPresetId: identifierSchema.optional(),
+      dimensionLabel: z.string().trim().min(1).max(160).optional(),
+      displayUnit: z.enum(["mm", "cm", "in"]).optional(),
+      artwork: artworkDocumentSchema.optional(),
+      presentation: presentationSchema.optional(),
+      quote: quoteAuditSchema.optional(),
     })
     .strict()
     .optional(),

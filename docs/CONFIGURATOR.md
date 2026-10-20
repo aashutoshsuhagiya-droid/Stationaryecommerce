@@ -76,9 +76,10 @@ Before enabling production capabilities, the merchant must supply and connect:
 1. Approved dimension limits, increments, material/thickness matrices, setup fees and quantity tiers.
 2. Private object storage, authorization, MIME sniffing, malware scanning, metadata removal and
    retention rules for artwork.
-3. Validated product geometry or models and surface UV mapping. Three.js/React Three Fiber packages
-   could not be installed in the current restricted environment, and the catalog has no validated
-   geometry; the UI therefore does not present a fake 3D preview.
+3. Dedicated 3D product geometry and physical shader presets: Three.js powers the client-side
+   interactive 3D preview (`Product3DPreview.tsx`), with real-time canvas texture projection mapping
+   the customer's 2D artwork onto parametric geometries (hardcover notebooks, cylindrical bottles,
+   personalized pencils, luggage tags, and card stacks).
 4. Product dielines, bleed/safe-area specifications, target DPI, colour profiles and a production
    renderer before any export may be called print-ready.
 5. Durable repositories, authentication/authorization, rate limiting and an operational notification
