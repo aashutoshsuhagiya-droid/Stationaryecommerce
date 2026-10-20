@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  getArtworkLayersInRenderOrder,
   insertArtworkBelowText,
   keepArtworkLayerInForeground,
   type ArtworkDocument,
@@ -48,4 +49,17 @@ test("required personalized name is normalized to the foreground", () => {
   };
   const normalized = keepArtworkLayerInForeground(document, "personalization-name");
   assert.deepEqual(normalized.surfaces[0].layers.map((layer) => layer.id), ["uploaded-image", "personalization-name"]);
+});
+
+test("text is always rendered in front of poster images", () => {
+  const secondImage = { ...imageLayer, id: "second-image" };
+  const caption = { ...nameLayer, id: "caption" };
+  const layers = getArtworkLayersInRenderOrder([nameLayer, imageLayer, caption, secondImage]);
+
+  assert.deepEqual(layers.map((layer) => layer.id), [
+    "uploaded-image",
+    "second-image",
+    "personalization-name",
+    "caption",
+  ]);
 });

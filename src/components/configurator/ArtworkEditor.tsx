@@ -23,7 +23,7 @@ import type {
   ArtworkLayer,
   PrintableSurfaceDefinition,
 } from "./artwork-types";
-import { insertArtworkBelowText } from "./artwork-types";
+import { getArtworkLayersInRenderOrder, insertArtworkBelowText } from "./artwork-types";
 import styles from "./configurator.module.css";
 
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
@@ -313,8 +313,8 @@ export function ArtworkEditor({
 
   function reorder(toFront: boolean) {
     if (!selectedLayer) return;
-    if (!toFront && selectedLayer.id === "personalization-name") {
-      setMessage("The required personalized name stays in front of uploaded artwork.");
+    if (!toFront && selectedLayer.type === "text") {
+      setMessage("Text stays on the front of the poster.");
       return;
     }
     apply(
@@ -519,7 +519,7 @@ export function ArtworkEditor({
               height={canvasHeight - safeInset * 2}
               rx="6"
             />
-            {activeSurface?.layers.map((layer) => (
+            {getArtworkLayersInRenderOrder(activeSurface?.layers ?? []).map((layer) => (
               <g
                 key={layer.id}
                 className={styles.artworkObject}
@@ -563,7 +563,7 @@ export function ArtworkEditor({
       <aside className={styles.inspector} aria-label="Artwork properties">
         <div className={styles.inspectorTitle}><Layers3 /><div><strong>Artwork layers</strong><small>{activeSurface?.label}</small></div></div>
         <div className={styles.layerList}>
-          {[...(activeSurface?.layers ?? [])].reverse().map((layer) => (
+          {getArtworkLayersInRenderOrder(activeSurface?.layers ?? []).reverse().map((layer) => (
             <button
               key={layer.id}
               type="button"
@@ -607,7 +607,7 @@ export function ArtworkEditor({
               <button type="button" onClick={() => updateLayer(selectedLayer.id, { x: (canvasWidth - selectedLayer.width) / 2 })} title="Centre horizontally"><AlignCenterHorizontal /></button>
               <button type="button" onClick={() => updateLayer(selectedLayer.id, { y: (canvasHeight - selectedLayer.height) / 2 })} title="Centre vertically"><AlignCenterVertical /></button>
               <button type="button" onClick={() => reorder(true)} title="Bring to front"><BringToFront /></button>
-              <button type="button" onClick={() => reorder(false)} disabled={selectedLayer.id === "personalization-name"} title={selectedLayer.id === "personalization-name" ? "Required name stays in front" : "Send to back"}><SendToBack /></button>
+              <button type="button" onClick={() => reorder(false)} disabled={selectedLayer.type === "text"} title={selectedLayer.type === "text" ? "Text stays on the front of the poster" : "Send to back"}><SendToBack /></button>
               <button type="button" onClick={duplicateSelected} disabled={selectedLayer.id === "personalization-name"} title={selectedLayer.id === "personalization-name" ? "Required name cannot be duplicated" : "Duplicate"}><Copy /></button>
               <button type="button" onClick={deleteSelected} disabled={selectedLayer.id === "personalization-name"} title={selectedLayer.id === "personalization-name" ? "Required name cannot be deleted" : "Delete"}><Trash2 /></button>
             </div>

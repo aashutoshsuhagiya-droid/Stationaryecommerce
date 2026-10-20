@@ -87,3 +87,10 @@ export function insertArtworkBelowText(layers: ArtworkLayer[], layer: ArtworkLay
     ? [...layers, layer]
     : [...layers.slice(0, firstTextIndex), layer, ...layers.slice(firstTextIndex)];
 }
+
+export function getArtworkLayersInRenderOrder(layers: ArtworkLayer[]) {
+  return [
+    ...layers.filter((layer) => layer.type === "image"),
+    ...layers.filter((layer) => layer.type === "text"),
+  ];
+}

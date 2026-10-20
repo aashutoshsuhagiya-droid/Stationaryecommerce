@@ -3,6 +3,7 @@ import type {
   ArtworkLayer,
   PrintableSurfaceDefinition,
 } from "./artwork-types";
+import { getArtworkLayersInRenderOrder } from "./artwork-types";
 
 const imageCache = new Map<string, HTMLImageElement>();
 
@@ -136,7 +137,7 @@ export function renderSurfaceToCanvas(
   const surface = document.surfaces.find((s) => s.id === surfaceId) ?? document.surfaces[0];
   if (!surface) return;
 
-  for (const layer of surface.layers) {
+  for (const layer of getArtworkLayersInRenderOrder(surface.layers)) {
     renderLayerToContext(ctx, layer, resolutionMultiplier);
   }
 }

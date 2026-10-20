@@ -21,6 +21,7 @@ import type {
   ArtworkDocument,
   PrintableSurfaceDefinition,
 } from "./artwork-types";
+import { resolveProduct3DProfile } from "./product-3d-profile";
 import styles from "./product-3d.module.css";
 
 interface Product3DPreviewProps {
@@ -41,6 +42,7 @@ export function Product3DPreview({
   background,
   accent,
   structuralDesign,
+  productType,
   dimensionsMm,
   materialName = "Vinyl Matte",
   productName,
@@ -58,6 +60,7 @@ export function Product3DPreview({
 
   const [autoRotate, setAutoRotate] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const productProfile = resolveProduct3DProfile(structuralDesign, productType);
   const [isReady, setIsReady] = useState(false);
   const [webGlSupported, setWebGlSupported] = useState(true);
 
@@ -87,7 +90,11 @@ export function Product3DPreview({
     scene.background = new THREE.Color("#f8fafc");
 
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-    camera.position.set(2.2, 1.8, 3.2);
+    camera.position.set(
+      productProfile.cameraDistance * 0.68,
+      productProfile.cameraDistance * 0.52,
+      productProfile.cameraDistance,
+    );
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({
@@ -267,10 +274,8 @@ export function Product3DPreview({
         metalness: 0.02,
       });
 
-      // Construct Geometry based on structuralDesign
-      const designKey = structuralDesign?.toLowerCase() ?? "";
-
-      if (designKey.includes("notebook")) {
+      // Construct geometry from the catalog product profile.
+      if (productProfile.kind === "notebook") {
         // 3D Notebook with Cover, Spine and Inner Pages
         const bookW = 1.5;
         const bookH = 2.1;
@@ -301,7 +306,7 @@ export function Product3DPreview({
         const band = new THREE.Mesh(bandGeo, bandMat);
         band.position.set(-bookW * 0.35, 0, 0);
         group.add(band);
-      } else if (designKey.includes("bottle") || designKey.includes("tiffin")) {
+      } else if (productProfile.kind === "bottle-label") {
         // 3D Water Bottle with wrap-around label
         const bottleHeight = 2.4;
         const bottleRadius = 0.55;
@@ -345,55 +350,69 @@ export function Product3DPreview({
         const labelMesh = new THREE.Mesh(labelGeo, printMaterial);
         labelMesh.position.y = -0.1;
         group.add(labelMesh);
-      } else if (designKey.includes("pencil")) {
-        // 3D Hexagonal Pencil with personalized foil print
+      } else if (productProfile.kind === "pencil-set") {
+        // A small set makes the selected product read as a pack, not one generic cylinder.
         const pencilLength = 2.8;
         const pencilRadius = 0.14;
-        const pencilGeo = new THREE.CylinderGeometry(
-          pencilRadius,
-          pencilRadius,
-          pencilLength,
-          6,
-        );
-        const pencilMat = new THREE.MeshStandardMaterial({
-          color: background || "#f59e0b",
-          roughness: 0.4,
-        });
-        const pencil = new THREE.Mesh(pencilGeo, pencilMat);
-        pencil.rotation.z = Math.PI / 4;
-        pencil.castShadow = true;
-        group.add(pencil);
+        for (let index = -1; index <= 1; index += 1) {
+          const pencilGeo = new THREE.CylinderGeometry(pencilRadius, pencilRadius, pencilLength, 6);
+          const pencilMat = new THREE.MeshStandardMaterial({ color: background || "#f59e0b", roughness: 0.4 });
+          const pencil = new THREE.Mesh(pencilGeo, pencilMat);
+          pencil.position.x = index * 0.38;
+          pencil.rotation.z = index * 0.04;
+          pencil.castShadow = true;
+          group.add(pencil);
 
-        // Ferrule & Eraser
-        const ferruleGeo = new THREE.CylinderGeometry(
-          pencilRadius * 1.02,
-          pencilRadius * 1.02,
-          0.2,
-          16,
-        );
-        const ferruleMat = new THREE.MeshStandardMaterial({
-          color: "#d97706",
-          metalness: 0.8,
-          roughness: 0.3,
-        });
-        const ferrule = new THREE.Mesh(ferruleGeo, ferruleMat);
-        ferrule.position.y = pencilLength / 2 + 0.1;
-        pencil.add(ferrule);
+          const ferrule = new THREE.Mesh(
+            new THREE.CylinderGeometry(pencilRadius * 1.02, pencilRadius * 1.02, 0.2, 16),
+            new THREE.MeshStandardMaterial({ color: "#d97706", metalness: 0.8, roughness: 0.3 }),
+          );
+          ferrule.position.y = pencilLength / 2 + 0.1;
+          pencil.add(ferrule);
 
-        const eraserGeo = new THREE.CylinderGeometry(
-          pencilRadius * 0.98,
-          pencilRadius * 0.98,
-          0.22,
-          16,
-        );
-        const eraserMat = new THREE.MeshStandardMaterial({
-          color: "#fda4af",
-          roughness: 0.9,
-        });
-        const eraser = new THREE.Mesh(eraserGeo, eraserMat);
-        eraser.position.y = pencilLength / 2 + 0.31;
-        pencil.add(eraser);
-      } else if (designKey.includes("tag") || designKey.includes("backpack")) {
+          const eraser = new THREE.Mesh(
+            new THREE.CylinderGeometry(pencilRadius * 0.98, pencilRadius * 0.98, 0.22, 16),
+            new THREE.MeshStandardMaterial({ color: "#fda4af", roughness: 0.9 }),
+          );
+          eraser.position.y = pencilLength / 2 + 0.31;
+          pencil.add(eraser);
+
+          if (index === 0) {
+            const printStrip = new THREE.Mesh(new THREE.PlaneGeometry(0.25, 1.45), printMaterial);
+            printStrip.position.set(0, -0.1, pencilRadius + 0.006);
+            pencil.add(printStrip);
+          }
+        }
+      } else if (productProfile.kind === "geometry-box") {
+        const boxW = 2.7;
+        const boxH = 1.05;
+        const boxD = 0.34;
+        const metal = new THREE.MeshStandardMaterial({ color: "#94a3b8", roughness: 0.28, metalness: 0.78 });
+        const box = new THREE.Mesh(new THREE.BoxGeometry(boxW, boxH, boxD), [metal, metal, metal, metal, printMaterial, metal]);
+        box.castShadow = true;
+        box.receiveShadow = true;
+        group.add(box);
+        const seam = new THREE.Mesh(new THREE.BoxGeometry(boxW * 1.01, 0.025, boxD * 1.02), new THREE.MeshStandardMaterial({ color: "#475569", metalness: 0.7, roughness: 0.35 }));
+        seam.position.y = -boxH * 0.38;
+        group.add(seam);
+      } else if (productProfile.kind === "keychain-duo") {
+        for (const side of [-1, 1]) {
+          const tag = new THREE.Mesh(
+            new THREE.BoxGeometry(1.15, 0.78, 0.07),
+            [paperEdgeMaterial, paperEdgeMaterial, paperEdgeMaterial, paperEdgeMaterial, printMaterial, backCoverMaterial],
+          );
+          tag.position.set(side * 0.68, side * 0.12, 0);
+          tag.rotation.z = side * -0.08;
+          tag.castShadow = true;
+          group.add(tag);
+          const ring = new THREE.Mesh(
+            new THREE.TorusGeometry(0.16, 0.035, 12, 30),
+            new THREE.MeshStandardMaterial({ color: "#cbd5e1", metalness: 0.9, roughness: 0.2 }),
+          );
+          ring.position.set(side * 1.28, side * 0.12, 0);
+          group.add(ring);
+        }
+      } else if (productProfile.kind === "tag") {
         // 3D Luggage / Backpack Tag
         const tagW = 1.2;
         const tagH = 2.0;
@@ -461,8 +480,10 @@ export function Product3DPreview({
     background,
     accent,
     structuralDesign,
+    productType,
     dimensionsMm,
     materialName,
+    productProfile.kind,
   ]);
 
   // Camera presets
@@ -474,21 +495,22 @@ export function Product3DPreview({
     setAutoRotate(false);
     controls.reset();
 
+    const distance = productProfile.cameraDistance;
     switch (view) {
       case "front":
-        camera.position.set(0, 0, 3.4);
+        camera.position.set(0, 0, distance);
         break;
       case "iso":
-        camera.position.set(2.2, 1.8, 3.2);
+        camera.position.set(distance * 0.68, distance * 0.52, distance);
         break;
       case "back":
-        camera.position.set(0, 0, -3.4);
+        camera.position.set(0, 0, -distance);
         break;
       case "side":
-        camera.position.set(3.4, 0, 0);
+        camera.position.set(distance, 0, 0);
         break;
       case "top":
-        camera.position.set(0, 3.4, 0.001);
+        camera.position.set(0, distance, 0.001);
         break;
     }
     camera.lookAt(0, 0, 0);
@@ -628,7 +650,7 @@ export function Product3DPreview({
         <div className={styles.materialBadge}>
           <Box className={styles.badgeIcon} />
           <div>
-            <strong>3D Mockup</strong>
+            <strong>{productProfile.label}</strong>
             <small>{materialName}</small>
           </div>
         </div>
