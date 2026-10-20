@@ -88,6 +88,9 @@
 .safeArea { fill: none; stroke: rgba(210, 87, 96, .76); stroke-width: 2; stroke-dasharray: 9 7; pointer-events: none; }
 .artworkObject { cursor: move; }
 .selection { fill: none; stroke: #168c80; stroke-width: 3; stroke-dasharray: 8 5; pointer-events: none; }
+.resizeHandle { fill: #fff; stroke: #168c80; stroke-width: 3; cursor: nwse-resize; }
+.resizeHandle:nth-of-type(2) { cursor: ew-resize; }
+.resizeHandle:nth-of-type(3) { cursor: ns-resize; }
 
 .guideLegend {
   min-height: 35px;

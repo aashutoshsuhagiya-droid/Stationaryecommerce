@@ -46,6 +46,20 @@ type DragState = {
   originY: number;
 };
 
+type ResizeDirection = "east" | "south" | "southeast";
+
+type ResizeState = {
+  layerId: string;
+  pointerId: number;
+  direction: ResizeDirection;
+  startX: number;
+  startY: number;
+  originWidth: number;
+  originHeight: number;
+  rotation: number;
+  aspectLocked: boolean;
+};
+
 type PanState = {
   pointerId: number;
   startX: number;
@@ -124,6 +138,7 @@ export function ArtworkEditor({
   const svgRef = useRef<SVGSVGElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<DragState | null>(null);
+  const resizeRef = useRef<ResizeState | null>(null);
   const panRef = useRef<PanState | null>(null);
 
   const activeSurface =
@@ -385,7 +400,7 @@ export function ArtworkEditor({
     setSelectedId(hasRequiredName ? "personalization-name" : null);
   }
 
-  function pointerPosition(event: React.PointerEvent<SVGSVGElement>) {
+  function pointerPosition(event: React.PointerEvent<SVGElement>) {
     const svg = svgRef.current;
     if (!svg) return { x: 0, y: 0 };
     const point = svg.createSVGPoint();
@@ -433,9 +448,57 @@ export function ArtworkEditor({
     );
   }
 
+  function beginResize(event: React.PointerEvent<SVGRectElement>, layer: ArtworkLayer, direction: ResizeDirection) {
+    event.preventDefault();
+    event.stopPropagation();
+    const svg = svgRef.current;
+    if (!svg) return;
+    const point = pointerPosition(event);
+    setSelectedId(layer.id);
+    setUndoStack((stack) => [...stack.slice(-39), cloneDocument(document)]);
+    setRedoStack([]);
+    resizeRef.current = {
+      layerId: layer.id,
+      pointerId: event.pointerId,
+      direction,
+      startX: point.x,
+      startY: point.y,
+      originWidth: layer.width,
+      originHeight: layer.height,
+      rotation: layer.rotation,
+      aspectLocked: layer.type === "image" && layer.aspectLocked !== false,
+    };
+    svg.setPointerCapture(event.pointerId);
+  }
+
+  function moveResize(event: React.PointerEvent<SVGSVGElement>) {
+    const resize = resizeRef.current;
+    if (!resize || resize.pointerId !== event.pointerId) return;
+    const point = pointerPosition(event);
+    const deltaX = point.x - resize.startX;
+    const deltaY = point.y - resize.startY;
+    const radians = (-resize.rotation * Math.PI) / 180;
+    const localX = deltaX * Math.cos(radians) - deltaY * Math.sin(radians);
+    const localY = deltaX * Math.sin(radians) + deltaY * Math.cos(radians);
+    let width = resize.originWidth;
+    let height = resize.originHeight;
+    if (resize.direction === "east" || resize.direction === "southeast") width = Math.max(20, resize.originWidth + localX);
+    if (resize.direction === "south" || resize.direction === "southeast") height = Math.max(20, resize.originHeight + localY);
+    if (resize.aspectLocked) {
+      const aspect = resize.originWidth / resize.originHeight || 1;
+      if (resize.direction === "south") width = height * aspect;
+      else height = width / aspect;
+    }
+    updateLayer(resize.layerId, { width: Math.round(width), height: Math.round(height) }, false);
+  }
+
   function endDrag(event: React.PointerEvent<SVGSVGElement>) {
     if (dragRef.current?.pointerId === event.pointerId) {
       dragRef.current = null;
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    if (resizeRef.current?.pointerId === event.pointerId) {
+      resizeRef.current = null;
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
   }
@@ -547,7 +610,7 @@ export function ArtworkEditor({
             tabIndex={0}
             onKeyDown={handleCanvasKeyDown}
             onPointerDown={() => setSelectedId(null)}
-            onPointerMove={moveDrag}
+            onPointerMove={(event) => { moveDrag(event); moveResize(event); }}
             onPointerUp={endDrag}
             onPointerCancel={endDrag}
           >
@@ -591,7 +654,12 @@ export function ArtworkEditor({
                   </text>
                 )}
                 {selectedId === layer.id && (
-                  <rect className={styles.selection} width={layer.width} height={layer.height} />
+                  <>
+                    <rect className={styles.selection} width={layer.width} height={layer.height} />
+                    <rect className={styles.resizeHandle} x={layer.width - 6} y={layer.height / 2 - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "east")} />
+                    <rect className={styles.resizeHandle} x={layer.width / 2 - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "south")} />
+                    <rect className={styles.resizeHandle} x={layer.width - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "southeast")} />
+                  </>
                 )}
               </g>
             ))}
