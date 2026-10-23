@@ -24,6 +24,7 @@ import type {
   PrintableSurfaceDefinition,
 } from "./artwork-types";
 import { getArtworkLayersInRenderOrder, insertArtworkBelowText } from "./artwork-types";
+import { resizeArtworkGeometry, type ResizeDirection } from "./artwork-resize";
 import styles from "./configurator.module.css";
 
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
@@ -46,14 +47,14 @@ type DragState = {
   originY: number;
 };
 
-type ResizeDirection = "east" | "south" | "southeast";
-
 type ResizeState = {
   layerId: string;
   pointerId: number;
   direction: ResizeDirection;
   startX: number;
   startY: number;
+  originX: number;
+  originY: number;
   originWidth: number;
   originHeight: number;
   rotation: number;
@@ -463,6 +464,8 @@ export function ArtworkEditor({
       direction,
       startX: point.x,
       startY: point.y,
+      originX: layer.x,
+      originY: layer.y,
       originWidth: layer.width,
       originHeight: layer.height,
       rotation: layer.rotation,
@@ -477,19 +480,19 @@ export function ArtworkEditor({
     const point = pointerPosition(event);
     const deltaX = point.x - resize.startX;
     const deltaY = point.y - resize.startY;
-    const radians = (-resize.rotation * Math.PI) / 180;
-    const localX = deltaX * Math.cos(radians) - deltaY * Math.sin(radians);
-    const localY = deltaX * Math.sin(radians) + deltaY * Math.cos(radians);
-    let width = resize.originWidth;
-    let height = resize.originHeight;
-    if (resize.direction === "east" || resize.direction === "southeast") width = Math.max(20, resize.originWidth + localX);
-    if (resize.direction === "south" || resize.direction === "southeast") height = Math.max(20, resize.originHeight + localY);
-    if (resize.aspectLocked) {
-      const aspect = resize.originWidth / resize.originHeight || 1;
-      if (resize.direction === "south") width = height * aspect;
-      else height = width / aspect;
-    }
-    updateLayer(resize.layerId, { width: Math.round(width), height: Math.round(height) }, false);
+    const geometry = resizeArtworkGeometry({
+      x: resize.originX,
+      y: resize.originY,
+      width: resize.originWidth,
+      height: resize.originHeight,
+      rotation: resize.rotation,
+    }, resize.direction, deltaX, deltaY, resize.aspectLocked);
+    updateLayer(resize.layerId, {
+      x: Math.round(geometry.x),
+      y: Math.round(geometry.y),
+      width: Math.round(geometry.width),
+      height: Math.round(geometry.height),
+    }, false);
   }
 
   function endDrag(event: React.PointerEvent<SVGSVGElement>) {
@@ -656,9 +659,14 @@ export function ArtworkEditor({
                 {selectedId === layer.id && (
                   <>
                     <rect className={styles.selection} width={layer.width} height={layer.height} />
-                    <rect className={styles.resizeHandle} x={layer.width - 6} y={layer.height / 2 - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "east")} />
-                    <rect className={styles.resizeHandle} x={layer.width / 2 - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "south")} />
-                    <rect className={styles.resizeHandle} x={layer.width - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "southeast")} />
+                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalDown}`} x="-6" y="-6" width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "northwest")} />
+                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleVertical}`} x={layer.width / 2 - 6} y="-6" width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "north")} />
+                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalUp}`} x={layer.width - 6} y="-6" width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "northeast")} />
+                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleHorizontal}`} x={layer.width - 6} y={layer.height / 2 - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "east")} />
+                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalDown}`} x={layer.width - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "southeast")} />
+                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleVertical}`} x={layer.width / 2 - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "south")} />
+                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalUp}`} x="-6" y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "southwest")} />
+                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleHorizontal}`} x="-6" y={layer.height / 2 - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "west")} />
                   </>
                 )}
               </g>
