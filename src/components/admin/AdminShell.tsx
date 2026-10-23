@@ -18,6 +18,7 @@ import {
   Star,
   Tags,
   Users,
+  UserRoundCheck,
   X,
 } from "lucide-react";
 import styles from "./admin.module.css";
@@ -36,6 +37,7 @@ const navigation = [
     label: "Relationships",
     items: [
       { href: "/admin/customers", label: "Customers", icon: Users },
+      { href: "/admin/vendor-applications", label: "Vendor applications", icon: UserRoundCheck },
       { href: "/admin/reviews", label: "Reviews", icon: Star, count: "1" },
       { href: "/admin/promotions", label: "Promotions", icon: Tags },
     ],
@@ -55,6 +57,7 @@ const titles: Record<string, string> = {
   "/admin/products": "Product catalog",
   "/admin/customizations": "Design templates",
   "/admin/customers": "Customers",
+  "/admin/vendor-applications": "Vendor applications",
   "/admin/reviews": "Reviews",
   "/admin/promotions": "Promotions",
   "/admin/reports": "Reports",

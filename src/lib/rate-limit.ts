@@ -26,7 +26,7 @@ function hashedKey(namespace: string, identifier: string) {
 }
 
 export function requestIdentifier(request: Request) {
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const forwarded = request.headers.get("x-forwarded-for")?.split(",").at(-1)?.trim();
   return forwarded || request.headers.get("x-real-ip")?.trim() || "unidentified-client";
 }
 

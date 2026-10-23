@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { consumeRateLimit } from "./rate-limit";
+import { consumeRateLimit, requestIdentifier } from "./rate-limit";
 
 test("rate limiter allows the configured request count and then blocks", () => {
   const input = { namespace: `test-${crypto.randomUUID()}`, identifier: "203.0.113.10", limit: 2, windowMs: 1_000, now: 10_000 };
@@ -18,4 +18,11 @@ test("rate limiter opens a new window after expiry", () => {
   consumeRateLimit({ namespace, identifier: "203.0.113.11", limit: 1, windowMs: 1_000, now: 20_000 });
   const nextWindow = consumeRateLimit({ namespace, identifier: "203.0.113.11", limit: 1, windowMs: 1_000, now: 21_001 });
   assert.equal(nextWindow.allowed, true);
+});
+
+test("request identity uses the proxy-appended address rather than a spoofable first hop", () => {
+  const request = new Request("https://example.test", {
+    headers: { "x-forwarded-for": "198.51.100.99, 203.0.113.12" },
+  });
+  assert.equal(requestIdentifier(request), "203.0.113.12");
 });

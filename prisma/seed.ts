@@ -1,8 +1,15 @@
+import "./load-env";
+
 import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 import { categories, designTemplates, products } from "../src/lib/data";
+import { APPROVED_VENDOR_PERMISSIONS, VENDOR_APPLICANT_PERMISSIONS } from "../src/lib/vendor-permissions";
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DATABASE_URL?.trim();
+if (!connectionString) throw new Error("DATABASE_URL is required to seed the database.");
+
+const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 
 const asJson = (value: unknown): Prisma.InputJsonValue =>
   JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
@@ -18,6 +25,19 @@ const permissionSeeds = [
   ["promotions.manage", "Manage coupons and promotional content"],
   ["settings.manage", "Manage store settings and integrations"],
   ["audit.read", "View administrative audit records"],
+  ["vendors.manage", "Review vendors, service areas and operational eligibility"],
+  ["vendors.review", "Inspect vendor applications and request corrections"],
+  ["vendors.approve", "Approve, reject, suspend and reactivate vendors"],
+  ["vendors.documents.read", "Read private vendor onboarding documents"],
+  ["assignments.read", "Inspect marketplace assignment state and events"],
+  ["assignments.manage", "Intervene in marketplace assignment and reassignment"],
+  ["vendor.profile.manage", "Manage the authenticated vendor business profile"],
+  ["vendor.offers.read", "View offers belonging to the authenticated vendor"],
+  ["vendor.offers.respond", "Accept or decline offers belonging to the authenticated vendor"],
+  ["vendor.orders.manage", "Update fulfilment for orders assigned to the authenticated vendor"],
+  ["vendor.application.read", "Read the authenticated applicant's onboarding status"],
+  ["vendor.application.update", "Correct the authenticated applicant's onboarding application"],
+  ["vendor.documents.manage", "Upload and read the authenticated applicant's onboarding documents"],
 ] as const;
 
 const roleSeeds = [
@@ -38,6 +58,18 @@ const roleSeeds = [
     name: "Customer support",
     description: "Customer, order and support resolution access",
     permissions: ["dashboard.read", "orders.read", "customers.manage"],
+  },
+  {
+    key: "vendor_applicant",
+    name: "Vendor applicant",
+    description: "Restricted onboarding access before approval",
+    permissions: [...VENDOR_APPLICANT_PERMISSIONS],
+  },
+  {
+    key: "vendor",
+    name: "Printing vendor",
+    description: "Vendor-scoped profile, offer and assigned-order operations",
+    permissions: [...APPROVED_VENDOR_PERMISSIONS],
   },
 ] as const;
 

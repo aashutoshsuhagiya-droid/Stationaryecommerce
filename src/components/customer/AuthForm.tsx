@@ -2,18 +2,53 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Eye, EyeOff, LockKeyhole, Mail, UserRound } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowRight, CheckCircle2, Eye, EyeOff, LoaderCircle, LockKeyhole, Mail, UserRound } from "lucide-react";
 import styles from "./customer.module.css";
 
 type Mode = "login" | "register" | "forgot";
 
 export default function AuthForm({ mode }: { mode: Mode }) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (mode === "login") {
+      const form = new FormData(event.currentTarget);
+      setError("");
+      setSubmitting(true);
+      try {
+        const response = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email,
+            password: String(form.get("password") ?? ""),
+          }),
+        });
+        const body = await response.json().catch(() => ({})) as {
+          data?: { authenticated?: boolean; redirectTo?: string };
+          error?: { message?: string };
+        };
+        if (!response.ok || !body.data?.authenticated) {
+          throw new Error(body.error?.message || "Sign-in could not be completed. Please try again.");
+        }
+        router.replace(body.data.redirectTo || "/account");
+        router.refresh();
+      } catch (loginError) {
+        setError(loginError instanceof Error ? loginError.message : "Sign-in could not be completed.");
+      } finally {
+        setSubmitting(false);
+      }
+      return;
+    }
+
     setSubmitted(true);
   }
 
@@ -30,12 +65,14 @@ export default function AuthForm({ mode }: { mode: Mode }) {
   }
 
   return (
-    <form className={styles.authForm} onSubmit={handleSubmit}>
+    <form className={styles.authForm} onSubmit={handleSubmit} onChange={() => error && setError("")}>
       <div className={styles.formIntro}>
         <p className={styles.eyebrow}>{mode === "login" ? "Welcome back" : mode === "register" ? "Create your account" : "Password help"}</p>
         <h1>{mode === "login" ? "Sign in to Naamly" : mode === "register" ? "A more personal way to shop" : "Reset your password"}</h1>
         <p>{mode === "login" ? "Enter your details to continue to your account." : mode === "register" ? "A few details now make every next order simpler." : "Enter the email used for your account and we’ll send recovery instructions."}</p>
       </div>
+
+      {error && <p className={styles.formError} role="alert">{error}</p>}
 
       {mode === "register" && (
         <div className={styles.field}>
@@ -57,7 +94,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
           </div>
           <div className={styles.inputWithIcon}>
             <LockKeyhole aria-hidden="true" />
-            <input id="password" type={showPassword ? "text" : "password"} name="password" minLength={8} autoComplete={mode === "login" ? "current-password" : "new-password"} placeholder="At least 8 characters" required />
+            <input id="password" type={showPassword ? "text" : "password"} name="password" minLength={mode === "register" ? 8 : 1} maxLength={200} autoComplete={mode === "login" ? "current-password" : "new-password"} placeholder={mode === "register" ? "At least 8 characters" : "Your password"} required />
             <button type="button" className={styles.passwordToggle} onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? "Hide password" : "Show password"}>
               {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
             </button>
@@ -73,12 +110,8 @@ export default function AuthForm({ mode }: { mode: Mode }) {
         </label>
       )}
 
-      {mode === "login" && (
-        <label className={styles.rememberRow}><input type="checkbox" name="remember" /><span>Keep me signed in on this device</span></label>
-      )}
-
-      <button className={styles.submitButton} type="submit">
-        {mode === "login" ? "Sign in securely" : mode === "register" ? "Create account" : "Send reset link"}<ArrowRight aria-hidden="true" />
+      <button className={styles.submitButton} type="submit" disabled={submitting}>
+        {submitting ? <><LoaderCircle className={styles.spin} aria-hidden="true" /> Signing in…</> : <>{mode === "login" ? "Sign in securely" : mode === "register" ? "Create account" : "Send reset link"}<ArrowRight aria-hidden="true" /></>}
       </button>
 
       {mode !== "forgot" && submitted && (
@@ -90,7 +123,7 @@ export default function AuthForm({ mode }: { mode: Mode }) {
       )}
 
       <p className={styles.formSwitch}>
-        {mode === "login" ? <>New to Naamly? <Link href="/register">Create an account</Link></> : mode === "register" ? <>Already have an account? <Link href="/login">Sign in</Link></> : <>Remembered it? <Link href="/login">Back to sign in</Link></>}
+        {mode === "login" ? <>New to Naamly? <Link href="/register">Create an account</Link><span className={styles.partnerPrompt}>Printing or production partner? <Link href="/vendor/register">Become a vendor</Link></span></> : mode === "register" ? <>Already have an account? <Link href="/login">Sign in</Link></> : <>Remembered it? <Link href="/login">Back to sign in</Link></>}
       </p>
     </form>
   );

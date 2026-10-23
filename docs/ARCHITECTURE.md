@@ -186,11 +186,18 @@ With PostgreSQL available and `DATABASE_URL` configured:
 
 ```bash
 npm run db:generate
-npm run db:push
-npm run db:seed
+npm run db:setup
 ```
 
-Use versioned `prisma migrate deploy` migrations, backups and recovery drills for a live environment; `db:push` is suitable only for local prototyping. Assign the seeded roles to real staff through a protected bootstrap process—`seed.ts` intentionally creates no default password or administrator account.
+`db:setup` is for a fresh local database: it pushes the schema, installs the row-locked marketplace
+functions and capacity-release trigger, and runs the idempotent seed. Use reviewed versioned
+migrations, backups and recovery drills for a live environment; `db:push` is suitable only for
+local prototyping.
+
+The seed intentionally creates no default password or administrator. For a fresh deployment,
+temporarily set `BOOTSTRAP_ADMIN_EMAIL` and a strong `BOOTSTRAP_ADMIN_PASSWORD`, run
+`npm run db:bootstrap-admin`, and remove those credentials immediately afterward. The command
+refuses to replace an existing account.
 
 ## Production cutover checklist
 

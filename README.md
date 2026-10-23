@@ -10,7 +10,7 @@ Copy-Item .env.example .env.local
 npm.cmd run dev
 ```
 
-Open `http://localhost:3000`. The demo catalog works without a database. PostgreSQL is required only when replacing the seeded in-memory adapters with persistent services.
+Open `http://localhost:3000`. The demo catalog works without a database. Vendor registration, login, review and marketplace operations require PostgreSQL.
 
 ## Useful commands
 
@@ -18,8 +18,8 @@ Open `http://localhost:3000`. The demo catalog works without a database. Postgre
 npm.cmd run typecheck
 npm.cmd run build
 npm.cmd run db:generate
-npm.cmd run db:push
-npm.cmd run db:seed
+npm.cmd run db:setup
+npm.cmd run db:bootstrap-admin
 ```
 
 ## Main routes
@@ -30,9 +30,24 @@ npm.cmd run db:seed
 - `/cart` and `/checkout` — persistent cart and guided demo checkout
 - `/account`, `/wishlist`, `/track-order`, `/bulk-orders` — customer workflows
 - `/admin` — operations dashboard and management modules
+- `/vendor/register` — printing partner registration and mobile verification
+- `/vendor` — vendor application status and approved partner workspace
+- `/admin/vendor-applications` — protected vendor review and approval queue
 
 The configurator contract, pricing boundary, bulk quote API and production dependencies are documented
 in `docs/CONFIGURATOR.md`.
+
+For a fresh local database, `db:setup` pushes the Prisma schema, installs the atomic marketplace
+database functions and trigger, and seeds the catalog plus authorization roles. Before the first
+admin login, temporarily set `BOOTSTRAP_ADMIN_EMAIL` and a strong `BOOTSTRAP_ADMIN_PASSWORD`, run
+`db:bootstrap-admin`, then remove both values from the environment. The bootstrap refuses to
+overwrite an existing user.
+
+Vendor onboarding requires PostgreSQL and the seeded authorization roles.
+In non-production environments the OTP request response includes a development code; production
+requires `VENDOR_OTP_PROVIDER_URL` and strong `VENDOR_OTP_SECRET` credentials.
+Schedule a POST to `/api/internal/assignments/recover-expired` with
+`Authorization: Bearer <ASSIGNMENT_RECOVERY_SECRET>` so expired/unassigned offers are retried.
 
 ## Production cutover
 

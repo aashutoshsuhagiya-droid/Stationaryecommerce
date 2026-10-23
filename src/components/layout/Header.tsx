@@ -12,6 +12,7 @@ const navItems = [
   { label: "School essentials", href: "/products?category=school-labels" },
   { label: "Personalised gifts", href: "/products?category=personalized-gifts" },
   { label: "Bulk orders", href: "/bulk-orders" },
+  { label: "Sell with us", href: "/vendor/register" },
 ];
 
 export function Header() {
@@ -59,14 +60,14 @@ export function Header() {
           <nav className="header-actions" aria-label="Quick links">
             <Link href="/contact" className="support-link"><Headphones /><span><small>Need help?</small>Talk to us</span></Link>
             <button className="icon-button mobile-search-button" aria-label="Search" onClick={() => setSearchOpen(true)}><Search /></button>
-            <Link href="/account" className="icon-button" aria-label="Your account"><CircleUserRound /></Link>
+            <Link href="/login" className="icon-button" aria-label="Sign in or access your account"><CircleUserRound /></Link>
             <Link href="/wishlist" className="icon-button count-button" aria-label={`Wishlist with ${wishlist.length} items`}><Heart /><span>{wishlist.length}</span></Link>
             <Link href="/cart" className="icon-button count-button" aria-label={`Cart with ${cartCount} items`}><ShoppingBag /><span>{cartCount}</span></Link>
           </nav>
         </div>
         <div className="nav-row shell">
           <Link href="/products" className="all-products-link"><span className="grid-dot-icon" aria-hidden="true">⠿</span> All products <ChevronDown size={15} /></Link>
-          <nav className="primary-nav" aria-label="Product categories">
+          <nav className="primary-nav" aria-label="Primary navigation">
             {navItems.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
           </nav>
           <Link href="/products?sort=newest" className="new-link">New arrivals <span>New</span></Link>
