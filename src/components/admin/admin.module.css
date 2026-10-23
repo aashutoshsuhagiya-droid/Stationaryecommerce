@@ -2143,3 +2143,90 @@
 @media (prefers-reduced-motion: reduce) {
   .spin { animation: none; }
 }
+
+.marketplaceSettingsCard { margin-top: 18px; }
+
+.marketplaceSettingsForm {
+  display: grid;
+  grid-template-columns: auto minmax(260px, 1fr) minmax(200px, auto);
+  gap: 14px 16px;
+  align-items: start;
+  padding: 18px;
+}
+
+.marketplaceSettingsIcon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 11px;
+  background: #e9f6f4;
+  color: var(--teal);
+}
+
+.marketplaceSettingsCopy { display: grid; gap: 6px; }
+.marketplaceSettingsCopy p { max-width: 620px; margin: 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
+
+.marketplaceSettingsControl {
+  display: flex;
+  max-width: 390px;
+  align-items: center;
+  gap: 9px;
+  margin-top: 5px;
+}
+
+.marketplaceSettingsControl .input { width: 112px; }
+
+.marketplaceSettingsSecurity {
+  display: flex;
+  max-width: 250px;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 11px;
+  border: 1px solid #dceae7;
+  border-radius: 10px;
+  background: #f6fbfa;
+  color: #59716f;
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.marketplaceSettingsSecurity svg { flex: 0 0 auto; color: var(--teal); }
+.marketplaceSettingsSecurity strong { display: block; color: #315c58; }
+
+.marketplaceSettingsFeedback {
+  min-height: 18px;
+  grid-column: 2 / -1;
+  font-size: 10px;
+}
+
+.marketplaceSettingsError,
+.marketplaceSettingsSuccess { display: inline-flex; align-items: center; gap: 6px; }
+.marketplaceSettingsError { color: #ab4e54; }
+.marketplaceSettingsSuccess { color: #207b5a; }
+
+.marketplaceSettingsState {
+  display: flex;
+  min-height: 100px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 18px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 760px) {
+  .marketplaceSettingsForm { grid-template-columns: auto minmax(0, 1fr); }
+  .marketplaceSettingsSecurity,
+  .marketplaceSettingsFeedback { grid-column: 2; }
+}
+
+@media (max-width: 480px) {
+  .marketplaceSettingsForm { grid-template-columns: 1fr; }
+  .marketplaceSettingsSecurity,
+  .marketplaceSettingsFeedback { grid-column: 1; }
+  .marketplaceSettingsControl { align-items: stretch; flex-direction: column; }
+  .marketplaceSettingsControl .input,
+  .marketplaceSettingsControl button { width: 100%; }
+}

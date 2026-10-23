@@ -8,6 +8,7 @@ import {
   ChevronDown,
   CircleAlert,
   Clock3,
+  Download,
   Heart,
   Layers3,
   LockKeyhole,
@@ -23,6 +24,8 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArtworkEditor } from "@/components/configurator/ArtworkEditor";
+import { setPersonalizedNameColor } from "@/components/configurator/artwork-color";
+import { downloadArtworkDesign } from "@/components/configurator/design-export";
 import {
   createArtworkDocument,
   keepArtworkLayerInForeground,
@@ -31,6 +34,7 @@ import {
 } from "@/components/configurator/artwork-types";
 import configuratorStyles from "@/components/configurator/configurator.module.css";
 import { useStore } from "@/components/store/StoreProvider";
+import { buildCustomSizeQuotePath } from "@/lib/bulk-quote-prefill";
 import { formatPrice } from "@/lib/data";
 import type { ProductConfigurationSchema } from "@/lib/product-configuration";
 import type { PersonalizationTemplate, Product } from "@/lib/types";
@@ -127,6 +131,7 @@ function createInitialArtwork(configuration: ProductConfigurationSchema) {
   const document = createArtworkDocument(definitions);
   if (!configuration.personalization.fields.some((field) => field.id === "name")) return document;
   const primary = definitions[0] ?? { width: 600, height: 360 };
+  const nameColor = configuration.personalization.templates[0]?.preview.foreground ?? "#17324d";
   return {
     ...document,
     surfaces: document.surfaces.map((surface, index) =>
@@ -145,7 +150,7 @@ function createInitialArtwork(configuration: ProductConfigurationSchema) {
                 rotation: 0,
                 opacity: 1,
                 text: "Your name",
-                color: "#17324d",
+                color: nameColor,
                 fontSize: Math.max(14, Math.min(40, primary.height * 0.22)),
                 fontFamily: "rounded" as const,
               },
@@ -227,32 +232,37 @@ export function CustomizationStudio({
   const { cart, isHydrated, addItem, removeItem, toggleWishlist, isWishlisted } = useStore();
   const firstVariant = configuration.variants[0];
   const firstTemplate = configuration.personalization.templates[0];
+  const defaultPreset = configuration.dimensions.presets.find(
+    (preset) => preset.id === configuration.dimensions.defaultPresetId,
+  ) ?? configuration.dimensions.presets[0];
   const [previewMode, setPreviewMode] = useState<"3d" | "2d">("3d");
   const [configurationId, setConfigurationId] = useState(uniqueId);
   const [variantId, setVariantId] = useState(firstVariant?.id ?? "");
   const [templateId, setTemplateId] = useState(firstTemplate?.id ?? "");
-  const [dimensionPresetId, setDimensionPresetId] = useState(configuration.dimensions.presets[0]?.id ?? "");
+  const [dimensionPresetId, setDimensionPresetId] = useState(defaultPreset?.id ?? "");
   const [displayUnit, setDisplayUnit] = useState<"mm" | "cm" | "in">(configuration.dimensions.supportedDisplayUnits[0] ?? "mm");
-  const [quantity, setQuantity] = useState<number>(configuration.quantity.minimum);
+  const [quantity, setQuantity] = useState<number>(configuration.quantity.default);
   const [fields, setFields] = useState<Record<string, string>>(() => initialFields(configuration));
   const [artwork, setArtwork] = useState<ArtworkDocument>(() => createInitialArtwork(configuration));
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [quote, setQuote] = useState<QuoteState>({ status: "idle", message: "Complete the required details for a verified price." });
   const [savedDesigns, setSavedDesigns] = useState<SavedDesign[]>([]);
   const [saveMessage, setSaveMessage] = useState("");
+  const [isDownloading, setIsDownloading] = useState(false);
   const [added, setAdded] = useState(false);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const initializedFromStorage = useRef(false);
 
   const selectedVariant = configuration.variants.find((variant) => variant.id === variantId) ?? firstVariant;
   const selectedTemplate = configuration.personalization.templates.find((template) => template.id === templateId) ?? firstTemplate;
-  const selectedPreset = configuration.dimensions.presets.find((preset) => preset.id === dimensionPresetId) ?? configuration.dimensions.presets[0];
+  const selectedPreset = configuration.dimensions.presets.find((preset) => preset.id === dimensionPresetId) ?? defaultPreset;
   const errors = useMemo(() => validateFields(configuration, fields, templateId), [configuration, fields, templateId]);
   const estimatedUnitPaise = (selectedVariant?.unitPricePaise ?? 0) + (selectedTemplate?.premiumPricePaise ?? 0);
   const quotedLine = quote.status === "ready" ? quote.data.items[0] : undefined;
   const displayUnitPrice = quotedLine?.unitPricePaise ?? estimatedUnitPaise;
   const displaySubtotal = quotedLine?.lineTotalPaise ?? estimatedUnitPaise * quantity;
   const templateBackground = selectedTemplate?.preview.background ?? "#e4f5f2";
+  const templateForeground = selectedTemplate?.preview.foreground ?? "#17324d";
   const templateAccent = selectedTemplate?.preview.accent ?? "#168c80";
 
   useEffect(() => {
@@ -273,7 +283,7 @@ export function CustomizationStudio({
       setConfigurationId(custom.configurationId ?? uniqueId());
       setVariantId(cartItem.variantId ?? firstVariant?.id ?? "");
       setTemplateId(custom.templateId ?? firstTemplate?.id ?? "");
-      setDimensionPresetId(custom.dimensionPresetId ?? configuration.dimensions.presets[0]?.id ?? "");
+      setDimensionPresetId(custom.dimensionPresetId ?? defaultPreset?.id ?? "");
       setDisplayUnit(custom.displayUnit ?? "mm");
       setQuantity(cartItem.quantity);
       setFields(custom.fields ?? {
@@ -286,12 +296,16 @@ export function CustomizationStudio({
     } else if (saved) {
       loadDesign(saved);
     }
-  }, [cart, configuration, firstTemplate?.id, firstVariant?.id, isHydrated, product.id]);
+  }, [cart, configuration, defaultPreset?.id, firstTemplate?.id, firstVariant?.id, isHydrated, product.id]);
 
   useEffect(() => {
     const normalized = keepArtworkLayerInForeground(artwork, "personalization-name");
     if (normalized !== artwork) setArtwork(normalized);
   }, [artwork]);
+
+  useEffect(() => {
+    setArtwork((current) => setPersonalizedNameColor(current, templateForeground));
+  }, [templateForeground]);
 
   useEffect(() => {
     if (Object.keys(errors).length || !selectedVariant) {
@@ -408,13 +422,36 @@ export function CustomizationStudio({
     }
   }
 
+  async function downloadDesign() {
+    setIsDownloading(true);
+    setSaveMessage("Preparing print-resolution artwork...");
+    try {
+      const result = await downloadArtworkDesign({
+        document: artwork,
+        surfaces: surfaceDefinitions(configuration, selectedPreset),
+        background: templateBackground,
+        accent: templateAccent,
+        productName: product.name,
+      });
+      setSaveMessage(result.zipped
+        ? `Downloaded ${result.fileCount} artwork surfaces in ${result.filename}.`
+        : `Downloaded ${result.filename}.`);
+    } catch (error) {
+      setSaveMessage(error instanceof Error
+        ? `Could not download this design: ${error.message}`
+        : "Could not download this design. Try again.");
+    } finally {
+      setIsDownloading(false);
+    }
+  }
+
   function resetConfiguration() {
     setConfigurationId(uniqueId());
     setVariantId(firstVariant?.id ?? "");
     setTemplateId(firstTemplate?.id ?? "");
-    setDimensionPresetId(configuration.dimensions.presets[0]?.id ?? "");
+    setDimensionPresetId(defaultPreset?.id ?? "");
     setDisplayUnit(configuration.dimensions.supportedDisplayUnits[0] ?? "mm");
-    setQuantity(configuration.quantity.minimum);
+    setQuantity(configuration.quantity.default);
     setFields(initialFields(configuration));
     setArtwork(createInitialArtwork(configuration));
     setFieldErrors({});
@@ -480,13 +517,18 @@ export function CustomizationStudio({
         <p className={configuratorStyles.adjustment} key={adjustment.label}><span>{adjustment.label}</span><strong>+{formatPrice(adjustment.amountPaise / 100)}</strong></p>
       ))}
       <div className={configuratorStyles.purchaseActions}>
-        <button type="button" onClick={saveDesign}><Save /> Save design</button>
+        <div className={configuratorStyles.designFileActions}>
+          <button type="button" onClick={saveDesign}><Save /> Save design</button>
+          <button type="button" onClick={downloadDesign} disabled={isDownloading} aria-busy={isDownloading}>
+            <Download /> {isDownloading ? "Preparing..." : "Download design"}
+          </button>
+        </div>
         <button type="button" className={configuratorStyles.primaryAction} onClick={addToCart} disabled={quote.status !== "ready"}>
           {added ? <Check /> : <ShoppingBag />} {added ? "Added to cart" : editingKey ? "Update cart item" : "Add to cart"}
         </button>
       </div>
       {saveMessage && <p className={configuratorStyles.saveMessage} role="status">{saveMessage}</p>}
-      {quantity >= configuration.quantity.maximum && <Link className={configuratorStyles.quoteLink} href="/bulk-orders">Need a larger run? Request a production quote</Link>}
+      {quantity >= configuration.quantity.maximum && <Link className={configuratorStyles.quoteLink} href={`/bulk-orders?product=${encodeURIComponent(product.id)}&quantity=${quantity}`}>Need a larger run? Request a production quote</Link>}
       <p className={configuratorStyles.revalidation}><ShieldCheck /> Price, availability and personalization are checked again at checkout.</p>
     </div>
   );
@@ -555,7 +597,7 @@ export function CustomizationStudio({
                   </button>
                 ))}
               </div>
-              <Link className={configuratorStyles.blockedOption} href={configuration.dimensions.custom.quotePath}><LockKeyhole /><span><strong>Custom size - request a quote</strong><small>{configuration.dimensions.custom.reason}</small></span></Link>
+              <Link className={configuratorStyles.blockedOption} href={buildCustomSizeQuotePath({ productId: product.id, quantity, dimensions: selectedPreset?.label })}><LockKeyhole /><span><strong>Custom size - request a quote</strong><small>{configuration.dimensions.custom.reason}</small></span></Link>
             </fieldset>
 
             {configuration.personalization.supported && (
@@ -653,6 +695,7 @@ export function CustomizationStudio({
                   document={artwork}
                   surfaces={surfaceDefinitions(configuration, selectedPreset)}
                   background={templateBackground}
+                  foreground={templateForeground}
                   accent={templateAccent}
                   onChange={updateArtwork}
                   footer={purchasePanel}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { bulkRequestSchema, type BulkRequestInput } from "@/lib/bulk-request-validation";
+import { bulkRequestSchema } from "@/lib/bulk-request-validation";
+import { storeBulkRequest } from "@/lib/bulk-request-store";
 import { products } from "@/lib/data";
 import { apiError, validationError } from "@/lib/http";
 import { productSupportsMultipleNames } from "@/lib/product-configuration";
@@ -9,22 +10,6 @@ import { consumeRateLimit, requestIdentifier } from "@/lib/rate-limit";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-interface StoredBulkRequest extends BulkRequestInput {
-  id: string;
-  reference: string;
-  productName: string;
-  productSku: string;
-  status: "received";
-  createdAt: string;
-}
-
-type DemoGlobal = typeof globalThis & {
-  __naamlyBulkRequests?: Map<string, StoredBulkRequest>;
-};
-
-const demoGlobal = globalThis as DemoGlobal;
-const demoRequests = demoGlobal.__naamlyBulkRequests ?? new Map<string, StoredBulkRequest>();
-demoGlobal.__naamlyBulkRequests = demoRequests;
 const maximumJsonBytes = 512_000;
 
 class RequestTooLargeError extends Error {}
@@ -106,8 +91,7 @@ export async function POST(request: Request) {
 
     const reference = createReference();
     const createdAt = new Date().toISOString();
-    demoRequests.set(reference, {
-      ...parsed.data,
+    storeBulkRequest(parsed.data, {
       id: crypto.randomUUID(),
       reference,
       productName: product.name,

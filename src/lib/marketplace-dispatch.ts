@@ -1,6 +1,18 @@
 import "server-only";
 
-import { AssignmentError, isAssignmentRetryable, planAssignmentOffers, type VendorEligibilitySnapshot } from "./marketplace-assignment";
+import {
+  AssignmentError,
+  isAssignmentRetryable,
+  normalizeServiceCity,
+  planAssignmentOffers,
+  type VendorEligibilitySnapshot,
+} from "./marketplace-assignment";
+import {
+  capVendorOfferIds,
+  MARKETPLACE_MAX_VENDORS_SETTING_KEY,
+  MarketplaceSettingValueError,
+  resolveMaxVendorsPerOrder,
+} from "./marketplace-settings-domain";
 import { getPrisma } from "./prisma";
 
 function positiveIntegerSetting(name: string, fallback: number, minimum: number, maximum: number) {
@@ -32,7 +44,6 @@ const assignmentSelect = {
 export async function dispatchCapturedOrderToVendors(orderId: string) {
   const prisma = getPrisma();
   const offerWindowSeconds = positiveIntegerSetting("VENDOR_OFFER_WINDOW_SECONDS", 60, 15, 900);
-  const maxOffers = positiveIntegerSetting("VENDOR_MAX_OFFERS_PER_ORDER", 10, 1, 100);
 
   return prisma.$transaction(async (tx) => {
     await tx.$queryRaw`SELECT "id" FROM "Order" WHERE "id" = ${orderId} FOR UPDATE`;
@@ -52,7 +63,13 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
           select: { city: true, postalCode: true },
           take: 1,
         },
-        items: { select: { productId: true, quantity: true } },
+        items: {
+          select: {
+            productId: true,
+            quantity: true,
+            product: { select: { categoryId: true } },
+          },
+        },
       },
     });
     if (!order) throw new AssignmentError(404, "ORDER_NOT_FOUND", "The order was not found.");
@@ -93,6 +110,23 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
       throw new AssignmentError(409, "SHIPPING_ADDRESS_REQUIRED", "A shipping address is required before vendor assignment.");
     }
 
+    const storedOfferPolicy = await tx.storeSetting.findUnique({
+      where: { key: MARKETPLACE_MAX_VENDORS_SETTING_KEY },
+      select: { value: true },
+    });
+    let offerPolicy: ReturnType<typeof resolveMaxVendorsPerOrder>;
+    try {
+      offerPolicy = resolveMaxVendorsPerOrder({
+        databaseValue: storedOfferPolicy?.value,
+        environmentValue: process.env.VENDOR_MAX_OFFERS_PER_ORDER,
+      });
+    } catch (error) {
+      if (error instanceof MarketplaceSettingValueError) {
+        throw new AssignmentError(500, "INVALID_ASSIGNMENT_POLICY", error.message);
+      }
+      throw error;
+    }
+
     if (existing?.status === "OFFERED") {
       await tx.vendorOrderOffer.updateMany({
         where: { assignmentId: existing.id, status: "PENDING" },
@@ -108,14 +142,17 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
       });
     }
 
-    const demandHasUnknownProduct = order.items.some((item) => item.productId === null);
+    const demandHasUnknownProduct = order.items.some((item) => item.productId === null || item.product === null);
+    const orderCategoryIds = [...new Set(order.items.flatMap((item) => item.product ? [item.product.categoryId] : []))];
     const vendors = demandHasUnknownProduct ? [] : await tx.vendorProfile.findMany({
       where: {
         verificationStatus: "APPROVED",
         operationalStatus: "ACTIVE",
         availabilityStatus: "ONLINE",
         acceptingOrders: true,
+        normalizedCity: normalizeServiceCity(shipping.city),
         servicePostalCodes: { has: shipping.postalCode },
+        serviceCategoryIds: { hasEvery: orderCategoryIds },
         user: { status: "ACTIVE" },
       },
       orderBy: [{ activeOrderCount: "asc" }, { updatedAt: "asc" }],
@@ -128,6 +165,7 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
         acceptingOrders: true,
         normalizedCity: true,
         servicePostalCodes: true,
+        serviceCategoryIds: true,
         activeOrderCount: true,
         maxConcurrentOrders: true,
         capabilities: {
@@ -151,7 +189,9 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
         paymentStatus: "CAPTURED",
         city: shipping.city,
         postalCode: shipping.postalCode,
-        lines: order.items.flatMap((item) => item.productId ? [{ productId: item.productId, quantity: item.quantity }] : []),
+        lines: order.items.flatMap((item) => item.productId && item.product
+          ? [{ productId: item.productId, categoryId: item.product.categoryId, quantity: item.quantity }]
+          : []),
       },
       vendors: snapshots,
       now,
@@ -196,7 +236,13 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
       return { assignment, replayed: false };
     }
 
-    const vendorIds = plan.vendorIds.slice(0, maxOffers);
+    const vendorIds = capVendorOfferIds(plan.vendorIds, offerPolicy.maxVendorsPerOrder);
+    const offerEventMetadata = {
+      vendorCount: vendorIds.length,
+      expiresAt: plan.expiresAt.toISOString(),
+      maxVendorsPerOrder: offerPolicy.maxVendorsPerOrder,
+      policySource: offerPolicy.source,
+    };
     const assignment = existing
       ? await tx.orderAssignment.update({
         where: { id: existing.id },
@@ -212,7 +258,7 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
           events: {
             create: [
               { orderId: order.id, type: "ASSIGNMENT_STARTED", metadata: { paymentStatus: order.paymentStatus } },
-              { orderId: order.id, type: "OFFERS_CREATED", metadata: { vendorCount: vendorIds.length, expiresAt: plan.expiresAt.toISOString() } },
+              { orderId: order.id, type: "OFFERS_CREATED", metadata: offerEventMetadata },
             ],
           },
         },
@@ -227,7 +273,7 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
           events: {
             create: [
               { orderId: order.id, type: "ASSIGNMENT_STARTED", metadata: { paymentStatus: order.paymentStatus } },
-              { orderId: order.id, type: "OFFERS_CREATED", metadata: { vendorCount: vendorIds.length, expiresAt: plan.expiresAt.toISOString() } },
+              { orderId: order.id, type: "OFFERS_CREATED", metadata: offerEventMetadata },
             ],
           },
         },

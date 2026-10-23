@@ -676,6 +676,7 @@ model VendorProfile {
   state               String                   @db.VarChar(80)
   postalCode          String                   @db.VarChar(10)
   servicePostalCodes  String[]
+  serviceCategoryIds  String[]                 @default([])
   verificationStatus  VendorVerificationStatus @default(PENDING)
   operationalStatus   VendorOperationalStatus  @default(INACTIVE)
   availabilityStatus  VendorAvailabilityStatus @default(OFFLINE)
@@ -698,6 +699,7 @@ model VendorProfile {
   @@index([verificationStatus, operationalStatus, availabilityStatus, acceptingOrders])
   @@index([normalizedCity, verificationStatus, availabilityStatus])
   @@index([postalCode])
+  @@index([serviceCategoryIds(ops: ArrayOps)], type: Gin, map: "VendorProfile_serviceCategoryIds_gin_idx")
 }
 
 model VendorApplication {

@@ -66,6 +66,23 @@ test("vendor registration rejects mismatched passwords and service areas without
   }
 });
 
+test("vendor registration requires a city and at least one service category", () => {
+  const parsed = vendorRegistrationSchema.safeParse({
+    ...validRegistration,
+    application: {
+      ...validRegistration.application,
+      city: " ",
+      serviceCategoryIds: [],
+    },
+  });
+  assert.equal(parsed.success, false);
+  if (!parsed.success) {
+    const paths = parsed.error.issues.map((issue) => issue.path.join("."));
+    assert.ok(paths.includes("application.city"));
+    assert.ok(paths.includes("application.serviceCategoryIds"));
+  }
+});
+
 test("application workflow permits only reviewed status transitions", () => {
   assert.equal(canApplyVendorApplicationAction("SUBMITTED", "START_REVIEW"), true);
   assert.equal(canApplyVendorApplicationAction("UNDER_REVIEW", "APPROVE"), true);

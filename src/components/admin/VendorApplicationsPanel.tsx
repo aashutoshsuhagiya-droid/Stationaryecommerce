@@ -80,6 +80,7 @@ interface VendorApplication {
   postalCode: string;
   servicePostalCodes: string[];
   serviceCategoryIds: string[];
+  serviceCategories: Array<{ id: string; name: string }>;
   printingServices: string[];
   equipment: string[];
   businessRegistrationNumber: string | null;
@@ -96,6 +97,8 @@ interface VendorApplication {
   reviewer?: PersonSummary | null;
   profile: {
     id: string;
+    normalizedCity: string;
+    serviceCategoryIds: string[];
     operationalStatus: "INACTIVE" | "ACTIVE" | "SUSPENDED" | "CLOSED";
     availabilityStatus: string;
     acceptingOrders: boolean;
@@ -262,6 +265,7 @@ export function VendorApplicationsPanel() {
         application.postalCode,
         application.gstin ?? "",
         ...application.servicePostalCodes,
+        ...application.serviceCategories.map((category) => category.name),
       ].join(" ").toLowerCase();
       return matchesStatus && (!needle || searchable.includes(needle));
     });
@@ -646,6 +650,10 @@ function VendorApplicationDrawer({
         <section className={styles.vendorDetailSection}>
           <h3><MapPin aria-hidden="true" size={14} /> Services & coverage</h3>
           <div className={styles.vendorLabelGroup}>
+            <span>Registered service city</span>
+            <div className={styles.vendorTagList}><span>{application.city}, {application.state}</span></div>
+          </div>
+          <div className={styles.vendorLabelGroup}>
             <span>Printing services</span>
             <div className={styles.vendorTagList}>{application.printingServices.map((service) => <span key={service}>{service}</span>)}</div>
           </div>
@@ -658,8 +666,8 @@ function VendorApplicationDrawer({
             <div className={styles.vendorTagList}>{application.servicePostalCodes.map((postalCode) => <span key={postalCode}>{postalCode}</span>)}</div>
           </div>
           <div className={styles.vendorLabelGroup}>
-            <span>Category IDs</span>
-            <div className={styles.vendorTagList}>{application.serviceCategoryIds.map((category) => <span key={category}>{category}</span>)}</div>
+            <span>{application.status === "APPROVED" ? "Approved categories" : "Requested categories"}</span>
+            <div className={styles.vendorTagList}>{application.serviceCategories.map((category) => <span key={category.id}>{category.name}</span>)}</div>
           </div>
         </section>
 

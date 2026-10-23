@@ -1,4 +1,5 @@
 import { designTemplates, getProductBySlug } from "./data";
+import { buildCustomSizeQuotePath } from "./bulk-quote-prefill";
 import type {
   CustomizationField,
   CurrencyCode,
@@ -60,6 +61,7 @@ export interface ProductConfigurationSchema {
     catalogDescription: string;
     canonicalUnit: "mm";
     supportedDisplayUnits: MeasurementUnit[];
+    defaultPresetId: string;
     presets: DimensionPreset[];
     custom: {
       supported: false;
@@ -76,7 +78,7 @@ export interface ProductConfigurationSchema {
     fields: CustomizationField[];
     templates: ConfiguratorTemplate[];
   };
-  quantity: { minimum: 1; maximum: 100; increment: 1 };
+  quantity: { minimum: 1; maximum: 100; increment: 1; default: 1 };
   artwork: {
     mode: "template_fields" | "none";
     surfaces: Array<{ id: string; label: string }>;
@@ -149,6 +151,8 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
     }),
   );
   const hasNumericDimensions = presets.some((preset) => preset.dimensionsMm !== null);
+  const defaultPreset = presets[0];
+  const defaultQuantity = 1;
   const modes: ProductCustomizationMode[] = ["standard", "specification_based"];
   if (product.customizable) modes.push("personalized", "design_studio");
   if (productSupportsMultipleNames(product)) modes.push("bulk_order");
@@ -169,6 +173,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
       catalogDescription: product.dimensions,
       canonicalUnit: "mm",
       supportedDisplayUnits: hasNumericDimensions ? ["mm", "cm", "in"] : [],
+      defaultPresetId: defaultPreset.id,
       presets,
       custom: {
         supported: false,
@@ -176,7 +181,11 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
         fields: [],
         reason:
           "Approved manufacturing limits and custom-dimension pricing are not configured for this product.",
-        quotePath: `/bulk-orders?product=${encodeURIComponent(product.id)}&customSize=true`,
+        quotePath: buildCustomSizeQuotePath({
+          productId: product.id,
+          quantity: defaultQuantity,
+          dimensions: defaultPreset.label,
+        }),
       },
     },
     variants: product.variants.map((variant) => ({
@@ -194,7 +203,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
       fields: product.customizationFields,
       templates: activeTemplates(product),
     },
-    quantity: { minimum: 1, maximum: 100, increment: 1 },
+    quantity: { minimum: 1, maximum: 100, increment: 1, default: defaultQuantity },
     artwork: {
       mode: product.customizable ? "template_fields" : "none",
       surfaces: product.customizable ? [{ id: "primary", label: "Primary print area" }] : [],

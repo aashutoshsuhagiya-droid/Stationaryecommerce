@@ -93,6 +93,8 @@ const applicationPublicSelect = {
   profile: {
     select: {
       id: true,
+      normalizedCity: true,
+      serviceCategoryIds: true,
       operationalStatus: true,
       availabilityStatus: true,
       acceptingOrders: true,
@@ -217,6 +219,7 @@ export async function registerVendorApplication(
           state: input.application.state,
           postalCode: input.application.postalCode,
           servicePostalCodes: input.application.servicePostalCodes,
+          serviceCategoryIds: input.application.serviceCategoryIds,
           verificationStatus: "PENDING",
           operationalStatus: "INACTIVE",
           availabilityStatus: "OFFLINE",
@@ -315,6 +318,7 @@ export async function updateVendorApplication(userId: string, values: VendorAppl
         ...(values.state !== undefined ? { state: values.state } : {}),
         ...(values.postalCode !== undefined ? { postalCode: values.postalCode } : {}),
         ...(values.servicePostalCodes !== undefined ? { servicePostalCodes: values.servicePostalCodes } : {}),
+        ...(values.serviceCategoryIds !== undefined ? { serviceCategoryIds: values.serviceCategoryIds } : {}),
       },
     });
     await tx.vendorApplicationEvent.create({
@@ -510,7 +514,8 @@ export async function listVendorApplications(input: { query?: string; status?: s
   if (input.status && input.status !== "ALL" && !validStatuses.has(input.status)) {
     throw new VendorOnboardingError(400, "INVALID_APPLICATION_STATUS", "The requested application status is invalid.");
   }
-  return getPrisma().vendorApplication.findMany({
+  const prisma = getPrisma();
+  const applications = await prisma.vendorApplication.findMany({
     where: {
       ...(input.status && input.status !== "ALL" ? { status: input.status as Prisma.EnumVendorApplicationStatusFilter } : {}),
       ...(query ? {
@@ -542,6 +547,21 @@ export async function listVendorApplications(input: { query?: string; status?: s
     },
     orderBy: [{ submittedAt: "desc" }, { createdAt: "desc" }],
   });
+  const categoryIds = [...new Set(applications.flatMap((application) => application.serviceCategoryIds))];
+  const categories = categoryIds.length
+    ? await prisma.category.findMany({
+      where: { id: { in: categoryIds } },
+      select: { id: true, name: true },
+    })
+    : [];
+  const categoryNames = new Map(categories.map((category) => [category.id, category.name]));
+  return applications.map((application) => ({
+    ...application,
+    serviceCategories: application.serviceCategoryIds.map((id) => ({
+      id,
+      name: categoryNames.get(id) ?? id,
+    })),
+  }));
 }
 
 function assertDecisionAllowed(status: string, action: AdminVendorDecisionInput["action"]) {
@@ -628,6 +648,7 @@ export async function decideVendorApplication(input: {
           state: application.state,
           postalCode: application.postalCode,
           servicePostalCodes: application.servicePostalCodes,
+          serviceCategoryIds: application.serviceCategoryIds,
           verificationStatus: "APPROVED",
           operationalStatus: "ACTIVE",
           availabilityStatus: "OFFLINE",
@@ -648,6 +669,7 @@ export async function decideVendorApplication(input: {
           state: application.state,
           postalCode: application.postalCode,
           servicePostalCodes: application.servicePostalCodes,
+          serviceCategoryIds: application.serviceCategoryIds,
           verificationStatus: "APPROVED",
           operationalStatus: "ACTIVE",
           availabilityStatus: "OFFLINE",

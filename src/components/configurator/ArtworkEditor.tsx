@@ -18,6 +18,7 @@ import {
   ZoomOut,
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
+import { getReadableTextColor } from "./artwork-color";
 import type {
   ArtworkDocument,
   ArtworkLayer,
@@ -33,6 +34,7 @@ interface ArtworkEditorProps {
   document: ArtworkDocument;
   surfaces: PrintableSurfaceDefinition[];
   background: string;
+  foreground: string;
   accent: string;
   onChange: (document: ArtworkDocument) => void;
   footer?: React.ReactNode;
@@ -125,6 +127,7 @@ export function ArtworkEditor({
   document,
   surfaces,
   background,
+  foreground,
   accent,
   onChange,
   footer,
@@ -265,7 +268,7 @@ export function ArtworkEditor({
           rotation: 0,
           opacity: 1,
           text: "Your text",
-          color: "#17324d",
+          color: getReadableTextColor(background, foreground),
           fontSize: 34,
           fontFamily: "rounded",
         },

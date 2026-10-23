@@ -24,10 +24,19 @@
 
 ## Assignment safety
 
-- Planning requires a captured payment, exact service PIN coverage, approved and active vendor,
+- Planning requires a captured payment, an exact normalized match to the vendor's registered
+  workshop city, exact service PIN coverage, approved categories, an approved and active vendor,
   online/accepting state, available capacity and every requested product capability/quantity.
+  City and PIN are intentionally an intersection: extra service PIN codes do not authorize a
+  second city until onboarding supports an explicit reviewed list of service cities.
 - Dispatch persists an idempotent assignment and bounded offer batch. An authenticated admin can
   dispatch a captured database order with `POST /api/admin/orders/:id/dispatch-vendors`.
+- The offer batch limit is stored under the stable `marketplace.maxVendorsPerOrder` `StoreSetting`
+  key and can be changed by a Super Admin from the vendor applications page. Dispatch reads it in
+  the same serializable transaction used to create offers. When no database override exists,
+  `VENDOR_MAX_OFFERS_PER_ORDER` is used, followed by a default of 10; accepted values are 1–100.
+- The protected same-origin `GET`/`PATCH /api/admin/marketplace-settings` endpoint validates the
+  limit and records each effective change in `AuditLog` with its actor and request identifier.
 - PostgreSQL `acceptVendorOrderOffer` locks the order before the assignment/vendor rows, uses
   database time, rechecks payment/order/vendor/capability/service-area state and commits exactly
   one winner while closing competing offers.

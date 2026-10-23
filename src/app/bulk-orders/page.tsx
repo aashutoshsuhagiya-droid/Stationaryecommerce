@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import { FileSpreadsheet, ShieldCheck, UsersRound } from "lucide-react";
 import BulkQuoteForm from "@/components/customer/BulkQuoteForm";
 import { Breadcrumbs, PageHero, SecondaryLink, styles } from "@/components/customer/CustomerUI";
-import { products } from "@/lib/data";
+import {
+  parseBulkQuotePrefill,
+  type BulkQuoteSearchParams,
+} from "@/lib/bulk-quote-prefill";
 import { bulkRequestPolicy } from "@/lib/bulk-request-validation";
+import { products } from "@/lib/data";
 import { productSupportsMultipleNames } from "@/lib/product-configuration";
 
 export const metadata: Metadata = {
@@ -14,7 +18,7 @@ export const metadata: Metadata = {
 export default async function BulkOrdersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ product?: string; customSize?: string }>;
+  searchParams: Promise<BulkQuoteSearchParams>;
 }) {
   const query = await searchParams;
   const productOptions = products
@@ -26,6 +30,11 @@ export default async function BulkOrdersPage({
       material: product.material,
       supportsMultipleNames: productSupportsMultipleNames(product),
     }));
+  const prefill = parseBulkQuotePrefill(query, {
+    availableProductIds: new Set(productOptions.map((product) => product.id)),
+    minimumQuantity: bulkRequestPolicy.minimumQuantity,
+    maximumQuantity: bulkRequestPolicy.maximumQuantity,
+  });
 
   return (
     <div className={styles.page}>
@@ -47,9 +56,12 @@ export default async function BulkOrdersPage({
               </div>
             </div>
             <BulkQuoteForm
+              key={`${prefill.productId ?? "none"}:${prefill.customSizeRequested}:${prefill.quantity ?? "none"}:${prefill.dimensions ?? "none"}`}
               products={productOptions}
-              initialProductId={productOptions.some((product) => product.id === query.product) ? query.product : undefined}
-              customSize={query.customSize === "true"}
+              initialProductId={prefill.productId}
+              initialDimensions={prefill.dimensions}
+              initialQuantity={prefill.quantity}
+              customSize={prefill.customSizeRequested}
               minimumQuantity={bulkRequestPolicy.minimumQuantity}
               maximumQuantity={bulkRequestPolicy.maximumQuantity}
             />

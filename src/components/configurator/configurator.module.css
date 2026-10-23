@@ -331,8 +331,10 @@
 .adjustment { margin: 9px 0 0; display: flex; justify-content: space-between; color: #64748b; font-size: .5rem; }
 .adjustment strong { color: #315065; }
 .purchaseActions { margin-top: 13px; display: grid; gap: 6px; }
+.designFileActions { min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
 .purchaseActions button { min-height: 39px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid #d5e0e2; border-radius: 6px; color: #17324d; background: #fff; cursor: pointer; font-size: .57rem; font-weight: 800; }
 .purchaseActions button svg { width: 15px; }
+.purchaseActions button:disabled { opacity: .65; cursor: wait; }
 .purchaseActions button.primaryAction { border-color: #168c80; color: #fff; background: #168c80; }
 .purchaseActions button.primaryAction:disabled { border-color: #9bb5b2; background: #9bb5b2; cursor: wait; }
 .saveMessage { margin: 8px 0 0; color: #315065; font-size: .5rem; line-height: 1.45; }

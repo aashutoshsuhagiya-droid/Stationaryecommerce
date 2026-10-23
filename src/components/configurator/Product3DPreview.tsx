@@ -36,6 +36,30 @@ interface Product3DPreviewProps {
   productName: string;
 }
 
+function disposeGroupChildren(group: THREE.Group, preservedTexture?: THREE.Texture | null) {
+  const geometries = new Set<THREE.BufferGeometry>();
+  const materials = new Set<THREE.Material>();
+  const textures = new Set<THREE.Texture>();
+
+  for (const child of [...group.children]) {
+    child.traverse((object) => {
+      const mesh = object as THREE.Mesh;
+      if (mesh.geometry) geometries.add(mesh.geometry);
+      const objectMaterials = Array.isArray(mesh.material) ? mesh.material : mesh.material ? [mesh.material] : [];
+      for (const material of objectMaterials) {
+        materials.add(material);
+        const map = (material as THREE.Material & { map?: THREE.Texture | null }).map;
+        if (map && map !== preservedTexture) textures.add(map);
+      }
+    });
+    group.remove(child);
+  }
+
+  geometries.forEach((geometry) => geometry.dispose());
+  materials.forEach((material) => material.dispose());
+  textures.forEach((texture) => texture.dispose());
+}
+
 export function Product3DPreview({
   document,
   surfaces,
@@ -188,6 +212,16 @@ export function Product3DPreview({
       resizeObserver.disconnect();
       controls.dispose();
       renderer.dispose();
+      floorGeo.dispose();
+      floorMat.dispose();
+      textureRef.current?.dispose();
+      textureRef.current = null;
+      textureCanvasRef.current = null;
+      controlsRef.current = null;
+      cameraRef.current = null;
+      rendererRef.current = null;
+      sceneRef.current = null;
+      meshGroupRef.current = null;
     };
   }, []);
 
@@ -203,17 +237,8 @@ export function Product3DPreview({
     const group = meshGroupRef.current;
     if (!group) return;
 
-    // Clear old children
-    while (group.children.length > 0) {
-      const child = group.children[0] as THREE.Mesh;
-      group.remove(child);
-      if (child.geometry) child.geometry.dispose();
-      if (Array.isArray(child.material)) {
-        child.material.forEach((m) => m.dispose());
-      } else if (child.material) {
-        child.material.dispose();
-      }
-    }
+    // Clear old geometry, including nested product details and cloned textures.
+    disposeGroupChildren(group, textureRef.current);
 
     // Prepare offscreen canvas for dynamic texture
     let textureCanvas = textureCanvasRef.current;
@@ -230,31 +255,31 @@ export function Product3DPreview({
       safeInset: 24,
     };
 
-    preloadArtworkImages(document).then(() => {
-      renderSurfaceToCanvas(
-        textureCanvas!,
-        document,
-        primaryDef.id,
-        primaryDef,
-        background,
-        accent,
-        2,
-      );
+    let cancelled = false;
+    renderSurfaceToCanvas(
+      textureCanvas,
+      document,
+      primaryDef.id,
+      primaryDef,
+      background,
+      accent,
+      2,
+    );
 
-      let texture = textureRef.current;
-      if (!texture) {
-        texture = new THREE.CanvasTexture(textureCanvas!);
-        texture.colorSpace = THREE.SRGBColorSpace;
-        texture.anisotropy = 8;
-        textureRef.current = texture;
-      } else {
-        texture.needsUpdate = true;
-      }
+    let texture = textureRef.current;
+    if (!texture) {
+      texture = new THREE.CanvasTexture(textureCanvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.anisotropy = 8;
+      textureRef.current = texture;
+    }
+    texture.needsUpdate = true;
+    const textureVariants: THREE.Texture[] = [texture];
 
-      // Material sheen / roughness based on material name
-      const isGlossy = /gloss|waterproof|laminated/i.test(materialName);
-      const roughness = isGlossy ? 0.22 : 0.65;
-      const metalness = isGlossy ? 0.08 : 0.02;
+    // Material sheen / roughness based on material name
+    const isGlossy = /gloss|waterproof|laminated/i.test(materialName);
+    const roughness = isGlossy ? 0.22 : 0.65;
+    const metalness = isGlossy ? 0.08 : 0.02;
 
       const printMaterial = new THREE.MeshStandardMaterial({
         map: texture,
@@ -358,6 +383,7 @@ export function Product3DPreview({
         pencilTexture.center.set(0.5, 0.5);
         pencilTexture.rotation = Math.PI / 2;
         pencilTexture.needsUpdate = true;
+        textureVariants.push(pencilTexture);
         const pencilPrintMaterial = new THREE.MeshStandardMaterial({
           map: pencilTexture,
           roughness,
@@ -482,7 +508,27 @@ export function Product3DPreview({
           group.add(underMesh);
         }
       }
+
+    void preloadArtworkImages(document).then(() => {
+      if (cancelled) return;
+      renderSurfaceToCanvas(
+        textureCanvas,
+        document,
+        primaryDef.id,
+        primaryDef,
+        background,
+        accent,
+        2,
+      );
+      textureVariants.forEach((updatedTexture) => {
+        updatedTexture.needsUpdate = true;
+      });
     });
+
+    return () => {
+      cancelled = true;
+      disposeGroupChildren(group, texture);
+    };
   }, [
     document,
     surfaces,

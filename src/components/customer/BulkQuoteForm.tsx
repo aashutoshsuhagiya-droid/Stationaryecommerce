@@ -31,19 +31,26 @@ const emptyPersonalization: BulkPersonalizationSelection = {
 export default function BulkQuoteForm({
   products,
   initialProductId,
+  initialDimensions,
+  initialQuantity,
   customSize = false,
   minimumQuantity,
   maximumQuantity,
 }: {
   products: BulkProductOption[];
   initialProductId?: string;
+  initialDimensions?: string;
+  initialQuantity?: number;
   customSize?: boolean;
   minimumQuantity: number;
   maximumQuantity: number;
 }) {
   const initialProduct = products.find((option) => option.id === initialProductId);
   const [selectedProductId, setSelectedProductId] = useState(initialProduct?.id ?? "");
-  const [dimensions, setDimensions] = useState(customSize ? "" : initialProduct?.dimensions ?? "");
+  const [dimensions, setDimensions] = useState(
+    initialDimensions ?? (customSize ? "" : initialProduct?.dimensions ?? ""),
+  );
+  const [quantity, setQuantity] = useState<number | "">(initialQuantity ?? "");
   const [material, setMaterial] = useState(initialProduct?.material ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -65,12 +72,12 @@ export default function BulkQuoteForm({
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const quantity = Number(formData.get("quantity"));
+    const requestedQuantity = Number(formData.get("quantity"));
     if (selectedProduct?.supportsMultipleNames && !personalization.isValid) {
       setError("Fix the CSV name-list issues before submitting this request.");
       return;
     }
-    if (selectedProduct?.supportsMultipleNames && personalization.totalQuantity > quantity) {
+    if (selectedProduct?.supportsMultipleNames && personalization.totalQuantity > requestedQuantity) {
       setError("The name-list quantity cannot be greater than the estimated order quantity.");
       return;
     }
@@ -81,8 +88,9 @@ export default function BulkQuoteForm({
       email: formData.get("email"),
       phone: formData.get("phone"),
       productId: formData.get("productId"),
-      dimensions: formData.get("dimensions"),
-      quantity,
+      customSizeRequested: customSize,
+      requestedDimensions: formData.get("requestedDimensions"),
+      quantity: requestedQuantity,
       material: formData.get("material"),
       printing: formData.get("printing"),
       finishing: formData.get("finishing"),
@@ -109,6 +117,7 @@ export default function BulkQuoteForm({
       form.reset();
       setSelectedProductId("");
       setDimensions("");
+      setQuantity("");
       setMaterial("");
       setPersonalization(emptyPersonalization);
     } catch (submissionError) {
@@ -167,12 +176,12 @@ export default function BulkQuoteForm({
             </select>
           </div>
           <div className={styles.field}>
-            <label htmlFor="bulk-dimensions">Required dimensions</label>
-            <input id="bulk-dimensions" name="dimensions" value={dimensions} onChange={(event) => setDimensions(event.target.value)} minLength={2} maxLength={120} placeholder="For example, 50 x 15 mm" required />
+            <label htmlFor="bulk-dimensions">{customSize ? "Requested custom dimensions" : "Required dimensions"}</label>
+            <input id="bulk-dimensions" name="requestedDimensions" value={dimensions} onChange={(event) => setDimensions(event.target.value)} minLength={2} maxLength={120} placeholder="For example, 50 x 15 mm" required />
           </div>
           <div className={styles.field}>
             <label htmlFor="bulk-quantity">Estimated quantity</label>
-            <input id="bulk-quantity" name="quantity" type="number" inputMode="numeric" min={minimumQuantity} max={maximumQuantity} step={1} placeholder="For example, 250" required />
+            <input id="bulk-quantity" name="quantity" type="number" inputMode="numeric" min={minimumQuantity} max={maximumQuantity} step={1} value={quantity} onChange={(event) => setQuantity(event.target.value === "" ? "" : Number(event.target.value))} placeholder="For example, 250" required />
           </div>
           <div className={styles.field}>
             <label htmlFor="bulk-material">Preferred material</label>

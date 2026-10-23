@@ -10,7 +10,8 @@ const validRequest = {
   email: "TEST@EXAMPLE.COM",
   phone: "+91 98765 43210",
   productId: "prod-everyday-name-slips",
-  dimensions: "50 x 15 mm",
+  customSizeRequested: false,
+  requestedDimensions: "50 x 15 mm",
   quantity: bulkRequestPolicy.minimumQuantity,
   material: "Matte vinyl",
   printing: "full-colour" as const,
@@ -29,6 +30,30 @@ test("bulk request normalizes contact fields", () => {
   const parsed = bulkRequestSchema.parse(validRequest);
   assert.equal(parsed.email, "test@example.com");
   assert.equal(parsed.phone, "9876543210");
+});
+
+test("bulk request preserves custom-size intent, requested dimensions and quantity", () => {
+  const parsed = bulkRequestSchema.parse({
+    ...validRequest,
+    customSizeRequested: true,
+    requestedDimensions: " 75 x 20 mm ",
+    quantity: 275,
+  });
+
+  assert.equal(parsed.customSizeRequested, true);
+  assert.equal(parsed.requestedDimensions, "75 x 20 mm");
+  assert.equal(parsed.quantity, 275);
+});
+
+test("bulk request normalizes the legacy dimensions field", () => {
+  const { requestedDimensions: _requestedDimensions, ...legacyRequest } = validRequest;
+  const parsed = bulkRequestSchema.parse({
+    ...legacyRequest,
+    dimensions: "60 x 20 mm",
+  });
+
+  assert.equal(parsed.requestedDimensions, "60 x 20 mm");
+  assert.equal("dimensions" in parsed, false);
 });
 
 test("bulk request rejects quantities outside configured policy", () => {

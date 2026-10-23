@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { getProductById } from "./data";
+import { getProductById, products } from "./data";
 import { buildProductConfiguration } from "./product-configuration";
 
 test("configuration exposes exact catalog dimensions without enabling custom sizes", () => {
@@ -16,7 +16,11 @@ test("configuration exposes exact catalog dimensions without enabling custom siz
   assert.deepEqual(configuration.dimensions.supportedDisplayUnits, ["mm", "cm", "in"]);
   assert.equal(configuration.dimensions.custom.supported, false);
   assert.equal(configuration.dimensions.custom.purchaseMode, "quote_only");
-  assert.match(configuration.dimensions.custom.quotePath, /product=prod-waterproof-adventure/);
+  const quoteUrl = new URL(configuration.dimensions.custom.quotePath, "https://example.test");
+  assert.equal(quoteUrl.searchParams.get("product"), "prod-waterproof-adventure");
+  assert.equal(quoteUrl.searchParams.get("customSize"), "true");
+  assert.equal(quoteUrl.searchParams.get("quantity"), String(configuration.quantity.default));
+  assert.equal(quoteUrl.searchParams.get("dimensions"), configuration.dimensions.presets[0].label);
 });
 
 test("configuration does not manufacture numeric dimensions from descriptive sizes", () => {
@@ -68,4 +72,29 @@ test("configuration exposes only the composable customization modes supported by
     "design_studio",
     "bulk_order",
   ]);
+});
+
+test("every catalog product has valid dimension and quantity defaults", () => {
+  for (const product of products) {
+    const configuration = buildProductConfiguration(product);
+    assert.ok(configuration.dimensions.presets.length > 0, `${product.id} needs a dimension preset`);
+    assert.ok(
+      configuration.dimensions.presets.some(
+        (preset) => preset.id === configuration.dimensions.defaultPresetId,
+      ),
+      `${product.id} needs a valid default dimension preset`,
+    );
+    assert.ok(
+      Number.isSafeInteger(configuration.quantity.default) &&
+        configuration.quantity.default >= configuration.quantity.minimum &&
+        configuration.quantity.default <= configuration.quantity.maximum,
+      `${product.id} needs a bounded integer quantity default`,
+    );
+    assert.equal(
+      (configuration.quantity.default - configuration.quantity.minimum) %
+        configuration.quantity.increment,
+      0,
+      `${product.id} quantity default must follow its increment`,
+    );
+  }
 });

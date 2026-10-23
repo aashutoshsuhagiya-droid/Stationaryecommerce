@@ -8,6 +8,12 @@ import {
 export const bulkPrintingOptions = ["full-colour", "single-colour", "not-sure"] as const;
 export const bulkFinishingOptions = ["matte", "gloss", "standard", "not-sure"] as const;
 
+const requestedDimensionsSchema = z
+  .string()
+  .trim()
+  .min(2, "Enter the required dimensions")
+  .max(120);
+
 function positiveInteger(value: string | undefined, fallback: number) {
   const parsed = Number(value);
   return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : fallback;
@@ -54,7 +60,9 @@ export const bulkRequestSchema = z
     email: z.string().trim().toLowerCase().email("Enter a valid email address").max(254),
     phone: indianPhoneSchema,
     productId: z.string().trim().min(1, "Select a catalog product").max(100),
-    dimensions: z.string().trim().min(2, "Enter the required dimensions").max(120),
+    customSizeRequested: z.boolean().default(false),
+    requestedDimensions: requestedDimensionsSchema.optional(),
+    dimensions: requestedDimensionsSchema.optional(),
     quantity: z
       .number()
       .int()
@@ -76,6 +84,24 @@ export const bulkRequestSchema = z
   })
   .strict()
   .superRefine((request, context) => {
+    if (!request.requestedDimensions && !request.dimensions) {
+      context.addIssue({
+        code: "custom",
+        path: ["requestedDimensions"],
+        message: "Enter the required dimensions",
+      });
+    } else if (
+      request.requestedDimensions &&
+      request.dimensions &&
+      request.requestedDimensions !== request.dimensions
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["requestedDimensions"],
+        message: "Submit one unambiguous set of requested dimensions",
+      });
+    }
+
     const personalizationQuantity = request.personalizationRows.reduce(
       (total, row) => total + row.quantity,
       0,
@@ -116,6 +142,10 @@ export const bulkRequestSchema = z
         }
       });
     }
-  });
+  })
+  .transform(({ dimensions, ...request }) => ({
+    ...request,
+    requestedDimensions: request.requestedDimensions ?? dimensions!,
+  }));
 
 export type BulkRequestInput = z.infer<typeof bulkRequestSchema>;

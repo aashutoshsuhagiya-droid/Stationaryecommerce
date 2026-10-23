@@ -8,6 +8,7 @@ export type MarketplacePaymentStatus =
 
 export interface AssignmentOrderLine {
   productId: string;
+  categoryId: string;
   quantity: number;
 }
 
@@ -33,6 +34,7 @@ export interface VendorEligibilitySnapshot {
   acceptingOrders: boolean;
   normalizedCity: string;
   servicePostalCodes: string[];
+  serviceCategoryIds: string[];
   activeOrderCount: number;
   maxConcurrentOrders: number;
   capabilities: VendorCapabilitySnapshot[];
@@ -121,8 +123,12 @@ export function isVendorEligibleForOrder(
   if (vendor.availabilityStatus !== "ONLINE" || !vendor.acceptingOrders) return false;
   if (vendor.activeOrderCount >= vendor.maxConcurrentOrders) return false;
 
+  if (normalizeServiceCity(order.city) !== vendor.normalizedCity) return false;
+
   const postalCodeMatches = vendor.servicePostalCodes.includes(order.postalCode);
   if (!postalCodeMatches) return false;
+
+  if (order.lines.some((line) => !vendor.serviceCategoryIds.includes(line.categoryId))) return false;
 
   const quantities = aggregateOrderQuantities(order.lines);
   for (const [productId, quantity] of quantities) {

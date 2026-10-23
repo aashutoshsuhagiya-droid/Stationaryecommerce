@@ -45,11 +45,67 @@ export function getFontFamilyString(family?: string): string {
       return "Georgia, 'Times New Roman', serif";
     case "clean":
     case "sans":
-      return "var(--font-sans, system-ui, -apple-system, sans-serif)";
+      return "system-ui, -apple-system, sans-serif";
     case "rounded":
     default:
       return "'Quicksand', 'Nunito', system-ui, -apple-system, sans-serif";
   }
+}
+
+export function wrapTextLines(
+  text: string,
+  maxWidth: number,
+  maxLines: number,
+  measureText: (value: string) => number,
+): string[] {
+  if (!text || maxWidth <= 0 || maxLines <= 0) return [];
+
+  const lines: string[] = [];
+  const pushLine = (line: string) => {
+    if (lines.length < maxLines) lines.push(line);
+    return lines.length >= maxLines;
+  };
+
+  for (const paragraph of text.replace(/\r\n?/g, "\n").split("\n")) {
+    const words = paragraph.trim().split(/\s+/u).filter(Boolean);
+    if (!words.length) {
+      if (pushLine("")) return lines;
+      continue;
+    }
+
+    let currentLine = "";
+    for (const word of words) {
+      const candidate = currentLine ? `${currentLine} ${word}` : word;
+      if (measureText(candidate) <= maxWidth) {
+        currentLine = candidate;
+        continue;
+      }
+
+      if (currentLine && pushLine(currentLine)) return lines;
+      currentLine = "";
+
+      if (measureText(word) <= maxWidth) {
+        currentLine = word;
+        continue;
+      }
+
+      let fragment = "";
+      for (const character of Array.from(word)) {
+        const nextFragment = `${fragment}${character}`;
+        if (fragment && measureText(nextFragment) > maxWidth) {
+          if (pushLine(fragment)) return lines;
+          fragment = character;
+        } else {
+          fragment = nextFragment;
+        }
+      }
+      currentLine = fragment;
+    }
+
+    if (currentLine && pushLine(currentLine)) return lines;
+  }
+
+  return lines;
 }
 
 export function renderLayerToContext(
@@ -105,9 +161,18 @@ export function renderLayerToContext(
     ctx.fillStyle = layer.color || "#17324d";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-
-    // Text wrapping or single line fitting
-    ctx.fillText(layer.text, 0, 0, renderW);
+    const lineHeight = fontSize * 1.2;
+    const maxLines = Math.max(1, Math.floor(renderH / lineHeight));
+    const lines = wrapTextLines(
+      layer.text,
+      renderW,
+      maxLines,
+      (value) => ctx.measureText(value).width,
+    );
+    const firstLineY = -((lines.length - 1) * lineHeight) / 2;
+    lines.forEach((line, index) => {
+      ctx.fillText(line, 0, firstLineY + index * lineHeight);
+    });
   }
 
   ctx.restore();
@@ -120,10 +185,14 @@ export function renderSurfaceToCanvas(
   surfaceDef: PrintableSurfaceDefinition,
   background: string,
   accent?: string,
-  resolutionMultiplier: number = 2,
+  resolution: number | { width: number; height: number } = 2,
 ): void {
-  const width = Math.round(surfaceDef.width * resolutionMultiplier);
-  const height = Math.round(surfaceDef.height * resolutionMultiplier);
+  const width = Math.max(1, Math.round(
+    typeof resolution === "number" ? surfaceDef.width * resolution : resolution.width,
+  ));
+  const height = Math.max(1, Math.round(
+    typeof resolution === "number" ? surfaceDef.height * resolution : resolution.height,
+  ));
 
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width;
@@ -139,24 +208,30 @@ export function renderSurfaceToCanvas(
   ctx.fillStyle = background || "#ffffff";
   ctx.fillRect(0, 0, width, height);
 
+  const scaleX = width / Math.max(1, surfaceDef.width);
+  const scaleY = height / Math.max(1, surfaceDef.height);
+  ctx.save();
+  ctx.scale(scaleX, scaleY);
+
   // Optional subtle decorative border / accent
   if (accent) {
     ctx.save();
     ctx.strokeStyle = accent;
-    ctx.lineWidth = 4 * resolutionMultiplier;
+    ctx.lineWidth = 4;
     ctx.strokeRect(
-      2 * resolutionMultiplier,
-      2 * resolutionMultiplier,
-      width - 4 * resolutionMultiplier,
-      height - 4 * resolutionMultiplier,
+      2,
+      2,
+      surfaceDef.width - 4,
+      surfaceDef.height - 4,
     );
     ctx.restore();
   }
 
   const surface = document.surfaces.find((s) => s.id === surfaceId) ?? document.surfaces[0];
-  if (!surface) return;
-
-  for (const layer of getArtworkLayersInRenderOrder(surface.layers)) {
-    renderLayerToContext(ctx, layer, resolutionMultiplier);
+  if (surface) {
+    for (const layer of getArtworkLayersInRenderOrder(surface.layers)) {
+      renderLayerToContext(ctx, layer);
+    }
   }
+  ctx.restore();
 }

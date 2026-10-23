@@ -11,13 +11,14 @@ import {
   planAssignmentOffers,
   type VendorEligibilitySnapshot,
 } from "./marketplace-assignment";
+import { capVendorOfferIds, resolveMaxVendorsPerOrder } from "./marketplace-settings-domain";
 
 const order: AssignmentOrderDemand = {
   orderId: "order-1",
   paymentStatus: "CAPTURED",
   city: "Ahmedabad",
   postalCode: "380015",
-  lines: [{ productId: "labels", quantity: 50 }],
+  lines: [{ productId: "labels", categoryId: "labels-category", quantity: 50 }],
 };
 
 function vendor(overrides: Partial<VendorEligibilitySnapshot> = {}): VendorEligibilitySnapshot {
@@ -29,6 +30,7 @@ function vendor(overrides: Partial<VendorEligibilitySnapshot> = {}): VendorEligi
     acceptingOrders: true,
     normalizedCity: "ahmedabad",
     servicePostalCodes: ["380015"],
+    serviceCategoryIds: ["labels-category"],
     activeOrderCount: 0,
     maxConcurrentOrders: 3,
     capabilities: [{ productId: "labels", isActive: true, maxOrderQuantity: 100 }],
@@ -38,7 +40,7 @@ function vendor(overrides: Partial<VendorEligibilitySnapshot> = {}): VendorEligi
 
 test("offers a captured order only to eligible vendors in its service area", () => {
   const eligible = vendor();
-  const otherCity = vendor({ id: "vendor-2", normalizedCity: "surat", servicePostalCodes: ["395007"] });
+  const otherCity = vendor({ id: "vendor-2", normalizedCity: "surat" });
   const unapproved = vendor({ id: "vendor-3", verificationStatus: "PENDING" });
   const offline = vendor({ id: "vendor-4", availabilityStatus: "OFFLINE" });
   const suspended = vendor({ id: "vendor-5", operationalStatus: "SUSPENDED" });
@@ -57,6 +59,20 @@ test("offers a captured order only to eligible vendors in its service area", () 
   }
 });
 
+test("requires both normalized city and every registered product category", () => {
+  const cityMismatch = vendor({ id: "vendor-city", normalizedCity: "surat" });
+  const categoryMismatch = vendor({ id: "vendor-category", serviceCategoryIds: ["notebooks-category"] });
+
+  const plan = planAssignmentOffers({
+    order,
+    vendors: [cityMismatch, categoryMismatch],
+    now: new Date("2026-10-23T00:00:00.000Z"),
+    offerWindowSeconds: 60,
+  });
+
+  assert.deepEqual(plan, { status: "UNASSIGNED", orderId: "order-1", reason: "NO_ELIGIBLE_VENDOR" });
+});
+
 test("requires every product capability and respects quantity and capacity", () => {
   const incapable = vendor({ capabilities: [] });
   const overQuantity = vendor({ capabilities: [{ productId: "labels", isActive: true, maxOrderQuantity: 10 }] });
@@ -70,6 +86,33 @@ test("requires every product capability and respects quantity and capacity", () 
   });
 
   assert.deepEqual(plan, { status: "UNASSIGNED", orderId: "order-1", reason: "NO_ELIGIBLE_VENDOR" });
+});
+
+test("database marketplace setting overrides the environment and caps the offer batch", () => {
+  const policy = resolveMaxVendorsPerOrder({
+    databaseValue: { maxVendorsPerOrder: 2 },
+    environmentValue: "9",
+  });
+
+  assert.deepEqual(policy, { maxVendorsPerOrder: 2, source: "database" });
+  assert.deepEqual(capVendorOfferIds(["vendor-a", "vendor-b", "vendor-c"], policy.maxVendorsPerOrder), [
+    "vendor-a",
+    "vendor-b",
+  ]);
+});
+
+test("marketplace offer cap falls back to the environment and then to ten", () => {
+  assert.deepEqual(resolveMaxVendorsPerOrder({ environmentValue: "6" }), {
+    maxVendorsPerOrder: 6,
+    source: "environment",
+  });
+  assert.deepEqual(resolveMaxVendorsPerOrder({}), {
+    maxVendorsPerOrder: 10,
+    source: "default",
+  });
+  assert.throws(() => resolveMaxVendorsPerOrder({ databaseValue: { maxVendorsPerOrder: 0 } }));
+  assert.throws(() => resolveMaxVendorsPerOrder({ databaseValue: { maxVendorsPerOrder: 101 } }));
+  assert.throws(() => resolveMaxVendorsPerOrder({ databaseValue: { maxVendorsPerOrder: 1.5 } }));
 });
 
 test("does not start assignment before authoritative payment capture", () => {
@@ -128,6 +171,21 @@ test("simultaneous acceptance produces exactly one winner", async () => {
   const rejection = results.find((result) => result.status === "rejected");
   assert.ok(rejection?.status === "rejected" && rejection.reason instanceof AssignmentError);
   assert.equal(rejection.reason.code, "ORDER_ALREADY_ASSIGNED");
+});
+
+test("a later acceptor is rejected after the first vendor wins", async () => {
+  const store = new AtomicMemoryClaimStore(
+    { "user-a": "vendor-a", "user-b": "vendor-b" },
+    new Date("2026-10-23T00:02:00.000Z"),
+  );
+  const acceptedAt = new Date("2026-10-23T00:01:00.000Z");
+
+  const winner = await acceptOrderOffer(store, { offerId: "offer-a", vendorUserId: "user-a", acceptedAt });
+  assert.equal(winner.outcome, "ACCEPTED");
+  await assert.rejects(
+    acceptOrderOffer(store, { offerId: "offer-b", vendorUserId: "user-b", acceptedAt }),
+    (error) => error instanceof AssignmentError && error.code === "ORDER_ALREADY_ASSIGNED",
+  );
 });
 
 test("repeated acceptance by the winner is idempotent", async () => {

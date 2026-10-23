@@ -7,7 +7,7 @@ import { Pool } from "pg";
 const connectionString = process.env.DATABASE_URL?.trim();
 if (!connectionString) throw new Error("DATABASE_URL is required to install marketplace database functions.");
 
-const migrationUrl = new URL("./migrations/20261023073000_add_vendor_assignment_marketplace/migration.sql", import.meta.url);
+const migrationUrl = new URL("./migrations/20261023113000_add_vendor_service_category_eligibility/migration.sql", import.meta.url);
 const migration = await readFile(migrationUrl, "utf8");
 const startMarker = "-- BEGIN MARKETPLACE_RUNTIME_SQL";
 const endMarker = "-- END MARKETPLACE_RUNTIME_SQL";
