@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, CircleUserRound, Headphones, Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
+import { CircleUserRound, Headphones, Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
+import { CategoryMegaMenu } from "@/components/layout/CategoryMegaMenu";
 import { useStore } from "@/components/store/StoreProvider";
 
 const navItems = [
@@ -66,7 +67,7 @@ export function Header() {
           </nav>
         </div>
         <div className="nav-row shell">
-          <Link href="/products" className="all-products-link"><span className="grid-dot-icon" aria-hidden="true">⠿</span> All products <ChevronDown size={15} /></Link>
+          <CategoryMegaMenu />
           <nav className="primary-nav" aria-label="Primary navigation">
             {navItems.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
           </nav>
