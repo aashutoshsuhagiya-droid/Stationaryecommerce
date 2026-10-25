@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 
 import { prepareAuthSession } from "./auth-session";
 import { normalizeServiceCity } from "./marketplace-assignment";

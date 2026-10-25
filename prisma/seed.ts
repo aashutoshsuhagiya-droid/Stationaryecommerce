@@ -1,6 +1,6 @@
 import "./load-env";
 
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 import { categories, designTemplates, products } from "../src/lib/data";
