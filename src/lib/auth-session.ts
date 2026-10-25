@@ -89,8 +89,8 @@ async function actorForToken(token?: string) {
   });
   if (!session || session.revokedAt || session.expiresAt <= new Date() || session.user.status !== "ACTIVE") return null;
 
-  const roles = session.user.roles.map(({ role }) => role.key);
-  const permissions = [...new Set(session.user.roles.flatMap(({ role }) => role.permissions.map(({ permission }) => permission.key)))];
+  const roles = session.user.roles.map(({ role }: { role: { key: string } }) => role.key);
+  const permissions = [...new Set(session.user.roles.flatMap(({ role }: { role: { key: string; permissions: { permission: { key: string } }[] } }) => role.permissions.map(({ permission }: { permission: { key: string } }) => permission.key)))];
   return {
     sessionId: session.id,
     userId: session.user.id,
