@@ -7,6 +7,7 @@
   --vendor-large-radius: var(--radius-large);
   display: flex;
   min-height: 100svh;
+  overflow-x: clip;
   background: var(--vendor-surface-muted);
   color: var(--text-body);
 }
@@ -2056,7 +2057,19 @@
   .topbar {
     position: relative;
     min-height: 66px;
-    padding: 0 18px;
+    gap: 12px;
+    padding: 0 14px;
+  }
+
+  .topbar > div:first-child {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .topbar > div:first-child strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .page {

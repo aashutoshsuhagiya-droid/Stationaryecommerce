@@ -17,6 +17,7 @@
   --white: var(--surface-main);
   display: flex;
   min-height: 100svh;
+  overflow-x: clip;
   background: var(--canvas);
   color: var(--ink);
   font-family: inherit;
@@ -256,6 +257,8 @@
 .globalSearch {
   position: relative;
   width: min(390px, 35vw);
+  min-width: 0;
+  flex-shrink: 1;
   margin-left: auto;
 }
 
@@ -759,6 +762,7 @@
 
 .table {
   width: 100%;
+  min-width: 620px;
   border-collapse: collapse;
   white-space: nowrap;
 }
@@ -1165,8 +1169,9 @@
 
 .catalogSummary {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 18px;
+  gap: 10px 18px;
   padding: 14px 16px;
   border-bottom: 1px solid var(--line);
   background: var(--surface-alt);
@@ -1584,7 +1589,9 @@
 
 @media (max-width: 700px) {
   .topbar { min-height: 64px; gap: 9px; padding: 0 13px; }
-  .topbarTitle, .globalSearch, .profileCopy, .profileButton svg { display: none; }
+  .topbarTitle { min-width: 0; flex: 1; }
+  .topbarTitle strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .topbarTitle span, .globalSearch, .profileCopy, .profileButton svg { display: none; }
   .topActions { margin-left: auto; }
   .pageArea { padding: 22px 13px 35px; }
   .pageHeader { align-items: flex-start; flex-direction: column; margin-bottom: 19px; }
@@ -1635,7 +1642,9 @@
 /* Phones sometimes expose a wider CSS viewport; keep the admin toolbar in its compact touch layout through 780px. */
 @media (hover: none) and (max-width: 780px) {
   .topbar { min-height: 64px; gap: 9px; padding: 0 13px; }
-  .topbarTitle, .globalSearch, .profileCopy, .profileButton svg { display: none; }
+  .topbarTitle { min-width: 0; flex: 1; }
+  .topbarTitle strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .topbarTitle span, .globalSearch, .profileCopy, .profileButton svg { display: none; }
   .topActions { margin-left: auto; }
   .pageArea { padding: 22px 13px 35px; }
   .pageHeader { align-items: flex-start; flex-direction: column; margin-bottom: 19px; }
@@ -1651,8 +1660,9 @@
   .settingsTab { width: auto; flex: 0 0 auto; }
 }
 .demoDot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); }
-.demoBanner { margin: 0 0 18px; padding: 10px 14px; display: flex; align-items: center; gap: 9px; border: 1px solid var(--warning-border); border-radius: 9px; color: var(--warning); background: var(--warning-bg); font-size: 11px; }
+.demoBanner { margin: 0 0 18px; padding: 10px 14px; min-width: 0; display: flex; align-items: center; gap: 9px; border: 1px solid var(--warning-border); border-radius: 9px; color: var(--warning); background: var(--warning-bg); font-size: 11px; }
 .demoBanner strong { flex: 0 0 auto; color: var(--warning); }
+.demoBanner span { min-width: 0; flex: 1; overflow-wrap: anywhere; }
 
 .buttonPrimary:disabled,
 .buttonSecondary:disabled,
