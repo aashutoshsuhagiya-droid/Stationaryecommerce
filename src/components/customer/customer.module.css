@@ -1,7 +1,36 @@
 .page {
+  --ink: var(--text-heading, #171717);
+  --slate: var(--text-secondary, #737373);
+  --muted: var(--text-muted, #8a8a8a);
+  --line: var(--border-default, #e5e5e5);
+  --soft-line: var(--border-default, #e5e5e5);
+  --paper: var(--surface-main, #fff);
+  --cloud: var(--surface-subtle, #f2f2f2);
+  --off-white: var(--surface-alt, #f7f7f7);
+  --teal: var(--button-primary, #262626);
+  --teal-dark: var(--button-primary-hover, #404040);
+  --shadow-sm: none;
+  --shadow-md: none;
   min-height: 65vh;
   color: var(--ink);
   background: var(--off-white);
+}
+
+.authPage,
+.confirmationHero,
+.confirmationWrap {
+  --ink: var(--text-heading, #171717);
+  --slate: var(--text-secondary, #737373);
+  --muted: var(--text-muted, #8a8a8a);
+  --line: var(--border-default, #e5e5e5);
+  --soft-line: var(--border-default, #e5e5e5);
+  --paper: var(--surface-main, #fff);
+  --cloud: var(--surface-subtle, #f2f2f2);
+  --off-white: var(--surface-alt, #f7f7f7);
+  --teal: var(--button-primary, #262626);
+  --teal-dark: var(--button-primary-hover, #404040);
+  --shadow-sm: none;
+  --shadow-md: none;
 }
 
 .container {
@@ -26,21 +55,21 @@
   overflow: hidden;
   isolation: isolate;
   padding: 88px 20px;
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--off-white);
+  color: var(--ink);
   text-align: center;
 }
-.pageHero::before, .pageHero::after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.1); border-radius: 999px; z-index: -1; }
+.pageHero::before, .pageHero::after { display: none; }
 .pageHero::before { width: 420px; height: 420px; left: -180px; top: -270px; }
 .pageHero::after { width: 320px; height: 320px; right: -120px; bottom: -240px; }
 .pageHeroCompact { padding: 62px 20px; }
-.heroGlow { position: absolute; inset: auto 50% -220px auto; transform: translateX(50%); width: 560px; height: 320px; border-radius: 50%; background: color-mix(in srgb, var(--teal) 23%, transparent); filter: blur(70px); z-index: -1; }
+.heroGlow { display: none; }
 .heroInner { width: min(790px, 100%); margin: 0 auto; }
 .eyebrow { margin: 0 0 12px; color: var(--teal); font-size: 12px; line-height: 1.2; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
-.pageHero .eyebrow { color: var(--paper); }
+.pageHero .eyebrow { color: var(--slate); }
 .pageHero h1 { margin: 0; font-size: clamp(36px, 5vw, 60px); line-height: 1.08; letter-spacing: -.04em; }
 .pageHeroCompact h1 { font-size: clamp(34px, 4.2vw, 50px); }
-.heroDescription { max-width: 670px; margin: 20px auto 0; color: var(--line); font-size: clamp(16px, 1.8vw, 19px); line-height: 1.7; }
+.heroDescription { max-width: 670px; margin: 20px auto 0; color: var(--slate); font-size: clamp(16px, 1.8vw, 19px); line-height: 1.7; }
 .heroActions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 
 .primaryButton, .secondaryButton, .submitButton, .cardButton {
@@ -58,16 +87,16 @@
   cursor: pointer;
   transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
 }
-.primaryButton, .submitButton { color: var(--paper); background: var(--teal); box-shadow: var(--shadow-sm); }
+.primaryButton, .submitButton { color: var(--paper); background: var(--teal); }
 .primaryButton:hover, .submitButton:hover { background: var(--teal-dark); transform: translateY(-1px); }
 .submitButton:disabled { opacity: .7; cursor: wait; transform: none; }
 .secondaryButton { color: var(--ink); background: var(--paper); border-color: var(--line); }
 .secondaryButton:hover { border-color: var(--teal); color: var(--teal-dark); }
-.pageHero .secondaryButton { color: var(--paper); background: transparent; border-color: rgba(255,255,255,.35); }
-.pageHero .secondaryButton:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.65); }
+.pageHero .secondaryButton { color: var(--ink); background: var(--paper); border-color: var(--border-strong, #d4d4d4); }
+.pageHero .secondaryButton:hover { background: var(--button-secondary-hover, #f5f5f5); border-color: var(--border-strong, #d4d4d4); }
 .primaryButton svg, .submitButton svg, .cardButton svg { width: 17px; height: 17px; }
 .submitButton { width: 100%; }
-.primaryButton:focus-visible, .secondaryButton:focus-visible, .submitButton:focus-visible, .cardButton:focus-visible { outline: 3px solid color-mix(in srgb, var(--teal) 35%, transparent); outline-offset: 3px; }
+.primaryButton:focus-visible, .secondaryButton:focus-visible, .submitButton:focus-visible, .cardButton:focus-visible { outline: 2px solid var(--border-focus, #525252); outline-offset: 3px; }
 
 .section { padding: 96px 0; }
 .sectionSoft { padding: 96px 0; background: var(--cloud); }
@@ -86,16 +115,16 @@
 .assuranceItem strong { color: var(--ink); font-size: 14px; }
 .assuranceItem small { margin-top: 4px; color: var(--slate); font-size: 12px; }
 
-.authPage { min-height: calc(100vh - 100px); display: grid; place-items: center; padding: 58px 20px; background: linear-gradient(135deg, var(--cloud) 0%, var(--off-white) 50%, var(--paper) 100%); }
+.authPage { min-height: calc(100vh - 100px); display: grid; place-items: center; padding: 58px 20px; background: var(--off-white); }
 .authShell { width: min(1040px, 100%); display: grid; grid-template-columns: .9fr 1.1fr; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: var(--paper); box-shadow: var(--shadow-md); }
 .authAside { position: relative; overflow: hidden; padding: 52px 46px; color: var(--line); background: var(--ink); }
-.authAside::after { content: ""; position: absolute; width: 300px; height: 300px; border-radius: 50%; background: color-mix(in srgb, var(--teal) 22%, transparent); right: -180px; bottom: -190px; filter: blur(18px); }
+.authAside::after { display: none; }
 .authAside h2 { margin: 0; color: var(--paper); font-size: 36px; line-height: 1.15; letter-spacing: -.035em; }
 .authAside > p:not(.eyebrow):not(.authPrivacy) { margin: 18px 0 28px; color: var(--line); line-height: 1.7; }
-.authIllustration { height: 150px; position: relative; margin-bottom: 32px; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; background: linear-gradient(145deg, rgba(255,255,255,.06), color-mix(in srgb, var(--teal) 14%, transparent)); }
+.authIllustration { height: 150px; position: relative; margin-bottom: 32px; border: 1px solid var(--border-focus, #525252); border-radius: 16px; background: var(--text-body, #404040); }
 .authIllustration > span { position: absolute; display: grid; place-items: center; height: 42px; padding: 0 24px; border-radius: 9px; font-size: 13px; font-weight: 800; letter-spacing: .16em; box-shadow: var(--shadow-md); }
-.miniLabelOne { top: 32px; left: 30px; color: var(--ink); background: var(--line); transform: rotate(-5deg); }
-.miniLabelTwo { right: 28px; bottom: 28px; color: var(--paper); background: var(--teal); transform: rotate(6deg); }
+.miniLabelOne { top: 32px; left: 30px; color: var(--ink); background: var(--line); }
+.miniLabelTwo { right: 28px; bottom: 28px; color: var(--paper); background: var(--teal); }
 .authIllustration svg { position: absolute; right: 34px; top: 25px; width: 24px; color: var(--muted); }
 .checkList { list-style: none; padding: 0; margin: 0; display: grid; gap: 15px; }
 .checkList li { display: flex; gap: 10px; align-items: flex-start; color: var(--soft-line); font-size: 14px; }
@@ -121,7 +150,7 @@
   transition: border-color .18s ease, box-shadow .18s ease;
 }
 .field textarea { min-height: 132px; padding-block: 13px; resize: vertical; }
-.field input:focus, .field select:focus, .field textarea:focus, .plainInput:focus { border-color: var(--teal); box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal) 13%, transparent); }
+.field input:focus, .field select:focus, .field textarea:focus, .plainInput:focus { border-color: var(--border-focus, #525252); box-shadow: none; }
 .field input::placeholder, .field textarea::placeholder { color: var(--muted); }
 .inputWithIcon { position: relative; }
 .inputWithIcon > svg:first-child { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--muted); pointer-events: none; }
@@ -257,7 +286,7 @@ a.contactMethod:hover { border-color: var(--teal); box-shadow: var(--shadow-sm);
 .orderLabel { display: block; color: var(--muted); font-size: 10px; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
 .orderValue { display: block; margin-top: 4px; color: var(--ink); font-size: 12px; font-weight: 750; }
 .orderCardBody { display: grid; grid-template-columns: 70px 1fr auto; gap: 17px; align-items: center; padding: 20px; }
-.orderThumb { width: 70px; aspect-ratio: 1; display: grid; place-items: center; color: var(--ink); border-radius: 11px; background: linear-gradient(145deg, var(--soft-line), var(--line)); font-size: 9px; font-weight: 850; letter-spacing: .12em; }
+.orderThumb { width: 70px; aspect-ratio: 1; display: grid; place-items: center; color: var(--ink); border: 1px solid var(--line); border-radius: 11px; background: var(--cloud); font-size: 9px; font-weight: 850; letter-spacing: .12em; }
 .orderProduct h2 { margin: 0; color: var(--ink); font-size: 15px; }
 .orderProduct p { margin: 6px 0 0; color: var(--slate); font-size: 12px; }
 .orderActions { display: flex; gap: 8px; }
@@ -292,16 +321,16 @@ a.contactMethod:hover { border-color: var(--teal); box-shadow: var(--shadow-sm);
 .wishlistCard { overflow: hidden; border: 1px solid var(--line); border-radius: 15px; background: var(--paper); transition: transform .2s ease, box-shadow .2s ease; }
 .wishlistCard:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
 .wishlistVisual { min-height: 225px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; color: var(--ink); }
-.wishlistVisual::before, .wishlistVisual::after { content: ""; position: absolute; border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent); border-radius: 50%; }
+.wishlistVisual::before, .wishlistVisual::after { display: none; }
 .wishlistVisual::before { width: 190px; height: 190px; left: -80px; top: -100px; }
 .wishlistVisual::after { width: 160px; height: 160px; right: -70px; bottom: -90px; }
 .wishlistVisual.mint { background: var(--soft-line); }
 .wishlistVisual.amber { background: var(--line); }
 .wishlistVisual.blue { background: var(--cloud); }
 .wishlistVisual > svg { position: absolute; top: 25px; left: 25px; width: 20px; color: var(--teal); }
-.wishlistVisual > span { min-width: 165px; padding: 14px 22px; border-radius: 10px; background: rgba(255,255,255,.82); box-shadow: var(--shadow-md); font-size: 16px; font-weight: 850; letter-spacing: .17em; text-align: center; transform: rotate(-3deg); }
+.wishlistVisual > span { min-width: 165px; padding: 14px 22px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); font-size: 16px; font-weight: 850; letter-spacing: .17em; text-align: center; }
 .wishlistVisual > small { margin-top: 12px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
-.wishlistRemove { position: absolute; right: 14px; top: 14px; width: 48px; height: 48px; display: grid; place-items: center; color: var(--slate); border: 1px solid color-mix(in srgb, var(--paper) 70%, var(--line)); border-radius: 50%; background: color-mix(in srgb, var(--paper) 82%, transparent); cursor: pointer; }
+.wishlistRemove { position: absolute; right: 14px; top: 14px; width: 48px; height: 48px; display: grid; place-items: center; color: var(--slate); border: 1px solid var(--line); border-radius: 50%; background: var(--paper); cursor: pointer; }
 .wishlistRemove:hover { color: var(--teal-dark); border-color: var(--teal); background: var(--paper); }
 .wishlistRemove svg { width: 16px; height: 16px; }
 .wishlistBody { padding: 20px; }
@@ -354,12 +383,12 @@ a.contactMethod:hover { border-color: var(--teal); box-shadow: var(--shadow-sm);
 .aboutIntro h2 { margin: 0; color: var(--ink); font-size: clamp(30px, 4vw, 44px); line-height: 1.14; letter-spacing: -.04em; }
 .aboutIntro p { color: var(--slate); line-height: 1.8; }
 .aboutVisual { min-height: 390px; position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 20px; background: var(--cloud); }
-.aboutVisual::before { content: ""; position: absolute; inset: 11% 15%; border: 1px solid var(--line); border-radius: 50%; }
+.aboutVisual::before { display: none; }
 .aboutCard { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 14px; box-shadow: var(--shadow-md); }
 .aboutCard span { font-weight: 850; letter-spacing: .14em; }
 .aboutCard small { margin-top: 5px; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; }
-.aboutCardOne { width: 210px; height: 120px; top: 70px; left: 65px; color: var(--ink); background: var(--line); transform: rotate(-6deg); }
-.aboutCardTwo { width: 205px; height: 110px; right: 54px; bottom: 61px; color: var(--paper); background: var(--teal); transform: rotate(5deg); }
+.aboutCardOne { width: 210px; height: 120px; top: 70px; left: 65px; color: var(--ink); background: var(--line); }
+.aboutCardTwo { width: 205px; height: 110px; right: 54px; bottom: 61px; color: var(--paper); background: var(--teal); }
 .aboutVisual > svg { position: absolute; right: 45px; top: 45px; color: var(--ink); }
 .valueGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .valueCard { padding: 25px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }

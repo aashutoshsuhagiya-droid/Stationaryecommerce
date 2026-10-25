@@ -32,7 +32,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: var(--teal-dark);
+  color: var(--text-body);
   font-size: 13px;
   font-weight: 800;
 }
@@ -62,14 +62,13 @@
   padding: 20px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: rgba(255, 255, 255, .98);
-  box-shadow: var(--shadow-md);
+  background: var(--surface-main);
   animation: idle-card-in 180ms ease both;
 }
 
 .idleCard > svg {
   width: 20px;
-  color: var(--teal);
+  color: var(--text-body);
 }
 
 .idleCard h2 {
@@ -90,7 +89,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: var(--teal-dark);
+  color: var(--text-body);
   font-size: 13px;
   font-weight: 800;
 }
@@ -112,7 +111,7 @@
   cursor: pointer;
 }
 
-.dismiss:hover { color: var(--ink); background: var(--cloud); }
+.dismiss:hover { color: var(--text-heading); background: var(--surface-hover); }
 .dismiss svg { width: 17px; }
 
 @keyframes idle-card-in {

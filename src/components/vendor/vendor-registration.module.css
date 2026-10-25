@@ -1,7 +1,7 @@
 .page {
   min-height: 100vh;
-  color: #202b38;
-  background: #f4f7f8;
+  color: #404040;
+  background: #f7f7f7;
 }
 
 .hero {
@@ -9,18 +9,12 @@
   isolation: isolate;
   overflow: hidden;
   color: #fff;
-  background:
-    radial-gradient(circle at 82% 18%, rgba(215, 220, 226, .18), transparent 30%),
-    linear-gradient(135deg, #15181c 0%, #2b3038 72%, #3d434c 100%);
+  background: #171717;
 }
 
 .hero::before,
 .hero::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  border: 1px solid rgba(255, 255, 255, .09);
-  border-radius: 50%;
+  display: none;
 }
 
 .hero::before {
@@ -54,7 +48,7 @@
 
 .eyebrow {
   margin: 0 0 13px;
-  color: #2b3038;
+  color: #404040;
   font-size: 12px;
   line-height: 1.3;
   font-weight: 850;
@@ -63,7 +57,7 @@
 }
 
 .hero .eyebrow {
-  color: #85e2d7;
+  color: #d4d4d4;
 }
 
 .heroCopy h1 {
@@ -77,7 +71,7 @@
 .heroCopy > p:not(.eyebrow) {
   max-width: 650px;
   margin: 22px 0 0;
-  color: #d0dde5;
+  color: #d4d4d4;
   font-size: 17px;
   line-height: 1.72;
 }
@@ -89,17 +83,16 @@
   display: flex;
   align-items: center;
   gap: 13px;
-  border: 1px solid rgba(255, 255, 255, .16);
+  border: 1px solid #525252;
   border-radius: 15px;
-  background: rgba(255, 255, 255, .08);
-  backdrop-filter: blur(12px);
+  background: #262626;
 }
 
 .heroBadge > svg {
   width: 25px;
   height: 25px;
   flex: 0 0 25px;
-  color: #7be0d4;
+  color: #f2f2f2;
 }
 
 .heroBadge span,
@@ -115,7 +108,7 @@
 
 .heroBadge small {
   margin-top: 5px;
-  color: #bfd0da;
+  color: #d4d4d4;
   font-size: 11px;
   line-height: 1.45;
 }
@@ -138,7 +131,7 @@
 
 .applicationGuide h2 {
   margin: 0;
-  color: #1a1d21;
+  color: #171717;
   font-size: 27px;
   line-height: 1.2;
   letter-spacing: -.035em;
@@ -166,7 +159,7 @@
   left: 20px;
   top: 43px;
   bottom: 3px;
-  background: #cad8de;
+  background: #d4d4d4;
 }
 
 .stepIcon {
@@ -176,10 +169,10 @@
   height: 42px;
   display: grid;
   place-items: center;
-  color: #10776d;
-  border: 1px solid #b8dcd7;
+  color: #171717;
+  border: 1px solid #d4d4d4;
   border-radius: 12px;
-  background: #e8f6f3;
+  background: #f2f2f2;
 }
 
 .stepIcon svg {
@@ -194,7 +187,7 @@
 
 .applicationGuide li small {
   margin: 1px 0 3px;
-  color: #2b3038;
+  color: #404040;
   font-size: 10px;
   font-weight: 850;
   letter-spacing: .09em;
@@ -202,13 +195,13 @@
 }
 
 .applicationGuide li strong {
-  color: #26384a;
+  color: #171717;
   font-size: 14px;
 }
 
 .applicationGuide li p {
   margin: 6px 0 0;
-  color: #64748b;
+  color: #737373;
   font-size: 12px;
   line-height: 1.58;
 }
@@ -216,14 +209,14 @@
 .guideNote {
   margin-top: 5px;
   padding: 17px 18px;
-  color: #526174;
-  border: 1px solid #dbe5e9;
+  color: #737373;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
   background: #fff;
 }
 
 .guideNote strong {
-  color: #1a1d21;
+  color: #171717;
   font-size: 13px;
 }
 
@@ -236,20 +229,19 @@
 .formCard {
   min-width: 0;
   overflow: hidden;
-  border: 1px solid #dce5ea;
+  border: 1px solid #e5e5e5;
   border-radius: 20px;
   background: #fff;
-  box-shadow: 0 22px 58px rgba(23, 50, 77, .09);
 }
 
 .formHeading {
   padding: 38px 42px 31px;
-  border-bottom: 1px solid #e5ebef;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .formHeading h2 {
   margin: 0;
-  color: #1a1d21;
+  color: #171717;
   font-size: 31px;
   line-height: 1.15;
   letter-spacing: -.037em;
@@ -257,7 +249,7 @@
 
 .formHeading > p:not(.eyebrow) {
   margin: 10px 0 0;
-  color: #64748b;
+  color: #737373;
   font-size: 13px;
 }
 
@@ -318,7 +310,7 @@
   margin: 0;
   padding: 38px 0;
   border: 0;
-  border-bottom: 1px solid #e6ecef;
+  border-bottom: 1px solid #eee;
 }
 
 .section legend {
@@ -327,7 +319,7 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  color: #1a1d21;
+  color: #171717;
 }
 
 .section legend > span {
@@ -337,7 +329,7 @@
   place-items: center;
   border-radius: 9px;
   color: #fff;
-  background: #1a1d21;
+  background: #262626;
   font-size: 10px;
   font-weight: 850;
   letter-spacing: .03em;
@@ -350,7 +342,7 @@
 
 .sectionDescription {
   margin: 9px 0 25px 42px;
-  color: #64748b;
+  color: #737373;
   font-size: 12px;
   line-height: 1.55;
 }
@@ -373,14 +365,14 @@
 }
 
 .field label {
-  color: #2a3c4f;
+  color: #404040;
   font-size: 12px;
   font-weight: 780;
 }
 
 .field label small {
   margin-left: 4px;
-  color: #7a8998;
+  color: #8a8a8a;
   font-size: 10px;
   font-weight: 650;
 }
@@ -390,8 +382,8 @@
   width: 100%;
   min-height: 47px;
   padding: 0 13px;
-  color: #202b38;
-  border: 1px solid #cdd8e0;
+  color: #404040;
+  border: 1px solid #d4d4d4;
   border-radius: 9px;
   outline: 0;
   background: #fff;
@@ -405,13 +397,13 @@
 }
 
 .field input::placeholder {
-  color: #98a5b1;
+  color: #8a8a8a;
 }
 
 .field input:focus,
 .field select:focus {
-  border-color: #2b3038;
-  box-shadow: 0 0 0 3px rgba(43, 48, 56, .12);
+  border-color: #525252;
+  box-shadow: 0 0 0 3px #eee;
 }
 
 .field input[aria-invalid="true"],
@@ -421,7 +413,7 @@
 }
 
 .hint {
-  color: #728195;
+  color: #737373;
   font-size: 10px;
   line-height: 1.45;
 }
@@ -446,11 +438,11 @@
   min-width: 47px;
   display: grid;
   place-items: center;
-  color: #526174;
-  border: 1px solid #cdd8e0;
+  color: #737373;
+  border: 1px solid #d4d4d4;
   border-right: 0;
   border-radius: 9px 0 0 9px;
-  background: #f5f8fa;
+  background: #f2f2f2;
   font-size: 11px;
   font-weight: 750;
 }
@@ -469,14 +461,14 @@
   color: #fff;
   border: 0;
   border-radius: 0 9px 9px 0;
-  background: #2b3038;
+  background: #262626;
   font-size: 11px;
   font-weight: 800;
   cursor: pointer;
 }
 
 .mobileField button:hover:not(:disabled) {
-  background: #10776d;
+  background: #404040;
 }
 
 .mobileField button:disabled {
@@ -496,9 +488,9 @@
   grid-template-columns: minmax(170px, 250px) auto 1fr;
   align-items: end;
   gap: 11px;
-  border: 1px solid #cfe1e3;
+  border: 1px solid #e5e5e5;
   border-radius: 11px;
-  background: #f5faf9;
+  background: #f7f7f7;
 }
 
 .otpPanel input {
@@ -514,8 +506,8 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  color: #1a1d21;
-  border: 1px solid #cbd7df;
+  color: #171717;
+  border: 1px solid #d4d4d4;
   border-radius: 8px;
   background: #fff;
   font: inherit;
@@ -526,8 +518,8 @@
 
 .secondaryButton:hover:not(:disabled),
 .addDocument:hover:not(:disabled) {
-  color: #10776d;
-  border-color: #70bcb3;
+  color: #171717;
+  border-color: #525252;
 }
 
 .secondaryButton:disabled,
@@ -545,16 +537,16 @@
 .developmentCode {
   align-self: center;
   margin: 0;
-  color: #596b78;
+  color: #737373;
   font-size: 10px;
 }
 
 .developmentCode code {
   margin-left: 3px;
   padding: 3px 6px;
-  color: #1a1d21;
+  color: #171717;
   border-radius: 5px;
-  background: #e5efef;
+  background: #f2f2f2;
   font-size: 11px;
   font-weight: 850;
   letter-spacing: .1em;
@@ -599,8 +591,8 @@
   grid-template-columns: 20px 1fr;
   align-items: start;
   gap: 10px;
-  color: #526174;
-  border: 1px solid #dbe3e9;
+  color: #737373;
+  border: 1px solid #e5e5e5;
   border-radius: 11px;
   background: #fff;
   cursor: pointer;
@@ -608,13 +600,13 @@
 }
 
 .choiceCard:hover {
-  border-color: #86c8c0;
+  border-color: #525252;
 }
 
 .choiceCardSelected {
-  border-color: #2b3038;
-  background: #f4f5f7;
-  box-shadow: inset 0 0 0 1px #2b3038;
+  border-color: #525252;
+  background: #f2f2f2;
+  box-shadow: inset 0 0 0 1px #525252;
 }
 
 .choiceCard > input {
@@ -625,7 +617,7 @@
 }
 
 .choiceCard:has(input:focus-visible) {
-  outline: 3px solid rgba(22, 140, 128, .2);
+  outline: 3px solid #d4d4d4;
   outline-offset: 2px;
 }
 
@@ -635,15 +627,15 @@
   display: grid;
   place-items: center;
   color: transparent;
-  border: 1px solid #aebcc7;
+  border: 1px solid #d4d4d4;
   border-radius: 6px;
   background: #fff;
 }
 
 .choiceCardSelected .checkMark {
   color: #fff;
-  border-color: #2b3038;
-  background: #2b3038;
+  border-color: #262626;
+  background: #262626;
 }
 
 .checkMark svg {
@@ -658,14 +650,14 @@
 }
 
 .choiceCard strong {
-  color: #26384a;
+  color: #171717;
   font-size: 12px;
   line-height: 1.35;
 }
 
 .choiceCard small {
   margin-top: 5px;
-  color: #718096;
+  color: #737373;
   font-size: 10px;
   line-height: 1.45;
 }
@@ -679,21 +671,21 @@
 .capabilityGroup {
   min-width: 0;
   padding: 20px;
-  border: 1px solid #dfe6eb;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
-  background: #f9fbfc;
+  background: #f7f7f7;
 }
 
 .capabilityGroup legend {
   margin: 0;
-  color: #26384a;
+  color: #171717;
   font-size: 14px;
   font-weight: 800;
 }
 
 .capabilityGroup > p {
   margin: 5px 0 14px;
-  color: #718096;
+  color: #737373;
   font-size: 10px;
 }
 
@@ -709,8 +701,8 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #425466;
-  border: 1px solid #e1e7eb;
+  color: #404040;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
   background: #fff;
   font-size: 11px;
@@ -718,9 +710,9 @@
 }
 
 .checkList label:has(input:checked) {
-  color: #155f57;
-  border-color: #9bd1ca;
-  background: #edf9f7;
+  color: #171717;
+  border-color: #525252;
+  background: #f2f2f2;
 }
 
 .checkList input {
@@ -731,7 +723,7 @@
 }
 
 .checkList label:has(input:focus-visible) {
-  outline: 3px solid rgba(22, 140, 128, .2);
+  outline: 3px solid #d4d4d4;
   outline-offset: 2px;
 }
 
@@ -742,15 +734,15 @@
   display: grid;
   place-items: center;
   color: transparent;
-  border: 1px solid #afbdc8;
+  border: 1px solid #d4d4d4;
   border-radius: 5px;
   background: #fff;
 }
 
 .checkList label:has(input:checked) > span {
   color: #fff;
-  border-color: #2b3038;
-  background: #2b3038;
+  border-color: #262626;
+  background: #262626;
 }
 
 .checkList svg {
@@ -762,9 +754,9 @@
 .documentArea {
   margin-top: 25px;
   padding: 20px;
-  border: 1px solid #dfe6eb;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
-  background: #f8fafb;
+  background: #f7f7f7;
 }
 
 .documentHeading {
@@ -777,13 +769,13 @@
 
 .documentHeading h3 {
   margin: 0;
-  color: #26384a;
+  color: #171717;
   font-size: 14px;
 }
 
 .documentHeading p {
   margin: 5px 0 0;
-  color: #718096;
+  color: #737373;
   font-size: 10px;
   line-height: 1.5;
 }
@@ -791,7 +783,7 @@
 .documentHeading > svg {
   width: 22px;
   height: 22px;
-  color: #2b3038;
+  color: #404040;
 }
 
 .documentList {
@@ -806,7 +798,7 @@
   grid-template-columns: 27px minmax(150px, .75fr) minmax(190px, 1.25fr) 35px;
   align-items: end;
   gap: 11px;
-  border: 1px solid #e0e6ea;
+  border: 1px solid #e5e5e5;
   border-radius: 10px;
   background: #fff;
 }
@@ -817,9 +809,9 @@
   align-self: center;
   display: grid;
   place-items: center;
-  color: #10776d;
+  color: #171717;
   border-radius: 8px;
-  background: #e8f6f3;
+  background: #f2f2f2;
   font-size: 10px;
   font-weight: 850;
 }
@@ -834,10 +826,10 @@
   height: 29px;
   margin-right: 8px;
   padding: 0 9px;
-  color: #1a1d21;
+  color: #171717;
   border: 0;
   border-radius: 6px;
-  background: #edf2f4;
+  background: #f2f2f2;
   font: inherit;
   font-weight: 750;
   cursor: pointer;
@@ -849,17 +841,17 @@
   margin-bottom: 4px;
   display: grid;
   place-items: center;
-  color: #788795;
-  border: 1px solid #d6dee4;
+  color: #737373;
+  border: 1px solid #d4d4d4;
   border-radius: 8px;
   background: #fff;
   cursor: pointer;
 }
 
 .removeDocument:hover {
-  color: #a23d47;
-  border-color: #ddaeb3;
-  background: #fff6f7;
+  color: #171717;
+  border-color: #525252;
+  background: #f2f2f2;
 }
 
 .removeDocument svg {
@@ -887,7 +879,7 @@
   top: 6px;
   display: grid;
   place-items: center;
-  color: #64748b;
+  color: #737373;
   border: 0;
   border-radius: 7px;
   background: transparent;
@@ -895,8 +887,8 @@
 }
 
 .passwordField button:hover {
-  color: #1a1d21;
-  background: #edf2f4;
+  color: #171717;
+  background: #f2f2f2;
 }
 
 .passwordField svg {
@@ -909,7 +901,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  color: #526174;
+  color: #737373;
   font-size: 11px;
   line-height: 1.65;
   cursor: pointer;
@@ -920,11 +912,11 @@
   height: 17px;
   flex: 0 0 17px;
   margin-top: 1px;
-  accent-color: #2b3038;
+  accent-color: #262626;
 }
 
 .termsRow a {
-  color: #10776d;
+  color: #404040;
   font-weight: 800;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -948,7 +940,7 @@
   width: 22px;
   height: 22px;
   flex: 0 0 22px;
-  color: #2b3038;
+  color: #404040;
 }
 
 .submitArea span,
@@ -958,13 +950,13 @@
 }
 
 .submitArea strong {
-  color: #26384a;
+  color: #171717;
   font-size: 11px;
 }
 
 .submitArea small {
   margin-top: 3px;
-  color: #718096;
+  color: #737373;
   font-size: 9px;
 }
 
@@ -979,19 +971,16 @@
   color: #fff;
   border: 0;
   border-radius: 10px;
-  background: #2b3038;
-  box-shadow: 0 9px 23px rgba(20, 24, 30, .18);
+  background: #262626;
   font: inherit;
   font-size: 12px;
   font-weight: 850;
   cursor: pointer;
-  transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+  transition: background .18s ease;
 }
 
 .submitButton:hover:not(:disabled) {
-  transform: translateY(-1px);
-  background: #10776d;
-  box-shadow: 0 12px 27px rgba(22, 140, 128, .25);
+  background: #404040;
 }
 
 .submitButton:disabled {
@@ -1007,15 +996,15 @@
 .signInPrompt {
   margin: 0;
   padding: 17px 42px;
-  color: #64748b;
-  border-top: 1px solid #e6ecef;
-  background: #f8fafb;
+  color: #737373;
+  border-top: 1px solid #eee;
+  background: #f7f7f7;
   text-align: center;
   font-size: 11px;
 }
 
 .signInPrompt a {
-  color: #10776d;
+  color: #404040;
   font-weight: 800;
 }
 
@@ -1045,7 +1034,7 @@
 .removeDocument:focus-visible,
 .passwordField button:focus-visible,
 .submitButton:focus-visible {
-  outline: 3px solid rgba(22, 140, 128, .25);
+  outline: 3px solid #d4d4d4;
   outline-offset: 3px;
 }
 
@@ -1137,7 +1126,7 @@
     padding: 15px;
     grid-template-columns: 36px 1fr;
     gap: 9px;
-    border: 1px solid #dbe5e9;
+    border: 1px solid #e5e5e5;
     border-radius: 11px;
     background: #fff;
   }
@@ -1347,4 +1336,8 @@
   .spin {
     animation-duration: 1.6s;
   }
+}
+
+.page :is(small, label, button, input, select, textarea, time) {
+  font-size: 12px;
 }

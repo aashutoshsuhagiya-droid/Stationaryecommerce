@@ -1,6 +1,9 @@
 node_modules
 .next
 .next-codex
+.next-stale-*
+.qa-test-build-*
+.scroll-reveal-test-build-*
 out
 .env
 .env.*

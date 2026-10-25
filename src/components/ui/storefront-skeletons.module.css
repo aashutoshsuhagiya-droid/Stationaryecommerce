@@ -6,16 +6,15 @@
 .catalogHero {
   padding: 56px 0 44px;
   border-bottom: 1px solid var(--soft-line);
-  background: linear-gradient(180deg, var(--paper) 0%, var(--off-white) 100%);
+  background: var(--surface-alt);
 }
 
 .line,
 .media,
 .panel,
 .preview {
-  background: linear-gradient(90deg, var(--grey-100) 25%, var(--off-white) 45%, var(--grey-100) 65%);
-  background-size: 300% 100%;
-  animation: skeleton-shimmer 1.4s ease infinite;
+  background: var(--surface-subtle);
+  animation: skeleton-pulse 1.4s ease-in-out infinite alternate;
 }
 
 .breadcrumb { width: 180px; height: 12px; margin-bottom: 18px; border-radius: 6px; }
@@ -116,14 +115,14 @@
 .preview span {
   padding: 8px 12px;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  background: var(--surface-main);
   font-size: 12px;
   font-weight: 750;
 }
 
-@keyframes skeleton-shimmer {
-  from { background-position: 100% 0; }
-  to { background-position: 0 0; }
+@keyframes skeleton-pulse {
+  from { background-color: var(--surface-subtle); }
+  to { background-color: var(--surface-alt); }
 }
 
 @media (max-width: 1024px) {

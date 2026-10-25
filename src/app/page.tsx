@@ -1,9 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, BadgeCheck, Box, ChevronRight, CircleCheck, Headphones, Paintbrush, PackageCheck, ShieldCheck, Sparkles, WandSparkles } from "lucide-react";
 import { categories, featuredProducts } from "@/lib/data";
 import { ProductCard } from "@/components/commerce/ProductCard";
 import { CategoryCard } from "@/components/commerce/CategoryCard";
-import { ProductVisual } from "@/components/commerce/ProductVisual";
 
 const process = [
   { number: "01", icon: PackageCheck, title: "Choose your product", text: "Pick the size, pack and material that fits your day." },
@@ -21,6 +21,10 @@ const faqs = [
 
 export default function HomePage() {
   const featuredCategories = categories.filter((category) => category.featured).slice(0, 4);
+  const heroProduct = featuredProducts[0];
+  const heroSecondary = featuredProducts[1];
+  const heroTertiary = featuredProducts[2];
+  const giftProduct = featuredProducts[3] ?? heroSecondary;
   return (
     <>
       <section className="home-hero">
@@ -36,11 +40,14 @@ export default function HomePage() {
           </div>
           <div className="hero-stage" aria-label="A selection of personalised school products">
             <span className="hero-doodle hero-doodle-one" aria-hidden="true">✦</span><span className="hero-doodle hero-doodle-two" aria-hidden="true">⌁</span>
-            <div className="hero-note"><span>Made for</span><strong>everyday adventures</strong></div>
-            <div className="hero-product hero-product-main"><ProductVisual artwork="ocean-name-slip" name="Personalised name labels" accent="var(--teal)" background="var(--cloud)" personalisedName="Mira Kapoor" /></div>
-            <div className="hero-product hero-product-bottle"><ProductVisual artwork="bottle-label" name="Personalised bottle" accent="var(--teal)" background="var(--off-white)" personalisedName="Arjun" /></div>
-            <div className="hero-product hero-product-pencil"><ProductVisual artwork="pencil-bundle" name="Personalised pencils" accent="var(--teal)" background="var(--grey-100)" personalisedName="Zoya" /></div>
-            <div className="hero-sticker"><BadgeCheck /><strong>Made to order</strong><small>Your design stays with your item</small></div>
+            {heroProduct && <figure className="hero-photo-card">
+              <Image src={heroProduct.image} alt={heroProduct.name} fill sizes="(max-width: 900px) 92vw, 48vw" />
+              <figcaption className="hero-photo-caption"><BadgeCheck /><span><strong>{heroProduct.name}</strong><small>Made to order · Preview before checkout</small></span></figcaption>
+            </figure>}
+            <div className="hero-photo-thumbs" aria-hidden="true">
+              {heroSecondary && <div className="hero-photo-thumb"><Image src={heroSecondary.image} alt="" fill sizes="88px" /></div>}
+              {heroTertiary && <div className="hero-photo-thumb"><Image src={heroTertiary.image} alt="" fill sizes="88px" /></div>}
+            </div>
           </div>
         </div>
       </section>
@@ -79,8 +86,8 @@ export default function HomePage() {
       <section className="section story-section">
         <div className="shell story-grid">
           <div className="story-visual">
-            <div className="story-card one"><ProductVisual artwork="notebook-monogram" background="var(--off-white)" accent="var(--teal)" name="Personalised notebook" personalisedName="My big ideas" /></div>
-            <div className="story-card two"><ProductVisual artwork="label-stack" background="var(--cloud)" accent="var(--teal)" name="Name labels" personalisedName="Anaya S." /></div>
+            {heroSecondary && <div className="story-card one"><Image src={heroSecondary.image} alt={heroSecondary.name} fill sizes="360px" /></div>}
+            {heroTertiary && <div className="story-card two"><Image src={heroTertiary.image} alt={heroTertiary.name} fill sizes="260px" /></div>}
             <div className="quality-note"><ShieldCheck /><p><strong>Design-to-order continuity</strong><small>The personalisation saved at checkout is the data used for production.</small></p></div>
           </div>
           <div className="story-copy"><span className="eyebrow">The Naamly standard</span><h2>Personal should never feel uncertain.</h2><p>Custom products ask for a little more trust. That’s why the important details stay visible: what you entered, what it looks like, what it costs, and what happens next.</p><ul><li><CircleCheck /><span><strong>A preview you control</strong>Type, switch themes and review the exact saved details.</span></li><li><CircleCheck /><span><strong>Clear product facts</strong>Pack sizes, materials and production windows are shown upfront.</span></li><li><CircleCheck /><span><strong>Support with context</strong>Your order retains its design choices, so help starts with the right information.</span></li></ul><Link href="/about" className="text-link">Why we built Naamly <ArrowRight size={16} /></Link></div>
@@ -89,8 +96,8 @@ export default function HomePage() {
 
       <section className="section collection-section">
         <div className="shell collection-grid">
-          <article className="collection-card collection-school"><span>School-ready collection</span><h2>Small labels.<br />Much calmer mornings.</h2><p>Mixed-size packs for the things that leave home every day.</p><Link href="/products?category=customized-name-slips">Shop name labels <ArrowRight size={16} /></Link><div className="collection-art"><ProductVisual artwork="label-stack" accent="var(--teal)" background="var(--cloud)" personalisedName="Kabir Rao" /></div></article>
-          <article className="collection-card collection-gift"><span>Make gifting meaningful</span><h2>Not just picked.<br />Made for them.</h2><p>Useful, joyful gifts with their name woven into the design.</p><Link href="/products?category=personalized-gifts">Explore gifts <ArrowRight size={16} /></Link><div className="collection-art"><ProductVisual artwork="gift-ribbon" accent="var(--teal)" background="var(--off-white)" personalisedName="For Tara" /></div></article>
+          <article className="collection-card collection-school"><span>School-ready collection</span><h2>Small labels.<br />Much calmer mornings.</h2><p>Mixed-size packs for the things that leave home every day.</p><Link href="/products?category=customized-name-slips">Shop name labels <ArrowRight size={16} /></Link>{heroProduct && <div className="collection-art"><Image className="collection-photo" src={heroProduct.image} alt={heroProduct.name} fill sizes="260px" /></div>}</article>
+          <article className="collection-card collection-gift"><span>Make gifting meaningful</span><h2>Not just picked.<br />Made for them.</h2><p>Useful, joyful gifts with their name woven into the design.</p><Link href="/products?category=personalized-gifts">Explore gifts <ArrowRight size={16} /></Link>{giftProduct && <div className="collection-art"><Image className="collection-photo" src={giftProduct.image} alt={giftProduct.name} fill sizes="260px" /></div>}</article>
         </div>
       </section>
 

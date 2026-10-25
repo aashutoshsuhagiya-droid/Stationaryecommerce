@@ -4,10 +4,10 @@ import { inr, products } from "./admin-data";
 import styles from "./admin.module.css";
 
 const channels = [
-  { name: "Direct & returning", value: 42, color: "#2b3038" },
-  { name: "Search", value: 26, color: "#4b77a1" },
-  { name: "Social", value: 16, color: "#9aa3ad" },
-  { name: "Other", value: 16, color: "#b6c8c8" },
+  { name: "Direct & returning", value: 42, color: "#262626" },
+  { name: "Search", value: 26, color: "#525252" },
+  { name: "Social", value: 16, color: "#8a8a8a" },
+  { name: "Other", value: 16, color: "#d4d4d4" },
 ];
 
 export function ReportsPanel() {
@@ -37,10 +37,9 @@ export function ReportsPanel() {
             </div>
             <div aria-label="Net sales line chart trending upward" className={styles.lineChart} role="img">
               <svg preserveAspectRatio="none" viewBox="0 0 800 240">
-                <defs><linearGradient id="salesFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="#2b3038" stopOpacity=".16" /><stop offset="1" stopColor="#2b3038" stopOpacity="0" /></linearGradient></defs>
-                <path d="M0 198 C70 186 95 175 135 181 S210 148 255 157 S330 127 380 139 S450 112 495 121 S565 85 610 97 S675 54 720 67 S770 34 800 42 L800 240 L0 240 Z" fill="url(#salesFill)" />
-                <path d="M0 198 C70 186 95 175 135 181 S210 148 255 157 S330 127 380 139 S450 112 495 121 S565 85 610 97 S675 54 720 67 S770 34 800 42" fill="none" stroke="#2b3038" strokeLinecap="round" strokeWidth="4" vectorEffect="non-scaling-stroke" />
-                <path d="M0 205 C90 197 110 191 160 194 S240 177 290 182 S380 151 430 160 S520 138 580 144 S680 112 740 125 S780 106 800 110" fill="none" stroke="#d6e2e1" strokeDasharray="7 7" strokeLinecap="round" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+                <path d="M0 198 C70 186 95 175 135 181 S210 148 255 157 S330 127 380 139 S450 112 495 121 S565 85 610 97 S675 54 720 67 S770 34 800 42 L800 240 L0 240 Z" fill="#f2f2f2" />
+                <path d="M0 198 C70 186 95 175 135 181 S210 148 255 157 S330 127 380 139 S450 112 495 121 S565 85 610 97 S675 54 720 67 S770 34 800 42" fill="none" stroke="#262626" strokeLinecap="round" strokeWidth="4" vectorEffect="non-scaling-stroke" />
+                <path d="M0 205 C90 197 110 191 160 194 S240 177 290 182 S380 151 430 160 S520 138 580 144 S680 112 740 125 S780 106 800 110" fill="none" stroke="#d4d4d4" strokeDasharray="7 7" strokeLinecap="round" strokeWidth="2" vectorEffect="non-scaling-stroke" />
               </svg>
             </div>
             <div className={styles.chartAxis}><span>1 Oct</span><span>3 Oct</span><span>6 Oct</span><span>9 Oct</span><span>12 Oct</span><span>15 Oct</span><span>17 Oct</span></div>

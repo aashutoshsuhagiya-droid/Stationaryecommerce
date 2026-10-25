@@ -1,12 +1,12 @@
 .vendorFrame {
-  --portal-navy: #1a1d21;
-  --portal-navy-deep: #15181c;
-  --portal-teal: #2b3038;
-  --portal-teal-dark: #1a1d21;
-  --portal-ink: #23313f;
-  --portal-muted: #6a7b8c;
-  --portal-line: #e1e9ee;
-  --portal-canvas: #f4f7f8;
+  --portal-navy: #171717;
+  --portal-navy-deep: #171717;
+  --portal-teal: #262626;
+  --portal-teal-dark: #404040;
+  --portal-ink: #404040;
+  --portal-muted: #737373;
+  --portal-line: #e5e5e5;
+  --portal-canvas: #f7f7f7;
   display: flex;
   min-height: 100svh;
   background: var(--portal-canvas);
@@ -39,7 +39,7 @@
   flex: 0 0 250px;
   flex-direction: column;
   background: var(--portal-navy-deep);
-  color: #dce8ee;
+  color: #f2f2f2;
 }
 
 .brand {
@@ -48,8 +48,8 @@
   align-items: center;
   gap: 11px;
   padding: 0 22px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  color: white;
+  border-bottom: 1px solid #525252;
+  color: #fff;
 }
 
 .brandMark {
@@ -58,8 +58,8 @@
   height: 39px;
   place-items: center;
   border-radius: 12px 12px 12px 4px;
-  background: var(--portal-teal);
-  box-shadow: 0 8px 20px rgba(22, 140, 128, 0.27);
+  color: #171717;
+  background: #f2f2f2;
   font-size: 17px;
   font-weight: 900;
 }
@@ -75,7 +75,7 @@
 }
 
 .brandCopy span {
-  color: #8ca6b5;
+  color: #8a8a8a;
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.14em;
@@ -94,8 +94,9 @@
   align-items: center;
   gap: 11px;
   padding: 0 12px;
-  border-radius: 10px;
-  color: #a9beca;
+  border-left: 3px solid transparent;
+  border-radius: 8px;
+  color: #d4d4d4;
   font-size: 12px;
   font-weight: 700;
   transition: 160ms ease;
@@ -103,12 +104,12 @@
 
 .navigation a:first-child,
 .navigation a:hover {
-  background: rgba(36, 174, 160, 0.13);
-  color: white;
+  background: #262626;
+  color: #fff;
 }
 
 .navigation a:first-child {
-  box-shadow: inset 3px 0 #35b8aa;
+  border-left-color: #fff;
 }
 
 .sidebarFooter {
@@ -116,7 +117,7 @@
   gap: 13px;
   margin-top: auto;
   padding: 17px 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid #525252;
 }
 
 .signedInAs {
@@ -127,7 +128,7 @@
 }
 
 .signedInAs span {
-  color: #718e9f;
+  color: #8a8a8a;
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -136,7 +137,7 @@
 
 .signedInAs strong {
   overflow: hidden;
-  color: #dce8ee;
+  color: #f2f2f2;
   font-size: 11px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -154,10 +155,10 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid #525252;
   border-radius: 10px;
-  color: #c7d8e0;
-  background: rgba(255, 255, 255, 0.04);
+  color: #d4d4d4;
+  background: transparent;
   cursor: pointer;
   font-size: 11px;
   font-weight: 750;
@@ -165,9 +166,9 @@
 }
 
 .logoutButton:hover:not(:disabled) {
-  border-color: rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
+  border-color: #d4d4d4;
+  background: #262626;
+  color: #fff;
 }
 
 .logoutButton:disabled {
@@ -198,8 +199,7 @@
   gap: 20px;
   padding: 0 34px;
   border-bottom: 1px solid var(--portal-line);
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
+  background: #fff;
 }
 
 .topbar > div:first-child {
@@ -255,8 +255,7 @@
   padding: 27px 28px;
   border: 1px solid color-mix(in srgb, currentColor 21%, transparent);
   border-radius: 18px;
-  background: color-mix(in srgb, currentColor 7%, white);
-  box-shadow: 0 10px 30px rgba(19, 47, 73, 0.06);
+  background: color-mix(in srgb, currentColor 7%, #fff);
 }
 
 .statusIcon {
@@ -265,7 +264,7 @@
   height: 58px;
   place-items: center;
   border-radius: 16px;
-  background: color-mix(in srgb, currentColor 12%, white);
+  background: color-mix(in srgb, currentColor 12%, #fff);
 }
 
 .statusCopy p,
@@ -324,7 +323,7 @@
   font-weight: 800;
 }
 
-.toneNeutral { color: #5d6b78; }
+.toneNeutral { color: #737373; }
 .toneInfo { color: #28758c; }
 .toneWarning { color: #9a6512; }
 .toneSuccess { color: #147363; }
@@ -337,7 +336,6 @@
   border: 1px solid #ecd7aa;
   border-radius: 16px;
   background: #fffdf8;
-  box-shadow: 0 5px 20px rgba(92, 64, 17, 0.05);
 }
 
 .actionRequiredHeading {
@@ -399,7 +397,7 @@
 .documentUploadForm {
   border: 1px solid var(--portal-line);
   border-radius: 14px;
-  background: white;
+  background: #fff;
 }
 
 .correctionForm {
@@ -412,7 +410,7 @@
   justify-content: space-between;
   gap: 20px;
   padding: 20px;
-  background: #f9fbfb;
+  background: #f7f7f7;
   border-bottom: 1px solid var(--portal-line);
 }
 
@@ -444,7 +442,7 @@
   margin: 0;
   padding: 20px;
   border: 0;
-  border-bottom: 1px solid #edf1f3;
+  border-bottom: 1px solid #eee;
 }
 
 .actionFieldset legend {
@@ -484,7 +482,7 @@
 }
 
 .actionFieldGrid label > span small {
-  color: #95a1aa;
+  color: #8a8a8a;
   font-size: 8px;
   font-weight: 600;
 }
@@ -495,11 +493,11 @@
 .documentUploadForm select {
   width: 100%;
   min-height: 41px;
-  border: 1px solid #dce5e9;
+  border: 1px solid #d4d4d4;
   border-radius: 9px;
   outline: 0;
   color: var(--portal-ink);
-  background: white;
+  background: #fff;
   font-size: 10px;
   transition: border-color 150ms ease, box-shadow 150ms ease;
 }
@@ -521,7 +519,7 @@
 .documentUploadForm input:focus,
 .documentUploadForm select:focus {
   border-color: var(--portal-teal);
-  box-shadow: 0 0 0 3px rgba(22, 140, 128, 0.09);
+  box-shadow: 0 0 0 3px #eee;
 }
 
 .actionFieldGrid input[aria-invalid="true"],
@@ -570,19 +568,19 @@
   align-items: center;
   gap: 8px;
   padding: 7px 9px;
-  border: 1px solid #e1e8eb;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
-  color: #3e4e5c;
-  background: #fbfcfc;
+  color: #404040;
+  background: #fff;
   cursor: pointer;
   font-size: 9px;
   font-weight: 700;
 }
 
 .actionCheckboxGrid label:has(input:checked) {
-  border-color: #8bcac2;
-  color: #155f57;
-  background: #edf7f5;
+  border-color: #525252;
+  color: #171717;
+  background: #f2f2f2;
 }
 
 .actionCheckboxGrid input {
@@ -599,7 +597,7 @@
   justify-content: space-between;
   gap: 18px;
   padding: 18px 20px;
-  background: #f9fbfb;
+  background: #f7f7f7;
 }
 
 .actionSubmitRow p {
@@ -619,9 +617,8 @@
   gap: 8px;
   border: 0;
   border-radius: 9px;
-  color: white;
+  color: #fff;
   background: var(--portal-teal);
-  box-shadow: 0 7px 18px rgba(22, 140, 128, 0.18);
   cursor: pointer;
   font-size: 10px;
   font-weight: 850;
@@ -699,7 +696,7 @@
   place-items: center;
   border-radius: 12px;
   color: var(--portal-teal-dark);
-  background: #e8f5f2;
+  background: #f2f2f2;
 }
 
 .documentUploadForm .uploadEyebrow {
@@ -734,7 +731,7 @@
   border: 0;
   border-radius: 6px;
   color: var(--portal-navy);
-  background: #edf2f4;
+  background: #f2f2f2;
   cursor: pointer;
   font-size: 8px;
   font-weight: 800;
@@ -764,8 +761,7 @@
 .operationsPanel {
   border: 1px solid var(--portal-line);
   border-radius: 16px;
-  background: white;
-  box-shadow: 0 5px 20px rgba(19, 47, 73, 0.045);
+  background: #fff;
 }
 
 .panel,
@@ -785,7 +781,7 @@
   justify-content: space-between;
   gap: 16px;
   padding-bottom: 17px;
-  border-bottom: 1px solid #edf1f3;
+  border-bottom: 1px solid #eee;
   color: var(--portal-teal-dark);
 }
 
@@ -811,7 +807,7 @@
 .detailGrid dt,
 .operationStats span {
   margin-bottom: 5px;
-  color: #8996a3;
+  color: #8a8a8a;
   font-size: 9px;
   font-weight: 750;
   letter-spacing: 0.06em;
@@ -821,7 +817,7 @@
 .detailGrid dd {
   overflow-wrap: anywhere;
   margin: 0;
-  color: #344353;
+  color: #404040;
   font-size: 11px;
   font-weight: 700;
   line-height: 1.55;
@@ -837,7 +833,7 @@
   gap: 17px;
   margin-top: 22px;
   padding-top: 19px;
-  border-top: 1px solid #edf1f3;
+  border-top: 1px solid #eee;
 }
 
 .capabilitySection > div > span {
@@ -866,8 +862,8 @@
 .tags span {
   padding: 5px 8px;
   border-radius: 6px;
-  color: #31586a;
-  background: #edf6f5;
+  color: #404040;
+  background: #f2f2f2;
   font-size: 9px;
   font-weight: 750;
 }
@@ -876,19 +872,12 @@
   position: relative;
   overflow: hidden;
   padding: 23px;
-  background: linear-gradient(150deg, #132f49, #173b58);
-  color: white;
+  background: #262626;
+  color: #fff;
 }
 
 .updatePanel::after {
-  position: absolute;
-  right: -35px;
-  bottom: -55px;
-  width: 150px;
-  height: 150px;
-  border: 28px solid rgba(42, 177, 162, 0.12);
-  border-radius: 50%;
-  content: "";
+  display: none;
 }
 
 .updateIcon {
@@ -898,29 +887,29 @@
   margin-bottom: 20px;
   place-items: center;
   border-radius: 11px;
-  color: #8ce1d6;
-  background: rgba(71, 198, 182, 0.14);
+  color: #f2f2f2;
+  background: #404040;
 }
 
 .updatePanel .panelEyebrow {
-  color: #72cfc3;
+  color: #d4d4d4;
 }
 
 .updatePanel h2 {
-  color: white;
+  color: #fff;
 }
 
 .updatePanel blockquote {
   position: relative;
   z-index: 1;
   margin: 13px 0 11px;
-  color: #c2d3dc;
+  color: #d4d4d4;
   font-size: 11px;
   line-height: 1.7;
 }
 
 .updatePanel time {
-  color: #7895a6;
+  color: #8a8a8a;
   font-size: 9px;
 }
 
@@ -949,18 +938,18 @@
   z-index: 1;
   display: inline-flex;
   margin-top: 18px;
-  color: #83dace;
+  color: #f2f2f2;
   font-size: 10px;
   font-weight: 800;
 }
 
 .supportLink:hover {
-  color: white;
+  color: #fff;
   text-decoration: underline;
 }
 
 .operationsPanel {
-  background: linear-gradient(135deg, #ffffff 0%, #f3faf8 100%);
+  background: #fff;
 }
 
 .operationStats {
@@ -969,16 +958,16 @@
   gap: 1px;
   margin-top: 19px;
   overflow: hidden;
-  border: 1px solid #e3ecea;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
-  background: #e3ecea;
+  background: #e5e5e5;
 }
 
 .operationStats div {
   display: grid;
   gap: 5px;
   padding: 17px;
-  background: white;
+  background: #fff;
 }
 
 .operationStats strong {
@@ -1037,8 +1026,7 @@
   scroll-margin-top: 96px;
   border: 1px solid var(--portal-line);
   border-radius: 16px;
-  background: #eef3f4;
-  box-shadow: 0 7px 24px rgba(19, 47, 73, 0.055);
+  background: #f7f7f7;
 }
 
 .liveWorkspaceHeading {
@@ -1157,10 +1145,10 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1px dashed #ccd8dd;
+  border: 1px dashed #d4d4d4;
   border-radius: 13px;
   color: var(--portal-muted);
-  background: rgba(255, 255, 255, 0.65);
+  background: #fff;
   font-size: 10px;
   font-weight: 700;
 }
@@ -1206,7 +1194,7 @@
   border: 1px solid #dfadad;
   border-radius: 8px;
   color: #873838;
-  background: white;
+  background: #fff;
   cursor: pointer;
   font-size: 9px;
   font-weight: 800;
@@ -1252,9 +1240,9 @@
 .availabilityCard,
 .earningsCard,
 .workspaceSection {
-  border: 1px solid #dce5e8;
+  border: 1px solid #e5e5e5;
   border-radius: 13px;
-  background: white;
+  background: #fff;
 }
 
 .availabilityCard,
@@ -1276,7 +1264,7 @@
   place-items: center;
   border-radius: 10px;
   color: var(--portal-teal-dark);
-  background: #eaf6f3;
+  background: #f2f2f2;
 }
 
 .workspaceCardHeading > div {
@@ -1286,7 +1274,7 @@
 
 .workspaceCardHeading p {
   margin: 0;
-  color: #8b99a5;
+  color: #8a8a8a;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.07em;
@@ -1315,22 +1303,22 @@
   width: 100%;
   min-height: 41px;
   padding: 0 10px;
-  border: 1px solid #dce5e9;
+  border: 1px solid #d4d4d4;
   border-radius: 9px;
   outline: 0;
   color: var(--portal-ink);
-  background: white;
+  background: #fff;
   font-size: 10px;
 }
 
 .workspaceSelectField select:focus {
   border-color: var(--portal-teal);
-  box-shadow: 0 0 0 3px rgba(22, 140, 128, 0.09);
+  box-shadow: 0 0 0 3px #eee;
 }
 
 .workspaceSelectField select:disabled {
-  color: #8f9ba4;
-  background: #f1f4f5;
+  color: #8a8a8a;
+  background: #f2f2f2;
 }
 
 .acceptingToggle {
@@ -1339,10 +1327,10 @@
   gap: 9px;
   margin-top: 11px;
   padding: 11px;
-  border: 1px solid #dce7e5;
+  border: 1px solid #e5e5e5;
   border-radius: 9px;
   color: var(--portal-ink);
-  background: #f7fbfa;
+  background: #f7f7f7;
   cursor: pointer;
 }
 
@@ -1406,7 +1394,7 @@
 
 .availabilityCard > button {
   width: 100%;
-  color: white;
+  color: #fff;
   background: var(--portal-teal);
 }
 
@@ -1423,21 +1411,21 @@
 
 .earningsCard {
   overflow: hidden;
-  background: linear-gradient(150deg, #132f49, #183e5c);
-  color: white;
+  background: #262626;
+  color: #fff;
 }
 
 .earningsCard .workspaceCardHeading > span {
-  color: #8ce1d6;
-  background: rgba(71, 198, 182, 0.14);
+  color: #f2f2f2;
+  background: #404040;
 }
 
 .earningsCard .workspaceCardHeading p {
-  color: #72cfc3;
+  color: #d4d4d4;
 }
 
 .earningsCard .workspaceCardHeading h3 {
-  color: white;
+  color: #fff;
 }
 
 .earningsValue {
@@ -1454,20 +1442,20 @@
   gap: 12px;
   margin-top: 14px;
   padding: 10px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #a9c0cc;
+  border-top: 1px solid #525252;
+  border-bottom: 1px solid #525252;
+  color: #d4d4d4;
   font-size: 9px;
 }
 
 .earningsMeta strong {
-  color: white;
+  color: #fff;
   font-size: 12px;
 }
 
 .earningsCard > p {
   margin: 12px 0 0;
-  color: #8fa8b5;
+  color: #8a8a8a;
   font-size: 8px;
   line-height: 1.55;
 }
@@ -1484,8 +1472,8 @@
   justify-content: space-between;
   gap: 15px;
   padding: 14px 18px;
-  border-bottom: 1px solid #e5ebee;
-  background: #fbfcfc;
+  border-bottom: 1px solid #e5e5e5;
+  background: #f7f7f7;
 }
 
 .workspaceSectionHeading h3 {
@@ -1501,7 +1489,7 @@
   place-items: center;
   border-radius: 999px;
   color: var(--portal-teal-dark);
-  background: #e9f5f3;
+  background: #f2f2f2;
   font-size: 9px;
   font-weight: 850;
 }
@@ -1516,9 +1504,9 @@
 .offerCard {
   min-width: 0;
   padding: 15px;
-  border: 1px solid #e1e8eb;
+  border: 1px solid #e5e5e5;
   border-radius: 11px;
-  background: white;
+  background: #fff;
 }
 
 .offerTopline {
@@ -1534,7 +1522,7 @@
 }
 
 .offerTopline span {
-  color: #8b99a5;
+  color: #8a8a8a;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -1552,8 +1540,8 @@
   gap: 7px 11px;
   margin: 12px 0;
   padding: 9px 0;
-  border-top: 1px solid #edf1f3;
-  border-bottom: 1px solid #edf1f3;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .offerFacts span {
@@ -1583,7 +1571,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  color: #4d5d6a;
+  color: #404040;
   font-size: 8px;
   line-height: 1.4;
 }
@@ -1608,20 +1596,20 @@
 }
 
 .offerActions button:first-child {
-  border: 1px solid #dce4e8;
-  color: #526471;
-  background: white;
+  border: 1px solid #d4d4d4;
+  color: #404040;
+  background: #fff;
 }
 
 .offerActions button:first-child:hover:not(:disabled) {
-  border-color: #c59696;
-  color: #934747;
-  background: #fff6f5;
+  border-color: #525252;
+  color: #171717;
+  background: #f2f2f2;
 }
 
 .offerActions button:last-child,
 .assignedOrderFooter button {
-  color: white;
+  color: #fff;
   background: var(--portal-teal);
 }
 
@@ -1637,7 +1625,7 @@
   justify-content: center;
   gap: 11px;
   padding: 20px;
-  color: #8b99a5;
+  color: #8a8a8a;
 }
 
 .workspaceEmpty > svg {
@@ -1665,7 +1653,7 @@
 }
 
 .assignedOrder {
-  border-bottom: 1px solid #e8edef;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .assignedOrder:last-child {
@@ -1704,8 +1692,8 @@
   grid-template-columns: minmax(0, 1fr) minmax(240px, 0.65fr);
   gap: 24px;
   padding: 12px 18px;
-  border-top: 1px solid #f0f3f4;
-  border-bottom: 1px solid #f0f3f4;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .assignedOrderBody > div {
@@ -1714,7 +1702,7 @@
 
 .assignedOrderBody p {
   margin: 0 0 7px;
-  color: #8b99a5;
+  color: #8a8a8a;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -1776,7 +1764,7 @@
   align-items: center;
   gap: 13px;
   min-height: 73px;
-  border-bottom: 1px solid #edf1f3;
+  border-bottom: 1px solid #eee;
 }
 
 .documentRow:last-child {
@@ -1790,7 +1778,7 @@
   place-items: center;
   border-radius: 10px;
   color: var(--portal-teal-dark);
-  background: #edf6f5;
+  background: #f2f2f2;
 }
 
 .documentCopy {
@@ -1840,7 +1828,7 @@
   border: 1px solid var(--portal-line);
   border-radius: 8px;
   color: var(--portal-navy);
-  background: white;
+  background: #fff;
   font-size: 9px;
   font-weight: 800;
 }
@@ -1884,7 +1872,7 @@
   bottom: -2px;
   left: 12px;
   width: 1px;
-  background: #dbe5e8;
+  background: #e5e5e5;
   content: "";
 }
 
@@ -1895,17 +1883,17 @@
   width: 25px;
   height: 25px;
   place-items: center;
-  border: 1px solid #dbe5e8;
+  border: 1px solid #d4d4d4;
   border-radius: 50%;
-  color: #718696;
-  background: white;
+  color: #737373;
+  background: #fff;
 }
 
 .timelineMarkerCurrent {
-  border-color: #62bdb1;
-  color: white;
+  border-color: #262626;
+  color: #fff;
   background: var(--portal-teal);
-  box-shadow: 0 0 0 5px #e9f5f3;
+  box-shadow: 0 0 0 5px #f2f2f2;
 }
 
 .timelineCopy {
@@ -1927,8 +1915,8 @@
 .timelineCopy > div span {
   padding: 3px 6px;
   border-radius: 5px;
-  color: #59707e;
-  background: #edf2f4;
+  color: #737373;
+  background: #f2f2f2;
   font-size: 8px;
   font-weight: 800;
 }
@@ -1941,7 +1929,7 @@
 }
 
 .timelineCopy time {
-  color: #93a0ab;
+  color: #8a8a8a;
   font-size: 8px;
 }
 
@@ -2024,7 +2012,7 @@
     gap: 4px;
     overflow-x: auto;
     padding: 10px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid #525252;
   }
 
   .navigation a {
@@ -2257,4 +2245,13 @@
   .spinning {
     animation: none;
   }
+}
+
+/* Supporting copy stays legible throughout the operational workspace. */
+.vendorFrame :is(span, small, label, button, input, select, textarea, td, th, time) {
+  font-size: 12px;
+}
+
+.vendorFrame p {
+  font-size: 13px;
 }

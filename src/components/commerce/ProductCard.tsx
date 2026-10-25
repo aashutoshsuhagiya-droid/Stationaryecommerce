@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Heart, Plus } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { formatPrice } from "@/lib/data";
-import { ProductVisual } from "./ProductVisual";
 import { useStore } from "@/components/store/StoreProvider";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -14,7 +14,9 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="product-card">
       <Link href={`/products/${product.slug}`} className="product-card-media" aria-label={`View ${product.name}`}>
-        <ProductVisual artwork={product.artwork} name={product.name} accent="var(--teal)" background="var(--cloud)" />
+        <div className="product-card-photo">
+          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
+        </div>
         {product.badge && <span className="product-badge">{product.badge}</span>}
       </Link>
       <button className={`wishlist-button ${saved ? "active" : ""}`} onClick={() => toggleWishlist(product.id)} aria-label={saved ? "Remove from wishlist" : "Add to wishlist"}><Heart /></button>
