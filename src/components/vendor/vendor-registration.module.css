@@ -1344,6 +1344,19 @@
   }
 }
 
+/* Keep vendor onboarding readable on wide-viewport phones and foldables. */
+@media (hover: none) and (max-width: 780px) {
+  .heroInner, .layout { width: min(100% - 24px, 620px); }
+  .layout { padding-top: 34px; grid-template-columns: 1fr; }
+  .applicationGuide { position: static; padding: 0; }
+  .applicationGuide ol { grid-template-columns: 1fr; }
+  .applicationGuide li { align-items: center; padding: 11px 13px; }
+  .gridTwo, .choiceGrid, .capabilityColumns { grid-template-columns: 1fr; }
+  .fullWidth { grid-column: auto; }
+  .submitArea { align-items: stretch; flex-direction: column; }
+  .submitButton { width: 100%; }
+}
+
 .page :is(small, label, button, input, select, textarea, time) {
   font-size: 12px;
 }

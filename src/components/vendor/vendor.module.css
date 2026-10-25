@@ -2249,6 +2249,21 @@
   }
 }
 
+/* Match the vendor workspace to the mobile navigation breakpoint on touch devices. */
+@media (hover: none) and (max-width: 780px) {
+  .vendorFrame { display: block; }
+  .sidebar { position: relative; width: 100%; height: auto; }
+  .navigation { display: flex; gap: 4px; overflow-x: auto; padding: 10px 12px; border-bottom: 1px solid var(--border-focus); }
+  .navigation a { min-height: 44px; flex: 0 0 auto; padding: 0 10px; }
+  .sidebarFooter { position: absolute; top: 8px; right: 10px; display: block; padding: 0; border: 0; }
+  .signedInAs { display: none; }
+  .logoutButton { width: auto; min-height: 44px; padding: 0 10px; }
+  .topbar { position: relative; min-height: 66px; padding: 0 18px; }
+  .page { width: calc(100% - 28px); padding: 22px 0 40px; }
+  .statusMeta, .detailGrid, .capabilitySection, .offerList { grid-template-columns: 1fr; }
+  .fullDetail, .capabilitySection > p { grid-column: auto; }
+}
+
 /* Supporting copy stays legible throughout the operational workspace. */
 .vendorFrame :is(span, small, label, button, input, select, textarea, td, th, time) {
   font-size: 12px;

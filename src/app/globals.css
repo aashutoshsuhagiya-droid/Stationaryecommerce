@@ -1,23 +1,23 @@
 :root {
   --surface-main: #FFFFFF;
-  --surface-alt: #F4F4F5;
-  --surface-subtle: #ECECEF;
-  --surface-hover: #E2E2E6;
-  --surface-inverse: #101114;
-  --surface-inverse-muted: #1C1E22;
-  --text-heading: #101114;
-  --text-body: #35373B;
-  --text-secondary: #696C73;
-  --text-muted: #A9ABB1;
+  --surface-alt: #F7F7F8;
+  --surface-subtle: #F1F1F3;
+  --surface-hover: #EAEAEA;
+  --surface-inverse: #111418;
+  --surface-inverse-muted: #2B2E33;
+  --text-heading: #111418;
+  --text-body: #45484F;
+  --text-secondary: #6E7178;
+  --text-muted: #B4B6BB;
   --text-inverse: #FFFFFF;
-  --border-default: #E1E1E5;
-  --border-strong: #CBCDD2;
+  --border-default: #E6E6E9;
+  --border-strong: #D6D6DA;
   --border-inverse: rgba(255, 255, 255, .18);
-  --border-focus: #27292E;
-  --border-divider: #E7E7EA;
-  --border-card-hover: #BFC1C7;
-  --button-primary: #101114;
-  --button-primary-hover: #282A2F;
+  --border-focus: #3A3D42;
+  --border-divider: #E6E6E9;
+  --border-card-hover: #C9C9CE;
+  --button-primary: #111418;
+  --button-primary-hover: #2B2E33;
   --button-secondary-bg: #FFFFFF;
   --button-secondary-text: #111418;
   --button-secondary-border: #D6D6DA;
@@ -63,9 +63,9 @@
   --rose: var(--surface-subtle);
   --shadow-sm: none;
   --shadow-md: none;
-  --radius-control: 5px;
-  --radius-card: 8px;
-  --radius-large: 12px;
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-large: 16px;
   --shell: min(1180px, calc(100vw - 48px));
 }
 

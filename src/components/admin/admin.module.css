@@ -1631,6 +1631,25 @@
 @media (prefers-reduced-motion: reduce) {
   .adminFrame *, .adminFrame *::before, .adminFrame *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+/* Phones sometimes expose a wider CSS viewport; keep the admin toolbar in its compact touch layout through 780px. */
+@media (hover: none) and (max-width: 780px) {
+  .topbar { min-height: 64px; gap: 9px; padding: 0 13px; }
+  .topbarTitle, .globalSearch, .profileCopy, .profileButton svg { display: none; }
+  .topActions { margin-left: auto; }
+  .pageArea { padding: 22px 13px 35px; }
+  .pageHeader { align-items: flex-start; flex-direction: column; margin-bottom: 19px; }
+  .headerActions { width: 100%; }
+  .headerActions > * { flex: 1; }
+  .toolbar { align-items: stretch; }
+  .localSearch { width: 100%; }
+  .select { min-width: 0; flex: 1; }
+  .segmentControl { margin-left: 0; }
+  .resultCount { width: 100%; margin: 0; }
+  .settingsLayout { grid-template-columns: 1fr; }
+  .settingsNav { display: flex; overflow-x: auto; }
+  .settingsTab { width: auto; flex: 0 0 auto; }
+}
 .demoDot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); }
 .demoBanner { margin: 0 0 18px; padding: 10px 14px; display: flex; align-items: center; gap: 9px; border: 1px solid var(--warning-border); border-radius: 9px; color: var(--warning); background: var(--warning-bg); font-size: 11px; }
 .demoBanner strong { flex: 0 0 auto; color: var(--warning); }
