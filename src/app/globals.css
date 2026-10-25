@@ -165,6 +165,40 @@ button:not(:disabled):active { transform: scale(.98); }
 .mega-menu-footer a { min-height: 48px; display: inline-flex; align-items: center; gap: 6px; color: var(--teal-dark); font-size: .75rem; font-weight: 850; text-decoration: none; }
 .mega-menu-footer a:hover { text-decoration: underline; }
 .mega-menu-footer p { margin: 0; color: var(--slate); font-size: .68rem; font-weight: 600; }
+
+/* Keep the desktop menu legible: four category columns plus a contained shortcut row. */
+@media (min-width: 781px) {
+  .mega-menu-panel {
+    width: min(1120px, calc(100vw - 48px));
+    max-width: none;
+    overflow: visible;
+    padding: 28px 30px 0;
+  }
+  .mega-menu-grid {
+    min-width: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .mega-menu-col h3 { min-width: 0; font-size: .68rem; }
+  .mega-menu-col h3 svg { flex: 0 0 auto; }
+  .mega-menu-shortcuts {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    padding-top: 18px;
+    border-top: 1px solid var(--soft-line);
+  }
+  .mega-menu-shortcuts h3 { margin: 8px 0 0; padding: 0; border: 0; }
+  .mega-menu-shortcuts ul {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px 10px;
+  }
+  .mega-menu-shortcuts li a { min-height: 42px; padding-inline: 7px; }
+  .mega-menu-shortcuts .mega-menu-feature { display: none; }
+}
 .primary-nav { display: flex; align-items: center; gap: 31px; }
 .primary-nav a, .new-link { min-height: 48px; display: inline-flex; align-items: center; transition: color .2s; }
 .primary-nav a:hover, .new-link:hover { color: var(--teal); }
@@ -1341,4 +1375,17 @@ body { overflow-x: clip; }
 @media (max-width: 414px) and (min-width: 360px) {
   .hero-stage { min-height: 300px; }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Final desktop mega-menu layout override. */
+@media (min-width: 781px) {
+  .mega-menu-panel {
+    width: min(1120px, calc(100vw - 48px));
+    max-width: none;
+    overflow: visible;
+  }
+  .mega-menu-grid {
+    min-width: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }

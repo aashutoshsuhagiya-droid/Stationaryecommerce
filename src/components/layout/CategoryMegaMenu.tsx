@@ -117,7 +117,7 @@ export function CategoryMegaMenu() {
                 </ul>
               </div>
             ))}
-            <div className="mega-menu-col">
+            <div className="mega-menu-col mega-menu-shortcuts">
               <h3>
                 <Layers3 aria-hidden="true" />
                 Shortcuts
