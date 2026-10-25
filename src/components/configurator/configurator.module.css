@@ -1,36 +1,47 @@
+.editor,
+.configuratorPage {
+  --config-control-height: 44px;
+  --config-icon-control: 42px;
+  --config-control-radius: 3px;
+  --config-panel-radius: 6px;
+  --config-frame-radius: 8px;
+  --config-meta-size: .75rem;
+  --config-label-size: .8125rem;
+}
+
 .editor {
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 244px;
   grid-template-rows: auto auto auto minmax(390px, 1fr) auto auto;
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-large);
+  border-radius: var(--config-frame-radius);
   overflow: hidden;
   background: var(--surface-main);
 }
 
 .editorToolbar {
-  min-height: 50px;
-  padding: 7px 10px;
+  min-height: 54px;
+  padding: 6px 12px;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   overflow-x: auto;
   border-bottom: 1px solid var(--border-divider);
-  background: var(--surface-main);
+  background: var(--surface-subtle);
   scrollbar-width: thin;
 }
 .editorToolbar > * { flex: 0 0 auto; }
 
 .editorToolbar button,
 .iconActions button {
-  width: 48px;
-  height: 48px;
+  width: var(--config-icon-control);
+  height: var(--config-icon-control);
   padding: 0;
   display: inline-grid;
   place-items: center;
   border: 1px solid transparent;
-  border-radius: var(--radius-control);
+  border-radius: var(--config-control-radius);
   color: var(--text-body);
   background: transparent;
   cursor: pointer;
@@ -42,14 +53,14 @@
 .iconActions button:hover:not(:disabled) { border-color: var(--border-strong); background: var(--surface-hover); }
 .editorToolbar button.activeTool { border-color: var(--border-focus); color: var(--text-heading); background: var(--surface-subtle); }
 .editorToolbar button svg, .iconActions button svg { width: 17px; height: 17px; }
-.editorToolbar button:has(span) { width: auto; padding-inline: 9px; grid-auto-flow: column; gap: 6px; }
-.editorToolbar button span { font-size: .66rem; font-weight: 750; }
+.editorToolbar button:has(span) { width: auto; padding-inline: 10px; grid-auto-flow: column; gap: 7px; }
+.editorToolbar button span { font-size: var(--config-meta-size); font-weight: 750; }
 .editorToolbar > i { width: 1px; height: 22px; margin-inline: 4px; background: var(--border-divider); }
-.editorToolbar > span { min-width: 42px; text-align: center; color: var(--text-secondary); font-size: .58rem; font-weight: 750; }
+.editorToolbar > span { min-width: 42px; text-align: center; color: var(--text-secondary); font-size: var(--config-meta-size); font-weight: 750; }
 
 .designCompletion {
   min-width: 0;
-  padding: 8px 12px;
+  padding: 10px 14px;
   display: grid;
   grid-template-columns: auto minmax(90px, 1fr) auto;
   align-items: center;
@@ -58,14 +69,14 @@
   color: var(--text-secondary);
   background: var(--surface-main);
 }
-.previewCompletion { border-radius: var(--radius-card); }
+.previewCompletion { border-radius: var(--config-panel-radius); }
 .editorCompletion { grid-column: 1; border-width: 0 0 1px; border-radius: 0; }
 .completionScore { display: flex; align-items: baseline; gap: 6px; white-space: nowrap; }
-.completionScore span { color: var(--text-body); font-size: .52rem; font-weight: 750; }
-.completionScore strong { color: var(--text-heading); font-size: .7rem; }
+.completionScore span { color: var(--text-body); font-size: var(--config-meta-size); font-weight: 750; }
+.completionScore strong { color: var(--text-heading); font-size: var(--config-label-size); }
 .completionTrack { height: 5px; overflow: hidden; border-radius: 999px; background: var(--border-strong); }
 .completionTrack > span { height: 100%; display: block; border-radius: inherit; background: var(--button-primary); transition: width .2s ease; }
-.completionPreflight { color: var(--text-muted); font-size: .45rem; line-height: 1.3; text-align: right; white-space: nowrap; }
+.completionPreflight { color: var(--text-muted); font-size: var(--config-meta-size); line-height: 1.35; text-align: right; white-space: nowrap; }
 .completionReady {
   border-color: var(--border-strong);
   background: var(--surface-subtle);
@@ -81,23 +92,23 @@
   gap: 5px;
   list-style: none;
 }
-.completionChecklist li { display: inline-flex; align-items: center; gap: 4px; color: var(--text-muted); font-size: .48rem; font-weight: 700; }
-.completionStepMarker { width: 13px; height: 13px; display: inline-grid; place-items: center; border: 1px solid var(--text-muted); border-radius: 50%; background: var(--surface-main); }
+.completionChecklist li { display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); font-size: var(--config-meta-size); font-weight: 700; }
+.completionStepMarker { width: 14px; height: 14px; display: inline-grid; place-items: center; border: 1px solid var(--text-muted); border-radius: 50%; background: var(--surface-main); }
 .completionStepMarker svg { width: 9px; height: 9px; }
 .completionStepComplete { color: var(--text-body) !important; }
 .completionStepComplete .completionStepMarker { border-color: var(--button-primary); color: var(--surface-main); background: var(--button-primary); }
 
 .surfaceTabs {
-  padding: 0 10px;
+  padding: 0 12px;
   display: flex;
   gap: 4px;
   border-bottom: 1px solid var(--border-divider);
 }
 
 .surfaceTabs button {
-  min-width: 48px;
-  min-height: 48px;
-  padding: 0 9px;
+  min-width: 44px;
+  min-height: var(--config-control-height);
+  padding: 0 10px;
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -106,17 +117,17 @@
   color: var(--text-secondary);
   background: transparent;
   cursor: pointer;
-  font-size: .63rem;
+  font-size: var(--config-meta-size);
   font-weight: 750;
 }
 
 .surfaceTabs button.active { border-bottom-color: var(--button-primary); color: var(--text-heading); }
-.surfaceTabs small { min-width: 17px; padding: 2px 4px; border-radius: var(--radius-control); color: var(--text-secondary); background: var(--surface-subtle); font-size: .5rem; }
+.surfaceTabs small { min-width: 18px; padding: 2px 5px; border-radius: var(--config-control-radius); color: var(--text-secondary); background: var(--surface-subtle); font-size: var(--config-meta-size); }
 
 .artboardViewport {
   min-width: 0;
-  min-height: 390px;
-  padding: 36px;
+  min-height: 420px;
+  padding: 44px;
   overflow: auto;
   display: grid;
   place-items: center;
@@ -146,7 +157,7 @@
   border-top: 1px solid var(--border-divider);
   color: var(--text-secondary);
   background: var(--surface-main);
-  font-size: .54rem;
+  font-size: var(--config-meta-size);
 }
 .guideLegend span, .guideLegend i { width: 20px; height: 0; border-top: 2px dashed var(--danger); }
 .guideLegend i { margin-left: 8px; border-top-style: solid; border-top-color: var(--button-primary); }
@@ -157,32 +168,32 @@
   color: var(--danger);
   background: var(--danger-bg);
 }
-.artworkWarnings p { margin: 2px 0; font-size: .56rem; line-height: 1.5; }
+.artworkWarnings p { margin: 2px 0; font-size: var(--config-meta-size); line-height: 1.5; }
 
 .inspector {
   grid-column: 2;
   grid-row: 1 / -1;
   min-width: 0;
-  padding: 16px;
+  padding: 18px;
   border-left: 1px solid var(--border-divider);
   background: var(--surface-main);
 }
 .inspectorTitle { display: flex; align-items: center; gap: 8px; }
 .inspectorTitle > svg { width: 18px; color: var(--text-body); }
 .inspectorTitle > div { display: grid; gap: 2px; }
-.inspectorTitle strong { color: var(--text-heading); font-size: .7rem; }
-.inspectorTitle small { color: var(--text-secondary); font-size: .52rem; }
-.layerList { margin: 14px -5px 0; display: grid; gap: 3px; }
+.inspectorTitle strong { color: var(--text-heading); font-size: var(--config-label-size); }
+.inspectorTitle small { color: var(--text-secondary); font-size: var(--config-meta-size); }
+.layerList { margin: 16px -5px 0; display: grid; gap: 4px; }
 .layerList button {
   min-width: 0;
-  min-height: 48px;
-  padding: 0 8px;
+  min-height: var(--config-control-height);
+  padding: 0 9px;
   display: grid;
   grid-template-columns: 18px 1fr;
   align-items: center;
   gap: 7px;
   border: 1px solid transparent;
-  border-radius: var(--radius-control);
+  border-radius: var(--config-control-radius);
   color: var(--text-body);
   background: transparent;
   cursor: pointer;
@@ -191,42 +202,42 @@
 .layerList button:hover { background: var(--surface-hover); }
 .layerList button.selectedLayer { border-color: var(--border-focus); color: var(--text-heading); background: var(--surface-subtle); }
 .layerList button svg { width: 14px; }
-.layerList button span { overflow: hidden; font-size: .58rem; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-.emptyLayers { margin: 12px 5px; color: var(--text-secondary); font-size: .56rem; line-height: 1.5; }
+.layerList button span { overflow: hidden; font-size: var(--config-meta-size); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.emptyLayers { margin: 12px 5px; color: var(--text-secondary); font-size: var(--config-meta-size); line-height: 1.5; }
 
-.properties { margin-top: 17px; padding-top: 16px; display: grid; gap: 11px; border-top: 1px solid var(--border-divider); }
-.properties > strong { color: var(--text-heading); font-size: .64rem; }
+.properties { margin-top: 18px; padding-top: 18px; display: grid; gap: 12px; border-top: 1px solid var(--border-divider); }
+.properties > strong { color: var(--text-heading); font-size: var(--config-label-size); }
 .properties label { min-width: 0; display: grid; gap: 5px; }
-.properties label > span { color: var(--text-secondary); font-size: .52rem; font-weight: 700; }
+.properties label > span { color: var(--text-secondary); font-size: var(--config-meta-size); font-weight: 700; }
 .properties input, .properties select {
   width: 100%;
   min-width: 0;
-  height: 48px;
-  padding: 0 8px;
+  height: var(--config-control-height);
+  padding: 0 9px;
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius-control);
+  border-radius: var(--config-control-radius);
   color: var(--text-body);
   background: var(--surface-main);
-  font-size: .6rem;
+  font-size: var(--config-label-size);
 }
 .properties input[type="color"] { padding: 4px; }
 .propertyGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.rotationControl input[type="range"] { height: 48px; padding: 0; accent-color: var(--button-primary); }
-.rotationPresets { display: grid; grid-template-columns: repeat(auto-fit, minmax(48px, 1fr)); gap: 4px; }
-.rotationPresets button, .fitTextButton { min-height: 48px; border: 1px solid var(--border-strong); border-radius: var(--radius-control); color: var(--text-body); background: var(--surface-alt); cursor: pointer; font-size: .52rem; font-weight: 750; }
+.rotationControl input[type="range"] { height: var(--config-control-height); padding: 0; accent-color: var(--button-primary); }
+.rotationPresets { display: grid; grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); gap: 5px; }
+.rotationPresets button, .fitTextButton { min-height: var(--config-control-height); border: 1px solid var(--border-strong); border-radius: var(--config-control-radius); color: var(--text-body); background: var(--surface-alt); cursor: pointer; font-size: var(--config-meta-size); font-weight: 750; }
 .rotationPresets button:hover, .fitTextButton:hover { border-color: var(--border-focus); background: var(--surface-hover); }
 .fitTextButton { width: 100%; }
 .imageControls { display: grid; gap: 9px; }
-.aspectToggle { min-height: 48px; grid-template-columns: auto 1fr; align-items: center; gap: 7px; cursor: pointer; }
+.aspectToggle { min-height: var(--config-control-height); grid-template-columns: auto 1fr; align-items: center; gap: 8px; cursor: pointer; }
 .aspectToggle input { width: 15px; height: 15px; margin: 0; accent-color: var(--button-primary); }
-.aspectToggle > span { color: var(--text-body) !important; font-size: .55rem !important; }
+.aspectToggle > span { color: var(--text-body) !important; font-size: var(--config-meta-size) !important; }
 .imageActions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.imageActions button { min-height: 48px; border: 1px solid var(--border-strong); border-radius: var(--radius-control); color: var(--text-body); background: var(--surface-alt); cursor: pointer; font-size: .52rem; font-weight: 750; }
+.imageActions button { min-height: var(--config-control-height); border: 1px solid var(--border-strong); border-radius: var(--config-control-radius); color: var(--text-body); background: var(--surface-alt); cursor: pointer; font-size: var(--config-meta-size); font-weight: 750; }
 .imageActions button:hover { border-color: var(--border-focus); background: var(--surface-hover); }
 .iconActions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
 .iconActions button { width: 100%; border-color: var(--border-default); }
 .iconActions button:last-child { color: var(--text-body); }
-.productionNote { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid var(--border-divider); color: var(--text-secondary); font-size: .51rem; line-height: 1.55; }
+.productionNote { margin: 18px 0 0; padding-top: 14px; border-top: 1px solid var(--border-divider); color: var(--text-secondary); font-size: var(--config-meta-size); line-height: 1.55; }
 
 .visuallyHidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
@@ -240,20 +251,20 @@
   .inspector { grid-column: 1; grid-row: auto; border-top: 1px solid var(--border-divider); border-left: 0; }
   .artboardViewport { min-height: 300px; padding: 22px 16px; }
   .editorToolbar button span { display: none; }
-  .editorToolbar button:has(span) { width: 48px; padding: 0; }
+  .editorToolbar button:has(span) { width: var(--config-icon-control); padding: 0; }
   .designCompletion { grid-template-columns: auto minmax(80px, 1fr); }
   .completionPreflight { grid-column: 1 / -1; text-align: left; }
 }
 
 /* Product configurator workspace */
 .configuratorPage {
-  width: min(1560px, calc(100% - 32px));
+  width: min(1480px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 16px 0 70px;
+  padding: 24px 0 72px;
 }
 
 .configuratorHeader {
-  padding: 18px 0 22px;
+  padding: 16px 0 28px;
   display: flex;
   align-items: end;
   justify-content: space-between;
@@ -261,10 +272,10 @@
 }
 .configuratorHeader > div:first-child { min-width: 0; }
 .configuratorHeader h1 { margin: 8px 0 5px; color: var(--text-heading); font-size: clamp(1.7rem, 3vw, 2.6rem); line-height: 1.08; letter-spacing: 0; }
-.configuratorHeader p { max-width: 760px; margin: 0; color: var(--text-secondary); font-size: .73rem; line-height: 1.6; }
-.status { padding: 4px 7px; border-radius: 999px; color: var(--text-body); background: var(--surface-subtle); font-size: .53rem; font-weight: 800; text-transform: uppercase; }
+.configuratorHeader p { max-width: 760px; margin: 0; color: var(--text-secondary); font-size: .875rem; line-height: 1.6; }
+.status { padding: 4px 7px; border-radius: var(--config-control-radius); color: var(--text-body); background: var(--surface-subtle); font-size: var(--config-meta-size); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
 .headerActions { flex: 0 0 auto; display: flex; gap: 7px; }
-.headerActions button { width: 48px; height: 48px; padding: 0; display: grid; place-items: center; border: 1px solid var(--border-default); border-radius: var(--radius-card); color: var(--text-body); background: var(--surface-main); cursor: pointer; }
+.headerActions button { width: var(--config-icon-control); height: var(--config-icon-control); padding: 0; display: grid; place-items: center; border: 1px solid var(--border-default); border-radius: var(--config-control-radius); color: var(--text-body); background: var(--surface-main); cursor: pointer; }
 .headerActions button svg { width: 17px; }
 .headerActions button:hover { background: var(--surface-hover); }
 .headerActions button.wishlisted { color: var(--button-primary); }
@@ -272,40 +283,40 @@
 @keyframes wishlist-pop {
   50% { transform: scale(1.16); }
 }
-.editNotice { margin-bottom: 12px; padding: 10px 13px; border-left: 3px solid var(--button-primary); color: var(--text-body); background: var(--surface-subtle); font-size: .61rem; }
+.editNotice { margin-bottom: 16px; padding: 11px 14px; border-left: 3px solid var(--button-primary); color: var(--text-body); background: var(--surface-subtle); font-size: var(--config-meta-size); }
 
-.workspace { padding: 12px; display: grid; grid-template-columns: 310px minmax(0, 1fr); align-items: start; gap: 12px; border-radius: var(--radius-large); background: var(--surface-alt); }
-.optionsPanel { max-height: calc(100vh - 112px); overflow: auto; border: 1px solid var(--border-default); border-radius: var(--radius-card); background: var(--surface-main); scrollbar-width: thin; }
-.productThumb { padding: 12px; display: grid; grid-template-columns: 56px 1fr; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-divider); }
-.productThumb img { width: 56px; height: 56px; object-fit: cover; border-radius: var(--radius-control); }
+.workspace { padding: 18px; display: grid; grid-template-columns: 320px minmax(0, 1fr); align-items: start; gap: 18px; border-radius: var(--config-frame-radius); background: var(--surface-alt); }
+.optionsPanel { max-height: calc(100vh - 112px); overflow: auto; border: 1px solid var(--border-default); border-radius: var(--config-panel-radius); background: var(--surface-main); scrollbar-width: thin; }
+.productThumb { padding: 16px; display: grid; grid-template-columns: 56px 1fr; align-items: center; gap: 12px; border-bottom: 1px solid var(--border-divider); }
+.productThumb img { width: 56px; height: 56px; object-fit: cover; border-radius: var(--config-control-radius); }
 .productThumb > div { min-width: 0; display: grid; gap: 4px; }
-.productThumb span { color: var(--text-secondary); font-size: .47rem; }
-.productThumb strong { overflow: hidden; color: var(--text-heading); font-size: .61rem; line-height: 1.35; text-overflow: ellipsis; }
-.modeSummary { padding: 10px 12px; display: flex; flex-wrap: wrap; gap: 5px; border-bottom: 1px solid var(--border-divider); }
-.modeSummary span { padding: 4px 6px; border-radius: 999px; color: var(--text-body); background: var(--surface-subtle); font-size: .48rem; font-weight: 800; }
-.savedSelect { padding: 12px; display: grid; gap: 6px; border-bottom: 1px solid var(--border-divider); }
-.savedSelect > span { color: var(--text-body); font-size: .55rem; font-weight: 750; }
-.savedSelect > div { height: 48px; position: relative; display: flex; align-items: center; border: 1px solid var(--border-strong); border-radius: var(--radius-control); }
-.savedSelect select { width: 100%; height: 100%; padding: 0 29px 0 8px; border: 0; outline: 0; appearance: none; color: var(--text-body); background: transparent; font-size: .57rem; }
+.productThumb span { color: var(--text-secondary); font-size: var(--config-meta-size); }
+.productThumb strong { overflow: hidden; color: var(--text-heading); font-size: var(--config-label-size); line-height: 1.35; text-overflow: ellipsis; }
+.modeSummary { padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--border-divider); }
+.modeSummary span { padding: 4px 7px; border-radius: var(--config-control-radius); color: var(--text-body); background: var(--surface-subtle); font-size: var(--config-meta-size); font-weight: 800; }
+.savedSelect { padding: 16px; display: grid; gap: 7px; border-bottom: 1px solid var(--border-divider); }
+.savedSelect > span { color: var(--text-body); font-size: var(--config-meta-size); font-weight: 750; }
+.savedSelect > div { height: var(--config-control-height); position: relative; display: flex; align-items: center; border: 1px solid var(--border-strong); border-radius: var(--config-control-radius); }
+.savedSelect select { width: 100%; height: 100%; padding: 0 29px 0 9px; border: 0; outline: 0; appearance: none; color: var(--text-body); background: transparent; font-size: var(--config-label-size); }
 .savedSelect svg { width: 14px; position: absolute; right: 8px; pointer-events: none; }
 
-.optionSection { margin: 0; padding: 16px 12px; border: 0; border-bottom: 1px solid var(--border-divider); }
-.optionSection legend { width: 100%; margin: 0 0 12px; padding: 0; display: flex; align-items: center; gap: 8px; }
-.optionSection legend > span { width: 22px; height: 22px; flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--radius-control); color: var(--surface-main); background: var(--button-primary); font-size: .51rem; font-weight: 800; }
+.optionSection { margin: 0; padding: 18px 16px; border: 0; border-bottom: 1px solid var(--border-divider); }
+.optionSection legend { width: 100%; margin: 0 0 14px; padding: 0; display: flex; align-items: center; gap: 9px; }
+.optionSection legend > span { width: 24px; height: 24px; flex: 0 0 auto; display: grid; place-items: center; border-radius: var(--config-control-radius); color: var(--surface-main); background: var(--button-primary); font-size: var(--config-meta-size); font-weight: 800; }
 .optionSection legend > div { min-width: 0; display: grid; gap: 2px; }
-.optionSection legend strong { color: var(--text-heading); font-size: .64rem; }
-.optionSection legend small { color: var(--text-secondary); font-size: .48rem; font-weight: 500; line-height: 1.35; }
+.optionSection legend strong { color: var(--text-heading); font-size: .875rem; }
+.optionSection legend small { color: var(--text-secondary); font-size: var(--config-meta-size); font-weight: 500; line-height: 1.35; }
 
-.choiceList, .sizeChoices, .templateChoices { display: grid; gap: 6px; }
+.choiceList, .sizeChoices, .templateChoices { display: grid; gap: 8px; }
 .choiceList > button, .sizeChoices > button, .templateChoices > button {
   min-width: 0;
-  min-height: 48px;
+  min-height: var(--config-control-height);
   position: relative;
-  padding: 8px 10px;
+  padding: 9px 11px;
   display: grid;
   align-items: center;
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius-control);
+  border-radius: var(--config-control-radius);
   color: var(--text-body);
   background: var(--surface-main);
   cursor: pointer;
@@ -313,116 +324,119 @@
 }
 .choiceList > button { grid-template-columns: 1fr auto; gap: 8px; }
 .choiceList button > span, .templateChoices button > span { min-width: 0; display: grid; gap: 3px; }
-.choiceList button strong, .sizeChoices button strong, .templateChoices button strong { font-size: .57rem; }
-.choiceList button small, .sizeChoices button small, .templateChoices button small { color: var(--text-secondary); font-size: .48rem; line-height: 1.35; }
-.choiceList button > b { padding-right: 16px; font-size: .57rem; }
+.choiceList button strong, .sizeChoices button strong, .templateChoices button strong { font-size: var(--config-label-size); }
+.choiceList button small, .sizeChoices button small, .templateChoices button small { color: var(--text-secondary); font-size: var(--config-meta-size); line-height: 1.35; }
+.choiceList button > b { padding-right: 16px; font-size: var(--config-label-size); }
 .choiceList button > svg { width: 14px; position: absolute; right: 6px; top: 6px; color: var(--button-primary); }
 .choiceList button:disabled { opacity: .45; cursor: not-allowed; }
 .choiceList > button:hover, .sizeChoices > button:hover, .templateChoices > button:hover { background: var(--surface-hover); }
 .choiceList > button.selectedChoice, .sizeChoices > button.selectedChoice, .templateChoices > button.selectedChoice { border-color: var(--border-focus); background: var(--surface-subtle); }
 
-.segmented { width: fit-content; margin: 0 0 8px auto; padding: 2px; display: flex; border: 1px solid var(--border-strong); border-radius: var(--radius-control); background: var(--surface-subtle); }
-.segmented button { min-width: 48px; height: 48px; padding: 0 7px; border: 0; border-radius: var(--radius-control); color: var(--text-secondary); background: transparent; cursor: pointer; font-size: .52rem; font-weight: 750; text-transform: uppercase; }
+.segmented { width: fit-content; margin: 0 0 10px auto; padding: 2px; display: flex; border: 1px solid var(--border-strong); border-radius: var(--config-control-radius); background: var(--surface-subtle); }
+.segmented button { min-width: 44px; height: 40px; padding: 0 8px; border: 0; border-radius: 2px; color: var(--text-secondary); background: transparent; cursor: pointer; font-size: var(--config-meta-size); font-weight: 750; text-transform: uppercase; }
 .segmented button:hover { background: var(--surface-hover); }
 .segmented button.active { color: var(--text-heading); background: var(--surface-main); }
 .sizeChoices { grid-template-columns: 1fr 1fr; }
 .sizeChoices > button { gap: 3px; }
-.blockedOption { min-height: 48px; margin-top: 8px; padding: 9px; display: grid; grid-template-columns: 17px 1fr; gap: 7px; border: 1px dashed var(--border-strong); border-radius: var(--radius-control); color: var(--text-secondary); background: var(--surface-alt); }
+.blockedOption { min-height: var(--config-control-height); margin-top: 10px; padding: 10px; display: grid; grid-template-columns: 17px 1fr; gap: 8px; border: 1px dashed var(--border-strong); border-radius: var(--config-control-radius); color: var(--text-secondary); background: var(--surface-alt); }
 .blockedOption:hover { border-color: var(--border-focus); color: var(--text-body); background: var(--surface-hover); }
 .blockedOption > svg { width: 15px; }
 .blockedOption > span { display: grid; gap: 3px; }
-.blockedOption strong { color: var(--text-body); font-size: .54rem; }
-.blockedOption small { font-size: .47rem; line-height: 1.4; }
+.blockedOption strong { color: var(--text-body); font-size: var(--config-meta-size); }
+.blockedOption small { font-size: var(--config-meta-size); line-height: 1.4; }
 
-.fieldList { display: grid; gap: 10px; }
+.fieldList { display: grid; gap: 12px; }
 .fieldList label { min-width: 0; display: grid; gap: 5px; }
-.fieldList label > span { display: flex; align-items: center; color: var(--text-body); font-size: .55rem; font-weight: 750; }
+.fieldList label > span { display: flex; align-items: center; color: var(--text-body); font-size: var(--config-meta-size); font-weight: 750; }
 .fieldList label > span em { margin-left: 3px; color: var(--danger); font-style: normal; }
-.fieldList label > span small { margin-left: auto; color: var(--muted); font-size: .47rem; font-weight: 500; }
-.fieldList input:not([type="color"]), .fieldList select { width: 100%; height: 48px; padding: 0 9px; border: 1px solid var(--border-strong); border-radius: var(--radius-control); outline: 0; color: var(--text-body); background: var(--surface-main); font-size: .59rem; }
+.fieldList label > span small { margin-left: auto; color: var(--muted); font-size: var(--config-meta-size); font-weight: 500; }
+.fieldList input:not([type="color"]), .fieldList select { width: 100%; height: var(--config-control-height); padding: 0 10px; border: 1px solid var(--border-strong); border-radius: var(--config-control-radius); outline: 0; color: var(--text-body); background: var(--surface-main); font-size: var(--config-label-size); }
 .fieldList input:focus, .fieldList select:focus { border-color: var(--border-focus); }
-.fieldList label > small { color: var(--text-secondary); font-size: .47rem; line-height: 1.4; }
-.fieldList label > b { color: var(--danger); font-size: .49rem; line-height: 1.4; }
-.fieldList input[type="color"] { width: 48px; height: 48px; padding: 3px; border: 1px solid var(--border-strong); border-radius: var(--radius-control); background: var(--surface-main); }
+.fieldList label > small { color: var(--text-secondary); font-size: var(--config-meta-size); line-height: 1.4; }
+.fieldList label > b { color: var(--danger); font-size: var(--config-meta-size); line-height: 1.4; }
+.fieldList input[type="color"] { width: var(--config-control-height); height: var(--config-control-height); padding: 3px; border: 1px solid var(--border-strong); border-radius: var(--config-control-radius); background: var(--surface-main); }
 
 .templateChoices { grid-template-columns: 1fr 1fr; }
 .templateChoices > button { grid-template-columns: 40px 1fr; gap: 7px; }
-.templateChoices i { width: 40px; height: 34px; display: grid; place-items: center; border: 1px solid; border-radius: var(--radius-control); font-size: .58rem; font-style: normal; font-weight: 800; }
+.templateChoices i { width: 40px; height: 34px; display: grid; place-items: center; border: 1px solid; border-radius: var(--config-control-radius); font-size: var(--config-meta-size); font-style: normal; font-weight: 800; }
 
-.quantityRow { display: grid; grid-template-columns: 48px 1fr 48px; }
-.quantityRow button, .quantityRow input { height: 48px; border: 1px solid var(--border-strong); background: var(--surface-main); }
+.quantityRow { display: grid; grid-template-columns: var(--config-control-height) 1fr var(--config-control-height); }
+.quantityRow button, .quantityRow input { height: var(--config-control-height); border: 1px solid var(--border-strong); background: var(--surface-main); }
 .quantityRow button { padding: 0; display: grid; place-items: center; color: var(--text-body); cursor: pointer; }
-.quantityRow button:first-child { border-radius: var(--radius-control) 0 0 var(--radius-control); }
-.quantityRow button:last-child { border-radius: 0 var(--radius-control) var(--radius-control) 0; }
+.quantityRow button:first-child { border-radius: var(--config-control-radius) 0 0 var(--config-control-radius); }
+.quantityRow button:last-child { border-radius: 0 var(--config-control-radius) var(--config-control-radius) 0; }
 .quantityRow button:disabled { color: var(--grey-300); cursor: default; }
 .quantityRow button svg { width: 14px; }
-.quantityRow input { min-width: 0; border-inline: 0; outline: 0; text-align: center; color: var(--text-body); font-size: .65rem; font-weight: 800; }
-.productionFacts { padding: 13px 12px; display: grid; gap: 8px; background: var(--surface-alt); }
-.productionFacts > div { display: grid; grid-template-columns: 77px 1fr; gap: 7px; font-size: .49rem; }
+.quantityRow input { min-width: 0; border-inline: 0; outline: 0; text-align: center; color: var(--text-body); font-size: var(--config-label-size); font-weight: 800; }
+.productionFacts { padding: 16px; display: grid; gap: 9px; background: var(--surface-alt); }
+.productionFacts > div { display: grid; grid-template-columns: 82px 1fr; gap: 8px; font-size: var(--config-meta-size); }
 .productionFacts span { color: var(--text-secondary); }
 .productionFacts strong { color: var(--text-body); line-height: 1.35; }
 
 .designArea { min-width: 0; }
-.designHeading { min-height: 50px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid var(--border-default); border-bottom: 0; border-radius: var(--radius-large) var(--radius-large) 0 0; background: var(--surface-main); }
+.designHeading { min-height: 58px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid var(--border-default); border-bottom: 0; border-radius: var(--config-frame-radius) var(--config-frame-radius) 0 0; background: var(--surface-main); }
 .designHeading > div { display: flex; align-items: center; gap: 8px; }
 .designHeading svg { width: 17px; color: var(--text-body); }
 .designHeading div > span { display: grid; gap: 2px; }
-.designHeading strong { color: var(--text-heading); font-size: .64rem; }
-.designHeading small { color: var(--text-secondary); font-size: .49rem; }
-.designHeading > span { padding: 4px 7px; border-radius: var(--radius-control); color: var(--text-secondary); background: var(--surface-subtle); font-size: .49rem; font-weight: 800; text-transform: uppercase; }
-.designHeading + .editor { border-radius: 0 0 var(--radius-large) var(--radius-large); }
-.designHeading:has(+ .preview3dContainer) { border-bottom: 1px solid var(--border-default); border-radius: var(--radius-large); }
+.designHeading strong { color: var(--text-heading); font-size: var(--config-label-size); }
+.designHeading small { color: var(--text-secondary); font-size: var(--config-meta-size); }
+.designHeading > span { padding: 4px 7px; border-radius: var(--config-control-radius); color: var(--text-secondary); background: var(--surface-subtle); font-size: var(--config-meta-size); font-weight: 800; text-transform: uppercase; }
+.designHeading + .editor { border-radius: 0 0 var(--config-frame-radius) var(--config-frame-radius); }
+.designHeading:has(+ .preview3dContainer) { border-bottom: 1px solid var(--border-default); border-radius: var(--config-frame-radius); }
 
-.purchasePanel { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border-divider); }
+.purchasePanel { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border-divider); }
 .priceStatus { display: grid; }
-.priceStatus > span { display: flex; align-items: center; gap: 5px; color: var(--text-body); font-size: .49rem; font-weight: 750; }
+.priceStatus > span { display: flex; align-items: center; gap: 5px; color: var(--text-body); font-size: var(--config-meta-size); font-weight: 750; }
 .priceStatus span svg { width: 13px; }
 .priceStatus > strong { margin-top: 5px; color: var(--text-heading); font-size: 1.35rem; }
-.priceStatus > small { margin-top: 2px; color: var(--text-secondary); font-size: .51rem; }
-.adjustment { margin: 9px 0 0; display: flex; justify-content: space-between; color: var(--text-secondary); font-size: .5rem; }
+.priceStatus > small { margin-top: 2px; color: var(--text-secondary); font-size: var(--config-meta-size); }
+.adjustment { margin: 10px 0 0; display: flex; justify-content: space-between; color: var(--text-secondary); font-size: var(--config-meta-size); }
 .adjustment strong { color: var(--text-body); }
-.purchaseActions { margin-top: 13px; display: grid; gap: 6px; }
-.designFileActions { min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-.purchaseActions button { min-height: 48px; padding: 0 10px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--border-strong); border-radius: var(--radius-control); color: var(--text-body); background: var(--surface-main); cursor: pointer; font-size: .57rem; font-weight: 800; }
+.purchaseActions { margin-top: 14px; display: grid; gap: 8px; }
+.designFileActions { min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.purchaseActions button { min-height: var(--config-control-height); padding: 0 11px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--border-strong); border-radius: var(--config-control-radius); color: var(--text-body); background: var(--surface-main); cursor: pointer; font-size: var(--config-meta-size); font-weight: 800; }
 .purchaseActions button svg { width: 15px; }
 .purchaseActions button:disabled { opacity: .65; cursor: wait; }
 .purchaseActions button:hover:not(:disabled) { background: var(--surface-hover); }
 .purchaseActions button.primaryAction { border-color: var(--button-primary); color: var(--surface-main); background: var(--button-primary); }
 .purchaseActions button.primaryAction:hover:not(:disabled) { border-color: var(--button-primary-hover); background: var(--button-primary-hover); }
 .purchaseActions button.primaryAction:disabled { border-color: var(--grey-300); background: var(--grey-300); cursor: wait; }
-.saveMessage { margin: 8px 0 0; color: var(--text-body); font-size: .5rem; line-height: 1.45; }
-.quoteLink { min-height: 48px; margin-top: 10px; display: flex; align-items: center; color: var(--text-body); font-size: .53rem; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
-.revalidation { margin: 11px 0 0; display: flex; gap: 6px; color: var(--text-secondary); font-size: .47rem; line-height: 1.45; }
+.saveMessage { margin: 8px 0 0; color: var(--text-body); font-size: var(--config-meta-size); line-height: 1.45; }
+.quoteLink { min-height: var(--config-control-height); margin-top: 10px; display: flex; align-items: center; color: var(--text-body); font-size: var(--config-meta-size); font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
+.revalidation { margin: 12px 0 0; display: flex; gap: 7px; color: var(--text-secondary); font-size: var(--config-meta-size); line-height: 1.45; }
 .revalidation svg { width: 13px; height: 13px; flex: 0 0 auto; color: var(--text-body); }
 
-.standardPreview { min-height: 560px; display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; padding: 28px; border: 1px solid var(--border-default); border-radius: 0 0 var(--radius-large) var(--radius-large); background: var(--surface-subtle); }
-.standardPreview > img { width: 100%; height: 100%; max-height: 620px; object-fit: contain; background: var(--surface-main); }
-.capabilityNotice { margin-top: 10px; padding: 10px 12px; display: flex; align-items: start; gap: 8px; border: 1px solid var(--border-default); border-radius: var(--radius-card); color: var(--text-secondary); background: var(--surface-alt); }
+.standardPreview { min-height: 600px; display: grid; grid-template-columns: minmax(0, 1fr) 252px; gap: 24px; padding: 32px; border: 1px solid var(--border-default); border-radius: 0 0 var(--config-frame-radius) var(--config-frame-radius); background: var(--surface-subtle); }
+.standardPreview > img { width: 100%; height: 100%; max-height: 660px; object-fit: contain; background: var(--surface-main); }
+.capabilityNotice { margin-top: 12px; padding: 12px 14px; display: flex; align-items: start; gap: 9px; border: 1px solid var(--border-default); border-radius: var(--config-panel-radius); color: var(--text-secondary); background: var(--surface-alt); }
 .capabilityNotice svg { width: 15px; flex: 0 0 auto; }
-.capabilityNotice span { font-size: .52rem; line-height: 1.5; }
+.capabilityNotice span { font-size: var(--config-meta-size); line-height: 1.5; }
 .capabilityNotice strong { margin-right: 3px; }
-.readinessGrid { margin-top: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.readinessGrid > div { min-width: 0; padding: 11px; display: flex; gap: 7px; border: 1px solid var(--border-default); border-radius: var(--radius-card); background: var(--surface-main); }
+.readinessGrid { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--border-divider); }
+.readinessGrid > div { min-width: 0; padding: 14px 12px; display: flex; gap: 8px; border-right: 1px solid var(--border-divider); background: transparent; }
+.readinessGrid > div:last-child { border-right: 0; }
 .readinessGrid svg { width: 16px; flex: 0 0 auto; color: var(--text-body); }
 .readinessGrid span { min-width: 0; display: grid; gap: 3px; }
-.readinessGrid strong { color: var(--text-heading); font-size: .53rem; }
+.readinessGrid strong { color: var(--text-heading); font-size: var(--config-meta-size); }
+.readinessGrid small { color: var(--text-secondary); font-size: var(--config-meta-size); line-height: 1.45; }
 .viewModeToggle {
   display: flex;
-  background: var(--surface-subtle);
-  padding: 3px;
-  border-radius: var(--radius-control);
-  gap: 4px;
+  background: var(--surface-main);
+  padding: 2px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--config-control-radius);
+  gap: 2px;
 }
 .viewModeToggle button {
   appearance: none;
-  min-height: 48px;
+  min-height: 38px;
   border: none;
   background: transparent;
-  padding: 6px 14px;
-  font-size: 0.75rem;
+  padding: 6px 12px;
+  font-size: var(--config-meta-size);
   font-weight: 700;
   color: var(--text-secondary);
-  border-radius: var(--radius-control);
+  border-radius: 2px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -433,13 +447,13 @@
   color: var(--text-heading);
 }
 .viewModeActive {
-  background: var(--surface-main) !important;
-  color: var(--text-heading) !important;
+  background: var(--button-primary) !important;
+  color: var(--surface-main) !important;
 }
 .preview3dContainer {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 .mobileBuyBar { display: none; }
 
@@ -468,7 +482,7 @@
   .configuratorPage { width: calc(100% - 20px); padding-bottom: 30px; }
   .configuratorHeader { align-items: start; }
   .configuratorHeader h1 { font-size: 1.65rem; }
-  .configuratorHeader p { font-size: .65rem; }
+  .configuratorHeader p { font-size: var(--config-meta-size); }
   .headerActions { flex-direction: column; }
   .choiceList, .sizeChoices, .templateChoices, .fieldList { grid-template-columns: 1fr; }
   .designHeading small { display: none; }
@@ -476,9 +490,9 @@
   .standardPreview { min-height: 360px; grid-template-columns: 1fr; padding: 16px; }
   .mobileBuyBar { position: sticky; z-index: 45; bottom: 0; min-height: 66px; padding: 8px 11px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 12px; border-top: 1px solid var(--border-divider); background: var(--surface-main); }
   .mobileBuyBar > div { min-width: 0; display: grid; gap: 2px; }
-  .mobileBuyBar small { overflow: hidden; color: var(--text-secondary); font-size: .48rem; text-overflow: ellipsis; white-space: nowrap; }
+  .mobileBuyBar small { overflow: hidden; color: var(--text-secondary); font-size: var(--config-meta-size); text-overflow: ellipsis; white-space: nowrap; }
   .mobileBuyBar strong { color: var(--text-heading); font-size: .82rem; }
-  .mobileBuyBar button { min-height: 48px; padding: 0 14px; border: 0; border-radius: var(--radius-control); color: var(--surface-main); background: var(--button-primary); font-size: .61rem; font-weight: 800; }
+  .mobileBuyBar button { min-height: var(--config-control-height); padding: 0 14px; border: 0; border-radius: var(--config-control-radius); color: var(--surface-main); background: var(--button-primary); font-size: var(--config-meta-size); font-weight: 800; }
   .mobileBuyBar button:hover:not(:disabled) { background: var(--button-primary-hover); }
   .mobileBuyBar button:disabled { background: var(--grey-300); }
 }
@@ -495,7 +509,7 @@
 
 /* The configurator is dense, but labels and controls must remain readable. */
 .configuratorPage :is(small, label, button, input, select, textarea) {
-  font-size: .75rem;
+  font-size: var(--config-meta-size);
 }
 
 .configuratorPage p {

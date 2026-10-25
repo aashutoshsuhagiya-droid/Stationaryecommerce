@@ -1,4 +1,10 @@
 .adminFrame {
+  --admin-surface: var(--surface-main);
+  --admin-surface-muted: var(--surface-alt);
+  --admin-surface-quiet: var(--surface-subtle);
+  --admin-line: var(--border-default);
+  --admin-control-radius: var(--radius-control);
+  --admin-card-radius: var(--radius-card);
   --navy: var(--text-heading);
   --navy-2: var(--text-heading);
   --teal: var(--accent);
@@ -36,9 +42,9 @@
   top: 0;
   z-index: 30;
   display: flex;
-  width: 258px;
+  width: 250px;
   height: 100svh;
-  flex: 0 0 258px;
+  flex: 0 0 250px;
   flex-direction: column;
   overflow-y: auto;
   border-right: 1px solid color-mix(in srgb, var(--surface-main) 8%, transparent);
@@ -50,8 +56,8 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  min-height: 76px;
-  padding: 0 22px;
+  min-height: 70px;
+  padding: 0 20px;
   border-bottom: 1px solid color-mix(in srgb, var(--surface-main) 8%, transparent);
   color: var(--surface-main);
 }
@@ -70,7 +76,7 @@
   width: 38px;
   height: 38px;
   place-items: center;
-  border-radius: 12px;
+  border-radius: var(--admin-card-radius);
   background: var(--teal);
   font-size: 17px;
   font-weight: 800;
@@ -101,8 +107,8 @@
 
 .nav {
   display: grid;
-  gap: 22px;
-  padding: 22px 14px;
+  gap: 18px;
+  padding: 18px 12px;
 }
 
 .navGroup {
@@ -122,11 +128,11 @@
 .navLink {
   position: relative;
   display: flex;
-  min-height: 42px;
+  min-height: 40px;
   align-items: center;
   gap: 11px;
   padding: 0 12px;
-  border-radius: 10px;
+  border-radius: var(--admin-control-radius);
   color: var(--border-strong);
   font-size: 13px;
   font-weight: 650;
@@ -135,21 +141,21 @@
 }
 
 .navLink:hover {
-  background: color-mix(in srgb, var(--surface-main) 6%, transparent);
+  background: color-mix(in srgb, var(--surface-main) 5%, transparent);
   color: var(--surface-main);
 }
 
 .navLinkActive {
-  background: var(--text-body);
+  background: var(--surface-inverse-muted);
   color: var(--surface-main);
 }
 
 .navLinkActive::before {
   position: absolute;
   left: 0;
-  width: 3px;
-  height: 22px;
-  border-radius: 0 4px 4px 0;
+  width: 2px;
+  height: 18px;
+  border-radius: 0;
   background: var(--surface-main);
   content: "";
 }
@@ -173,7 +179,7 @@
 .storeStatus {
   padding: 14px;
   border: 1px solid color-mix(in srgb, var(--surface-main) 9%, transparent);
-  border-radius: 12px;
+  border-radius: var(--admin-card-radius);
   background: color-mix(in srgb, var(--surface-main) 4%, transparent);
 }
 
@@ -220,10 +226,10 @@
   top: 0;
   z-index: 20;
   display: flex;
-  min-height: 76px;
+  min-height: 70px;
   align-items: center;
   gap: 18px;
-  padding: 0 32px;
+  padding: 0 28px;
   border-bottom: 1px solid var(--line);
   background: var(--surface-main);
 }
@@ -266,7 +272,7 @@
   height: 40px;
   padding: 0 70px 0 39px;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--admin-control-radius);
   outline: none;
   background: var(--surface-alt);
   color: var(--ink);
@@ -306,7 +312,7 @@
   height: 40px;
   place-items: center;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: var(--admin-control-radius);
   background: var(--surface-main);
   color: var(--text-body);
   cursor: pointer;
@@ -315,8 +321,8 @@
 
 .iconButton:hover {
   border-color: var(--border-focus);
-  color: var(--teal);
-  transform: translateY(-1px);
+  background: var(--admin-surface-quiet);
+  color: var(--teal-dark);
 }
 
 .noticeDot {
@@ -337,7 +343,7 @@
   min-height: 42px;
   padding: 4px 8px 4px 5px;
   border: 0;
-  border-radius: 10px;
+  border-radius: var(--admin-control-radius);
   background: transparent;
   color: var(--ink);
   cursor: pointer;
@@ -378,7 +384,7 @@
   width: 100%;
   max-width: 1540px;
   margin: 0 auto;
-  padding: 30px 32px 48px;
+  padding: 26px 28px 42px;
 }
 
 .mobileBackdrop {
@@ -446,7 +452,7 @@
   justify-content: center;
   gap: 8px;
   padding: 0 15px;
-  border-radius: 9px;
+  border-radius: var(--admin-control-radius);
   font: inherit;
   font-size: 12px;
   font-weight: 750;
@@ -464,7 +470,7 @@
 .buttonPrimary:hover {
   border-color: var(--button-primary-hover);
   background: var(--button-primary-hover);
-  transform: translateY(-1px);
+  transform: none;
 }
 
 .buttonSecondary {
@@ -475,6 +481,7 @@
 
 .buttonSecondary:hover {
   border-color: var(--border-focus);
+  background: var(--admin-surface-quiet);
   color: var(--teal-dark);
 }
 
@@ -506,23 +513,17 @@
 
 .metricCard {
   position: relative;
-  min-height: 143px;
+  min-height: 132px;
   overflow: hidden;
-  padding: 19px;
+  padding: 17px;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface-main);
+  border-radius: var(--admin-card-radius);
+  background: var(--admin-surface);
 }
 
 .metricCard::after {
   position: absolute;
-  right: -22px;
-  bottom: -34px;
-  width: 98px;
-  height: 98px;
-  border-radius: 50%;
-  background: var(--surface-alt);
-  content: "";
+  display: none;
 }
 
 .metricTop {
@@ -543,8 +544,8 @@
   width: 34px;
   height: 34px;
   place-items: center;
-  border-radius: 9px;
-  background: var(--surface-hover);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-quiet);
   color: var(--teal);
 }
 
@@ -579,18 +580,18 @@
 
 .card {
   min-width: 0;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--surface-main);
+  border: 1px solid var(--admin-line);
+  border-radius: var(--admin-card-radius);
+  background: var(--admin-surface);
 }
 
 .cardHeader {
   display: flex;
-  min-height: 67px;
+  min-height: 62px;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 15px 18px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--border-default);
 }
 
@@ -608,7 +609,7 @@
 }
 
 .cardBody {
-  padding: 18px;
+  padding: 16px;
 }
 
 .dashboardGrid {
@@ -785,7 +786,7 @@
 .table tbody tr:last-child td { border-bottom: 0; }
 .table tbody tr:nth-child(even) { background: var(--surface-subtle); }
 .table tbody tr { transition: 140ms ease; }
-.table tbody tr:hover { background: var(--surface-hover); }
+.table tbody tr:hover { background: var(--surface-alt); }
 
 .orderId {
   color: var(--navy);
@@ -928,7 +929,7 @@
 .textarea {
   width: 100%;
   border: 1px solid var(--border-strong);
-  border-radius: 9px;
+  border-radius: var(--admin-control-radius);
   outline: none;
   background: var(--surface-main);
   color: var(--text-heading);
@@ -951,7 +952,7 @@
 .select:focus,
 .textarea:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+  box-shadow: 0 0 0 3px var(--admin-surface-quiet);
 }
 
 .segmentControl {
@@ -959,8 +960,8 @@
   margin-left: auto;
   padding: 3px;
   border: 1px solid var(--border-strong);
-  border-radius: 9px;
-  background: var(--surface-subtle);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-quiet);
 }
 
 .segmentButton {
@@ -969,7 +970,7 @@
   height: 30px;
   place-items: center;
   border: 0;
-  border-radius: 6px;
+  border-radius: var(--admin-control-radius);
   background: transparent;
   color: var(--text-secondary);
   cursor: pointer;
@@ -1001,8 +1002,8 @@
   min-height: 420px;
   padding: 10px;
   border: 1px solid var(--border-default);
-  border-radius: 12px;
-  background: var(--surface-subtle);
+  border-radius: var(--admin-card-radius);
+  background: var(--admin-surface-quiet);
 }
 
 .kanbanHeader {
@@ -1031,16 +1032,16 @@
 .orderCard {
   padding: 12px;
   border: 1px solid var(--border-default);
-  border-radius: 10px;
+  border-radius: var(--admin-control-radius);
   background: var(--surface-main);
   cursor: pointer;
   transition: 150ms ease;
 }
 
 .orderCard:hover {
-  border-color: var(--border-focus);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-card-hover);
+  border-color: var(--border-card-hover);
+  transform: none;
+  box-shadow: none;
 }
 
 .orderCardTop,
@@ -1099,8 +1100,8 @@
   align-items: center;
   gap: 12px;
   padding: 14px;
-  border-radius: 12px;
-  background: var(--surface-subtle);
+  border-radius: var(--admin-card-radius);
+  background: var(--admin-surface-quiet);
 }
 
 .detailHero .avatar { width: 38px; height: 38px; flex-basis: 38px; }
@@ -1135,8 +1136,8 @@
   overflow: hidden;
   padding: 18px;
   border: 1px solid var(--border-strong);
-  border-radius: 13px;
-  background: var(--surface-alt);
+  border-radius: var(--admin-card-radius);
+  background: var(--admin-surface-muted);
 }
 
 .personalizationCard::after {
@@ -1284,7 +1285,7 @@
 .templateCard {
   overflow: hidden;
   border: 1px solid var(--border-default);
-  border-radius: 12px;
+  border-radius: var(--admin-card-radius);
   background: var(--surface-main);
   cursor: pointer;
   transition: 160ms ease;
@@ -1292,12 +1293,12 @@
 
 .templateCard:hover,
 .templateSelected {
-  border-color: var(--border-focus);
-  transform: translateY(-2px);
+  border-color: var(--border-card-hover);
+  transform: none;
 }
 
-.templateCard:hover { box-shadow: var(--shadow-card-hover); }
-.templateSelected { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 12%, transparent); }
+.templateCard:hover { box-shadow: none; }
+.templateSelected { border-color: var(--border-focus); box-shadow: inset 0 0 0 1px var(--border-focus); }
 
 .designPreview {
   position: relative;
@@ -1346,7 +1347,7 @@
 
 .editorPanel { position: sticky; top: 94px; align-self: start; }
 .editorPreview { padding: 17px; }
-.editorPreview .designPreview { height: 175px; border-radius: 12px; }
+.editorPreview .designPreview { height: 175px; border-radius: var(--admin-card-radius); }
 .editorPreview .mockLabel { font-size: 18px; }
 .editorFields { display: grid; gap: 14px; padding: 0 17px 17px; }
 .fieldGroup { display: grid; gap: 7px; }
@@ -1516,7 +1517,7 @@
   gap: 9px;
   padding: 0 10px;
   border: 0;
-  border-radius: 8px;
+  border-radius: var(--admin-control-radius);
   background: transparent;
   color: var(--text-secondary);
   font: inherit;
@@ -1526,8 +1527,8 @@
   cursor: pointer;
 }
 
-.settingsTab:hover { background: var(--surface-subtle); color: var(--navy); }
-.settingsTabActive { background: var(--surface-hover); color: var(--teal-dark); }
+.settingsTab:hover { background: var(--admin-surface-quiet); color: var(--navy); }
+.settingsTabActive { background: var(--admin-surface-quiet); color: var(--teal-dark); }
 .settingsSection { overflow: hidden; }
 .settingsForm { display: grid; gap: 0; }
 .settingsBlock { padding: 20px; border-bottom: 1px solid var(--border-default); }
@@ -1671,8 +1672,8 @@
   height: 35px;
   flex: 0 0 35px;
   place-items: center;
-  border-radius: 10px;
-  background: var(--surface-hover);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-quiet);
   color: var(--teal);
 }
 
@@ -1712,8 +1713,8 @@
   height: 52px;
   margin-bottom: 13px;
   place-items: center;
-  border-radius: 15px;
-  background: var(--surface-hover);
+  border-radius: var(--admin-card-radius);
+  background: var(--admin-surface-quiet);
   color: var(--teal);
 }
 
@@ -1728,7 +1729,7 @@
   margin: 0 0 14px;
   padding: 11px 13px;
   border: 1px solid;
-  border-radius: 10px;
+  border-radius: var(--admin-control-radius);
   font-size: 10px;
   line-height: 1.5;
 }
@@ -1822,8 +1823,8 @@
   gap: 12px;
   padding: 15px;
   border: 1px solid var(--border-strong);
-  border-radius: 13px;
-  background: var(--surface-alt);
+  border-radius: var(--admin-card-radius);
+  background: var(--admin-surface-muted);
 }
 
 .vendorHeroAvatar {
@@ -1832,7 +1833,7 @@
   height: 42px;
   flex: 0 0 42px;
   place-items: center;
-  border-radius: 12px;
+  border-radius: var(--admin-card-radius);
   background: var(--teal);
   color: var(--surface-main);
   font-size: 11px;
@@ -1873,7 +1874,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   overflow: hidden;
   border: 1px solid var(--border-default);
-  border-radius: 11px;
+  border-radius: var(--admin-card-radius);
   background: var(--surface-main);
 }
 
@@ -1932,7 +1933,7 @@
   gap: 10px;
   padding: 11px;
   border: 1px solid var(--border-default);
-  border-radius: 10px;
+  border-radius: var(--admin-control-radius);
 }
 
 .vendorFileIcon {
@@ -1940,8 +1941,8 @@
   width: 34px;
   height: 34px;
   place-items: center;
-  border-radius: 9px;
-  background: var(--surface-hover);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-quiet);
   color: var(--teal);
 }
 
@@ -2002,8 +2003,8 @@
   gap: 9px;
   padding: 12px;
   border: 1px solid var(--border-strong);
-  border-radius: 10px;
-  background: var(--surface-subtle);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-quiet);
   color: var(--text-secondary);
   font-size: 9px;
   line-height: 1.5;
@@ -2035,7 +2036,7 @@
   align-items: center;
   padding: 0 11px;
   border: 1px solid var(--border-strong);
-  border-radius: 8px;
+  border-radius: var(--admin-control-radius);
   background: var(--surface-main);
   color: var(--text-body);
   font-size: 9px;
@@ -2047,7 +2048,7 @@
 .vendorActionChoices label:hover { border-color: var(--border-focus); color: var(--teal-dark); }
 .vendorActionChoices input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .vendorActionChoices label:has(input:focus-visible) { outline: 3px solid color-mix(in srgb, var(--accent) 16%, transparent); outline-offset: 2px; }
-.vendorActionChoices .vendorActionSelected { border-color: var(--border-focus); background: var(--surface-hover); color: var(--teal-dark); box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent); }
+.vendorActionChoices .vendorActionSelected { border-color: var(--border-focus); background: var(--admin-surface-quiet); color: var(--teal-dark); box-shadow: inset 0 0 0 1px var(--border-focus); }
 
 .vendorFormField {
   position: relative;
@@ -2149,8 +2150,8 @@
   width: 42px;
   height: 42px;
   place-items: center;
-  border-radius: 11px;
-  background: var(--surface-hover);
+  border-radius: var(--admin-card-radius);
+  background: var(--admin-surface-quiet);
   color: var(--teal);
 }
 
@@ -2174,8 +2175,8 @@
   gap: 8px;
   padding: 10px 11px;
   border: 1px solid var(--border-strong);
-  border-radius: 10px;
-  background: var(--surface-alt);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-muted);
   color: var(--text-secondary);
   font-size: 9px;
   line-height: 1.45;

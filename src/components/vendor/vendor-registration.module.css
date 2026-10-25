@@ -1,7 +1,13 @@
 .page {
+  --registration-surface: var(--surface-main);
+  --registration-surface-muted: var(--surface-alt);
+  --registration-surface-quiet: var(--surface-subtle);
+  --registration-control-radius: var(--radius-control);
+  --registration-card-radius: var(--radius-card);
+  --registration-large-radius: var(--radius-large);
   min-height: 100vh;
   color: var(--text-body);
-  background: var(--surface-alt);
+  background: var(--registration-surface-muted);
 }
 
 .hero {
@@ -9,7 +15,7 @@
   isolation: isolate;
   overflow: hidden;
   color: var(--surface-main);
-  background: var(--text-heading);
+  background: var(--button-primary);
 }
 
 .hero::before,
@@ -33,13 +39,13 @@
 
 .heroInner {
   width: min(1180px, calc(100% - 48px));
-  min-height: 370px;
+  min-height: 350px;
   margin: 0 auto;
-  padding: 72px 0 78px;
+  padding: 64px 0 68px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 72px;
+  gap: 56px;
 }
 
 .heroCopy {
@@ -79,13 +85,13 @@
 .heroBadge {
   width: 280px;
   flex: 0 0 280px;
-  padding: 19px;
+  padding: 17px;
   display: flex;
   align-items: center;
   gap: 13px;
   border: 1px solid var(--border-focus);
-  border-radius: 15px;
-  background: var(--accent);
+  border-radius: var(--registration-card-radius);
+  background: var(--surface-inverse-muted);
 }
 
 .heroBadge > svg {
@@ -116,11 +122,11 @@
 .layout {
   width: min(1180px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 68px 0 100px;
+  padding: 56px 0 84px;
   display: grid;
   grid-template-columns: 300px minmax(0, 1fr);
   align-items: start;
-  gap: 40px;
+  gap: 32px;
 }
 
 .applicationGuide {
@@ -171,8 +177,8 @@
   place-items: center;
   color: var(--text-heading);
   border: 1px solid var(--border-strong);
-  border-radius: 12px;
-  background: var(--surface-subtle);
+  border-radius: var(--registration-card-radius);
+  background: var(--registration-surface-quiet);
 }
 
 .stepIcon svg {
@@ -211,8 +217,8 @@
   padding: 17px 18px;
   color: var(--text-secondary);
   border: 1px solid var(--border-default);
-  border-radius: 12px;
-  background: var(--surface-main);
+  border-radius: var(--registration-card-radius);
+  background: var(--registration-surface);
 }
 
 .guideNote strong {
@@ -230,12 +236,12 @@
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--border-default);
-  border-radius: 20px;
-  background: var(--surface-main);
+  border-radius: var(--registration-large-radius);
+  background: var(--registration-surface);
 }
 
 .formHeading {
-  padding: 38px 42px 31px;
+  padding: 32px 36px 27px;
   border-bottom: 1px solid var(--border-default);
 }
 
@@ -267,7 +273,7 @@
   align-items: flex-start;
   gap: 11px;
   border: 1px solid;
-  border-radius: 11px;
+  border-radius: var(--registration-card-radius);
   outline: none;
 }
 
@@ -302,13 +308,13 @@
 }
 
 .form {
-  padding: 0 42px;
+  padding: 0 36px;
 }
 
 .section {
   min-width: 0;
   margin: 0;
-  padding: 38px 0;
+  padding: 32px 0;
   border: 0;
   border-bottom: 1px solid var(--border-default);
 }
@@ -327,9 +333,9 @@
   height: 31px;
   display: grid;
   place-items: center;
-  border-radius: 9px;
+  border-radius: var(--registration-control-radius);
   color: var(--surface-main);
-  background: var(--accent);
+  background: var(--button-primary);
   font-size: 10px;
   font-weight: 850;
   letter-spacing: .03em;
@@ -384,7 +390,7 @@
   padding: 0 13px;
   color: var(--text-body);
   border: 1px solid var(--border-strong);
-  border-radius: 9px;
+  border-radius: var(--registration-control-radius);
   outline: 0;
   background: var(--surface-main);
   font: inherit;
@@ -403,7 +409,7 @@
 .field input:focus,
 .field select:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--border-default);
+  box-shadow: 0 0 0 3px var(--registration-surface-quiet);
 }
 
 .field input[aria-invalid="true"],
@@ -441,8 +447,8 @@
   color: var(--text-secondary);
   border: 1px solid var(--border-strong);
   border-right: 0;
-  border-radius: 9px 0 0 9px;
-  background: var(--surface-subtle);
+  border-radius: var(--registration-control-radius) 0 0 var(--registration-control-radius);
+  background: var(--registration-surface-quiet);
   font-size: 11px;
   font-weight: 750;
 }
@@ -460,15 +466,15 @@
   gap: 6px;
   color: var(--surface-main);
   border: 0;
-  border-radius: 0 9px 9px 0;
-  background: var(--accent);
+  border-radius: 0 var(--registration-control-radius) var(--registration-control-radius) 0;
+  background: var(--button-primary);
   font-size: 11px;
   font-weight: 800;
   cursor: pointer;
 }
 
 .mobileField button:hover:not(:disabled) {
-  background: var(--text-body);
+  background: var(--button-primary-hover);
 }
 
 .mobileField button:disabled {
@@ -489,8 +495,8 @@
   align-items: end;
   gap: 11px;
   border: 1px solid var(--border-default);
-  border-radius: 11px;
-  background: var(--surface-alt);
+  border-radius: var(--registration-card-radius);
+  background: var(--registration-surface-muted);
 }
 
 .otpPanel input {
@@ -508,8 +514,8 @@
   gap: 7px;
   color: var(--text-heading);
   border: 1px solid var(--border-strong);
-  border-radius: 8px;
-  background: var(--surface-main);
+  border-radius: var(--registration-control-radius);
+  background: var(--registration-surface);
   font: inherit;
   font-size: 11px;
   font-weight: 800;
@@ -593,8 +599,8 @@
   gap: 10px;
   color: var(--text-secondary);
   border: 1px solid var(--border-default);
-  border-radius: 11px;
-  background: var(--surface-main);
+  border-radius: var(--registration-card-radius);
+  background: var(--registration-surface);
   cursor: pointer;
   transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
 }
@@ -605,7 +611,7 @@
 
 .choiceCardSelected {
   border-color: var(--border-focus);
-  background: var(--surface-subtle);
+  background: var(--registration-surface-quiet);
   box-shadow: inset 0 0 0 1px var(--border-focus);
 }
 
@@ -628,14 +634,14 @@
   place-items: center;
   color: transparent;
   border: 1px solid var(--border-strong);
-  border-radius: 6px;
+  border-radius: var(--registration-control-radius);
   background: var(--surface-main);
 }
 
 .choiceCardSelected .checkMark {
   color: var(--surface-main);
   border-color: var(--accent);
-  background: var(--accent);
+  background: var(--button-primary);
 }
 
 .checkMark svg {
@@ -672,8 +678,8 @@
   min-width: 0;
   padding: 20px;
   border: 1px solid var(--border-default);
-  border-radius: 12px;
-  background: var(--surface-alt);
+  border-radius: var(--registration-card-radius);
+  background: var(--registration-surface-muted);
 }
 
 .capabilityGroup legend {
@@ -703,8 +709,8 @@
   gap: 9px;
   color: var(--text-body);
   border: 1px solid var(--border-default);
-  border-radius: 8px;
-  background: var(--surface-main);
+  border-radius: var(--registration-control-radius);
+  background: var(--registration-surface);
   font-size: 11px;
   cursor: pointer;
 }
@@ -712,7 +718,7 @@
 .checkList label:has(input:checked) {
   color: var(--text-heading);
   border-color: var(--border-focus);
-  background: var(--surface-subtle);
+  background: var(--registration-surface-quiet);
 }
 
 .checkList input {
@@ -735,14 +741,14 @@
   place-items: center;
   color: transparent;
   border: 1px solid var(--border-strong);
-  border-radius: 5px;
-  background: var(--surface-main);
+  border-radius: var(--registration-control-radius);
+  background: var(--registration-surface);
 }
 
 .checkList label:has(input:checked) > span {
   color: var(--surface-main);
   border-color: var(--accent);
-  background: var(--accent);
+  background: var(--button-primary);
 }
 
 .checkList svg {
@@ -755,8 +761,8 @@
   margin-top: 25px;
   padding: 20px;
   border: 1px solid var(--border-default);
-  border-radius: 12px;
-  background: var(--surface-alt);
+  border-radius: var(--registration-card-radius);
+  background: var(--registration-surface-muted);
 }
 
 .documentHeading {
@@ -799,8 +805,8 @@
   align-items: end;
   gap: 11px;
   border: 1px solid var(--border-default);
-  border-radius: 10px;
-  background: var(--surface-main);
+  border-radius: var(--registration-control-radius);
+  background: var(--registration-surface);
 }
 
 .documentNumber {
@@ -810,8 +816,8 @@
   display: grid;
   place-items: center;
   color: var(--text-heading);
-  border-radius: 8px;
-  background: var(--surface-subtle);
+  border-radius: var(--registration-control-radius);
+  background: var(--registration-surface-quiet);
   font-size: 10px;
   font-weight: 850;
 }
@@ -828,8 +834,8 @@
   padding: 0 9px;
   color: var(--text-heading);
   border: 0;
-  border-radius: 6px;
-  background: var(--surface-subtle);
+  border-radius: var(--registration-control-radius);
+  background: var(--registration-surface-quiet);
   font: inherit;
   font-weight: 750;
   cursor: pointer;
@@ -843,15 +849,15 @@
   place-items: center;
   color: var(--text-secondary);
   border: 1px solid var(--border-strong);
-  border-radius: 8px;
-  background: var(--surface-main);
+  border-radius: var(--registration-control-radius);
+  background: var(--registration-surface);
   cursor: pointer;
 }
 
 .removeDocument:hover {
   color: var(--text-heading);
   border-color: var(--border-focus);
-  background: var(--surface-subtle);
+  background: var(--registration-surface-quiet);
 }
 
 .removeDocument svg {
@@ -881,14 +887,14 @@
   place-items: center;
   color: var(--text-secondary);
   border: 0;
-  border-radius: 7px;
+  border-radius: var(--registration-control-radius);
   background: transparent;
   cursor: pointer;
 }
 
 .passwordField button:hover {
   color: var(--text-heading);
-  background: var(--surface-subtle);
+  background: var(--registration-surface-quiet);
 }
 
 .passwordField svg {
@@ -970,8 +976,8 @@
   gap: 9px;
   color: var(--surface-main);
   border: 0;
-  border-radius: 10px;
-  background: var(--accent);
+  border-radius: var(--registration-control-radius);
+  background: var(--button-primary);
   font: inherit;
   font-size: 12px;
   font-weight: 850;
@@ -980,7 +986,7 @@
 }
 
 .submitButton:hover:not(:disabled) {
-  background: var(--text-body);
+  background: var(--button-primary-hover);
 }
 
 .submitButton:disabled {
@@ -998,7 +1004,7 @@
   padding: 17px 42px;
   color: var(--text-secondary);
   border-top: 1px solid var(--border-default);
-  background: var(--surface-alt);
+  background: var(--registration-surface-muted);
   text-align: center;
   font-size: 11px;
 }

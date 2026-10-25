@@ -1,12 +1,12 @@
 .container {
   position: relative;
   width: 100%;
-  height: 480px;
-  background: var(--surface-subtle);
-  border-radius: var(--radius-large);
+  height: clamp(540px, 52vw, 680px);
+  background: var(--surface-alt);
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border-default);
-  box-shadow: inset 0 0 0 1px var(--visual-highlight);
+  box-shadow: inset 0 0 0 1px var(--visual-highlight), 0 18px 38px var(--visual-shadow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,16 +43,16 @@
   display: grid;
   place-items: center;
   color: var(--text-secondary);
-  background: var(--surface-subtle);
+  background: var(--surface-alt);
   font-size: 12px;
   font-weight: 750;
 }
 
 .controlsBar {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
+  top: 16px;
+  left: 16px;
+  right: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -65,28 +65,28 @@
 .actionButtons {
   max-width: 100%;
   display: flex;
-  gap: 6px;
+  gap: 2px;
   overflow-x: auto;
   pointer-events: auto;
   background: var(--surface-main);
-  padding: 4px;
-  border-radius: var(--radius-card);
+  padding: 3px;
+  border-radius: 4px;
   border: 1px solid var(--border-divider);
 }
 
 .viewButtons button,
 .actionButtons button {
   appearance: none;
-  min-width: 48px;
-  min-height: 48px;
+  min-width: 40px;
+  min-height: 40px;
   flex: 0 0 auto;
   border: none;
   background: transparent;
-  padding: 6px 12px;
-  font-size: 0.8125rem;
-  font-weight: 600;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
   color: var(--text-secondary);
-  border-radius: var(--radius-control);
+  border-radius: 2px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -112,24 +112,24 @@
 }
 
 .icon {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
 }
 
 .badgeOverlay {
   position: absolute;
-  bottom: 14px;
-  left: 14px;
+  bottom: 16px;
+  left: 16px;
   pointer-events: none;
 }
 
 .materialBadge {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   background: var(--surface-main);
-  padding: 6px 12px;
-  border-radius: var(--radius-card);
+  padding: 8px 12px;
+  border-radius: 4px;
   border: 1px solid var(--border-divider);
 }
 
@@ -160,12 +160,12 @@
 
 .interactionHint {
   position: absolute;
-  bottom: 14px;
-  right: 14px;
+  bottom: 16px;
+  right: 16px;
   pointer-events: none;
   background: var(--surface-main);
-  padding: 4px 10px;
-  border-radius: var(--radius-control);
+  padding: 6px 10px;
+  border-radius: 3px;
   font-size: 0.75rem;
   color: var(--text-secondary);
   font-weight: 500;
@@ -176,14 +176,14 @@
   padding: 40px;
   text-align: center;
   background: var(--surface-alt);
-  border-radius: var(--radius-large);
+  border-radius: 8px;
   border: 1px dashed var(--border-strong);
   color: var(--text-secondary);
 }
 
 @media (max-width: 768px) {
   .container {
-    height: 380px;
+    height: 440px;
   }
   .interactionHint {
     display: none;
