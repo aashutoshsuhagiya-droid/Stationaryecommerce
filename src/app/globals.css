@@ -1428,6 +1428,39 @@ body { overflow-x: clip; }
   .home-hero .hero-photo-caption { right: 12px; bottom: 12px; left: 12px; }
 }
 
+/* Final mobile homepage rhythm: artwork and service promises stay compact. */
+@media (max-width: 600px) {
+  .home-hero .hero-grid { gap: 22px; padding-block: 30px 24px; }
+  .home-hero .hero-stage { aspect-ratio: 3 / 2; }
+  .home-hero .hero-photo-caption { padding: 12px; gap: 9px; }
+  .home-hero .hero-photo-caption strong { font-size: .78rem; }
+  .home-hero .hero-photo-caption small { font-size: .64rem; }
+
+  .trust-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; padding-block: 8px; }
+  .trust-grid > div,
+  .trust-grid > div:first-child,
+  .trust-grid > div:last-child {
+    min-height: 76px;
+    padding: 12px 8px;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-divider);
+  }
+  .trust-grid > div:nth-child(odd) { border-right: 1px solid var(--border-divider); }
+  .trust-grid > div:nth-last-child(-n + 2) { border-bottom: 0; }
+  .trust-icon { width: 36px; height: 36px; border-radius: var(--radius-control); }
+  .trust-grid strong { font-size: .65rem; line-height: 1.3; }
+  .trust-grid small { font-size: .55rem; line-height: 1.35; }
+
+  .category-section { padding-top: 44px; }
+}
+
+@media (max-width: 380px) {
+  .trust-grid { grid-template-columns: 1fr; }
+  .trust-grid > div:nth-child(odd) { border-right: 0; }
+  .trust-grid > div:nth-last-child(-n + 2) { border-bottom: 1px solid var(--border-divider); }
+  .trust-grid > div:last-child { border-bottom: 0; }
+}
+
 @media (max-width: 420px) {
   .home-hero .hero-grid { gap: 24px; padding-block: 30px 26px; }
   .home-hero .hero-copy > p { font-size: .9rem; }
