@@ -24,7 +24,8 @@ export default function HomePage() {
   const heroProduct = featuredProducts[0];
   const heroSecondary = featuredProducts[1];
   const heroTertiary = featuredProducts[2];
-  const giftProduct = featuredProducts[3] ?? heroSecondary;
+  const schoolCollection = categories.find((category) => category.slug === "school-labels") ?? heroProduct;
+  const giftCollection = categories.find((category) => category.slug === "personalized-gifts") ?? heroSecondary;
   return (
     <>
       <section className="home-hero">
@@ -96,8 +97,8 @@ export default function HomePage() {
 
       <section className="section collection-section">
         <div className="shell collection-grid">
-          <article className="collection-card collection-school"><span>School-ready collection</span><h2>Small labels.<br />Much calmer mornings.</h2><p>Mixed-size packs for the things that leave home every day.</p><Link href="/products?category=customized-name-slips">Shop name labels <ArrowRight size={16} /></Link>{heroProduct && <div className="collection-art"><Image className="collection-photo" src={heroProduct.image} alt={heroProduct.name} fill sizes="260px" /></div>}</article>
-          <article className="collection-card collection-gift"><span>Make gifting meaningful</span><h2>Not just picked.<br />Made for them.</h2><p>Useful, joyful gifts with their name woven into the design.</p><Link href="/products?category=personalized-gifts">Explore gifts <ArrowRight size={16} /></Link>{giftProduct && <div className="collection-art"><Image className="collection-photo" src={giftProduct.image} alt={giftProduct.name} fill sizes="260px" /></div>}</article>
+          <article className="collection-card collection-school"><span>School-ready collection</span><h2>Small labels.<br />Much calmer mornings.</h2><p>Mixed-size packs for the things that leave home every day.</p><Link href="/products?category=customized-name-slips">Shop name labels <ArrowRight size={16} /></Link>{schoolCollection && <div className="collection-art"><Image className="collection-photo" src={schoolCollection.image} alt={schoolCollection.name} fill sizes="(max-width: 780px) 100vw, 260px" /></div>}</article>
+          <article className="collection-card collection-gift"><span>Make gifting meaningful</span><h2>Not just picked.<br />Made for them.</h2><p>Useful, joyful gifts with their name woven into the design.</p><Link href="/products?category=personalized-gifts">Explore gifts <ArrowRight size={16} /></Link>{giftCollection && <div className="collection-art"><Image className="collection-photo" src={giftCollection.image} alt={giftCollection.name} fill sizes="(max-width: 780px) 100vw, 260px" /></div>}</article>
         </div>
       </section>
 

@@ -571,6 +571,8 @@ button:not(:disabled):active { transform: scale(.98); }
 .collection-gift > span { color: var(--grey-700); }
 .collection-art, .collection-gift .collection-art { position: absolute; width: 42%; height: 100%; right: 0; bottom: 0; overflow: hidden; border-left: 1px solid var(--border-default); transform: none; }
 .collection-photo { object-fit: cover; background: var(--surface-alt); }
+.collection-school .collection-photo { object-position: center 42%; }
+.collection-gift .collection-photo { object-position: center 48%; }
 .faq-grid { display: grid; grid-template-columns: .75fr 1.25fr; gap: 95px; align-items: start; }
 .faq-intro h2 { margin: 8px 0; color: var(--navy); font-size: 1.875rem; line-height: 1.15; letter-spacing: -.025em; }
 .faq-intro p { margin: 0 0 24px; color: var(--slate); font-size: .92rem; line-height: 1.7; }
@@ -1484,4 +1486,36 @@ body { overflow-x: clip; }
   .cart-item { grid-template-columns: 110px minmax(0, 1fr); gap: 14px; }
   .cart-customization { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .checkout-form-area { padding: 22px 18px; }
+}
+
+/* Collection cards become full-width editorial cards on touch devices. */
+@media (hover: none) and (max-width: 780px) {
+  .collection-card {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 22px 26px;
+  }
+  .collection-card > span,
+  .collection-card h2,
+  .collection-card > p,
+  .collection-card > a { max-width: none; }
+  .collection-card > span { font-size: .62rem; }
+  .collection-card h2 { margin: 8px 0 10px; font-size: clamp(1.75rem, 7.5vw, 2.2rem); }
+  .collection-card > p { margin: 0; font-size: .94rem; line-height: 1.6; }
+  .collection-card > a { min-height: 44px; margin-top: 16px; }
+  .collection-art,
+  .collection-gift .collection-art {
+    position: relative;
+    order: -1;
+    width: calc(100% + 44px);
+    height: clamp(172px, 52vw, 250px);
+    min-height: 0;
+    margin: -24px -22px 22px;
+    right: auto;
+    bottom: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--border-default);
+    transform: none;
+  }
 }
