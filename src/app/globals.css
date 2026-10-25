@@ -1389,3 +1389,48 @@ body { overflow-x: clip; }
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+/* Final phone hero composition: copy first, artwork second, never side by side. */
+@media (max-width: 780px) {
+  .home-hero .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    padding-block: 38px 32px;
+  }
+  .home-hero .hero-copy { order: 1; width: 100%; text-align: left; }
+  .home-hero .hero-copy h1 {
+    max-width: 12ch;
+    margin-inline: 0;
+    font-size: clamp(2.35rem, 10.5vw, 3.1rem);
+    line-height: 1.04;
+  }
+  .home-hero .hero-copy > p {
+    max-width: 34rem;
+    margin-inline: 0;
+    font-size: .96rem;
+    line-height: 1.65;
+  }
+  .home-hero .hero-kicker,
+  .home-hero .hero-actions,
+  .home-hero .hero-reassurance { margin-inline: 0; justify-content: flex-start; }
+  .home-hero .hero-actions { display: grid; grid-template-columns: 1fr; width: min(100%, 360px); }
+  .home-hero .hero-actions .button { width: 100%; }
+  .home-hero .hero-stage {
+    order: 2;
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+  .home-hero .hero-photo-card { width: 100%; height: 100%; inset: 0; }
+  .home-hero .hero-photo-caption { right: 12px; bottom: 12px; left: 12px; }
+}
+
+@media (max-width: 420px) {
+  .home-hero .hero-grid { gap: 24px; padding-block: 30px 26px; }
+  .home-hero .hero-copy > p { font-size: .9rem; }
+  .home-hero .hero-stage { aspect-ratio: 1 / 1.08; }
+  .home-hero .hero-photo-caption { padding: 11px; }
+  .home-hero .hero-photo-caption strong { font-size: .82rem; }
+  .home-hero .hero-photo-caption small { font-size: .65rem; }
+}

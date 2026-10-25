@@ -558,6 +558,11 @@ a.contactMethod:hover { border-color: var(--border-strong); background: var(--su
   .confirmationProduct { grid-template-columns: 58px 1fr; }
   .confirmationProduct > strong { grid-column: 2; }
   .confirmationActions { flex-direction: column; }
+  .csvHeading { align-items: stretch; flex-direction: column; gap: 12px; }
+  .csvDownload { width: 100%; }
+  .csvTableFooter { align-items: stretch; flex-direction: column; }
+  .csvAddRow { width: 100%; }
+  .csvPagination { justify-content: space-between; }
 }
 
 @media (prefers-reduced-motion: reduce) {

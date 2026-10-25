@@ -480,10 +480,10 @@
 
 @media (max-width: 720px) {
   .configuratorPage { width: calc(100% - 20px); padding-bottom: 30px; }
-  .configuratorHeader { align-items: start; }
+  .configuratorHeader { align-items: start; flex-direction: column; gap: 13px; }
   .configuratorHeader h1 { font-size: 1.65rem; }
   .configuratorHeader p { font-size: var(--config-meta-size); }
-  .headerActions { flex-direction: column; }
+  .headerActions { flex-direction: row; }
   .choiceList, .sizeChoices, .templateChoices, .fieldList { grid-template-columns: 1fr; }
   .designHeading small { display: none; }
   .readinessGrid { margin-bottom: 8px; }

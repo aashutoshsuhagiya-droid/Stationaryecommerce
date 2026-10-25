@@ -2018,7 +2018,7 @@
   }
 
   .navigation a {
-    min-height: 37px;
+    min-height: 44px;
     flex: 0 0 auto;
     padding: 0 10px;
     font-size: 10px;
@@ -2039,7 +2039,7 @@
 
   .logoutButton {
     width: auto;
-    min-height: 36px;
+    min-height: 44px;
     padding: 0 10px;
   }
 
