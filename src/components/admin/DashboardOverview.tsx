@@ -138,7 +138,7 @@ export function DashboardOverview() {
         </Card>
 
         <Card>
-          <CardHeader action={<Sparkles color="#168c80" size={15} />} caption="From today" title="Store activity" />
+          <CardHeader action={<Sparkles color="#2b3038" size={15} />} caption="From today" title="Store activity" />
           <div className={styles.cardBody}>
             <div className={styles.activityList}>
               {activities.map((activity, index) => {

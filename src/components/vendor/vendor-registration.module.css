@@ -10,8 +10,8 @@
   overflow: hidden;
   color: #fff;
   background:
-    radial-gradient(circle at 82% 18%, rgba(89, 207, 192, .2), transparent 30%),
-    linear-gradient(135deg, #10283f 0%, #173b58 72%, #164d59 100%);
+    radial-gradient(circle at 82% 18%, rgba(215, 220, 226, .18), transparent 30%),
+    linear-gradient(135deg, #15181c 0%, #2b3038 72%, #3d434c 100%);
 }
 
 .hero::before,
@@ -54,7 +54,7 @@
 
 .eyebrow {
   margin: 0 0 13px;
-  color: #168c80;
+  color: #2b3038;
   font-size: 12px;
   line-height: 1.3;
   font-weight: 850;
@@ -138,7 +138,7 @@
 
 .applicationGuide h2 {
   margin: 0;
-  color: #17324d;
+  color: #1a1d21;
   font-size: 27px;
   line-height: 1.2;
   letter-spacing: -.035em;
@@ -194,7 +194,7 @@
 
 .applicationGuide li small {
   margin: 1px 0 3px;
-  color: #168c80;
+  color: #2b3038;
   font-size: 10px;
   font-weight: 850;
   letter-spacing: .09em;
@@ -223,7 +223,7 @@
 }
 
 .guideNote strong {
-  color: #17324d;
+  color: #1a1d21;
   font-size: 13px;
 }
 
@@ -249,7 +249,7 @@
 
 .formHeading h2 {
   margin: 0;
-  color: #17324d;
+  color: #1a1d21;
   font-size: 31px;
   line-height: 1.15;
   letter-spacing: -.037em;
@@ -327,7 +327,7 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  color: #17324d;
+  color: #1a1d21;
 }
 
 .section legend > span {
@@ -337,7 +337,7 @@
   place-items: center;
   border-radius: 9px;
   color: #fff;
-  background: #17324d;
+  background: #1a1d21;
   font-size: 10px;
   font-weight: 850;
   letter-spacing: .03em;
@@ -410,8 +410,8 @@
 
 .field input:focus,
 .field select:focus {
-  border-color: #168c80;
-  box-shadow: 0 0 0 3px rgba(22, 140, 128, .12);
+  border-color: #2b3038;
+  box-shadow: 0 0 0 3px rgba(43, 48, 56, .12);
 }
 
 .field input[aria-invalid="true"],
@@ -469,7 +469,7 @@
   color: #fff;
   border: 0;
   border-radius: 0 9px 9px 0;
-  background: #168c80;
+  background: #2b3038;
   font-size: 11px;
   font-weight: 800;
   cursor: pointer;
@@ -514,7 +514,7 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  color: #17324d;
+  color: #1a1d21;
   border: 1px solid #cbd7df;
   border-radius: 8px;
   background: #fff;
@@ -552,7 +552,7 @@
 .developmentCode code {
   margin-left: 3px;
   padding: 3px 6px;
-  color: #17324d;
+  color: #1a1d21;
   border-radius: 5px;
   background: #e5efef;
   font-size: 11px;
@@ -612,9 +612,9 @@
 }
 
 .choiceCardSelected {
-  border-color: #168c80;
-  background: #f2faf8;
-  box-shadow: inset 0 0 0 1px #168c80;
+  border-color: #2b3038;
+  background: #f4f5f7;
+  box-shadow: inset 0 0 0 1px #2b3038;
 }
 
 .choiceCard > input {
@@ -642,8 +642,8 @@
 
 .choiceCardSelected .checkMark {
   color: #fff;
-  border-color: #168c80;
-  background: #168c80;
+  border-color: #2b3038;
+  background: #2b3038;
 }
 
 .checkMark svg {
@@ -749,8 +749,8 @@
 
 .checkList label:has(input:checked) > span {
   color: #fff;
-  border-color: #168c80;
-  background: #168c80;
+  border-color: #2b3038;
+  background: #2b3038;
 }
 
 .checkList svg {
@@ -791,7 +791,7 @@
 .documentHeading > svg {
   width: 22px;
   height: 22px;
-  color: #168c80;
+  color: #2b3038;
 }
 
 .documentList {
@@ -834,7 +834,7 @@
   height: 29px;
   margin-right: 8px;
   padding: 0 9px;
-  color: #17324d;
+  color: #1a1d21;
   border: 0;
   border-radius: 6px;
   background: #edf2f4;
@@ -895,7 +895,7 @@
 }
 
 .passwordField button:hover {
-  color: #17324d;
+  color: #1a1d21;
   background: #edf2f4;
 }
 
@@ -920,7 +920,7 @@
   height: 17px;
   flex: 0 0 17px;
   margin-top: 1px;
-  accent-color: #168c80;
+  accent-color: #2b3038;
 }
 
 .termsRow a {
@@ -948,7 +948,7 @@
   width: 22px;
   height: 22px;
   flex: 0 0 22px;
-  color: #168c80;
+  color: #2b3038;
 }
 
 .submitArea span,
@@ -979,8 +979,8 @@
   color: #fff;
   border: 0;
   border-radius: 10px;
-  background: #168c80;
-  box-shadow: 0 9px 23px rgba(22, 140, 128, .2);
+  background: #2b3038;
+  box-shadow: 0 9px 23px rgba(20, 24, 30, .18);
   font: inherit;
   font-size: 12px;
   font-weight: 850;
