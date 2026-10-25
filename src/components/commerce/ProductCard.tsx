@@ -7,25 +7,14 @@ import { formatPrice } from "@/lib/data";
 import { ProductVisual } from "./ProductVisual";
 import { useStore } from "@/components/store/StoreProvider";
 
-const palettes: Record<string, [string, string]> = {
-  "customized-name-slips": ["#58b8aa", "#e5f5f1"],
-  "waterproof-stickers": ["#4d9fce", "#e6f3fa"],
-  "personalized-pencils-pens": ["#e5a82e", "#fff3d7"],
-  "school-labels": ["#8e71c1", "#f1ebfa"],
-  "personalized-notebooks": ["#e17274", "#fceaea"],
-  "bottle-tiffin-labels": ["#3ca393", "#e2f4f1"],
-  "personalized-gifts": ["#de756d", "#fff0ed"],
-};
-
 export function ProductCard({ product }: { product: Product }) {
   const { toggleWishlist, isWishlisted, addItem } = useStore();
   const saved = isWishlisted(product.id);
-  const [accent, background] = palettes[product.categorySlug] || ["#4da99c", "#e8f5f2"];
 
   return (
     <article className="product-card">
       <Link href={`/products/${product.slug}`} className="product-card-media" aria-label={`View ${product.name}`}>
-        <ProductVisual artwork={product.artwork} name={product.name} accent={accent} background={background} />
+        <ProductVisual artwork={product.artwork} name={product.name} accent="var(--teal)" background="var(--cloud)" />
         {product.badge && <span className="product-badge">{product.badge}</span>}
       </Link>
       <button className={`wishlist-button ${saved ? "active" : ""}`} onClick={() => toggleWishlist(product.id)} aria-label={saved ? "Remove from wishlist" : "Add to wishlist"}><Heart /></button>

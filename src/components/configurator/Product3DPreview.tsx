@@ -21,6 +21,7 @@ import type {
   ArtworkDocument,
   PrintableSurfaceDefinition,
 } from "./artwork-types";
+import { buildProductGeometry } from "./product-3d-model";
 import { resolveProduct3DProfile } from "./product-3d-profile";
 import styles from "./product-3d.module.css";
 
@@ -34,7 +35,10 @@ interface Product3DPreviewProps {
   dimensionsMm?: Record<string, number> | null;
   materialName?: string;
   productName: string;
+  onReadyChange?: (ready: boolean) => void;
 }
+
+const completedEntranceShines = new Set<string>();
 
 function disposeGroupChildren(group: THREE.Group, preservedTexture?: THREE.Texture | null) {
   const geometries = new Set<THREE.BufferGeometry>();
@@ -70,6 +74,7 @@ export function Product3DPreview({
   dimensionsMm,
   materialName = "Vinyl Matte",
   productName,
+  onReadyChange,
 }: Product3DPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -84,7 +89,10 @@ export function Product3DPreview({
 
   const [autoRotate, setAutoRotate] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const productProfile = resolveProduct3DProfile(structuralDesign, productType);
+  const productProfile = resolveProduct3DProfile(structuralDesign, productType, {
+    materialName,
+    colors: [background, accent],
+  });
   const [isReady, setIsReady] = useState(false);
   const [webGlSupported, setWebGlSupported] = useState(true);
 
@@ -94,15 +102,20 @@ export function Product3DPreview({
     const canvas = canvasRef.current;
     if (!container || !canvas) return;
 
+    setIsReady(false);
+    onReadyChange?.(false);
+
     // Detect WebGL capability
     try {
       const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
       if (!gl) {
         setWebGlSupported(false);
+        onReadyChange?.(false);
         return;
       }
     } catch {
       setWebGlSupported(false);
+      onReadyChange?.(false);
       return;
     }
 
@@ -111,7 +124,7 @@ export function Product3DPreview({
 
     const scene = new THREE.Scene();
     sceneRef.current = scene;
-    scene.background = new THREE.Color("#f8fafc");
+    scene.background = null;
 
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
     camera.position.set(
@@ -166,6 +179,14 @@ export function Product3DPreview({
     const softFloorLight = new THREE.HemisphereLight(0xffffff, 0xe2e8f0, 0.5);
     scene.add(softFloorLight);
 
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const shouldPlayEntranceShine = !reducedMotion && !completedEntranceShines.has(productName);
+    const shineLight = new THREE.DirectionalLight(0xffffff, 0);
+    shineLight.position.set(-4, 2.5, 4);
+    scene.add(shineLight);
+    const shineStartedAt = window.performance.now();
+    let entranceShineComplete = !shouldPlayEntranceShine;
+
     // Subtle contact shadow floor
     const floorGeo = new THREE.PlaneGeometry(10, 10);
     const floorMat = new THREE.ShadowMaterial({ opacity: 0.12 });
@@ -184,12 +205,20 @@ export function Product3DPreview({
     let active = true;
     const animate = () => {
       if (!active) return;
+      if (!entranceShineComplete) {
+        const shineProgress = Math.min(1, (window.performance.now() - shineStartedAt) / 1_400);
+        shineLight.position.x = -4 + shineProgress * 8;
+        shineLight.intensity = shineProgress < 1 ? Math.sin(shineProgress * Math.PI) * 0.55 : 0;
+        if (shineProgress === 1) {
+          entranceShineComplete = true;
+          completedEntranceShines.add(productName);
+        }
+      }
       controls.update();
       renderer.render(scene, camera);
       animationFrameRef.current = requestAnimationFrame(animate);
     };
     animate();
-    setIsReady(true);
 
     // Resize handling
     const resizeObserver = new ResizeObserver((entries) => {
@@ -222,8 +251,9 @@ export function Product3DPreview({
       rendererRef.current = null;
       sceneRef.current = null;
       meshGroupRef.current = null;
+      onReadyChange?.(false);
     };
-  }, []);
+  }, [onReadyChange]);
 
   // Update autoRotate when state changes
   useEffect(() => {
@@ -231,6 +261,16 @@ export function Product3DPreview({
       controlsRef.current.autoRotate = autoRotate;
     }
   }, [autoRotate]);
+
+  useEffect(() => {
+    const camera = cameraRef.current;
+    const controls = controlsRef.current;
+    if (!isReady || !camera || !controls) return;
+
+    const direction = camera.position.clone().normalize();
+    camera.position.copy(direction.multiplyScalar(productProfile.cameraDistance));
+    controls.update();
+  }, [isReady, productProfile.cameraDistance]);
 
   // Build 3D Product Geometry & Apply Dynamic Texture
   useEffect(() => {
@@ -274,240 +314,18 @@ export function Product3DPreview({
       textureRef.current = texture;
     }
     texture.needsUpdate = true;
-    const textureVariants: THREE.Texture[] = [texture];
-
-    // Material sheen / roughness based on material name
-    const isGlossy = /gloss|waterproof|laminated/i.test(materialName);
-    const roughness = isGlossy ? 0.22 : 0.65;
-    const metalness = isGlossy ? 0.08 : 0.02;
-
-      const printMaterial = new THREE.MeshStandardMaterial({
-        map: texture,
-        roughness,
-        metalness,
-      });
-
-      const paperEdgeMaterial = new THREE.MeshStandardMaterial({
-        color: "#f1f5f9",
-        roughness: 0.85,
-        metalness: 0.0,
-      });
-
-      const backCoverMaterial = new THREE.MeshStandardMaterial({
-        color: background || "#f8fafc",
-        roughness: 0.7,
-        metalness: 0.02,
-      });
-
-      // Construct geometry from the catalog product profile.
-      if (productProfile.kind === "notebook") {
-        // 3D Notebook with Cover, Spine and Inner Pages
-        const bookW = 1.5;
-        const bookH = 2.1;
-        const bookD = 0.16;
-
-        // Cover materials: [right, left, top, bottom, front (artwork), back]
-        const bookMaterials = [
-          paperEdgeMaterial, // right (pages)
-          new THREE.MeshStandardMaterial({ color: "#334155", roughness: 0.4 }), // spine (left)
-          paperEdgeMaterial, // top (pages)
-          paperEdgeMaterial, // bottom (pages)
-          printMaterial,     // front (cover)
-          backCoverMaterial, // back
-        ];
-
-        const bookGeo = new THREE.BoxGeometry(bookW, bookH, bookD);
-        const bookMesh = new THREE.Mesh(bookGeo, bookMaterials);
-        bookMesh.castShadow = true;
-        bookMesh.receiveShadow = true;
-        group.add(bookMesh);
-
-        // Add subtle ribbon bookmark or band
-        const bandGeo = new THREE.BoxGeometry(bookW * 0.08, bookH + 0.02, bookD + 0.005);
-        const bandMat = new THREE.MeshStandardMaterial({
-          color: accent || "#3b82f6",
-          roughness: 0.4,
-        });
-        const band = new THREE.Mesh(bandGeo, bandMat);
-        band.position.set(-bookW * 0.35, 0, 0);
-        group.add(band);
-      } else if (productProfile.kind === "bottle-label") {
-        // 3D Water Bottle with wrap-around label
-        const bottleHeight = 2.4;
-        const bottleRadius = 0.55;
-
-        // Bottle body (stainless steel / translucent finish)
-        const bottleGeo = new THREE.CylinderGeometry(bottleRadius, bottleRadius, bottleHeight, 48);
-        const bottleMat = new THREE.MeshStandardMaterial({
-          color: "#e2e8f0",
-          roughness: 0.25,
-          metalness: 0.7,
-        });
-        const bottle = new THREE.Mesh(bottleGeo, bottleMat);
-        bottle.castShadow = true;
-        bottle.receiveShadow = true;
-        group.add(bottle);
-
-        // Bottle cap
-        const capGeo = new THREE.CylinderGeometry(0.35, 0.4, 0.45, 32);
-        const capMat = new THREE.MeshStandardMaterial({
-          color: "#0f172a",
-          roughness: 0.4,
-          metalness: 0.2,
-        });
-        const cap = new THREE.Mesh(capGeo, capMat);
-        cap.position.y = bottleHeight / 2 + 0.22;
-        group.add(cap);
-
-        // Cylindrical label wrapping around the bottle
-        const labelHeight = 1.0;
-        const labelRadius = bottleRadius + 0.006;
-        const labelGeo = new THREE.CylinderGeometry(
-          labelRadius,
-          labelRadius,
-          labelHeight,
-          48,
-          1,
-          true,
-          -Math.PI * 0.5,
-          Math.PI,
-        );
-        const labelMesh = new THREE.Mesh(labelGeo, printMaterial);
-        labelMesh.position.y = -0.1;
-        group.add(labelMesh);
-      } else if (productProfile.kind === "pencil-set") {
-        // A small set makes the selected product read as a pack, not one generic cylinder.
-        const pencilLength = 2.8;
-        const pencilRadius = 0.14;
-        const pencilTexture = texture.clone();
-        pencilTexture.center.set(0.5, 0.5);
-        pencilTexture.rotation = Math.PI / 2;
-        pencilTexture.needsUpdate = true;
-        textureVariants.push(pencilTexture);
-        const pencilPrintMaterial = new THREE.MeshStandardMaterial({
-          map: pencilTexture,
-          roughness,
-          metalness,
-        });
-        for (let index = -1; index <= 1; index += 1) {
-          const pencilGeo = new THREE.CylinderGeometry(pencilRadius, pencilRadius, pencilLength, 6);
-          const pencilMat = new THREE.MeshStandardMaterial({ color: background || "#f59e0b", roughness: 0.4 });
-          const pencil = new THREE.Mesh(pencilGeo, pencilMat);
-          pencil.position.x = index * 0.38;
-          pencil.rotation.z = index * 0.04;
-          pencil.castShadow = true;
-          group.add(pencil);
-
-          const ferrule = new THREE.Mesh(
-            new THREE.CylinderGeometry(pencilRadius * 1.02, pencilRadius * 1.02, 0.2, 16),
-            new THREE.MeshStandardMaterial({ color: "#d97706", metalness: 0.8, roughness: 0.3 }),
-          );
-          ferrule.position.y = pencilLength / 2 + 0.1;
-          pencil.add(ferrule);
-
-          const eraser = new THREE.Mesh(
-            new THREE.CylinderGeometry(pencilRadius * 0.98, pencilRadius * 0.98, 0.22, 16),
-            new THREE.MeshStandardMaterial({ color: "#fda4af", roughness: 0.9 }),
-          );
-          eraser.position.y = pencilLength / 2 + 0.31;
-          pencil.add(eraser);
-
-          if (index === 0) {
-            const printStrip = new THREE.Mesh(new THREE.PlaneGeometry(0.28, 1.8), pencilPrintMaterial);
-            printStrip.position.set(0, -0.1, pencilRadius + 0.006);
-            pencil.add(printStrip);
-          }
-        }
-      } else if (productProfile.kind === "geometry-box") {
-        const boxW = 2.7;
-        const boxH = 1.05;
-        const boxD = 0.34;
-        const metal = new THREE.MeshStandardMaterial({ color: "#94a3b8", roughness: 0.28, metalness: 0.78 });
-        const box = new THREE.Mesh(new THREE.BoxGeometry(boxW, boxH, boxD), [metal, metal, metal, metal, printMaterial, metal]);
-        box.castShadow = true;
-        box.receiveShadow = true;
-        group.add(box);
-        const seam = new THREE.Mesh(new THREE.BoxGeometry(boxW * 1.01, 0.025, boxD * 1.02), new THREE.MeshStandardMaterial({ color: "#475569", metalness: 0.7, roughness: 0.35 }));
-        seam.position.y = -boxH * 0.38;
-        group.add(seam);
-      } else if (productProfile.kind === "keychain-duo") {
-        for (const side of [-1, 1]) {
-          const tag = new THREE.Mesh(
-            new THREE.BoxGeometry(1.15, 0.78, 0.07),
-            [paperEdgeMaterial, paperEdgeMaterial, paperEdgeMaterial, paperEdgeMaterial, printMaterial, backCoverMaterial],
-          );
-          tag.position.set(side * 0.68, side * 0.12, 0);
-          tag.rotation.z = side * -0.08;
-          tag.castShadow = true;
-          group.add(tag);
-          const ring = new THREE.Mesh(
-            new THREE.TorusGeometry(0.16, 0.035, 12, 30),
-            new THREE.MeshStandardMaterial({ color: "#cbd5e1", metalness: 0.9, roughness: 0.2 }),
-          );
-          ring.position.set(side * 1.28, side * 0.12, 0);
-          group.add(ring);
-        }
-      } else if (productProfile.kind === "tag") {
-        // 3D Luggage / Backpack Tag
-        const tagW = 1.2;
-        const tagH = 2.0;
-        const tagD = 0.06;
-        const tagGeo = new THREE.BoxGeometry(tagW, tagH, tagD);
-        const tagMaterials = [
-          paperEdgeMaterial,
-          paperEdgeMaterial,
-          paperEdgeMaterial,
-          paperEdgeMaterial,
-          printMaterial,
-          backCoverMaterial,
-        ];
-        const tag = new THREE.Mesh(tagGeo, tagMaterials);
-        tag.castShadow = true;
-        tag.receiveShadow = true;
-        group.add(tag);
-
-        // Eyelet ring at top
-        const ringGeo = new THREE.TorusGeometry(0.12, 0.03, 16, 32);
-        const ringMat = new THREE.MeshStandardMaterial({
-          color: "#cbd5e1",
-          metalness: 0.9,
-          roughness: 0.2,
-        });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        ring.position.set(0, tagH / 2 + 0.05, 0);
-        group.add(ring);
-      } else {
-        // Standard Label Sheet / Name Slip Pack / Box
-        // Use realistic aspect ratio from surface definition
-        const ratio = primaryDef.width / primaryDef.height;
-        const cardW = ratio >= 1 ? 2.2 : 2.2 * ratio;
-        const cardH = ratio >= 1 ? 2.2 / ratio : 2.2;
-        const cardD = 0.08; // Pack thickness
-
-        const cardMaterials = [
-          paperEdgeMaterial, // right
-          paperEdgeMaterial, // left
-          paperEdgeMaterial, // top
-          paperEdgeMaterial, // bottom
-          printMaterial,     // front
-          backCoverMaterial, // back
-        ];
-
-        const cardGeo = new THREE.BoxGeometry(cardW, cardH, cardD);
-        const cardMesh = new THREE.Mesh(cardGeo, cardMaterials);
-        cardMesh.castShadow = true;
-        cardMesh.receiveShadow = true;
-        group.add(cardMesh);
-
-        // Add 2 subtle stacked cards beneath for realistic depth
-        for (let i = 1; i <= 2; i++) {
-          const underGeo = new THREE.BoxGeometry(cardW, cardH, 0.02);
-          const underMesh = new THREE.Mesh(underGeo, paperEdgeMaterial);
-          underMesh.position.set(0.02 * i, -0.02 * i, -cardD / 2 - 0.015 * i);
-          underMesh.castShadow = true;
-          group.add(underMesh);
-        }
-      }
+    const textureVariants = [
+      texture,
+      ...buildProductGeometry({
+        group,
+        kind: productProfile.kind,
+        primaryDef,
+        texture,
+        theme: productProfile.categoryTheme,
+      }),
+    ];
+    setIsReady(true);
+    onReadyChange?.(true);
 
     void preloadArtworkImages(document).then(() => {
       if (cancelled) return;
@@ -539,6 +357,7 @@ export function Product3DPreview({
     dimensionsMm,
     materialName,
     productProfile.kind,
+    onReadyChange,
   ]);
 
   // Camera presets
@@ -612,6 +431,7 @@ export function Product3DPreview({
       aria-label={`Interactive 3D preview for ${productName}`}
     >
       <canvas ref={canvasRef} className={styles.canvas} />
+      {!isReady && <div className={styles.loadingOverlay} role="status">Preparing 3D preview…</div>}
 
       {/* 3D Viewport Controls Overlay */}
       <div className={styles.controlsBar}>
@@ -712,7 +532,7 @@ export function Product3DPreview({
       </div>
 
       <div className={styles.interactionHint}>
-        <span>Drag to orbit • Scroll to zoom • Right click to pan</span>
+        <span>Drag to orbit &bull; Scroll to zoom &bull; Right click to pan</span>
       </div>
     </div>
   );

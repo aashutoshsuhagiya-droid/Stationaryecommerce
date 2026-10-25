@@ -124,7 +124,7 @@ export function CategoryMegaMenu() {
               </h3>
               <ul className="mega-menu-quick">
                 {quickLinks.map((link) => (
-                  <li key={link.href}>
+                  <li key={`${link.href}-${link.label}`}>
                     <Link href={link.href} onClick={() => setOpen(false)}>
                       <link.icon aria-hidden="true" />
                       <span>{link.label}</span>

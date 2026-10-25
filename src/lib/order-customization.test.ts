@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { maximumOrderJsonBytes, POST } from "../app/api/orders/route";
-import { createDemoOrder } from "./order-service";
+import { GET as getOrderByPath } from "../app/api/orders/[orderNumber]/route";
+import { GET as getOrderByQuery, maximumOrderJsonBytes, POST } from "../app/api/orders/route";
+import { createDemoOrder, toOrderTrackingSummary } from "./order-service";
 import { artworkDocumentSchema, createOrderSchema } from "./validation";
 
 const artwork = {
@@ -48,6 +49,14 @@ const artwork = {
   }],
 };
 
+const orderArtwork = {
+  ...artwork,
+  surfaces: artwork.surfaces.map((surface) => ({
+    ...surface,
+    layers: surface.layers.filter((layer) => layer.type === "text"),
+  })),
+};
+
 const completeOrder = {
   items: [{
     productId: "prod-everyday-name-slips",
@@ -58,10 +67,10 @@ const completeOrder = {
       fields: { name: "Aarav Mehta", font: "rounded" },
       previewVersion: 1,
       configurationId: "configuration-test-1",
-      dimensionPresetId: "size-1-45-x-12-mm",
-      dimensionLabel: "45 x 12 mm",
+      dimensionPresetId: "size-1-mixed-size-pack",
+      dimensionLabel: "Mixed size pack",
       displayUnit: "mm" as const,
-      artwork,
+      artwork: orderArtwork,
       presentation: {
         name: "Aarav Mehta",
         detail: "Class 4 B",
@@ -69,8 +78,8 @@ const completeOrder = {
         fontLabel: "Friendly rounded",
         textColor: "#17324d",
         backgroundColor: "#fff4ce",
-        packLabel: "72 labels",
-        materialLabel: "Matte vinyl",
+        packLabel: "Browser-authored pack",
+        materialLabel: "Browser-authored material",
       },
       quote: {
         id: "quote-test-1",
@@ -94,20 +103,84 @@ const completeOrder = {
   acceptedTerms: true as const,
 };
 
-test("validated customization metadata survives the authoritative order snapshot", () => {
+test("validated customization metadata survives without trusting browser quote audit data", () => {
   const parsed = createOrderSchema.parse(completeOrder);
   const { order } = createDemoOrder(parsed, `metadata-${crypto.randomUUID()}`);
   const item = order.items[0];
 
-  assert.deepEqual(item.customization, parsed.items[0].customization);
   assert.equal(item.customization?.configurationId, "configuration-test-1");
-  assert.equal(item.customization?.artwork?.surfaces[0].layers.length, 2);
-  const imageLayer = item.customization?.artwork?.surfaces[0].layers.find((layer) => layer.type === "image");
-  assert.equal(imageLayer?.imageFit, "stretch");
+  assert.equal(item.customization?.artwork?.surfaces[0].layers.length, 1);
   assert.equal(item.customization?.presentation?.templateLabel, "Geo Pop");
-  assert.equal(item.customization?.quote?.unitPricePaise, 1);
+  assert.equal(item.customization?.dimensionLabel, "Mixed size pack");
+  assert.notEqual(item.customization?.presentation?.packLabel, "Browser-authored pack");
+  assert.notEqual(item.customization?.presentation?.materialLabel, "Browser-authored material");
+  assert.equal(item.customization?.quote, undefined);
   assert.equal(item.unitPricePaise, 38_900);
-  assert.notEqual(item.unitPricePaise, item.customization?.quote?.unitPricePaise);
+});
+
+test("public tracking summaries omit contact, address, and artwork data", () => {
+  const parsed = createOrderSchema.parse(completeOrder);
+  const { order } = createDemoOrder(parsed, `tracking-${crypto.randomUUID()}`);
+  const summary = toOrderTrackingSummary(order);
+
+  assert.deepEqual(Object.keys(summary).sort(), [
+    "currency",
+    "fulfillmentStatus",
+    "itemCount",
+    "orderNumber",
+    "paymentStatus",
+    "totalPaise",
+    "updatedAt",
+  ]);
+  assert.equal(summary.itemCount, 1);
+  assert.equal("shippingAddress" in summary, false);
+  assert.equal("items" in summary, false);
+});
+
+test("both public tracking handlers return only the privacy-safe summary", async () => {
+  const parsed = createOrderSchema.parse(completeOrder);
+  const { order } = createDemoOrder(parsed, `tracking-routes-${crypto.randomUUID()}`);
+  const assertPrivateFieldsAreOmitted = async (response: Response) => {
+    assert.equal(response.status, 200);
+    const payload = await response.json() as { data: Record<string, unknown> };
+    assert.equal("shippingAddress" in payload.data, false);
+    assert.equal("items" in payload.data, false);
+    assert.equal(payload.data.orderNumber, order.orderNumber);
+  };
+
+  await assertPrivateFieldsAreOmitted(await getOrderByQuery(new Request(
+    `http://localhost/api/orders?orderNumber=${encodeURIComponent(order.orderNumber)}&email=${encodeURIComponent(order.shippingAddress.email)}`,
+    { headers: { "X-Forwarded-For": `tracking-query-${crypto.randomUUID()}` } },
+  )));
+  await assertPrivateFieldsAreOmitted(await getOrderByPath(
+    new Request(
+      `http://localhost/api/orders/${encodeURIComponent(order.orderNumber)}?email=${encodeURIComponent(order.shippingAddress.email)}`,
+      { headers: { "X-Forwarded-For": `tracking-path-${crypto.randomUUID()}` } },
+    ),
+    { params: Promise.resolve({ orderNumber: order.orderNumber }) },
+  ));
+});
+
+test("idempotent replay ignores insignificant object key ordering", () => {
+  const firstInput = createOrderSchema.parse(completeOrder);
+  const replayInput = structuredClone(firstInput);
+  replayInput.items[0].customization!.fields = {
+    font: firstInput.items[0].customization!.fields.font,
+    name: firstInput.items[0].customization!.fields.name,
+  };
+  const idempotencyKey = `canonical-${crypto.randomUUID()}`;
+
+  const first = createDemoOrder(firstInput, idempotencyKey);
+  const replay = createDemoOrder(replayInput, idempotencyKey);
+  assert.equal(first.replayed, false);
+  assert.equal(replay.replayed, true);
+  assert.equal(replay.order.orderNumber, first.order.orderNumber);
+});
+
+test("accepted order notes are preserved in the order snapshot", () => {
+  const parsed = createOrderSchema.parse({ ...completeOrder, notes: "Please verify spelling." });
+  const { order } = createDemoOrder(parsed, `notes-${crypto.randomUUID()}`);
+  assert.equal(order.notes, "Please verify spelling.");
 });
 
 test("artwork layers are strict discriminated records with validated image data URLs", () => {

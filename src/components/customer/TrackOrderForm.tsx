@@ -3,12 +3,21 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, LoaderCircle, PackageSearch, ShieldCheck } from "lucide-react";
-import type { Order } from "@/lib/types";
+import type { CurrencyCode, FulfillmentStatus, PaymentStatus } from "@/lib/types";
 import styles from "./customer.module.css";
 
-type OrderResponse = { data?: Order; error?: { message?: string } };
+type TrackingSummary = {
+  orderNumber: string;
+  currency: CurrencyCode;
+  paymentStatus: PaymentStatus;
+  fulfillmentStatus: FulfillmentStatus;
+  itemCount: number;
+  totalPaise: number;
+  updatedAt: string;
+};
+type OrderResponse = { data?: TrackingSummary; error?: { message?: string } };
 
-const statusLabels: Record<Order["fulfillmentStatus"], string> = {
+const statusLabels: Record<FulfillmentStatus, string> = {
   order_received: "Order received",
   customization_review: "Personalisation review",
   production_approved: "Production approved",
@@ -25,7 +34,7 @@ const statusLabels: Record<Order["fulfillmentStatus"], string> = {
 export default function TrackOrderForm({ initialOrder = "" }: { initialOrder?: string }) {
   const [orderNumber, setOrderNumber] = useState(initialOrder);
   const [email, setEmail] = useState("");
-  const [order, setOrder] = useState<Order | null>(null);
+  const [order, setOrder] = useState<TrackingSummary | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -70,7 +79,7 @@ export default function TrackOrderForm({ initialOrder = "" }: { initialOrder?: s
           <dl>
             <div><dt>Order</dt><dd>{order.orderNumber}</dd></div>
             <div><dt>Payment</dt><dd>{order.paymentStatus.replaceAll("_", " ")}</dd></div>
-            <div><dt>Items</dt><dd>{order.items.length}</dd></div>
+            <div><dt>Items</dt><dd>{order.itemCount}</dd></div>
             <div><dt>Order total</dt><dd>{new Intl.NumberFormat("en-IN", { style: "currency", currency: order.currency, maximumFractionDigits: 0 }).format(order.totalPaise / 100)}</dd></div>
           </dl>
           <p>Last updated {new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeStyle: "short" }).format(new Date(order.updatedAt))}</p>

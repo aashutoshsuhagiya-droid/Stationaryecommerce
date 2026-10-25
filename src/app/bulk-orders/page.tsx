@@ -47,8 +47,8 @@ export default async function BulkOrdersPage({
           <div className={styles.bulkLayout}>
             <div>
               <p className={styles.eyebrow}>Built for organised ordering</p>
-              <h2 style={{ margin: "0 0 16px", color: "#17324d", fontSize: 36, lineHeight: 1.15, letterSpacing: 0 }}>Start with a clear brief. Get a considered quote.</h2>
-              <p style={{ color: "#64748b", lineHeight: 1.75, marginBottom: 30 }}>Bulk pricing is not assumed or applied automatically. It depends on the product, quantity, personalisation complexity, artwork requirements and delivery plan.</p>
+              <h2 style={{ margin: "0 0 16px", color: "var(--ink)", fontSize: 36, lineHeight: 1.15, letterSpacing: 0 }}>Start with a clear brief. Get a considered quote.</h2>
+              <p style={{ color: "var(--slate)", lineHeight: 1.75, marginBottom: 30 }}>Bulk pricing is not assumed or applied automatically. It depends on the product, quantity, personalisation complexity, artwork requirements and delivery plan.</p>
               <div className={styles.bulkBenefits}>
                 <div className={styles.bulkBenefit}><span><FileSpreadsheet aria-hidden="true" /></span><div><h3>One row, one person, one clear record</h3><p>For multi-name orders, a structured spreadsheet keeps each person’s text associated with the right item.</p></div></div>
                 <div className={styles.bulkBenefit}><span><UsersRound aria-hidden="true" /></span><div><h3>Useful for varied groups</h3><p>Schools, activity groups, corporate teams, events and resellers can request a product-specific review.</p></div></div>

@@ -18,7 +18,7 @@ function visualKind(artwork = "") {
   return "labels";
 }
 
-export function ProductVisual({ artwork, name = "Personalised product", accent = "#52b7aa", background = "#e8f5f2", className = "", personalisedName = "Aarav M." }: ProductVisualProps) {
+export function ProductVisual({ artwork, name = "Personalised product", accent = "var(--teal)", background = "var(--cloud)", className = "", personalisedName = "Aarav M." }: ProductVisualProps) {
   const kind = visualKind(artwork);
   const style = { "--pv-accent": accent, "--visual-bg": background } as CSSProperties;
 

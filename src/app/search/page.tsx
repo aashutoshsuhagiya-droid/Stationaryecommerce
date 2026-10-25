@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ProductCatalog } from "@/components/commerce/ProductCatalog";
+import { CatalogSkeleton } from "@/components/ui/StorefrontSkeletons";
 
 export const metadata: Metadata = { title: "Search products" };
 
 export default function SearchPage() {
-  return <Suspense fallback={<div className="catalog-loading shell">Searching…</div>}><ProductCatalog searchMode /></Suspense>;
+  return <Suspense fallback={<CatalogSkeleton />}><ProductCatalog searchMode /></Suspense>;
 }

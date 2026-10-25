@@ -1,42 +1,13 @@
 import { NextResponse } from "next/server";
 
-import { apiError, validationError } from "@/lib/http";
-import { CommerceError, createDemoOrder, getDemoOrder } from "@/lib/order-service";
+import { apiError, hasJsonContentType, readLimitedJson, RequestTooLargeError, validationError } from "@/lib/http";
+import { CommerceError, createDemoOrder, getDemoOrder, toOrderTrackingSummary } from "@/lib/order-service";
+import { consumeRateLimit, requestIdentifier } from "@/lib/rate-limit";
 import { createOrderSchema, orderLookupSchema } from "@/lib/validation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maximumOrderJsonBytes = 3_500_000;
-
-class RequestTooLargeError extends Error {}
-
-async function readLimitedJson(request: Request): Promise<unknown> {
-  if (!request.body) throw new SyntaxError("The request body must be valid JSON.");
-  const reader = request.body.getReader();
-  const decoder = new TextDecoder("utf-8", { fatal: true });
-  let totalBytes = 0;
-  let body = "";
-
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      totalBytes += value.byteLength;
-      if (totalBytes > maximumOrderJsonBytes) {
-        await reader.cancel();
-        throw new RequestTooLargeError();
-      }
-      body += decoder.decode(value, { stream: true });
-    }
-    body += decoder.decode();
-    return JSON.parse(body) as unknown;
-  } catch (error) {
-    if (error instanceof RequestTooLargeError) throw error;
-    throw new SyntaxError("The request body must be valid UTF-8 JSON.");
-  } finally {
-    reader.releaseLock();
-  }
-}
 
 export async function POST(request: Request) {
   try {
@@ -49,21 +20,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const contentType = request.headers.get("content-type") ?? "";
-    if (!contentType.toLowerCase().includes("application/json")) {
+    if (!hasJsonContentType(request)) {
       return apiError(415, "UNSUPPORTED_MEDIA_TYPE", "Submit the order request as JSON.");
     }
 
-    const contentLength = Number(request.headers.get("content-length") ?? 0);
-    if (Number.isFinite(contentLength) && contentLength > maximumOrderJsonBytes) {
-      return apiError(
-        413,
-        "REQUEST_TOO_LARGE",
-        "The order request is too large. Reduce embedded preview artwork and try again.",
-      );
-    }
-
-    const body = await readLimitedJson(request);
+    const body = await readLimitedJson(request, maximumOrderJsonBytes);
     const parsed = createOrderSchema.safeParse(body);
     if (!parsed.success) return validationError(parsed.error);
 
@@ -103,6 +64,18 @@ export async function POST(request: Request) {
 }
 
 export function GET(request: Request) {
+  const rateLimit = consumeRateLimit({
+    namespace: "order-lookup",
+    identifier: requestIdentifier(request),
+    limit: 20,
+    windowMs: 60_000,
+  });
+  if (!rateLimit.allowed) {
+    const response = apiError(429, "RATE_LIMITED", "Too many order lookups. Please wait and try again.");
+    response.headers.set("Retry-After", String(rateLimit.retryAfterSeconds));
+    response.headers.set("Cache-Control", "no-store");
+    return response;
+  }
   const url = new URL(request.url);
   const parsed = orderLookupSchema.safeParse({
     orderNumber: url.searchParams.get("orderNumber"),
@@ -119,7 +92,7 @@ export function GET(request: Request) {
     );
   }
   return NextResponse.json(
-    { data: order, meta: { persistence: "process-memory-demo" } },
+    { data: toOrderTrackingSummary(order), meta: { persistence: "process-memory-demo" } },
     { headers: { "Cache-Control": "no-store" } },
   );
 }

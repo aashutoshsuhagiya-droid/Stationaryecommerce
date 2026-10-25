@@ -117,6 +117,7 @@ export default function BulkPersonalizationCsv({
     if (issues.length > 0) {
       setFileIssues(issues);
       publish(result, allowDuplicateNames, issues);
+      event.target.value = "";
       return;
     }
 
@@ -126,6 +127,7 @@ export default function BulkPersonalizationCsv({
       if (parsed.fileIssues.length > 0) {
         setFileIssues(parsed.fileIssues);
         publish(result, allowDuplicateNames, parsed.fileIssues);
+        event.target.value = "";
         return;
       }
       setFileIssues([]);
@@ -137,6 +139,7 @@ export default function BulkPersonalizationCsv({
       const readIssues = ["The CSV could not be read. Choose the file again."];
       setFileIssues(readIssues);
       publish(result, allowDuplicateNames, readIssues);
+      event.target.value = "";
     } finally {
       setReading(false);
     }
@@ -161,7 +164,7 @@ export default function BulkPersonalizationCsv({
           }
         : row,
     );
-    const next = validateBulkPersonalizationRows(nextRows);
+    const next = validateBulkPersonalizationRows(nextRows, { preserveWhitespace: true });
     setResult(next);
     publish(next);
   }
@@ -170,6 +173,7 @@ export default function BulkPersonalizationCsv({
     if (!result) return;
     const next = validateBulkPersonalizationRows(
       result.rows.filter((row) => row.rowNumber !== rowNumber),
+      { preserveWhitespace: true },
     );
     setResult(next);
     const nextPageCount = Math.max(1, Math.ceil(next.rows.length / PAGE_SIZE));
@@ -184,7 +188,7 @@ export default function BulkPersonalizationCsv({
     const next = validateBulkPersonalizationRows([
       ...currentRows,
       { rowNumber: nextRowNumber, name: "", details: "", quantity: 1 },
-    ]);
+    ], { preserveWhitespace: true });
     setResult(next);
     const nextPage = Math.max(1, Math.ceil(next.rows.length / PAGE_SIZE));
     setPage(nextPage);

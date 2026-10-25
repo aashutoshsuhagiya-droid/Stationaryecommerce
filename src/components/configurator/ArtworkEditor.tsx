@@ -18,7 +18,9 @@ import {
   ZoomOut,
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
+import { DesignCompletionMeter } from "./DesignCompletionMeter";
 import { getReadableTextColor } from "./artwork-color";
+import type { DesignCompletion } from "./design-completion";
 import type {
   ArtworkDocument,
   ArtworkLayer,
@@ -36,6 +38,11 @@ interface ArtworkEditorProps {
   background: string;
   foreground: string;
   accent: string;
+  personalizationFontOptions?: Array<{
+    value: "rounded" | "sans" | "serif";
+    label: string;
+  }>;
+  designCompletion: DesignCompletion;
   onChange: (document: ArtworkDocument) => void;
   footer?: React.ReactNode;
 }
@@ -129,6 +136,8 @@ export function ArtworkEditor({
   background,
   foreground,
   accent,
+  personalizationFontOptions,
+  designCompletion,
   onChange,
   footer,
 }: ArtworkEditorProps) {
@@ -157,6 +166,13 @@ export function ArtworkEditor({
   const physicalWidthMm = surfaceDefinition?.physicalWidthMm;
   const physicalHeightMm = surfaceDefinition?.physicalHeightMm;
   const targetDpi = surfaceDefinition?.targetDpi ?? 300;
+  const selectedFontOptions = selectedLayer?.id === "personalization-name" && personalizationFontOptions?.length
+    ? personalizationFontOptions
+    : [
+        { value: "rounded" as const, label: "Rounded" },
+        { value: "sans" as const, label: "Sans" },
+        { value: "serif" as const, label: "Serif" },
+      ];
 
   const warnings = useMemo(() => {
     if (!activeSurface) return [];
@@ -579,6 +595,8 @@ export function ArtworkEditor({
         <button type="button" onClick={resetSurface} disabled={!activeSurface?.layers.length} title="Reset surface"><RotateCcw /></button>
       </div>
 
+      <DesignCompletionMeter completion={designCompletion} placement="editor" />
+
       <div className={styles.surfaceTabs} role="tablist" aria-label="Printable surface">
         {document.surfaces.map((surface) => (
           <button
@@ -738,7 +756,7 @@ export function ArtworkEditor({
             {selectedLayer.type === "text" && (
               <>
                 <div className={styles.propertyGrid}>
-                  <label><span>Font</span><select value={selectedLayer.fontFamily} onChange={(event) => updateLayer(selectedLayer.id, { fontFamily: event.target.value as ArtworkLayer["fontFamily"] })}><option value="rounded">Rounded</option><option value="sans">Sans</option><option value="serif">Serif</option></select></label>
+                  <label><span>Font</span><select value={selectedLayer.fontFamily} onChange={(event) => updateLayer(selectedLayer.id, { fontFamily: event.target.value as ArtworkLayer["fontFamily"] })}>{selectedFontOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
                   <label><span>Colour</span><input type="color" value={selectedLayer.color} onChange={(event) => updateLayer(selectedLayer.id, { color: event.target.value })} /></label>
                   <label><span>Font size</span><input type="number" min="8" max="180" value={selectedLayer.fontSize ?? 34} onChange={(event) => updateLayer(selectedLayer.id, { fontSize: Math.max(8, Number(event.target.value) || 8) })} /></label>
                 </div>

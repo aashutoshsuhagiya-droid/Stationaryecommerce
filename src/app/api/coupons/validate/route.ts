@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import {
+  hasJsonContentType,
+  readLimitedJson,
+  RequestTooLargeError,
+} from "@/lib/http";
 import { consumeRateLimit, requestIdentifier } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maximumCouponJsonBytes = 2_048;
 
 const couponRequestSchema = z
   .object({
@@ -63,22 +69,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const contentType = request.headers.get("content-type") ?? "";
-  if (!contentType.toLowerCase().includes("application/json")) {
+  if (!hasJsonContentType(request)) {
     return couponError(415, "UNSUPPORTED_MEDIA_TYPE", "Submit coupon checks as JSON.", {
       remaining: rateLimit.remaining,
     });
   }
 
   try {
-    const rawBody = await request.text();
-    if (Buffer.byteLength(rawBody, "utf8") > 2_048) {
-      return couponError(413, "REQUEST_TOO_LARGE", "The coupon request is too large.", {
-        remaining: rateLimit.remaining,
-      });
-    }
-
-    const parsed = couponRequestSchema.safeParse(JSON.parse(rawBody) as unknown);
+    const parsed = couponRequestSchema.safeParse(
+      await readLimitedJson(request, maximumCouponJsonBytes),
+    );
     if (!parsed.success) {
       return couponError(
         400,
@@ -102,6 +102,11 @@ export async function POST(request: Request) {
       { remaining: rateLimit.remaining },
     );
   } catch (error) {
+    if (error instanceof RequestTooLargeError) {
+      return couponError(413, "REQUEST_TOO_LARGE", "The coupon request is too large.", {
+        remaining: rateLimit.remaining,
+      });
+    }
     if (error instanceof SyntaxError) {
       return couponError(400, "INVALID_JSON", "The request body must be valid JSON.", {
         remaining: rateLimit.remaining,

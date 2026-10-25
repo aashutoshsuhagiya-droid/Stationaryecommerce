@@ -45,7 +45,7 @@ export default function WishlistGrid({ products }: { products: WishlistProduct[]
               <Sparkles aria-hidden="true" />
               <span>{item.name.split(/[·\-]/)[0].trim().slice(0, 14).toUpperCase()}</span>
               <small>made for you</small>
-              <button type="button" onClick={() => toggleWishlist(item.id)} aria-label={`Remove ${item.name} from wishlist`}><Trash2 aria-hidden="true" /></button>
+              <button className={styles.wishlistRemove} type="button" onClick={() => toggleWishlist(item.id)} aria-label={`Remove ${item.name} from wishlist`}><Trash2 aria-hidden="true" /></button>
             </div>
             <div className={styles.wishlistBody}>
               <p className={styles.productMeta}>{item.category}{item.packSize ? ` · Pack of ${item.packSize}` : ""}</p>

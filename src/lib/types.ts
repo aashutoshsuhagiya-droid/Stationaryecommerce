@@ -269,6 +269,7 @@ export interface Order {
   currency: CurrencyCode;
   items: OrderItemSnapshot[];
   shippingAddress: AddressSnapshot;
+  notes?: string;
   paymentStatus: PaymentStatus;
   fulfillmentStatus: FulfillmentStatus;
   subtotalPaise: number;

@@ -198,18 +198,21 @@ function summarizeRows(
 
 export function validateBulkPersonalizationRows(
   sourceRows: ReadonlyArray<BulkPersonalizationRowInput | BulkPersonalizationRow>,
+  options: { preserveWhitespace?: boolean } = {},
 ): BulkPersonalizationParseResult {
   const fileIssues =
     sourceRows.length > bulkPersonalizationPolicy.maxRows
       ? [`Personalization is limited to ${bulkPersonalizationPolicy.maxRows} rows.`]
       : [];
   const rows = sourceRows.slice(0, bulkPersonalizationPolicy.maxRows).map((source) => {
-    const name = source.name.trim();
-    const details = source.details.trim();
+    const normalizedName = source.name.trim();
+    const normalizedDetails = source.details.trim();
+    const name = options.preserveWhitespace ? source.name : normalizedName;
+    const details = options.preserveWhitespace ? source.details : normalizedDetails;
     const issues: BulkPersonalizationIssue[] = [];
-    if (!name) {
+    if (!normalizedName) {
       issues.push(errorIssue("MISSING_NAME", "A name is required.", "name"));
-    } else if (name.length > bulkPersonalizationPolicy.maxNameLength) {
+    } else if (normalizedName.length > bulkPersonalizationPolicy.maxNameLength) {
       issues.push(
         errorIssue(
           "NAME_TOO_LONG",
@@ -218,7 +221,7 @@ export function validateBulkPersonalizationRows(
         ),
       );
     }
-    if (details.length > bulkPersonalizationPolicy.maxDetailsLength) {
+    if (normalizedDetails.length > bulkPersonalizationPolicy.maxDetailsLength) {
       issues.push(
         errorIssue(
           "DETAILS_TOO_LONG",

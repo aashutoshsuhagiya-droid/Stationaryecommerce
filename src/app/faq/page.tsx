@@ -76,7 +76,7 @@ export default function FaqPage() {
       </section>
       <section className={styles.sectionSoft}>
         <div className={styles.narrowContainer} style={{ textAlign: "center" }}>
-          <MessageCircleQuestion aria-hidden="true" style={{ width: 34, height: 34, color: "#168c80", marginBottom: 15 }} />
+          <MessageCircleQuestion aria-hidden="true" style={{ width: 34, height: 34, color: "var(--teal)", marginBottom: 15 }} />
           <SectionHeading title="Still need a hand?" description="Share the product or order context and our support team can give you a more useful answer." align="center" />
           <PrimaryLink href="/contact">Contact customer care</PrimaryLink>
           <p className={styles.helperText}>For a placed order, include the order number—but never send a password, card detail or one-time code.</p>

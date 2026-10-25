@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { CustomizationStudio } from "@/components/commerce/CustomizationStudio";
+import { ProductEngagement } from "@/components/commerce/ProductEngagement";
 import { designTemplates, getProductBySlug, products } from "@/lib/data";
 import { buildProductConfiguration } from "@/lib/product-configuration";
 
@@ -20,8 +21,26 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   if (!product) notFound();
   const templates = designTemplates.filter((template) => product.templateIds.includes(template.id) && template.active);
   const configuration = buildProductConfiguration(product);
+  const relatedProducts = [
+    ...products.filter((candidate) => (
+      candidate.id !== product.id && candidate.categorySlug === product.categorySlug
+    )),
+    ...products.filter((candidate) => (
+      candidate.id !== product.id
+      && candidate.categorySlug !== product.categorySlug
+      && candidate.featured
+    )),
+    ...products.filter((candidate) => candidate.id !== product.id),
+  ].filter((candidate, index, list) => (
+    list.findIndex((item) => item.id === candidate.id) === index
+  )).slice(0, 4);
   return <>
     <div className="product-breadcrumb shell"><div className="breadcrumbs"><Link href="/">Home</Link><ChevronRight /><Link href="/products">Products</Link><ChevronRight /><Link href={`/products?category=${product.categorySlug}`}>{product.category}</Link><ChevronRight /><span>{product.name}</span></div></div>
     <CustomizationStudio product={product} templates={templates} configuration={configuration} />
+    <ProductEngagement
+      currentProductId={product.id}
+      categorySlug={product.categorySlug}
+      relatedProducts={relatedProducts}
+    />
   </>;
 }

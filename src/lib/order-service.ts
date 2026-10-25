@@ -1,9 +1,10 @@
 import { createHash, randomUUID } from "node:crypto";
 
 import { CommerceError } from "./commerce-error";
-import { sampleOrder } from "./data";
+import { designTemplates, getProductById, sampleOrder } from "./data";
+import { buildProductConfiguration } from "./product-configuration";
 import { priceCatalogItem } from "./pricing-service";
-import type { Order, OrderItemSnapshot } from "./types";
+import type { Order, OrderItemSnapshot, PersonalizationValues } from "./types";
 import type { CreateOrderInput, OrderItemInput } from "./validation";
 
 export { CommerceError } from "./commerce-error";
@@ -31,8 +32,103 @@ if (process.env.NODE_ENV !== "production") {
 
 const normalizeOrderNumber = (orderNumber: string) => orderNumber.trim().toUpperCase();
 
+function canonicalJson(value: unknown): string {
+  if (value === null || typeof value !== "object") return JSON.stringify(value) ?? "null";
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  const record = value as Record<string, unknown>;
+  return `{${Object.keys(record)
+    .sort()
+    .map((key) => `${JSON.stringify(key)}:${canonicalJson(record[key])}`)
+    .join(",")}}`;
+}
+
+function createOrderCustomization(
+  input: OrderItemInput,
+  priced: ReturnType<typeof priceCatalogItem>,
+): PersonalizationValues | undefined {
+  const submitted = input.customization;
+  if (!submitted) return undefined;
+  const product = getProductById(priced.productId);
+  if (!product) {
+    throw new CommerceError(404, "PRODUCT_NOT_FOUND", "The selected product no longer exists.");
+  }
+  const configuration = buildProductConfiguration(product);
+  const preset = submitted.dimensionPresetId
+    ? configuration.dimensions.presets.find((candidate) => candidate.id === submitted.dimensionPresetId)
+    : configuration.dimensions.presets.find((candidate) => candidate.id === configuration.dimensions.defaultPresetId);
+  if (!preset) {
+    throw new CommerceError(
+      422,
+      "DIMENSION_PRESET_INVALID",
+      "The selected dimensions are not available for this product.",
+      { productId: product.id, dimensionPresetId: submitted.dimensionPresetId },
+    );
+  }
+  if (submitted.dimensionLabel && submitted.dimensionLabel.trim() !== preset.label) {
+    throw new CommerceError(
+      422,
+      "DIMENSION_LABEL_MISMATCH",
+      "The submitted dimension label does not match the selected catalog preset.",
+      { productId: product.id, dimensionPresetId: preset.id },
+    );
+  }
+  const supportedUnits = configuration.dimensions.supportedDisplayUnits;
+  const displayUnit = submitted.displayUnit ?? supportedUnits[0] ?? configuration.dimensions.canonicalUnit;
+  if (
+    (supportedUnits.length > 0 && !supportedUnits.includes(displayUnit)) ||
+    (supportedUnits.length === 0 && displayUnit !== configuration.dimensions.canonicalUnit)
+  ) {
+    throw new CommerceError(
+      422,
+      "DISPLAY_UNIT_INVALID",
+      "The selected measurement unit is not available for this product.",
+      { productId: product.id, displayUnit },
+    );
+  }
+
+  const template = submitted.templateId
+    ? designTemplates.find((candidate) => candidate.id === submitted.templateId)
+    : undefined;
+  const fontField = product.customizationFields.find((field) => field.id === "font");
+  const fontValue = submitted.fields.font;
+  const fontLabel = fontField?.options?.find((option) => option.value === fontValue)?.label
+    ?? fontValue
+    ?? "Product default";
+  const nameLayer = submitted.artwork?.surfaces
+    .flatMap((surface) => surface.layers)
+    .find((layer) => layer.id === "personalization-name" && layer.type === "text");
+  const name = submitted.fields.name?.trim() || product.name;
+  const detail = submitted.fields["class-details"]?.trim() || submitted.fields.subtitle?.trim();
+  const {
+    quote: _untrustedQuote,
+    presentation: _untrustedPresentation,
+    dimensionPresetId: _untrustedDimensionPresetId,
+    dimensionLabel: _untrustedDimensionLabel,
+    displayUnit: _untrustedDisplayUnit,
+    ...stable
+  } = submitted;
+
+  return {
+    ...stable,
+    dimensionPresetId: preset.id,
+    dimensionLabel: preset.label,
+    displayUnit,
+    presentation: {
+      name,
+      ...(detail ? { detail } : {}),
+      templateLabel: template?.name ?? "Product default",
+      fontLabel,
+      textColor: nameLayer?.type === "text" ? nameLayer.color : template?.preview.foreground ?? "#17324d",
+      backgroundColor: template?.preview.background ?? "#ffffff",
+      packLabel: priced.productSnapshot.variantName,
+      materialLabel: priced.productSnapshot.material,
+    },
+  };
+}
+
 function createOrderItem(input: OrderItemInput): OrderItemSnapshot {
   const priced = priceCatalogItem(input);
+  const customization = createOrderCustomization(input, priced);
 
   return {
     id: randomUUID(),
@@ -44,7 +140,7 @@ function createOrderItem(input: OrderItemInput): OrderItemSnapshot {
     image: priced.image,
     quantity: priced.quantity,
     unitPricePaise: priced.unitPricePaise,
-    ...(input.customization ? { customization: input.customization } : {}),
+    ...(customization ? { customization } : {}),
     lineTotalPaise: priced.lineTotalPaise,
     productSnapshot: priced.productSnapshot,
   };
@@ -61,7 +157,7 @@ function makeOrderNumber() {
 }
 
 export function createDemoOrder(input: CreateOrderInput, idempotencyKey: string) {
-  const payloadHash = createHash("sha256").update(JSON.stringify(input)).digest("hex");
+  const payloadHash = createHash("sha256").update(canonicalJson(input)).digest("hex");
   const previousRequest = demoStore.idempotency.get(idempotencyKey);
   if (previousRequest) {
     if (previousRequest.payloadHash !== payloadHash) {
@@ -97,6 +193,7 @@ export function createDemoOrder(input: CreateOrderInput, idempotencyKey: string)
     currency: "INR",
     items,
     shippingAddress: input.shippingAddress,
+    ...(input.notes ? { notes: input.notes } : {}),
     paymentStatus: "pending",
     fulfillmentStatus: "order_received",
     subtotalPaise,
@@ -118,6 +215,18 @@ export function getDemoOrder(orderNumber: string, email?: string) {
   if (!order) return undefined;
   if (email && order.shippingAddress.email.toLowerCase() !== email.toLowerCase()) return undefined;
   return order;
+}
+
+export function toOrderTrackingSummary(order: Order) {
+  return {
+    orderNumber: order.orderNumber,
+    currency: order.currency,
+    paymentStatus: order.paymentStatus,
+    fulfillmentStatus: order.fulfillmentStatus,
+    itemCount: order.items.length,
+    totalPaise: order.totalPaise,
+    updatedAt: order.updatedAt,
+  };
 }
 
 export function bindProviderOrder(orderNumber: string, providerOrderId: string) {

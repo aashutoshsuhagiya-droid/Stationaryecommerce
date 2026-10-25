@@ -96,3 +96,14 @@ export function getArtworkLayersInRenderOrder(layers: ArtworkLayer[]) {
     ...layers.filter((layer) => layer.type === "text"),
   ];
 }
+
+export function removePreviewImageLayers(document: ArtworkDocument): ArtworkDocument {
+  let changed = false;
+  const surfaces = document.surfaces.map((surface) => {
+    const layers = surface.layers.filter((layer) => layer.type !== "image");
+    if (layers.length === surface.layers.length) return surface;
+    changed = true;
+    return { ...surface, layers };
+  });
+  return changed ? { ...document, surfaces } : document;
+}

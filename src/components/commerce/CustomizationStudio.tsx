@@ -22,9 +22,11 @@ import {
   Sparkles,
   Truck,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArtworkEditor } from "@/components/configurator/ArtworkEditor";
+import { DesignCompletionMeter } from "@/components/configurator/DesignCompletionMeter";
 import { setPersonalizedNameColor } from "@/components/configurator/artwork-color";
+import { calculateDesignCompletion } from "@/components/configurator/design-completion";
 import { downloadArtworkDesign } from "@/components/configurator/design-export";
 import {
   createArtworkDocument,
@@ -34,16 +36,19 @@ import {
 } from "@/components/configurator/artwork-types";
 import configuratorStyles from "@/components/configurator/configurator.module.css";
 import { useStore } from "@/components/store/StoreProvider";
+import { PreviewSkeleton } from "@/components/ui/StorefrontSkeletons";
+import { useScrollReveal } from "@/components/ui/use-scroll-reveal";
 import { buildCustomSizeQuotePath } from "@/lib/bulk-quote-prefill";
 import { formatPrice } from "@/lib/data";
 import type { ProductConfigurationSchema } from "@/lib/product-configuration";
 import type { PersonalizationTemplate, Product } from "@/lib/types";
+import { artworkDocumentSchema } from "@/lib/validation";
 
 const Product3DPreview = dynamic(
   () => import("@/components/configurator/Product3DPreview").then((module) => module.Product3DPreview),
   {
     ssr: false,
-    loading: () => <div className={configuratorStyles.previewLoading} role="status">Loading interactive 3D preview…</div>,
+    loading: () => <PreviewSkeleton />,
   },
 );
 
@@ -95,6 +100,63 @@ function initialFields(configuration: ProductConfigurationSchema) {
       .filter((field) => field.type !== "template")
       .map((field) => [field.id, field.options?.[0]?.value ?? ""]),
   );
+}
+
+function normalizedPersonalizationFields(
+  configuration: ProductConfigurationSchema,
+  source: Record<string, string> | undefined,
+  legacy?: { name?: string; detail?: string; font?: string },
+) {
+  const legacyFont = Object.entries({
+    rounded: "Friendly rounded",
+    clean: "Clean sans",
+    serif: "Classic serif",
+  }).find(([, label]) => label === legacy?.font)?.[0] ?? legacy?.font;
+  const candidates: Record<string, string | undefined> = {
+    name: legacy?.name,
+    ...(legacy?.detail ? { "class-details": legacy.detail } : {}),
+    font: legacyFont,
+    ...source,
+  };
+  return Object.fromEntries(
+    configuration.personalization.fields
+      .filter((field) => field.type !== "template")
+      .map((field) => [
+        field.id,
+        typeof candidates[field.id] === "string"
+          ? candidates[field.id]
+          : field.options?.[0]?.value ?? "",
+      ]),
+  ) as Record<string, string>;
+}
+
+function normalizedQuantity(configuration: ProductConfigurationSchema, value: number) {
+  const { minimum, maximum, increment } = configuration.quantity;
+  const clamped = Math.max(minimum, Math.min(maximum, Number.isFinite(value) ? Math.trunc(value) : minimum));
+  return Math.min(maximum, minimum + Math.floor((clamped - minimum) / increment) * increment);
+}
+
+function artworkFontFamily(value: string | undefined): "rounded" | "sans" | "serif" | undefined {
+  if (value === "rounded") return "rounded";
+  if (value === "clean" || value === "sans") return "sans";
+  if (value === "serif") return "serif";
+  return undefined;
+}
+
+function preserveSupportedArtworkFont(
+  configuration: ProductConfigurationSchema,
+  fields: Record<string, string>,
+  document: ArtworkDocument | undefined,
+) {
+  const layerFont = document?.surfaces
+    .flatMap((surface) => surface.layers)
+    .find((layer) => layer.id === "personalization-name" && layer.type === "text")
+    ?.fontFamily;
+  const fieldValue = layerFont === "sans" ? "clean" : layerFont;
+  const supported = configuration.personalization.fields
+    .find((field) => field.id === "font")
+    ?.options?.some((option) => option.value === fieldValue);
+  return supported && fieldValue ? { ...fields, font: fieldValue } : fields;
 }
 
 function surfaceDefinitions(
@@ -161,6 +223,24 @@ function createInitialArtwork(configuration: ProductConfigurationSchema) {
   };
 }
 
+function synchronizePersonalizationArtwork(
+  document: ArtworkDocument,
+  fields: Record<string, string>,
+) {
+  const fontFamily = artworkFontFamily(fields.font) ?? "rounded";
+  return keepArtworkLayerInForeground({
+    ...document,
+    surfaces: document.surfaces.map((surface) => ({
+      ...surface,
+      layers: surface.layers.map((layer) => layer.id === "personalization-name" && layer.type === "text" ? {
+        ...layer,
+        text: fields.name || "Your name",
+        fontFamily,
+      } : layer),
+    })),
+  }, "personalization-name");
+}
+
 function readSavedDesigns(): SavedDesign[] {
   try {
     const value: unknown = JSON.parse(localStorage.getItem(SAVED_DESIGNS_KEY) || "[]");
@@ -168,7 +248,23 @@ function readSavedDesigns(): SavedDesign[] {
     return value.filter((item): item is SavedDesign => {
       if (!item || typeof item !== "object") return false;
       const candidate = item as Partial<SavedDesign>;
-      return typeof candidate.id === "string" && typeof candidate.productId === "string";
+      return (
+        typeof candidate.id === "string" &&
+        typeof candidate.productId === "string" &&
+        typeof candidate.title === "string" &&
+        typeof candidate.variantId === "string" &&
+        typeof candidate.templateId === "string" &&
+        typeof candidate.dimensionPresetId === "string" &&
+        (candidate.displayUnit === "mm" || candidate.displayUnit === "cm" || candidate.displayUnit === "in") &&
+        typeof candidate.quantity === "number" &&
+        Number.isInteger(candidate.quantity) &&
+        candidate.quantity > 0 &&
+        !!candidate.fields &&
+        typeof candidate.fields === "object" &&
+        Object.values(candidate.fields).every((field) => typeof field === "string") &&
+        artworkDocumentSchema.safeParse(candidate.artwork).success &&
+        typeof candidate.savedAt === "string"
+      );
     });
   } catch {
     return [];
@@ -251,11 +347,18 @@ export function CustomizationStudio({
   const [isDownloading, setIsDownloading] = useState(false);
   const [added, setAdded] = useState(false);
   const [editingKey, setEditingKey] = useState<string | null>(null);
+  const [previewReady, setPreviewReady] = useState(false);
   const initializedFromStorage = useRef(false);
+  const productHeroReveal = useScrollReveal<HTMLElement>();
+  const practicalDetailsReveal = useScrollReveal<HTMLDivElement>();
+  const handlePreviewReadyChange = useCallback((ready: boolean) => {
+    setPreviewReady(ready);
+  }, []);
 
   const selectedVariant = configuration.variants.find((variant) => variant.id === variantId) ?? firstVariant;
   const selectedTemplate = configuration.personalization.templates.find((template) => template.id === templateId) ?? firstTemplate;
   const selectedPreset = configuration.dimensions.presets.find((preset) => preset.id === dimensionPresetId) ?? defaultPreset;
+  const productIsWishlisted = isWishlisted(product.id);
   const errors = useMemo(() => validateFields(configuration, fields, templateId), [configuration, fields, templateId]);
   const estimatedUnitPaise = (selectedVariant?.unitPricePaise ?? 0) + (selectedTemplate?.premiumPricePaise ?? 0);
   const quotedLine = quote.status === "ready" ? quote.data.items[0] : undefined;
@@ -264,6 +367,33 @@ export function CustomizationStudio({
   const templateBackground = selectedTemplate?.preview.background ?? "#e4f5f2";
   const templateForeground = selectedTemplate?.preview.foreground ?? "#17324d";
   const templateAccent = selectedTemplate?.preview.accent ?? "#168c80";
+  const personalizationFontOptions = configuration.personalization.fields
+    .find((field) => field.id === "font")
+    ?.options?.reduce<Array<{ value: "rounded" | "sans" | "serif"; label: string }>>((options, option) => {
+      const value = artworkFontFamily(option.value);
+      if (value && !options.some((candidate) => candidate.value === value)) {
+        options.push({ value, label: option.label });
+      }
+      return options;
+    }, []) ?? [];
+  const nameField = configuration.personalization.fields.find((field) => field.id === "name");
+  const nameValue = nameField ? (fields[nameField.id] ?? "").trim() : "";
+  const hasSizeRequirement = configuration.dimensions.presets.length > 0 || configuration.variants.length > 0;
+  const designCompletion = calculateDesignCompletion({
+    name: nameField
+      ? (!nameField.required && !nameValue) || (Boolean(nameValue) && !errors[nameField.id])
+      : undefined,
+    theme: configuration.personalization.templates.length
+      ? configuration.personalization.templates.some((template) => template.id === templateId)
+      : undefined,
+    size: hasSizeRequirement
+      ? configuration.dimensions.presets.some((preset) => preset.id === dimensionPresetId) ||
+        configuration.variants.some((variant) => variant.id === variantId)
+      : undefined,
+    preview: configuration.artwork.surfaces.length
+      ? previewMode === "2d" || previewReady
+      : undefined,
+  });
 
   useEffect(() => {
     if (!isHydrated || initializedFromStorage.current || typeof window === "undefined") return;
@@ -277,24 +407,39 @@ export function CustomizationStudio({
     const cartItem = editKey ? cart.find((item) => item.key === editKey && item.productId === product.id) : undefined;
     const saved = designId ? stored.find((design) => design.id === designId && design.productId === product.id) : undefined;
 
-    if (cartItem?.customization) {
-      const custom = cartItem.customization;
+    if (cartItem) {
       setEditingKey(cartItem.key);
-      setConfigurationId(custom.configurationId ?? uniqueId());
-      setVariantId(cartItem.variantId ?? firstVariant?.id ?? "");
-      setTemplateId(custom.templateId ?? firstTemplate?.id ?? "");
-      setDimensionPresetId(custom.dimensionPresetId ?? defaultPreset?.id ?? "");
-      setDisplayUnit(custom.displayUnit ?? "mm");
-      setQuantity(cartItem.quantity);
-      setFields(custom.fields ?? {
-        ...initialFields(configuration),
-        name: custom.name,
-        ...(custom.detail ? { "class-details": custom.detail } : {}),
-        font: Object.entries({ rounded: "Friendly rounded", clean: "Clean sans", serif: "Classic serif" }).find(([, label]) => label === custom.font)?.[0] ?? custom.font,
-      });
-      if (custom.artwork) setArtwork(keepArtworkLayerInForeground(custom.artwork, "personalization-name"));
+      setVariantId(configuration.variants.some((variant) => variant.id === cartItem.variantId)
+        ? cartItem.variantId ?? ""
+        : firstVariant?.id ?? "");
+      setQuantity(normalizedQuantity(configuration, cartItem.quantity));
+      if (cartItem.customization) {
+        const custom = cartItem.customization;
+        const restoredFields = preserveSupportedArtworkFont(
+          configuration,
+          normalizedPersonalizationFields(configuration, custom.fields, custom),
+          custom.artwork,
+        );
+        setConfigurationId(custom.configurationId ?? uniqueId());
+        setTemplateId(configuration.personalization.templates.some((template) => template.id === custom.templateId)
+          ? custom.templateId ?? ""
+          : firstTemplate?.id ?? "");
+        setDimensionPresetId(configuration.dimensions.presets.some((preset) => preset.id === custom.dimensionPresetId)
+          ? custom.dimensionPresetId ?? ""
+          : defaultPreset?.id ?? "");
+        setDisplayUnit(custom.displayUnit ?? "mm");
+        setFields(restoredFields);
+        setArtwork(synchronizePersonalizationArtwork(
+          custom.artwork ?? createInitialArtwork(configuration),
+          restoredFields,
+        ));
+      }
     } else if (saved) {
       loadDesign(saved);
+    } else if (editKey) {
+      setSaveMessage("This cart item could not be restored. It may have been removed or belongs to another product.");
+    } else if (designId) {
+      setSaveMessage("This saved design could not be restored on this device.");
     }
   }, [cart, configuration, defaultPreset?.id, firstTemplate?.id, firstVariant?.id, isHydrated, product.id]);
 
@@ -367,20 +512,42 @@ export function CustomizationStudio({
     const normalized = keepArtworkLayerInForeground(next, "personalization-name");
     setArtwork(normalized);
     const nameLayer = normalized.surfaces.flatMap((surface) => surface.layers).find((layer) => layer.id === "personalization-name");
-    if (nameLayer?.text && nameLayer.text !== "Your name" && nameLayer.text !== fields.name) {
-      setFields((current) => ({ ...current, name: nameLayer.text ?? current.name }));
+    if (nameLayer?.type === "text") {
+      const nextName = !nameLayer.text?.trim() || nameLayer.text === "Your name" ? "" : nameLayer.text;
+      const nextFont = nameLayer.fontFamily === "sans" ? "clean" : nameLayer.fontFamily;
+      const supportedFont = configuration.personalization.fields
+        .find((field) => field.id === "font")
+        ?.options?.some((option) => option.value === nextFont);
+      if (nextName !== fields.name || (supportedFont && nextFont !== fields.font)) {
+        setFields((current) => ({
+          ...current,
+          ...(nextName !== fields.name ? { name: nextName } : {}),
+          ...(supportedFont && nextFont !== fields.font ? { font: nextFont } : {}),
+        }));
+        setFieldErrors((current) => ({
+          ...current,
+          ...(nextName !== fields.name ? { name: "" } : {}),
+          ...(supportedFont && nextFont !== fields.font ? { font: "" } : {}),
+        }));
+      }
     }
   }
 
   function loadDesign(design: SavedDesign) {
+    const restoredFields = preserveSupportedArtworkFont(
+      configuration,
+      normalizedPersonalizationFields(configuration, design.fields),
+      design.artwork,
+    );
     setConfigurationId(design.id);
-    setVariantId(design.variantId);
-    setTemplateId(design.templateId);
-    setDimensionPresetId(design.dimensionPresetId);
-    setDisplayUnit(design.displayUnit);
-    setQuantity(design.quantity);
-    setFields(design.fields);
-    setArtwork(keepArtworkLayerInForeground(design.artwork, "personalization-name"));
+    setVariantId(configuration.variants.some((variant) => variant.id === design.variantId) ? design.variantId : firstVariant?.id ?? "");
+    setTemplateId(configuration.personalization.templates.some((template) => template.id === design.templateId) ? design.templateId : firstTemplate?.id ?? "");
+    setDimensionPresetId(configuration.dimensions.presets.some((preset) => preset.id === design.dimensionPresetId) ? design.dimensionPresetId : defaultPreset?.id ?? "");
+    setDisplayUnit(configuration.dimensions.supportedDisplayUnits.includes(design.displayUnit) ? design.displayUnit : configuration.dimensions.supportedDisplayUnits[0] ?? "mm");
+    setQuantity(normalizedQuantity(configuration, design.quantity));
+    setFields(restoredFields);
+    setArtwork(synchronizePersonalizationArtwork(design.artwork, restoredFields));
+    setFieldErrors({});
     setSaveMessage(`Loaded ${design.title}.`);
   }
 
@@ -414,7 +581,7 @@ export function CustomizationStudio({
       setConfigurationId(id);
       const url = new URL(window.location.href);
       url.searchParams.set("design", id);
-      url.searchParams.delete("edit");
+      if (!editingKey) url.searchParams.delete("edit");
       window.history.replaceState(null, "", url);
       setSaveMessage("Design saved on this device.");
     } catch {
@@ -469,6 +636,9 @@ export function CustomizationStudio({
     if (editingKey) removeItem(editingKey);
     const fontValue = fields.font || "rounded";
     const fontLabel = configuration.personalization.fields.find((field) => field.id === "font")?.options?.find((option) => option.value === fontValue)?.label ?? fontValue;
+    const personalizationNameLayer = artwork.surfaces
+      .flatMap((surface) => surface.layers)
+      .find((layer) => layer.id === "personalization-name" && layer.type === "text");
     addItem({
       productId: product.id,
       variantId: selectedVariant.id,
@@ -485,7 +655,7 @@ export function CustomizationStudio({
         templateId: selectedTemplate?.id,
         template: selectedTemplate?.label ?? "Product default",
         font: fontLabel,
-        textColor: selectedTemplate?.preview.foreground ?? "#17324d",
+        textColor: personalizationNameLayer?.color ?? selectedTemplate?.preview.foreground ?? "#17324d",
         backgroundColor: templateBackground,
         pack: selectedVariant.label,
         material: selectedVariant.material,
@@ -501,6 +671,11 @@ export function CustomizationStudio({
         },
       } : undefined,
     });
+    if (editingKey) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("edit");
+      window.history.replaceState(null, "", url);
+    }
     setEditingKey(null);
     setAdded(true);
     window.setTimeout(() => setAdded(false), 3000);
@@ -536,15 +711,28 @@ export function CustomizationStudio({
   return (
     <>
       <section className={configuratorStyles.configuratorPage}>
-        <header className={configuratorStyles.configuratorHeader}>
+        <header
+          ref={productHeroReveal.ref}
+          className={`${configuratorStyles.configuratorHeader} ${productHeroReveal.className}`}
+          data-scroll-reveal={productHeroReveal.state}
+        >
           <div>
             <span className={configuratorStyles.status}>{product.stockStatus === "out_of_stock" ? "Unavailable" : product.stockStatus === "in_stock" ? "In stock" : "Made to order"}</span>
             <h1>{product.name}</h1>
             <p>{product.shortDescription}</p>
           </div>
           <div className={configuratorStyles.headerActions}>
-            <button type="button" onClick={resetConfiguration} title="Reset configuration"><RotateCcw /></button>
-            <button type="button" className={isWishlisted(product.id) ? configuratorStyles.wishlisted : ""} onClick={() => toggleWishlist(product.id)} title="Save to wishlist"><Heart /></button>
+            <button type="button" onClick={resetConfiguration} aria-label="Reset configuration" title="Reset configuration"><RotateCcw /></button>
+            <button
+              type="button"
+              className={productIsWishlisted ? configuratorStyles.wishlisted : ""}
+              onClick={() => toggleWishlist(product.id)}
+              aria-label={productIsWishlisted ? "Remove from wishlist" : "Save to wishlist"}
+              aria-pressed={productIsWishlisted}
+              title={productIsWishlisted ? "Remove from wishlist" : "Save to wishlist"}
+            >
+              <Heart />
+            </button>
           </div>
         </header>
 
@@ -573,7 +761,7 @@ export function CustomizationStudio({
               <legend><span>1</span><div><strong>Format and material</strong><small>Choose a purchasable catalog option</small></div></legend>
               <div className={configuratorStyles.choiceList}>
                 {configuration.variants.map((variant) => (
-                  <button key={variant.id} type="button" className={variant.id === variantId ? configuratorStyles.selectedChoice : ""} onClick={() => setVariantId(variant.id)} disabled={variant.stockStatus === "out_of_stock"}>
+                  <button key={variant.id} type="button" aria-pressed={variant.id === variantId} className={variant.id === variantId ? configuratorStyles.selectedChoice : ""} onClick={() => setVariantId(variant.id)} disabled={variant.stockStatus === "out_of_stock"}>
                     <span><strong>{variant.label}</strong><small>{variant.material} - {variant.packSize} pieces</small></span>
                     <b>{formatPrice(variant.unitPricePaise / 100)}</b>
                     {variant.id === variantId && <Check />}
@@ -586,12 +774,12 @@ export function CustomizationStudio({
               <legend><span>2</span><div><strong>Dimensions</strong><small>Physical size stays fixed when units change</small></div></legend>
               {configuration.dimensions.supportedDisplayUnits.length > 0 && (
                 <div className={configuratorStyles.segmented} aria-label="Measurement unit">
-                  {configuration.dimensions.supportedDisplayUnits.map((unit) => <button key={unit} type="button" className={displayUnit === unit ? configuratorStyles.active : ""} onClick={() => setDisplayUnit(unit)}>{unit}</button>)}
+                  {configuration.dimensions.supportedDisplayUnits.map((unit) => <button key={unit} type="button" aria-pressed={displayUnit === unit} className={displayUnit === unit ? configuratorStyles.active : ""} onClick={() => setDisplayUnit(unit)}>{unit}</button>)}
                 </div>
               )}
               <div className={configuratorStyles.sizeChoices}>
                 {configuration.dimensions.presets.map((preset) => (
-                  <button type="button" key={preset.id} className={preset.id === dimensionPresetId ? configuratorStyles.selectedChoice : ""} onClick={() => setDimensionPresetId(preset.id)}>
+                  <button type="button" key={preset.id} aria-pressed={preset.id === dimensionPresetId} className={preset.id === dimensionPresetId ? configuratorStyles.selectedChoice : ""} onClick={() => setDimensionPresetId(preset.id)}>
                     <strong>{preset.label}</strong>
                     {preset.dimensionsMm && <small>{Object.values(preset.dimensionsMm).map((value) => displayMeasurement(value, displayUnit)).join(" x ")}</small>}
                   </button>
@@ -627,7 +815,7 @@ export function CustomizationStudio({
                 <legend><span>4</span><div><strong>Design theme</strong><small>Premium additions appear in the quote</small></div></legend>
                 <div className={configuratorStyles.templateChoices}>
                   {configuration.personalization.templates.map((template) => (
-                    <button key={template.id} type="button" className={template.id === templateId ? configuratorStyles.selectedChoice : ""} onClick={() => setTemplateId(template.id)}>
+                    <button key={template.id} type="button" aria-pressed={template.id === templateId} className={template.id === templateId ? configuratorStyles.selectedChoice : ""} onClick={() => setTemplateId(template.id)}>
                       <i style={{ background: template.preview.background, borderColor: template.preview.accent, color: template.preview.foreground }}>Aa</i>
                       <span><strong>{template.label}</strong><small>{template.premiumPricePaise ? `+${formatPrice(template.premiumPricePaise / 100)}` : "Included"}</small></span>
                     </button>
@@ -639,9 +827,9 @@ export function CustomizationStudio({
             <fieldset className={configuratorStyles.optionSection}>
               <legend><span>5</span><div><strong>Quantity</strong><small>{configuration.quantity.minimum}-{configuration.quantity.maximum} per cart line</small></div></legend>
               <div className={configuratorStyles.quantityRow}>
-                <button type="button" onClick={() => setQuantity((value) => Math.max(configuration.quantity.minimum, value - configuration.quantity.increment))} disabled={quantity <= configuration.quantity.minimum}><Minus /></button>
-                <input type="number" min={configuration.quantity.minimum} max={configuration.quantity.maximum} step={configuration.quantity.increment} value={quantity} onChange={(event) => setQuantity(Math.max(configuration.quantity.minimum, Math.min(configuration.quantity.maximum, Number(event.target.value) || configuration.quantity.minimum)))} />
-                <button type="button" onClick={() => setQuantity((value) => Math.min(configuration.quantity.maximum, value + configuration.quantity.increment))} disabled={quantity >= configuration.quantity.maximum}><Plus /></button>
+                <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((value) => Math.max(configuration.quantity.minimum, value - configuration.quantity.increment))} disabled={quantity <= configuration.quantity.minimum}><Minus /></button>
+                <input aria-label="Quantity" type="number" min={configuration.quantity.minimum} max={configuration.quantity.maximum} step={configuration.quantity.increment} value={quantity} onChange={(event) => setQuantity(Math.max(configuration.quantity.minimum, Math.min(configuration.quantity.maximum, Number(event.target.value) || configuration.quantity.minimum)))} />
+                <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((value) => Math.min(configuration.quantity.maximum, value + configuration.quantity.increment))} disabled={quantity >= configuration.quantity.maximum}><Plus /></button>
               </div>
             </fieldset>
 
@@ -658,6 +846,7 @@ export function CustomizationStudio({
               <div className={configuratorStyles.viewModeToggle} role="group" aria-label="Preview mode">
                 <button
                   type="button"
+                  aria-pressed={previewMode === "3d"}
                   className={previewMode === "3d" ? configuratorStyles.viewModeActive : ""}
                   onClick={() => setPreviewMode("3d")}
                   title="3D interactive model"
@@ -666,6 +855,7 @@ export function CustomizationStudio({
                 </button>
                 <button
                   type="button"
+                  aria-pressed={previewMode === "2d"}
                   className={previewMode === "2d" ? configuratorStyles.viewModeActive : ""}
                   onClick={() => setPreviewMode("2d")}
                   title="2D design editor"
@@ -677,6 +867,7 @@ export function CustomizationStudio({
             {configuration.personalization.supported ? (
               previewMode === "3d" ? (
                 <div className={configuratorStyles.preview3dContainer}>
+                  <DesignCompletionMeter completion={designCompletion} />
                   <Product3DPreview
                     document={artwork}
                     surfaces={surfaceDefinitions(configuration, selectedPreset)}
@@ -687,6 +878,7 @@ export function CustomizationStudio({
                     dimensionsMm={selectedPreset?.dimensionsMm}
                     materialName={selectedVariant?.material || product.material}
                     productName={product.name}
+                    onReadyChange={handlePreviewReadyChange}
                   />
                   {purchasePanel}
                 </div>
@@ -697,6 +889,8 @@ export function CustomizationStudio({
                   background={templateBackground}
                   foreground={templateForeground}
                   accent={templateAccent}
+                  personalizationFontOptions={personalizationFontOptions}
+                  designCompletion={designCompletion}
                   onChange={updateArtwork}
                   footer={purchasePanel}
                 />
@@ -709,7 +903,7 @@ export function CustomizationStudio({
               </div>
             )}
             {!configuration.artwork.uploads.supported && (
-              <div className={configuratorStyles.capabilityNotice}><CircleAlert /><span><strong>Uploaded images are preview-only in this demo.</strong>{configuration.artwork.uploads.reason} They are not sent to checkout or labelled print-ready.</span></div>
+              <div className={configuratorStyles.capabilityNotice}><CircleAlert /><span><strong>Uploaded images are preview-only in this demo.</strong>{configuration.artwork.uploads.reason} They stay on this device and are removed from the order payload.</span></div>
             )}
             <div className={configuratorStyles.readinessGrid}>
               <div><PackageCheck /><span><strong>Manufacturing review</strong><small>Custom dimensions remain unavailable until approved limits and rates are configured.</small></span></div>
@@ -721,7 +915,11 @@ export function CustomizationStudio({
       </section>
 
       <section className="product-information section-soft">
-        <div className="shell product-info-grid"><div><span className="eyebrow">The practical details</span><h2>Made for everyday use</h2><p>{product.description}</p><ul>{product.features.map((feature) => <li key={feature}><Check /> {feature}</li>)}</ul></div><dl><div><dt>Material</dt><dd>{selectedVariant?.material || product.material}</dd></div><div><dt>Dimensions</dt><dd>{product.dimensions}</dd></div><div><dt>What is included</dt><dd>{selectedVariant?.packSize || product.packSize} pieces in your selected format</dd></div><div><dt>Production window</dt><dd>{product.productionDays.min}-{product.productionDays.max} working days after design review</dd></div>{product.careInstructions && <div><dt>Care</dt><dd>{product.careInstructions}</dd></div>}</dl></div>
+        <div
+          ref={practicalDetailsReveal.ref}
+          className={`shell product-info-grid ${practicalDetailsReveal.className}`}
+          data-scroll-reveal={practicalDetailsReveal.state}
+        ><div><span className="eyebrow">The practical details</span><h2>Made for everyday use</h2><p>{product.description}</p><ul>{product.features.map((feature) => <li key={feature}><Check /> {feature}</li>)}</ul></div><dl><div><dt>Material</dt><dd>{selectedVariant?.material || product.material}</dd></div><div><dt>Dimensions</dt><dd>{product.dimensions}</dd></div><div><dt>What is included</dt><dd>{selectedVariant?.packSize || product.packSize} pieces in your selected format</dd></div><div><dt>Production window</dt><dd>{product.productionDays.min}-{product.productionDays.max} working days after design review</dd></div>{product.careInstructions && <div><dt>Care</dt><dd>{product.careInstructions}</dd></div>}</dl></div>
       </section>
 
       <div className={configuratorStyles.mobileBuyBar}><div><small>{quote.message}</small><strong>{formatPrice(displaySubtotal / 100)}</strong></div><button type="button" onClick={addToCart} disabled={quote.status !== "ready"}>{added ? "Added" : "Add to cart"}</button></div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { ArtworkDocument } from "@/components/configurator/artwork-types";
 
 export type Customization = {
@@ -86,35 +86,58 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [cartToast, setCartToast] = useState<{ id: number; name: string } | null>(null);
+  const toastSequenceRef = useRef(0);
 
   useEffect(() => {
     try {
       const storedCart: unknown = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
-      const storedWishlist: unknown = JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
       setCart(Array.isArray(storedCart) ? storedCart.filter(isStoredCartItem) : []);
+    } catch {
+      setCart([]);
+    }
+    try {
+      const storedWishlist: unknown = JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]");
       setWishlist(
         Array.isArray(storedWishlist)
           ? storedWishlist.filter((value): value is string => typeof value === "string")
           : [],
       );
     } catch {
-      localStorage.removeItem(CART_KEY);
-      localStorage.removeItem(WISHLIST_KEY);
+      setWishlist([]);
     }
     setHydrated(true);
   }, []);
 
   useEffect(() => {
-    if (hydrated) localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    } catch (error) {
+      console.warn("Cart persistence is unavailable for this browser session.", error);
+    }
   }, [cart, hydrated]);
 
   useEffect(() => {
-    if (hydrated) localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
+    } catch (error) {
+      console.warn("Wishlist persistence is unavailable for this browser session.", error);
+    }
   }, [wishlist, hydrated]);
+
+  useEffect(() => {
+    if (!cartToast) return;
+    const timeout = window.setTimeout(() => setCartToast(null), 2_400);
+    return () => window.clearTimeout(timeout);
+  }, [cartToast]);
 
   const addItem = useCallback((item: Omit<CartItem, "key">) => {
     const signature = JSON.stringify([item.productId, item.variantId, item.customization]);
     const quantity = clampCartItemQuantity(item.quantity);
+    toastSequenceRef.current += 1;
+    setCartToast({ id: toastSequenceRef.current, name: item.name });
     setCart((current) => {
       const match = current.find((entry) => JSON.stringify([entry.productId, entry.variantId, entry.customization]) === signature);
       if (match) {
@@ -159,7 +182,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     isWishlisted: (productId: string) => wishlist.includes(productId),
   }), [cart, wishlist, hydrated, addItem, updateQuantity, removeItem, clearCart, toggleWishlist]);
 
-  return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
+  return (
+    <StoreContext.Provider value={value}>
+      {children}
+      {cartToast && (
+        <div key={cartToast.id} className="cart-toast" role="status" aria-live="polite" aria-atomic="true">
+          <span aria-hidden="true">✓</span>
+          <div><strong>Added to cart</strong><small>{cartToast.name}</small></div>
+        </div>
+      )}
+    </StoreContext.Provider>
+  );
 }
 
 export function useStore() {

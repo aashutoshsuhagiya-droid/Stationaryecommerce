@@ -5,6 +5,7 @@ import {
   getArtworkLayersInRenderOrder,
   insertArtworkBelowText,
   keepArtworkLayerInForeground,
+  removePreviewImageLayers,
   type ArtworkDocument,
   type ArtworkLayer,
 } from "./artwork-types";
@@ -49,6 +50,19 @@ test("required personalized name is normalized to the foreground", () => {
   };
   const normalized = keepArtworkLayerInForeground(document, "personalization-name");
   assert.deepEqual(normalized.surfaces[0].layers.map((layer) => layer.id), ["uploaded-image", "personalization-name"]);
+});
+
+test("preview image uploads are removed from the checkout artwork snapshot", () => {
+  const document: ArtworkDocument = {
+    version: 1,
+    activeSurfaceId: "primary",
+    updatedAt: "2026-10-19T00:00:00.000Z",
+    surfaces: [{ id: "primary", label: "Primary", layers: [imageLayer, nameLayer] }],
+  };
+
+  const sanitized = removePreviewImageLayers(document);
+  assert.deepEqual(sanitized.surfaces[0].layers.map((layer) => layer.id), ["personalization-name"]);
+  assert.equal(document.surfaces[0].layers.length, 2);
 });
 
 test("text is always rendered in front of poster images", () => {

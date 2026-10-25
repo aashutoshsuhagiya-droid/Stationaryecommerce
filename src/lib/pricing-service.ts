@@ -76,6 +76,65 @@ function validateCustomization(product: Product, input: OrderItemInput) {
     );
   }
 
+  const previewImageCount = customization?.artwork?.surfaces.reduce(
+    (total, surface) => total + surface.layers.filter((layer) => layer.type === "image").length,
+    0,
+  ) ?? 0;
+  if (previewImageCount > 0) {
+    throw new CommerceError(
+      422,
+      "ARTWORK_UPLOAD_NOT_SUPPORTED",
+      "Uploaded preview images cannot be attached to an order until secure artwork storage is configured.",
+      { productId: product.id, imageCount: previewImageCount },
+    );
+  }
+
+  const personalizedName = customization?.fields.name?.trim();
+  const nameLayers = customization?.artwork?.surfaces
+    .flatMap((surface) => surface.layers)
+    .filter((layer) => layer.id === "personalization-name") ?? [];
+  if (personalizedName && customization?.artwork) {
+    const savedArtworkName = nameLayers.length === 1 && nameLayers[0].type === "text"
+      ? nameLayers[0].text.trim()
+      : undefined;
+    if (savedArtworkName !== personalizedName) {
+      throw new CommerceError(
+        422,
+        "ARTWORK_PERSONALIZATION_MISMATCH",
+        "The saved artwork name does not match the validated personalization.",
+        { productId: product.id, fieldId: "name" },
+      );
+    }
+  }
+  const expectedArtworkFont = customization?.fields.font === "clean"
+    ? "sans"
+    : customization?.fields.font;
+  if (
+    expectedArtworkFont &&
+    nameLayers.length === 1 &&
+    nameLayers[0].type === "text" &&
+    nameLayers[0].fontFamily !== expectedArtworkFont
+  ) {
+    throw new CommerceError(
+      422,
+      "ARTWORK_FONT_MISMATCH",
+      "The saved artwork font does not match the validated personalization.",
+      { productId: product.id, fieldId: "font" },
+    );
+  }
+  if (
+    personalizedName &&
+    customization?.presentation &&
+    customization.presentation.name.trim() !== personalizedName
+  ) {
+    throw new CommerceError(
+      422,
+      "PRESENTATION_PERSONALIZATION_MISMATCH",
+      "The order summary name does not match the validated personalization.",
+      { productId: product.id, fieldId: "name" },
+    );
+  }
+
   const supportedFieldIds = new Set(
     product.customizationFields
       .filter((field) => field.type !== "template")

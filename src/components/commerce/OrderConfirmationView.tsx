@@ -3,10 +3,21 @@
 import { useEffect, useState } from "react";
 import { Check, CircleAlert, Mail, ShieldCheck } from "lucide-react";
 import { PrimaryLink, SecondaryLink, styles } from "@/components/customer/CustomerUI";
-import type { CartItem } from "@/components/store/StoreProvider";
 import { formatPrice } from "@/lib/data";
 
-type CheckoutRecord = { orderNumber: string; items: CartItem[]; total: number; payment: string; placedAt: string; customer: Record<string, FormDataEntryValue> };
+type CheckoutRecord = {
+  orderNumber: string;
+  items: Array<{
+    key: string;
+    name: string;
+    price: number;
+    quantity: number;
+    customization?: { name: string; template: string; pack: string };
+  }>;
+  total: number;
+  payment: string;
+  placedAt: string;
+};
 
 export function OrderConfirmationView({ orderId }: { orderId: string }) {
   const [record, setRecord] = useState<CheckoutRecord | null | undefined>(undefined);
@@ -24,7 +35,7 @@ export function OrderConfirmationView({ orderId }: { orderId: string }) {
     <div className={styles.page}>
       <header className={styles.confirmationHero}>
         <span className={styles.confirmationMark}>{awaitingPayment ? <CircleAlert aria-hidden="true" /> : <Check aria-hidden="true" />}</span>
-        <p className={styles.eyebrow} style={{ color: "#75ded2" }}>Order {orderId}</p>
+        <p className={styles.eyebrow} style={{ color: "var(--grey-200)" }}>Order {orderId}</p>
         <h1>{awaitingPayment ? "Your order details are saved" : record ? "Your order request is received" : "Demo confirmation preview"}</h1>
         <p>{awaitingPayment ? "No payment was collected in this demo. Connect the merchant payment gateway before accepting live online orders." : record ? "We’ve kept the product choices and personalisation reviewed at checkout. Production begins only after the configured order and payment checks." : "This page has no browser checkout record. It is a safe preview and does not represent a placed or paid order."}</p>
       </header>
@@ -35,7 +46,7 @@ export function OrderConfirmationView({ orderId }: { orderId: string }) {
             {record ? <>
               {record.items.map((item) => <div className={styles.confirmationProduct} key={item.key}><div className={styles.orderThumb}>{item.customization?.name?.slice(0, 10).toUpperCase() || "NAAMLY"}</div><div><h3>{item.name}</h3><p>{item.customization ? `${item.customization.template} · ${item.customization.pack} · ${item.customization.name}` : `Quantity ${item.quantity}`}</p></div><strong>{formatPrice(item.price * item.quantity)}</strong></div>)}
               <div className={styles.summaryList} style={{ marginTop: 18 }}><div className={styles.summaryRow}><span>Shipping estimate</span><strong>{formatPrice(79)}</strong></div><div className={`${styles.summaryRow} ${styles.summaryTotal}`}><span>{awaitingPayment ? "Amount pending" : "Order total"}</span><strong>{formatPrice(record.total)}</strong></div></div>
-            </> : <p style={{ color: "#64748b", lineHeight: 1.7, fontSize: 13 }}>Complete the demo checkout in this browser to see its locally saved items here. Live order data belongs in the authenticated database workflow.</p>}
+            </> : <p style={{ color: "var(--slate)", lineHeight: 1.7, fontSize: 13 }}>Complete the demo checkout in this browser to see its locally saved items here. Live order data belongs in the authenticated database workflow.</p>}
           </section>
           <aside className={styles.confirmationCard}>
             <h2>What happens next?</h2>

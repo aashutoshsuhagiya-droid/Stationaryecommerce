@@ -27,6 +27,42 @@ test("keeps explicit line breaks and splits words wider than the box", () => {
   );
 });
 
+test("renders a non-empty fragment for a long word in a one-line narrow box", () => {
+  const fillCalls: unknown[][] = [];
+  const context = {
+    save() {},
+    restore() {},
+    translate() {},
+    rotate() {},
+    measureText: (value: string) => ({ width: measureByCharacter(value) }),
+    fillText: (...args: unknown[]) => fillCalls.push(args),
+    globalAlpha: 1,
+    font: "",
+    fillStyle: "",
+    textAlign: "start",
+    textBaseline: "alphabetic",
+  } as unknown as CanvasRenderingContext2D;
+  const layer: ArtworkLayer = {
+    id: "narrow-text",
+    type: "text",
+    name: "Narrow text",
+    x: 0,
+    y: 0,
+    width: 5,
+    height: 5,
+    rotation: 0,
+    opacity: 1,
+    text: "averylongunbrokenword",
+    fontSize: 20,
+  };
+
+  renderLayerToContext(context, layer);
+
+  assert.equal(fillCalls.length, 1);
+  assert.equal(typeof fillCalls[0][0], "string");
+  assert.notEqual(fillCalls[0][0], "");
+});
+
 test("draws centered text lines without using the fillText maxWidth argument", () => {
   const fillCalls: unknown[][] = [];
   const context = {

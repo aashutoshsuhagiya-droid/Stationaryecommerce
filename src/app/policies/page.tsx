@@ -23,7 +23,7 @@ export default function PoliciesPage() {
         <div className={styles.container}>
           <Breadcrumbs items={[{ label: "Policies" }]} />
           <div className={styles.valueGrid}>
-            {policyCards.map(({ href, icon: Icon, title, text }) => <Link className={styles.valueCard} style={{ color: "inherit", textDecoration: "none" }} href={href} key={href}><span><Icon aria-hidden="true" /></span><h3>{title}</h3><p>{text}</p><strong style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 17, color: "#10776d", fontSize: 12 }}>Read policy <ArrowRight aria-hidden="true" style={{ width: 15 }} /></strong></Link>)}
+            {policyCards.map(({ href, icon: Icon, title, text }) => <Link className={styles.valueCard} style={{ color: "inherit", textDecoration: "none" }} href={href} key={href}><span><Icon aria-hidden="true" /></span><h3>{title}</h3><p>{text}</p><strong style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 17, color: "var(--teal-dark)", fontSize: 12 }}>Read policy <ArrowRight aria-hidden="true" style={{ width: 15 }} /></strong></Link>)}
           </div>
           <div className={styles.notice} style={{ marginTop: 28 }}><span><FileText aria-hidden="true" /></span><div><strong>Policies can change</strong><p>The version available when you place an order applies to that transaction, subject to applicable law. Material updates should be dated and published here.</p></div></div>
         </div>

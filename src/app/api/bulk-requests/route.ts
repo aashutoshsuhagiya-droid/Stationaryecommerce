@@ -3,44 +3,14 @@ import { NextResponse } from "next/server";
 import { bulkRequestSchema } from "@/lib/bulk-request-validation";
 import { storeBulkRequest } from "@/lib/bulk-request-store";
 import { products } from "@/lib/data";
-import { apiError, validationError } from "@/lib/http";
+import { apiError, hasJsonContentType, readLimitedJson, RequestTooLargeError, validationError } from "@/lib/http";
 import { productSupportsMultipleNames } from "@/lib/product-configuration";
 import { consumeRateLimit, requestIdentifier } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const maximumJsonBytes = 512_000;
-
-class RequestTooLargeError extends Error {}
-
-async function readLimitedJson(request: Request): Promise<unknown> {
-  if (!request.body) throw new SyntaxError("The request body must be valid JSON.");
-  const reader = request.body.getReader();
-  const decoder = new TextDecoder("utf-8", { fatal: true });
-  let totalBytes = 0;
-  let text = "";
-
-  try {
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      totalBytes += value.byteLength;
-      if (totalBytes > maximumJsonBytes) {
-        await reader.cancel();
-        throw new RequestTooLargeError();
-      }
-      text += decoder.decode(value, { stream: true });
-    }
-    text += decoder.decode();
-    return JSON.parse(text) as unknown;
-  } catch (error) {
-    if (error instanceof RequestTooLargeError) throw error;
-    throw new SyntaxError("The request body must be valid UTF-8 JSON.");
-  } finally {
-    reader.releaseLock();
-  }
-}
+export const maximumBulkRequestJsonBytes = 512_000;
 
 function createReference() {
   const date = new Date().toISOString().slice(0, 10).replaceAll("-", "");
@@ -62,17 +32,13 @@ export async function POST(request: Request) {
         { status: 429, headers: { "Cache-Control": "no-store", "Retry-After": String(rateLimit.retryAfterSeconds) } },
       );
     }
-    const contentType = request.headers.get("content-type") ?? "";
-    if (!contentType.toLowerCase().includes("application/json")) {
+    if (!hasJsonContentType(request)) {
       return apiError(415, "UNSUPPORTED_MEDIA_TYPE", "Submit the quote request as JSON.");
     }
 
-    const contentLength = Number(request.headers.get("content-length") ?? 0);
-    if (Number.isFinite(contentLength) && contentLength > maximumJsonBytes) {
-      return apiError(413, "REQUEST_TOO_LARGE", "The quote request is too large.");
-    }
-
-    const parsed = bulkRequestSchema.safeParse(await readLimitedJson(request));
+    const parsed = bulkRequestSchema.safeParse(
+      await readLimitedJson(request, maximumBulkRequestJsonBytes),
+    );
     if (!parsed.success) return validationError(parsed.error);
 
     const product = products.find(

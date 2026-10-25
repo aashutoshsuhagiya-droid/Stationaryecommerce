@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 
 import { CommerceError } from "@/lib/commerce-error";
-import { apiError, readJson, validationError } from "@/lib/http";
+import {
+  apiError,
+  hasJsonContentType,
+  readLimitedJson,
+  RequestTooLargeError,
+  validationError,
+} from "@/lib/http";
 import { createCatalogQuote } from "@/lib/pricing-service";
 import { consumeRateLimit, requestIdentifier } from "@/lib/rate-limit";
 import { catalogQuoteSchema } from "@/lib/validation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maximumQuoteJsonBytes = 262_144;
 
 export async function POST(request: Request) {
   try {
@@ -23,15 +30,10 @@ export async function POST(request: Request) {
         { status: 429, headers: { "Cache-Control": "no-store", "Retry-After": String(rateLimit.retryAfterSeconds) } },
       );
     }
-    const contentType = request.headers.get("content-type") ?? "";
-    if (!contentType.toLowerCase().includes("application/json")) {
+    if (!hasJsonContentType(request)) {
       return apiError(415, "UNSUPPORTED_MEDIA_TYPE", "Submit quote requests as JSON.");
     }
-    const contentLength = Number(request.headers.get("content-length") ?? 0);
-    if (Number.isFinite(contentLength) && contentLength > 262_144) {
-      return apiError(413, "REQUEST_TOO_LARGE", "The quote request is too large.");
-    }
-    const body = await readJson(request);
+    const body = await readLimitedJson(request, maximumQuoteJsonBytes);
     const parsed = catalogQuoteSchema.safeParse(body);
     if (!parsed.success) return validationError(parsed.error);
 
@@ -40,6 +42,9 @@ export async function POST(request: Request) {
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (error) {
+    if (error instanceof RequestTooLargeError) {
+      return apiError(413, "REQUEST_TOO_LARGE", "The quote request is too large.");
+    }
     if (error instanceof SyntaxError) {
       return apiError(400, "INVALID_JSON", error.message);
     }

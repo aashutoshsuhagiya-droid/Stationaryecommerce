@@ -1,0 +1,153 @@
+.catalog {
+  min-height: 65vh;
+  background: var(--paper);
+}
+
+.catalogHero {
+  padding: 56px 0 44px;
+  border-bottom: 1px solid var(--soft-line);
+  background: linear-gradient(180deg, var(--paper) 0%, var(--off-white) 100%);
+}
+
+.line,
+.media,
+.panel,
+.preview {
+  background: linear-gradient(90deg, var(--grey-100) 25%, var(--off-white) 45%, var(--grey-100) 65%);
+  background-size: 300% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+}
+
+.breadcrumb { width: 180px; height: 12px; margin-bottom: 18px; border-radius: 6px; }
+.eyebrow { width: 112px; height: 12px; border-radius: 6px; }
+.title { width: min(520px, 82%); height: 44px; margin-top: 16px; border-radius: 10px; }
+.copy { width: min(660px, 94%); height: 14px; margin-top: 14px; border-radius: 7px; }
+
+.catalogLayout {
+  padding-block: 96px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 48px;
+}
+
+.sidebar,
+.results {
+  min-width: 0;
+}
+
+.sidebar {
+  display: grid;
+  align-content: start;
+}
+
+.filterTitle { width: 100%; height: 48px; border-radius: 12px; }
+.filterGroup { padding-block: 18px; border-bottom: 1px solid var(--soft-line); }
+.filterLabel { width: 58%; height: 12px; margin-bottom: 12px; border-radius: 6px; }
+.filterOption { width: 88%; height: 13px; margin-top: 15px; border-radius: 7px; }
+.filterOption:nth-child(3) { width: 72%; }
+.filterOption:nth-child(4) { width: 80%; }
+
+.toolbar {
+  min-height: 48px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.toolbarChip { width: 112px; height: 48px; border-radius: 12px; }
+.toolbarSort { width: 210px; height: 48px; border-radius: 12px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.card {
+  padding: 10px 10px 20px;
+  border: 1px solid var(--soft-line);
+  border-radius: 12px;
+  background: var(--paper);
+}
+
+.card .media { aspect-ratio: 1.08; border: 1px solid var(--soft-line); border-radius: 10px; }
+.card .line:nth-child(2) { width: 42%; height: 10px; margin: 17px 6px 0; border-radius: 5px; }
+.card .line:nth-child(3) { width: 86%; height: 15px; margin: 12px 6px 0; border-radius: 6px; }
+.card .line:nth-child(4) { width: 56%; height: 12px; margin: 12px 6px 0; border-radius: 6px; }
+
+.product {
+  min-height: 70vh;
+  padding-block: 36px 104px;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(390px, .92fr);
+  gap: 64px;
+}
+
+.gallery,
+.details {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.gallery .media { min-height: 560px; border-radius: 12px; }
+.details .line { height: 13px; border-radius: 7px; }
+.details .line:nth-child(1) { width: 30%; }
+.details .line:nth-child(2) { width: 92%; height: 46px; }
+.details .line:nth-child(3) { width: 60%; height: 20px; }
+.details .panel { height: 82px; margin-top: 12px; border-radius: 12px; }
+.details .panel:last-child { height: 150px; }
+
+.preview {
+  min-height: 420px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--soft-line);
+  border-radius: 12px;
+  color: var(--muted);
+}
+
+.preview span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: 0 0; }
+}
+
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .productGrid { grid-template-columns: 1fr; }
+  .gallery .media { min-height: 430px; }
+}
+
+@media (max-width: 780px) {
+  .catalogLayout { padding-top: 22px; grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .toolbar { justify-content: space-between; }
+}
+
+@media (max-width: 520px) {
+  .catalogHero { padding: 48px 0 40px; }
+  .grid { gap: 11px; }
+  .toolbarChip { width: 96px; }
+  .toolbarSort { width: min(190px, 56%); }
+  .product { padding-block: 24px 72px; }
+  .gallery .media { min-height: 360px; }
+  .preview { min-height: 360px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line, .media, .panel, .preview { animation: none; }
+}

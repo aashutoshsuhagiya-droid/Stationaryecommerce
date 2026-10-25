@@ -1,0 +1,30 @@
+.reveal {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.reveal[data-scroll-reveal="pending"] {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition: none;
+  will-change: opacity, transform;
+}
+
+.item { min-width: 0; height: 100%; }
+.item :global(.product-card) { height: 100%; }
+
+.reveal[data-scroll-reveal="visible"] {
+  transition:
+    opacity 420ms ease-out,
+    transform 560ms cubic-bezier(.2, .75, .3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal[data-scroll-reveal="pending"],
+  .reveal[data-scroll-reveal="visible"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

@@ -68,3 +68,131 @@ test("quote input rejects browser-supplied prices", () => {
   });
   assert.equal(result.success, false);
 });
+
+test("preview-only image uploads cannot enter an order snapshot", () => {
+  assert.throws(
+    () => priceCatalogItem({
+      ...configuredItem,
+      customization: {
+        ...configuredItem.customization,
+        artwork: {
+          version: 1,
+          activeSurfaceId: "primary",
+          updatedAt: "2026-10-24T00:00:00.000Z",
+          surfaces: [{
+            id: "primary",
+            label: "Primary",
+            layers: [{
+              id: "preview-upload",
+              type: "image",
+              name: "preview.png",
+              x: 0,
+              y: 0,
+              width: 100,
+              height: 100,
+              rotation: 0,
+              opacity: 1,
+              src: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAB",
+              sourceWidth: 1,
+              sourceHeight: 1,
+            }],
+          }],
+        },
+      },
+    }),
+    (error: unknown) => error instanceof CommerceError && error.code === "ARTWORK_UPLOAD_NOT_SUPPORTED",
+  );
+});
+
+test("saved artwork must match the validated personalization name", () => {
+  assert.throws(
+    () => priceCatalogItem({
+      ...configuredItem,
+      customization: {
+        ...configuredItem.customization,
+        artwork: {
+          version: 1,
+          activeSurfaceId: "primary",
+          updatedAt: "2026-10-24T00:00:00.000Z",
+          surfaces: [{
+            id: "primary",
+            label: "Primary",
+            layers: [{
+              id: "personalization-name",
+              type: "text",
+              name: "Personalized name",
+              x: 10,
+              y: 10,
+              width: 100,
+              height: 30,
+              rotation: 0,
+              opacity: 1,
+              text: "Different Name",
+              color: "#17324d",
+              fontSize: 24,
+              fontFamily: "rounded",
+            }],
+          }],
+        },
+      },
+    }),
+    (error: unknown) => error instanceof CommerceError && error.code === "ARTWORK_PERSONALIZATION_MISMATCH",
+  );
+});
+
+test("saved artwork font must match the validated font option", () => {
+  assert.throws(
+    () => priceCatalogItem({
+      ...configuredItem,
+      customization: {
+        ...configuredItem.customization,
+        artwork: {
+          version: 1,
+          activeSurfaceId: "primary",
+          updatedAt: "2026-10-24T00:00:00.000Z",
+          surfaces: [{
+            id: "primary",
+            label: "Primary",
+            layers: [{
+              id: "personalization-name",
+              type: "text",
+              name: "Personalized name",
+              x: 10,
+              y: 10,
+              width: 100,
+              height: 30,
+              rotation: 0,
+              opacity: 1,
+              text: "Aarav Mehta",
+              color: "#17324d",
+              fontSize: 24,
+              fontFamily: "serif",
+            }],
+          }],
+        },
+      },
+    }),
+    (error: unknown) => error instanceof CommerceError && error.code === "ARTWORK_FONT_MISMATCH",
+  );
+});
+
+test("order presentation name must match the validated personalization", () => {
+  assert.throws(
+    () => priceCatalogItem({
+      ...configuredItem,
+      customization: {
+        ...configuredItem.customization,
+        presentation: {
+          name: "Different Name",
+          templateLabel: "Geo Pop",
+          fontLabel: "Friendly rounded",
+          textColor: "#17324d",
+          backgroundColor: "#fff4ce",
+          packLabel: "72 labels",
+          materialLabel: "Matte vinyl",
+        },
+      },
+    }),
+    (error: unknown) => error instanceof CommerceError && error.code === "PRESENTATION_PERSONALIZATION_MISMATCH",
+  );
+});

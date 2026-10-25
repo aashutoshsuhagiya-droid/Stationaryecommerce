@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Check, ChevronRight, CreditCard, LockKeyhole, MapPin, PackageCheck, ShieldCheck, Truck } from "lucide-react";
 import { useStore } from "@/components/store/StoreProvider";
+import { removePreviewImageLayers } from "@/components/configurator/artwork-types";
 import { designTemplates, formatPrice, getProductById } from "@/lib/data";
 import type { Order } from "@/lib/types";
 import { ProductVisual } from "./ProductVisual";
@@ -18,6 +19,15 @@ const INDIAN_STATES = [
   "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand",
   "West Bengal",
 ];
+
+function firstValidationMessage(details: unknown) {
+  if (!Array.isArray(details)) return undefined;
+  for (const detail of details) {
+    if (!detail || typeof detail !== "object" || !("message" in detail)) continue;
+    if (typeof detail.message === "string" && detail.message) return detail.message;
+  }
+  return undefined;
+}
 
 export function CheckoutView() {
   const { cart, subtotal, clearCart, isHydrated } = useStore();
@@ -42,6 +52,11 @@ export function CheckoutView() {
         const variantId = item.variantId ?? product?.variants.find((variant) => variant.name === item.customization?.pack)?.id ?? product?.variants[0]?.id;
         if (!variantId) throw new Error(`${item.name} is no longer available. Remove it from your cart and add it again.`);
         const templateId = item.customization?.templateId ?? designTemplates.find((template) => template.name === item.customization?.template)?.id;
+        const customizationFields = item.customization?.fields ?? (item.customization ? {
+          name: item.customization.name,
+          ...(item.customization.detail ? { "class-details": item.customization.detail } : {}),
+          font: Object.entries({ rounded: "Friendly rounded", clean: "Clean sans", serif: "Classic serif" }).find(([, label]) => label === item.customization?.font)?.[0] ?? item.customization.font,
+        } : {});
         return {
           productId: item.productId,
           variantId,
@@ -52,17 +67,11 @@ export function CheckoutView() {
             ...(item.customization.dimensionPresetId ? { dimensionPresetId: item.customization.dimensionPresetId } : {}),
             ...(item.customization.dimensionLabel ? { dimensionLabel: item.customization.dimensionLabel } : {}),
             ...(item.customization.displayUnit ? { displayUnit: item.customization.displayUnit } : {}),
-            ...(item.customization.artwork ? { artwork: item.customization.artwork } : {}),
-            fields: {
-              ...(item.customization.fields ?? {
-                name: item.customization.name,
-                ...(item.customization.detail ? { "class-details": item.customization.detail } : {}),
-                font: Object.entries({ rounded: "Friendly rounded", clean: "Clean sans", serif: "Classic serif" }).find(([, label]) => label === item.customization?.font)?.[0] ?? item.customization.font,
-              }),
-            },
+            ...(item.customization.artwork ? { artwork: removePreviewImageLayers(item.customization.artwork) } : {}),
+            fields: customizationFields,
             previewVersion: 1,
             presentation: {
-              name: item.customization.name,
+              name: customizationFields.name || item.customization.name,
               ...(item.customization.detail ? { detail: item.customization.detail } : {}),
               templateLabel: item.customization.template,
               fontLabel: item.customization.font,
@@ -91,11 +100,39 @@ export function CheckoutView() {
           acceptedTerms: form.get("acceptedTerms") === "on",
         }),
       });
-      const payload = await response.json() as { data?: Order; error?: { message?: string } };
-      if (!response.ok || !payload.data) throw new Error(payload.error?.message || "The order could not be created.");
+      const payload = await response.json() as {
+        data?: Order;
+        error?: { message?: string; details?: unknown };
+      };
+      if (!response.ok || !payload.data) {
+        const fieldIssue = firstValidationMessage(payload.error?.details);
+        throw new Error(fieldIssue || payload.error?.message || "The order could not be created.");
+      }
       const order = payload.data;
-      const record = { orderNumber: order.orderNumber, items: cart, total: order.totalPaise / 100, payment: payment === "online" ? "Payment setup required" : "Pay on delivery", placedAt: order.createdAt, customer: Object.fromEntries(form.entries()) };
-      sessionStorage.setItem(`naamly-order-${order.orderNumber}`, JSON.stringify(record));
+      const record = {
+        orderNumber: order.orderNumber,
+        items: order.items.map((item) => ({
+          key: item.id,
+          name: item.productName,
+          price: item.unitPricePaise / 100,
+          quantity: item.quantity,
+          ...(item.customization?.presentation ? {
+            customization: {
+              name: item.customization.presentation.name,
+              template: item.customization.presentation.templateLabel,
+              pack: item.customization.presentation.packLabel,
+            },
+          } : {}),
+        })),
+        total: order.totalPaise / 100,
+        payment: "Payment setup required",
+        placedAt: order.createdAt,
+      };
+      try {
+        sessionStorage.setItem(`naamly-order-${order.orderNumber}`, JSON.stringify(record));
+      } catch (storageError) {
+        console.warn("Order confirmation could not be stored in this browser session.", storageError);
+      }
       clearCart();
       router.push(`/order-confirmation?order=${order.orderNumber}`);
     } catch (error) {
@@ -124,7 +161,7 @@ export function CheckoutView() {
 
         <div className="checkout-separator" />
         <div className="checkout-section-title"><span>4</span><div><h2>Payment</h2><p>Card details are never stored by Naamly.</p></div></div>
-        <div className="payment-options"><label className={payment === "online" ? "selected" : ""}><input type="radio" name="payment" value="online" checked={payment === "online"} onChange={() => setPayment("online")} /><CreditCard /><span><strong>Secure online payment</strong><small>UPI, cards, netbanking and supported wallets via the configured gateway.</small></span></label><label className={payment === "cod" ? "selected" : ""}><input type="radio" name="payment" value="cod" checked={payment === "cod"} onChange={() => setPayment("cod")} /><PackageCheck /><span><strong>Cash on delivery</strong><small>Available only when enabled for the entered PIN code.</small></span></label></div>
+        <div className="payment-options"><label className={payment === "online" ? "selected" : ""}><input type="radio" name="payment" value="online" checked={payment === "online"} onChange={() => setPayment("online")} /><CreditCard /><span><strong>Secure online payment</strong><small>UPI, cards, netbanking and supported wallets require the configured gateway.</small></span></label><label aria-disabled="true"><input type="radio" name="payment" value="cod" disabled /><PackageCheck /><span><strong>Cash on delivery</strong><small>Unavailable until PIN-code eligibility and merchant policy are configured.</small></span></label></div>
         <div className="gateway-note"><ShieldCheck /><p><strong>Demo checkout is active.</strong><span>Connect merchant credentials to create and verify live Razorpay orders server-side. This preview never collects card details.</span></p></div>
         <label className="shipping-option"><input type="checkbox" name="acceptedTerms" required /><ShieldCheck aria-hidden="true" /><span><strong>I agree to the store terms</strong><small>I understand the personalised-product return conditions and that this demo does not collect payment.</small></span></label>
         {formError && <div className="checkout-error" role="alert">{formError}</div>}

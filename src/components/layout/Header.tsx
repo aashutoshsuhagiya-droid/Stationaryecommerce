@@ -34,6 +34,17 @@ export function Header() {
     if (searchOpen) searchRef.current?.focus();
   }, [searchOpen]);
 
+  useEffect(() => {
+    function openKeyboardSearch(event: KeyboardEvent) {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setSearchOpen(true);
+      }
+    }
+    document.addEventListener("keydown", openKeyboardSearch);
+    return () => document.removeEventListener("keydown", openKeyboardSearch);
+  }, []);
+
   function submitSearch(event: React.FormEvent) {
     event.preventDefault();
     if (query.trim()) {
@@ -56,7 +67,7 @@ export function Header() {
           <form className="header-search" onSubmit={submitSearch} role="search">
             <Search size={19} aria-hidden="true" />
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search labels, gifts and school essentials" aria-label="Search products" />
-            <kbd>⌘ K</kbd>
+            <kbd>Ctrl/⌘ K</kbd>
           </form>
           <nav className="header-actions" aria-label="Quick links">
             <Link href="/contact" className="support-link"><Headphones /><span><small>Need help?</small>Talk to us</span></Link>

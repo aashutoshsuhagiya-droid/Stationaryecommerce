@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { apiError, validationError } from "@/lib/http";
-import { getDemoOrder } from "@/lib/order-service";
+import { getDemoOrder, toOrderTrackingSummary } from "@/lib/order-service";
+import { consumeRateLimit, requestIdentifier } from "@/lib/rate-limit";
 import { orderLookupSchema } from "@/lib/validation";
 
 type OrderRouteContext = {
@@ -11,6 +12,18 @@ type OrderRouteContext = {
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request, context: OrderRouteContext) {
+  const rateLimit = consumeRateLimit({
+    namespace: "order-lookup",
+    identifier: requestIdentifier(request),
+    limit: 20,
+    windowMs: 60_000,
+  });
+  if (!rateLimit.allowed) {
+    const response = apiError(429, "RATE_LIMITED", "Too many order lookups. Please wait and try again.");
+    response.headers.set("Retry-After", String(rateLimit.retryAfterSeconds));
+    response.headers.set("Cache-Control", "no-store");
+    return response;
+  }
   const { orderNumber } = await context.params;
   const url = new URL(request.url);
   const parsed = orderLookupSchema.safeParse({
@@ -29,7 +42,7 @@ export async function GET(request: Request, context: OrderRouteContext) {
   }
 
   return NextResponse.json(
-    { data: order, meta: { persistence: "process-memory-demo" } },
+    { data: toOrderTrackingSummary(order), meta: { persistence: "process-memory-demo" } },
     { headers: { "Cache-Control": "no-store" } },
   );
 }

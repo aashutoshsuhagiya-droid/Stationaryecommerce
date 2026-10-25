@@ -86,6 +86,16 @@ test("editable row validation recomputes policy and duplicate issues", () => {
   assert.equal(validated.invalidRowCount, 1);
 });
 
+test("editable row validation can preserve spaces while a user is typing", () => {
+  const validated = validateBulkPersonalizationRows([
+    { rowNumber: 2, name: "John ", details: "Class ", quantity: 1 },
+  ], { preserveWhitespace: true });
+
+  assert.equal(validated.rows[0].name, "John ");
+  assert.equal(validated.rows[0].details, "Class ");
+  assert.equal(validated.invalidRowCount, 0);
+});
+
 test("enforces the client file byte limit using UTF-8 bytes", () => {
   const oversized = `name\n${"é".repeat(bulkPersonalizationPolicy.maxClientFileBytes / 2)}`;
   const parsed = parseBulkPersonalizationCsv(oversized);

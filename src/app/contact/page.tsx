@@ -32,8 +32,8 @@ export default function ContactPage() {
             </section>
             <aside>
               <ContactMethods />
-              <div style={{ marginTop: 18 }} className={styles.notice}><span><PackageSearch aria-hidden="true" /></span><div><strong>Already have an order?</strong><p>Use the <a href="/track-order" style={{ color: "#10776d", fontWeight: 750 }}>order tracker</a> for the latest confirmed status before contacting support.</p></div></div>
-              <div style={{ marginTop: 12 }} className={styles.notice}><span><HelpCircle aria-hidden="true" /></span><div><strong>Quick product questions</strong><p>Our <a href="/faq" style={{ color: "#10776d", fontWeight: 750 }}>FAQ</a> covers previews, materials, production, cancellation and personalised-item returns.</p></div></div>
+              <div style={{ marginTop: 18 }} className={styles.notice}><span><PackageSearch aria-hidden="true" /></span><div><strong>Already have an order?</strong><p>Use the <a href="/track-order" style={{ color: "var(--teal-dark)", fontWeight: 750 }}>order tracker</a> for the latest confirmed status before contacting support.</p></div></div>
+              <div style={{ marginTop: 12 }} className={styles.notice}><span><HelpCircle aria-hidden="true" /></span><div><strong>Quick product questions</strong><p>Our <a href="/faq" style={{ color: "var(--teal-dark)", fontWeight: 750 }}>FAQ</a> covers previews, materials, production, cancellation and personalised-item returns.</p></div></div>
             </aside>
           </div>
         </div>

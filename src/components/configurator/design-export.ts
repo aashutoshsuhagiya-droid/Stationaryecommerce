@@ -50,6 +50,7 @@ function safeFilenamePart(value: string, fallback: string): string {
 export function getArtworkExportSize(surface: PrintableSurfaceDefinition): {
   width: number;
   height: number;
+  density: "300dpi" | "2x";
 } {
   const hasPhysicalSize = Number.isFinite(surface.physicalWidthMm)
     && Number.isFinite(surface.physicalHeightMm)
@@ -60,12 +61,14 @@ export function getArtworkExportSize(surface: PrintableSurfaceDefinition): {
     return {
       width: Math.max(1, Math.round((surface.physicalWidthMm! / 25.4) * EXPORT_DPI)),
       height: Math.max(1, Math.round((surface.physicalHeightMm! / 25.4) * EXPORT_DPI)),
+      density: "300dpi",
     };
   }
 
   return {
     width: Math.max(1, Math.round(surface.width * 2)),
     height: Math.max(1, Math.round(surface.height * 2)),
+    density: "2x",
   };
 }
 
@@ -74,10 +77,11 @@ export function buildArtworkExportFilename(
   surfaceName: string,
   width: number,
   height: number,
+  density: "300dpi" | "2x",
 ): string {
   const product = safeFilenamePart(productName, "product");
   const surface = safeFilenamePart(surfaceName, "surface");
-  return `naamly-${product}-${surface}-${width}x${height}@${EXPORT_DPI}dpi.png`;
+  return `naamly-${product}-${surface}-${width}x${height}@${density}.png`;
 }
 
 function crc32(data: Uint8Array): number {
@@ -111,10 +115,10 @@ export function createStoredZip(entries: StoredZipEntry[], modifiedAt = new Date
   if (entries.length > 0xffff) throw new Error("Too many files for this ZIP archive.");
 
   const encoder = new TextEncoder();
-  const localChunks: Uint8Array[] = [];
+  const localSectionChunks: Uint8Array[] = [];
   const centralChunks: Uint8Array[] = [];
   const timestamp = getDosTimestamp(modifiedAt);
-  let localOffset = 0;
+  let localSectionSize = 0;
   let centralSize = 0;
 
   for (const entry of entries) {
@@ -122,6 +126,7 @@ export function createStoredZip(entries: StoredZipEntry[], modifiedAt = new Date
     if (filename.byteLength > 0xffff) throw new Error("A ZIP filename is too long.");
     if (entry.data.byteLength > 0xffffffff) throw new Error("A ZIP entry is too large.");
 
+    const localHeaderOffset = localSectionSize;
     const checksum = crc32(entry.data);
     const localHeader = new Uint8Array(30 + filename.byteLength);
     const localView = new DataView(localHeader.buffer);
@@ -137,7 +142,9 @@ export function createStoredZip(entries: StoredZipEntry[], modifiedAt = new Date
     localView.setUint16(26, filename.byteLength, true);
     localView.setUint16(28, 0, true);
     localHeader.set(filename, 30);
-    localChunks.push(localHeader, entry.data);
+    // A stored ZIP interleaves every local header with that entry's payload.
+    localSectionChunks.push(localHeader, entry.data);
+    localSectionSize += localHeader.byteLength + entry.data.byteLength;
 
     const centralHeader = new Uint8Array(46 + filename.byteLength);
     const centralView = new DataView(centralHeader.buffer);
@@ -157,13 +164,12 @@ export function createStoredZip(entries: StoredZipEntry[], modifiedAt = new Date
     centralView.setUint16(34, 0, true);
     centralView.setUint16(36, 0, true);
     centralView.setUint32(38, 0, true);
-    centralView.setUint32(42, localOffset, true);
+    centralView.setUint32(42, localHeaderOffset, true);
     centralHeader.set(filename, 46);
     centralChunks.push(centralHeader);
 
-    localOffset += localHeader.byteLength + entry.data.byteLength;
     centralSize += centralHeader.byteLength;
-    if (localOffset > 0xffffffff || centralSize > 0xffffffff) {
+    if (localSectionSize > 0xffffffff || centralSize > 0xffffffff) {
       throw new Error("The design is too large for a standard ZIP archive.");
     }
   }
@@ -176,13 +182,23 @@ export function createStoredZip(entries: StoredZipEntry[], modifiedAt = new Date
   endView.setUint16(8, entries.length, true);
   endView.setUint16(10, entries.length, true);
   endView.setUint32(12, centralSize, true);
-  endView.setUint32(16, localOffset, true);
+  endView.setUint32(16, localSectionSize, true);
   endView.setUint16(20, 0, true);
 
   return joinBytes(
-    [...localChunks, ...centralChunks, endRecord],
-    localOffset + centralSize + endRecord.byteLength,
+    [...localSectionChunks, ...centralChunks, endRecord],
+    localSectionSize + centralSize + endRecord.byteLength,
   );
+}
+
+export function createStoredZipBlob(
+  entries: StoredZipEntry[],
+  modifiedAt = new Date(),
+): Blob {
+  const bytes = createStoredZip(entries, modifiedAt);
+  const buffer = new ArrayBuffer(bytes.byteLength);
+  new Uint8Array(buffer).set(bytes);
+  return new Blob([buffer], { type: "application/zip" });
 }
 
 function canvasToPngBlob(canvas: HTMLCanvasElement): Promise<Blob> {
@@ -257,6 +273,7 @@ export async function downloadArtworkDesign({
         artworkSurface.id || artworkSurface.label,
         size.width,
         size.height,
+        size.density,
       ),
       blob,
     });
@@ -273,10 +290,7 @@ export async function downloadArtworkDesign({
     name: file.name,
     data: new Uint8Array(await file.blob.arrayBuffer()),
   })));
-  const zipBytes = createStoredZip(zipEntries);
-  const zipBuffer = new ArrayBuffer(zipBytes.byteLength);
-  new Uint8Array(zipBuffer).set(zipBytes);
   const archiveName = `naamly-${safeFilenamePart(productName, "product")}-design.zip`;
-  downloadBlob(new Blob([zipBuffer], { type: "application/zip" }), archiveName);
+  downloadBlob(createStoredZipBlob(zipEntries), archiveName);
   return { fileCount: files.length, filename: archiveName, zipped: true };
 }
