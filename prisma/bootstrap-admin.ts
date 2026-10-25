@@ -1,5 +1,7 @@
 import "./load-env";
 
+import { randomUUID } from "node:crypto";
+
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 
@@ -15,15 +17,21 @@ if (password.length < 16 || !/[A-Za-z]/.test(password) || !/\d/.test(password) |
 }
 
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
-try {
+
+// Uses plain sequential statements instead of an interactive transaction: Prisma Postgres
+// throttles transaction start on idle instances (P2028), and a failed tail step is cleaned up below.
+async function main() {
   const passwordHash = await hashPassword(password);
-  await prisma.$transaction(async (tx) => {
-    const role = await tx.role.findUnique({ where: { key: "admin" }, select: { id: true } });
-    if (!role) throw new Error("The admin role is not seeded. Run npm.cmd run db:seed first.");
-    const existing = await tx.user.findUnique({ where: { email }, select: { id: true } });
-    if (existing) throw new Error("A user already exists for BOOTSTRAP_ADMIN_EMAIL; refusing to overwrite its credentials.");
-    const user = await tx.user.create({
+  const role = await prisma.role.findUnique({ where: { key: "admin" }, select: { id: true } });
+  if (!role) throw new Error("The admin role is not seeded. Run npm run db:seed first.");
+  const existing = await prisma.user.findUnique({ where: { email }, select: { id: true } });
+  if (existing) throw new Error("A user already exists for BOOTSTRAP_ADMIN_EMAIL; refusing to overwrite its credentials.");
+
+  const userId = randomUUID();
+  try {
+    await prisma.user.create({
       data: {
+        id: userId,
         email,
         passwordHash,
         firstName: process.env.BOOTSTRAP_ADMIN_FIRST_NAME?.trim() || "Super",
@@ -32,9 +40,17 @@ try {
       },
       select: { id: true },
     });
-    await tx.userRole.create({ data: { userId: user.id, roleId: role.id } });
-  });
-  console.info(`Created administrator ${email}. Remove the bootstrap credentials from the environment now.`);
-} finally {
-  await prisma.$disconnect();
+    await prisma.userRole.create({ data: { userId, roleId: role.id } });
+    console.info(`Created administrator ${email}. Remove the bootstrap credentials from the environment now.`);
+  } catch (error) {
+    await prisma.user.delete({ where: { id: userId } }).catch(() => undefined);
+    throw error;
+  }
 }
+
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  })
+  .finally(() => prisma.$disconnect());
