@@ -1434,3 +1434,54 @@ body { overflow-x: clip; }
   .home-hero .hero-photo-caption strong { font-size: .82rem; }
   .home-hero .hero-photo-caption small { font-size: .65rem; }
 }
+
+/* The mobile header starts at 780px, so the process section must also stop using columns there. */
+@media (max-width: 780px) {
+  .process-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin-top: 26px;
+    border-top: 1px solid var(--border-divider);
+  }
+  .process-card {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    column-gap: 16px;
+    padding: 20px 0;
+    text-align: left;
+    border-bottom: 1px solid var(--border-divider);
+  }
+  .process-card + .process-card { border-left: 0; }
+  .process-icon {
+    grid-row: 1 / span 3;
+    width: 52px;
+    height: 52px;
+    margin: 0;
+  }
+  .process-number {
+    grid-column: 2;
+    margin: 0 0 2px;
+    font-size: .68rem;
+  }
+  .process-card h3 { grid-column: 2; align-self: auto; margin: 0; }
+  .process-card p { grid-column: 2; margin: 4px 0 0; font-size: .82rem; }
+}
+
+/* Some phones expose a wide CSS viewport. Use touch capability, not a tiny width alone, for these compact layouts. */
+@media (hover: none) and (max-width: 780px) {
+  .catalog-heading { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .catalog-count, .active-filters { display: none; }
+  .catalog-toolbar { align-items: stretch; flex-wrap: wrap; }
+  .sort-control { flex: 1 1 180px; min-width: 0; }
+
+  .product-gallery { grid-template-columns: minmax(0, 1fr); }
+  .gallery-thumbs { display: none; }
+  .live-preview-stage { min-height: min(500px, 82vw); padding-inline: 16px; }
+  .label-sheet-preview { width: 100%; min-height: min(360px, 62vw); padding-inline: 16px; }
+  .preview-note { display: none; }
+  .personal-fields, .finish-grid, .product-promises, .product-info-grid ul { grid-template-columns: 1fr; }
+
+  .cart-item { grid-template-columns: 110px minmax(0, 1fr); gap: 14px; }
+  .cart-customization { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .checkout-form-area { padding: 22px 18px; }
+}
