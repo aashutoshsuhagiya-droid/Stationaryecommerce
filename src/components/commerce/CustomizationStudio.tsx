@@ -39,7 +39,7 @@ import { useStore } from "@/components/store/StoreProvider";
 import { PreviewSkeleton } from "@/components/ui/StorefrontSkeletons";
 import { useScrollReveal } from "@/components/ui/use-scroll-reveal";
 import { buildCustomSizeQuotePath } from "@/lib/bulk-quote-prefill";
-import { formatPrice } from "@/lib/data";
+import { formatPrice, neutralPresentationPalette } from "@/lib/data";
 import type { ProductConfigurationSchema } from "@/lib/product-configuration";
 import type { PersonalizationTemplate, Product } from "@/lib/types";
 import { artworkDocumentSchema } from "@/lib/validation";
@@ -193,7 +193,7 @@ function createInitialArtwork(configuration: ProductConfigurationSchema) {
   const document = createArtworkDocument(definitions);
   if (!configuration.personalization.fields.some((field) => field.id === "name")) return document;
   const primary = definitions[0] ?? { width: 600, height: 360 };
-  const nameColor = configuration.personalization.templates[0]?.preview.foreground ?? "#17324d";
+  const nameColor = configuration.personalization.templates[0]?.preview.foreground ?? neutralPresentationPalette.ink;
   return {
     ...document,
     surfaces: document.surfaces.map((surface, index) =>
@@ -364,9 +364,9 @@ export function CustomizationStudio({
   const quotedLine = quote.status === "ready" ? quote.data.items[0] : undefined;
   const displayUnitPrice = quotedLine?.unitPricePaise ?? estimatedUnitPaise;
   const displaySubtotal = quotedLine?.lineTotalPaise ?? estimatedUnitPaise * quantity;
-  const templateBackground = selectedTemplate?.preview.background ?? "#e4f5f2";
-  const templateForeground = selectedTemplate?.preview.foreground ?? "#17324d";
-  const templateAccent = selectedTemplate?.preview.accent ?? "#168c80";
+  const templateBackground = selectedTemplate?.preview.background ?? neutralPresentationPalette.surfaceSubtle;
+  const templateForeground = selectedTemplate?.preview.foreground ?? neutralPresentationPalette.ink;
+  const templateAccent = selectedTemplate?.preview.accent ?? neutralPresentationPalette.graphite;
   const personalizationFontOptions = configuration.personalization.fields
     .find((field) => field.id === "font")
     ?.options?.reduce<Array<{ value: "rounded" | "sans" | "serif"; label: string }>>((options, option) => {
@@ -655,7 +655,7 @@ export function CustomizationStudio({
         templateId: selectedTemplate?.id,
         template: selectedTemplate?.label ?? "Product default",
         font: fontLabel,
-        textColor: personalizationNameLayer?.color ?? selectedTemplate?.preview.foreground ?? "#17324d",
+        textColor: personalizationNameLayer?.color ?? selectedTemplate?.preview.foreground ?? neutralPresentationPalette.ink,
         backgroundColor: templateBackground,
         pack: selectedVariant.label,
         material: selectedVariant.material,
@@ -798,7 +798,7 @@ export function CustomizationStudio({
                       {field.type === "select" ? (
                         <select value={fields[field.id] ?? ""} onChange={(event) => changeField(field.id, event.target.value)}>{field.options?.map((option) => <option key={option.id} value={option.value}>{option.label}</option>)}</select>
                       ) : field.type === "color" ? (
-                        <input type="color" value={fields[field.id] || "#17324d"} onChange={(event) => changeField(field.id, event.target.value)} />
+                        <input type="color" value={fields[field.id] || neutralPresentationPalette.ink} onChange={(event) => changeField(field.id, event.target.value)} />
                       ) : (
                         <input value={fields[field.id] ?? ""} placeholder={field.placeholder} maxLength={field.maxLength} aria-invalid={Boolean(fieldErrors[field.id])} onBlur={() => setFieldErrors(validateFields(configuration, fields, templateId))} onChange={(event) => changeField(field.id, event.target.value)} />
                       )}

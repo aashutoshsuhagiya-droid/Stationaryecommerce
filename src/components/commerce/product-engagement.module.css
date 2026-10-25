@@ -61,8 +61,9 @@
   width: min(350px, calc(100vw - 32px));
   padding: 20px;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--surface-main);
+  box-shadow: var(--shadow-menu);
   animation: idle-card-in 180ms ease both;
 }
 
@@ -104,14 +105,14 @@
   height: 48px;
   display: grid;
   place-items: center;
-  border: 0;
-  border-radius: 50%;
+  border: 1px solid transparent;
+  border-radius: 12px;
   color: var(--slate);
   background: transparent;
   cursor: pointer;
 }
 
-.dismiss:hover { color: var(--text-heading); background: var(--surface-hover); }
+.dismiss:hover { color: var(--text-heading); background: var(--surface-hover); border-color: var(--border-default); }
 .dismiss svg { width: 17px; }
 
 @keyframes idle-card-in {
@@ -120,7 +121,7 @@
 }
 
 @media (max-width: 720px) {
-  .relatedSection { padding: 72px 0 88px; }
+  .relatedSection { padding: 64px 0; }
   .relatedHeader { align-items: start; }
   .relatedHeader a { display: none; }
   .relatedRail { grid-auto-columns: minmax(230px, 82vw); gap: 18px; }

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 
+import { neutralPresentationPalette } from "../../lib/data";
 import type { PrintableSurfaceDefinition } from "./artwork-types";
 import type {
   Product3DKind,
@@ -283,7 +284,7 @@ function buildPencilSet({
     metalness: 0,
   });
   const pencilPrintMaterial = createThemedMaterial(theme, {
-    color: "#ffffff",
+    color: neutralPresentationPalette.surface,
     map: pencilTexture,
   });
   const ferruleMaterial = createThemedMaterial(theme, {
@@ -531,7 +532,7 @@ export function buildProductGeometry({
 }): THREE.Texture[] {
   const textureVariants: THREE.Texture[] = [];
   const printMaterial = createThemedMaterial(theme, {
-    color: "#ffffff",
+    color: neutralPresentationPalette.surface,
     map: texture,
     transparent: false,
     opacity: 1,

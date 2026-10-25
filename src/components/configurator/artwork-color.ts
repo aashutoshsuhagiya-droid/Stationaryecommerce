@@ -1,7 +1,8 @@
 import type { ArtworkDocument } from "./artwork-types";
+import { neutralPresentationPalette } from "../../lib/data";
 
-const DARK_TEXT = "#17324D";
-const LIGHT_TEXT = "#FFFFFF";
+const DARK_TEXT: string = neutralPresentationPalette.ink;
+const LIGHT_TEXT: string = neutralPresentationPalette.surface;
 const MINIMUM_TEXT_CONTRAST = 4.5;
 
 function parseHexColor(value: string): [number, number, number] | null {

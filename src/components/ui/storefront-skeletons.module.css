@@ -14,7 +14,6 @@
 .panel,
 .preview {
   background: var(--surface-subtle);
-  animation: skeleton-pulse 1.4s ease-in-out infinite alternate;
 }
 
 .breadcrumb { width: 180px; height: 12px; margin-bottom: 18px; border-radius: 6px; }
@@ -118,11 +117,6 @@
   background: var(--surface-main);
   font-size: 12px;
   font-weight: 750;
-}
-
-@keyframes skeleton-pulse {
-  from { background-color: var(--surface-subtle); }
-  to { background-color: var(--surface-alt); }
 }
 
 @media (max-width: 1024px) {

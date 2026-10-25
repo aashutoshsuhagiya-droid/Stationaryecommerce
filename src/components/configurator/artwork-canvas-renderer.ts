@@ -4,6 +4,7 @@ import type {
   PrintableSurfaceDefinition,
 } from "./artwork-types";
 import { getArtworkLayersInRenderOrder } from "./artwork-types";
+import { neutralPresentationPalette } from "../../lib/data";
 
 const imageCache = new Map<string, HTMLImageElement>();
 
@@ -158,7 +159,7 @@ export function renderLayerToContext(
     const fontSize = Math.max(12, (layer.fontSize ?? 32) * scale);
     const fontStr = `${fontSize}px ${getFontFamilyString(layer.fontFamily)}`;
     ctx.font = `600 ${fontStr}`;
-    ctx.fillStyle = layer.color || "#17324d";
+    ctx.fillStyle = layer.color || neutralPresentationPalette.ink;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     const lineHeight = fontSize * 1.2;
@@ -205,7 +206,7 @@ export function renderSurfaceToCanvas(
   ctx.clearRect(0, 0, width, height);
 
   // Background fill
-  ctx.fillStyle = background || "#ffffff";
+  ctx.fillStyle = background || neutralPresentationPalette.surface;
   ctx.fillRect(0, 0, width, height);
 
   const scaleX = width / Math.max(1, surfaceDef.width);

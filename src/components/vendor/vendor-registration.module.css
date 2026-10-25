@@ -1,15 +1,15 @@
 .page {
   min-height: 100vh;
-  color: #404040;
-  background: #f7f7f7;
+  color: var(--text-body);
+  background: var(--surface-alt);
 }
 
 .hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  color: #fff;
-  background: #171717;
+  color: var(--surface-main);
+  background: var(--text-heading);
 }
 
 .hero::before,
@@ -48,7 +48,7 @@
 
 .eyebrow {
   margin: 0 0 13px;
-  color: #404040;
+  color: var(--text-body);
   font-size: 12px;
   line-height: 1.3;
   font-weight: 850;
@@ -57,7 +57,7 @@
 }
 
 .hero .eyebrow {
-  color: #d4d4d4;
+  color: var(--border-strong);
 }
 
 .heroCopy h1 {
@@ -71,7 +71,7 @@
 .heroCopy > p:not(.eyebrow) {
   max-width: 650px;
   margin: 22px 0 0;
-  color: #d4d4d4;
+  color: var(--border-strong);
   font-size: 17px;
   line-height: 1.72;
 }
@@ -83,16 +83,16 @@
   display: flex;
   align-items: center;
   gap: 13px;
-  border: 1px solid #525252;
+  border: 1px solid var(--border-focus);
   border-radius: 15px;
-  background: #262626;
+  background: var(--accent);
 }
 
 .heroBadge > svg {
   width: 25px;
   height: 25px;
   flex: 0 0 25px;
-  color: #f2f2f2;
+  color: var(--surface-subtle);
 }
 
 .heroBadge span,
@@ -102,13 +102,13 @@
 }
 
 .heroBadge strong {
-  color: #fff;
+  color: var(--surface-main);
   font-size: 13px;
 }
 
 .heroBadge small {
   margin-top: 5px;
-  color: #d4d4d4;
+  color: var(--border-strong);
   font-size: 11px;
   line-height: 1.45;
 }
@@ -131,7 +131,7 @@
 
 .applicationGuide h2 {
   margin: 0;
-  color: #171717;
+  color: var(--text-heading);
   font-size: 27px;
   line-height: 1.2;
   letter-spacing: -.035em;
@@ -159,7 +159,7 @@
   left: 20px;
   top: 43px;
   bottom: 3px;
-  background: #d4d4d4;
+  background: var(--border-strong);
 }
 
 .stepIcon {
@@ -169,10 +169,10 @@
   height: 42px;
   display: grid;
   place-items: center;
-  color: #171717;
-  border: 1px solid #d4d4d4;
+  color: var(--text-heading);
+  border: 1px solid var(--border-strong);
   border-radius: 12px;
-  background: #f2f2f2;
+  background: var(--surface-subtle);
 }
 
 .stepIcon svg {
@@ -187,7 +187,7 @@
 
 .applicationGuide li small {
   margin: 1px 0 3px;
-  color: #404040;
+  color: var(--text-body);
   font-size: 10px;
   font-weight: 850;
   letter-spacing: .09em;
@@ -195,13 +195,13 @@
 }
 
 .applicationGuide li strong {
-  color: #171717;
+  color: var(--text-heading);
   font-size: 14px;
 }
 
 .applicationGuide li p {
   margin: 6px 0 0;
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 12px;
   line-height: 1.58;
 }
@@ -209,14 +209,14 @@
 .guideNote {
   margin-top: 5px;
   padding: 17px 18px;
-  color: #737373;
-  border: 1px solid #e5e5e5;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
   border-radius: 12px;
-  background: #fff;
+  background: var(--surface-main);
 }
 
 .guideNote strong {
-  color: #171717;
+  color: var(--text-heading);
   font-size: 13px;
 }
 
@@ -229,19 +229,19 @@
 .formCard {
   min-width: 0;
   overflow: hidden;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--border-default);
   border-radius: 20px;
-  background: #fff;
+  background: var(--surface-main);
 }
 
 .formHeading {
   padding: 38px 42px 31px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--border-default);
 }
 
 .formHeading h2 {
   margin: 0;
-  color: #171717;
+  color: var(--text-heading);
   font-size: 31px;
   line-height: 1.15;
   letter-spacing: -.037em;
@@ -249,7 +249,7 @@
 
 .formHeading > p:not(.eyebrow) {
   margin: 10px 0 0;
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
@@ -257,7 +257,7 @@
 .field label > span,
 .capabilityGroup legend > span,
 .termsRow span > span {
-  color: #b13f4b;
+  color: var(--danger);
 }
 
 .formStatus {
@@ -290,15 +290,15 @@
 }
 
 .formStatusError {
-  color: #83323a;
-  border-color: #ebc4c8;
-  background: #fff2f3;
+  color: var(--danger);
+  border-color: var(--danger-border);
+  background: var(--danger-bg);
 }
 
 .formStatusSuccess {
-  color: #155f57;
-  border-color: #bce2dc;
-  background: #edf9f7;
+  color: var(--success);
+  border-color: var(--success-border);
+  background: var(--success-bg);
 }
 
 .form {
@@ -310,7 +310,7 @@
   margin: 0;
   padding: 38px 0;
   border: 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-default);
 }
 
 .section legend {
@@ -319,7 +319,7 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  color: #171717;
+  color: var(--text-heading);
 }
 
 .section legend > span {
@@ -328,8 +328,8 @@
   display: grid;
   place-items: center;
   border-radius: 9px;
-  color: #fff;
-  background: #262626;
+  color: var(--surface-main);
+  background: var(--accent);
   font-size: 10px;
   font-weight: 850;
   letter-spacing: .03em;
@@ -342,7 +342,7 @@
 
 .sectionDescription {
   margin: 9px 0 25px 42px;
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 12px;
   line-height: 1.55;
 }
@@ -365,14 +365,14 @@
 }
 
 .field label {
-  color: #404040;
+  color: var(--text-body);
   font-size: 12px;
   font-weight: 780;
 }
 
 .field label small {
   margin-left: 4px;
-  color: #8a8a8a;
+  color: var(--text-muted);
   font-size: 10px;
   font-weight: 650;
 }
@@ -382,11 +382,11 @@
   width: 100%;
   min-height: 47px;
   padding: 0 13px;
-  color: #404040;
-  border: 1px solid #d4d4d4;
+  color: var(--text-body);
+  border: 1px solid var(--border-strong);
   border-radius: 9px;
   outline: 0;
-  background: #fff;
+  background: var(--surface-main);
   font: inherit;
   font-size: 13px;
   transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
@@ -397,23 +397,23 @@
 }
 
 .field input::placeholder {
-  color: #8a8a8a;
+  color: var(--text-muted);
 }
 
 .field input:focus,
 .field select:focus {
-  border-color: #525252;
-  box-shadow: 0 0 0 3px #eee;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--border-default);
 }
 
 .field input[aria-invalid="true"],
 .field select[aria-invalid="true"] {
-  border-color: #c65c67;
-  background: #fffafa;
+  border-color: var(--danger-border);
+  background: var(--danger-bg);
 }
 
 .hint {
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 10px;
   line-height: 1.45;
 }
@@ -421,7 +421,7 @@
 .fieldError {
   display: block;
   margin-top: 2px;
-  color: #a23d47;
+  color: var(--danger);
   font-size: 11px;
   font-weight: 680;
   line-height: 1.45;
@@ -438,11 +438,11 @@
   min-width: 47px;
   display: grid;
   place-items: center;
-  color: #737373;
-  border: 1px solid #d4d4d4;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
   border-right: 0;
   border-radius: 9px 0 0 9px;
-  background: #f2f2f2;
+  background: var(--surface-subtle);
   font-size: 11px;
   font-weight: 750;
 }
@@ -458,17 +458,17 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  color: #fff;
+  color: var(--surface-main);
   border: 0;
   border-radius: 0 9px 9px 0;
-  background: #262626;
+  background: var(--accent);
   font-size: 11px;
   font-weight: 800;
   cursor: pointer;
 }
 
 .mobileField button:hover:not(:disabled) {
-  background: #404040;
+  background: var(--text-body);
 }
 
 .mobileField button:disabled {
@@ -488,9 +488,9 @@
   grid-template-columns: minmax(170px, 250px) auto 1fr;
   align-items: end;
   gap: 11px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--border-default);
   border-radius: 11px;
-  background: #f7f7f7;
+  background: var(--surface-alt);
 }
 
 .otpPanel input {
@@ -506,10 +506,10 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  color: #171717;
-  border: 1px solid #d4d4d4;
+  color: var(--text-heading);
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
-  background: #fff;
+  background: var(--surface-main);
   font: inherit;
   font-size: 11px;
   font-weight: 800;
@@ -518,8 +518,8 @@
 
 .secondaryButton:hover:not(:disabled),
 .addDocument:hover:not(:disabled) {
-  color: #171717;
-  border-color: #525252;
+  color: var(--text-heading);
+  border-color: var(--border-focus);
 }
 
 .secondaryButton:disabled,
@@ -537,16 +537,16 @@
 .developmentCode {
   align-self: center;
   margin: 0;
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 10px;
 }
 
 .developmentCode code {
   margin-left: 3px;
   padding: 3px 6px;
-  color: #171717;
+  color: var(--text-heading);
   border-radius: 5px;
-  background: #f2f2f2;
+  background: var(--surface-subtle);
   font-size: 11px;
   font-weight: 850;
   letter-spacing: .1em;
@@ -569,11 +569,11 @@
 }
 
 .inlineStatusError {
-  color: #a23d47;
+  color: var(--danger);
 }
 
 .inlineStatusSuccess {
-  color: #126f66;
+  color: var(--success);
 }
 
 .choiceGrid {
@@ -591,22 +591,22 @@
   grid-template-columns: 20px 1fr;
   align-items: start;
   gap: 10px;
-  color: #737373;
-  border: 1px solid #e5e5e5;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
   border-radius: 11px;
-  background: #fff;
+  background: var(--surface-main);
   cursor: pointer;
   transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
 }
 
 .choiceCard:hover {
-  border-color: #525252;
+  border-color: var(--border-focus);
 }
 
 .choiceCardSelected {
-  border-color: #525252;
-  background: #f2f2f2;
-  box-shadow: inset 0 0 0 1px #525252;
+  border-color: var(--border-focus);
+  background: var(--surface-subtle);
+  box-shadow: inset 0 0 0 1px var(--border-focus);
 }
 
 .choiceCard > input {
@@ -617,7 +617,7 @@
 }
 
 .choiceCard:has(input:focus-visible) {
-  outline: 3px solid #d4d4d4;
+  outline: 3px solid var(--border-strong);
   outline-offset: 2px;
 }
 
@@ -627,15 +627,15 @@
   display: grid;
   place-items: center;
   color: transparent;
-  border: 1px solid #d4d4d4;
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
-  background: #fff;
+  background: var(--surface-main);
 }
 
 .choiceCardSelected .checkMark {
-  color: #fff;
-  border-color: #262626;
-  background: #262626;
+  color: var(--surface-main);
+  border-color: var(--accent);
+  background: var(--accent);
 }
 
 .checkMark svg {
@@ -650,14 +650,14 @@
 }
 
 .choiceCard strong {
-  color: #171717;
+  color: var(--text-heading);
   font-size: 12px;
   line-height: 1.35;
 }
 
 .choiceCard small {
   margin-top: 5px;
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 10px;
   line-height: 1.45;
 }
@@ -671,21 +671,21 @@
 .capabilityGroup {
   min-width: 0;
   padding: 20px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--border-default);
   border-radius: 12px;
-  background: #f7f7f7;
+  background: var(--surface-alt);
 }
 
 .capabilityGroup legend {
   margin: 0;
-  color: #171717;
+  color: var(--text-heading);
   font-size: 14px;
   font-weight: 800;
 }
 
 .capabilityGroup > p {
   margin: 5px 0 14px;
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 10px;
 }
 
@@ -701,18 +701,18 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #404040;
-  border: 1px solid #e5e5e5;
+  color: var(--text-body);
+  border: 1px solid var(--border-default);
   border-radius: 8px;
-  background: #fff;
+  background: var(--surface-main);
   font-size: 11px;
   cursor: pointer;
 }
 
 .checkList label:has(input:checked) {
-  color: #171717;
-  border-color: #525252;
-  background: #f2f2f2;
+  color: var(--text-heading);
+  border-color: var(--border-focus);
+  background: var(--surface-subtle);
 }
 
 .checkList input {
@@ -723,7 +723,7 @@
 }
 
 .checkList label:has(input:focus-visible) {
-  outline: 3px solid #d4d4d4;
+  outline: 3px solid var(--border-strong);
   outline-offset: 2px;
 }
 
@@ -734,15 +734,15 @@
   display: grid;
   place-items: center;
   color: transparent;
-  border: 1px solid #d4d4d4;
+  border: 1px solid var(--border-strong);
   border-radius: 5px;
-  background: #fff;
+  background: var(--surface-main);
 }
 
 .checkList label:has(input:checked) > span {
-  color: #fff;
-  border-color: #262626;
-  background: #262626;
+  color: var(--surface-main);
+  border-color: var(--accent);
+  background: var(--accent);
 }
 
 .checkList svg {
@@ -754,9 +754,9 @@
 .documentArea {
   margin-top: 25px;
   padding: 20px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--border-default);
   border-radius: 12px;
-  background: #f7f7f7;
+  background: var(--surface-alt);
 }
 
 .documentHeading {
@@ -769,13 +769,13 @@
 
 .documentHeading h3 {
   margin: 0;
-  color: #171717;
+  color: var(--text-heading);
   font-size: 14px;
 }
 
 .documentHeading p {
   margin: 5px 0 0;
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 10px;
   line-height: 1.5;
 }
@@ -783,7 +783,7 @@
 .documentHeading > svg {
   width: 22px;
   height: 22px;
-  color: #404040;
+  color: var(--text-body);
 }
 
 .documentList {
@@ -798,9 +798,9 @@
   grid-template-columns: 27px minmax(150px, .75fr) minmax(190px, 1.25fr) 35px;
   align-items: end;
   gap: 11px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--border-default);
   border-radius: 10px;
-  background: #fff;
+  background: var(--surface-main);
 }
 
 .documentNumber {
@@ -809,9 +809,9 @@
   align-self: center;
   display: grid;
   place-items: center;
-  color: #171717;
+  color: var(--text-heading);
   border-radius: 8px;
-  background: #f2f2f2;
+  background: var(--surface-subtle);
   font-size: 10px;
   font-weight: 850;
 }
@@ -826,10 +826,10 @@
   height: 29px;
   margin-right: 8px;
   padding: 0 9px;
-  color: #171717;
+  color: var(--text-heading);
   border: 0;
   border-radius: 6px;
-  background: #f2f2f2;
+  background: var(--surface-subtle);
   font: inherit;
   font-weight: 750;
   cursor: pointer;
@@ -841,17 +841,17 @@
   margin-bottom: 4px;
   display: grid;
   place-items: center;
-  color: #737373;
-  border: 1px solid #d4d4d4;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
   border-radius: 8px;
-  background: #fff;
+  background: var(--surface-main);
   cursor: pointer;
 }
 
 .removeDocument:hover {
-  color: #171717;
-  border-color: #525252;
-  background: #f2f2f2;
+  color: var(--text-heading);
+  border-color: var(--border-focus);
+  background: var(--surface-subtle);
 }
 
 .removeDocument svg {
@@ -879,7 +879,7 @@
   top: 6px;
   display: grid;
   place-items: center;
-  color: #737373;
+  color: var(--text-secondary);
   border: 0;
   border-radius: 7px;
   background: transparent;
@@ -887,8 +887,8 @@
 }
 
 .passwordField button:hover {
-  color: #171717;
-  background: #f2f2f2;
+  color: var(--text-heading);
+  background: var(--surface-subtle);
 }
 
 .passwordField svg {
@@ -901,7 +901,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 11px;
   line-height: 1.65;
   cursor: pointer;
@@ -912,11 +912,11 @@
   height: 17px;
   flex: 0 0 17px;
   margin-top: 1px;
-  accent-color: #262626;
+  accent-color: var(--accent);
 }
 
 .termsRow a {
-  color: #404040;
+  color: var(--text-body);
   font-weight: 800;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -940,7 +940,7 @@
   width: 22px;
   height: 22px;
   flex: 0 0 22px;
-  color: #404040;
+  color: var(--text-body);
 }
 
 .submitArea span,
@@ -950,13 +950,13 @@
 }
 
 .submitArea strong {
-  color: #171717;
+  color: var(--text-heading);
   font-size: 11px;
 }
 
 .submitArea small {
   margin-top: 3px;
-  color: #737373;
+  color: var(--text-secondary);
   font-size: 9px;
 }
 
@@ -968,10 +968,10 @@
   align-items: center;
   justify-content: center;
   gap: 9px;
-  color: #fff;
+  color: var(--surface-main);
   border: 0;
   border-radius: 10px;
-  background: #262626;
+  background: var(--accent);
   font: inherit;
   font-size: 12px;
   font-weight: 850;
@@ -980,7 +980,7 @@
 }
 
 .submitButton:hover:not(:disabled) {
-  background: #404040;
+  background: var(--text-body);
 }
 
 .submitButton:disabled {
@@ -996,15 +996,15 @@
 .signInPrompt {
   margin: 0;
   padding: 17px 42px;
-  color: #737373;
-  border-top: 1px solid #eee;
-  background: #f7f7f7;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-default);
+  background: var(--surface-alt);
   text-align: center;
   font-size: 11px;
 }
 
 .signInPrompt a {
-  color: #404040;
+  color: var(--text-body);
   font-weight: 800;
 }
 
@@ -1034,7 +1034,7 @@
 .removeDocument:focus-visible,
 .passwordField button:focus-visible,
 .submitButton:focus-visible {
-  outline: 3px solid #d4d4d4;
+  outline: 3px solid var(--border-strong);
   outline-offset: 3px;
 }
 
@@ -1126,9 +1126,9 @@
     padding: 15px;
     grid-template-columns: 36px 1fr;
     gap: 9px;
-    border: 1px solid #e5e5e5;
+    border: 1px solid var(--border-default);
     border-radius: 11px;
-    background: #fff;
+    background: var(--surface-main);
   }
 
   .applicationGuide li::before {

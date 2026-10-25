@@ -1,7 +1,12 @@
 import { createHash, randomUUID } from "node:crypto";
 
 import { CommerceError } from "./commerce-error";
-import { designTemplates, getProductById, sampleOrder } from "./data";
+import {
+  designTemplates,
+  getProductById,
+  neutralPresentationPalette,
+  sampleOrder,
+} from "./data";
 import { buildProductConfiguration } from "./product-configuration";
 import { priceCatalogItem } from "./pricing-service";
 import type { Order, OrderItemSnapshot, PersonalizationValues } from "./types";
@@ -118,8 +123,8 @@ function createOrderCustomization(
       ...(detail ? { detail } : {}),
       templateLabel: template?.name ?? "Product default",
       fontLabel,
-      textColor: nameLayer?.type === "text" ? nameLayer.color : template?.preview.foreground ?? "#17324d",
-      backgroundColor: template?.preview.background ?? "#ffffff",
+      textColor: nameLayer?.type === "text" ? nameLayer.color : template?.preview.foreground ?? neutralPresentationPalette.ink,
+      backgroundColor: template?.preview.background ?? neutralPresentationPalette.surface,
       packLabel: priced.productSnapshot.variantName,
       materialLabel: priced.productSnapshot.material,
     },

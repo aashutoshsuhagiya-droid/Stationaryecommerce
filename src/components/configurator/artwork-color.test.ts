@@ -8,9 +8,9 @@ import {
 } from "./artwork-color";
 import type { ArtworkDocument } from "./artwork-types";
 
-test("chooses white text for the navy theme and dark text for white", () => {
+test("chooses white text for a dark theme and ink text for white", () => {
   assert.equal(getReadableTextColor("#17324D", "#17324D"), "#FFFFFF");
-  assert.equal(getReadableTextColor("#FFFFFF", "#FFFFFF"), "#17324D");
+  assert.equal(getReadableTextColor("#FFFFFF", "#FFFFFF"), "#111418");
   assert.ok(getContrastRatio("#FFFFFF", "#17324D") >= 4.5);
 });
 
