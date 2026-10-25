@@ -515,3 +515,99 @@
 .configuratorPage p {
   font-size: .8125rem;
 }
+
+/* A touch device can report a wider CSS viewport than a phone. Keep the editor in its phone workspace until 780px. */
+@media (hover: none) and (max-width: 780px) {
+  .configuratorPage { width: calc(100% - 20px); padding-bottom: 26px; }
+  .configuratorHeader { align-items: flex-start; flex-direction: column; gap: 12px; padding-bottom: 20px; }
+  .headerActions { flex-direction: row; }
+  .workspace { grid-template-columns: 1fr; gap: 12px; padding: 10px; }
+  .optionsPanel { max-height: none; }
+  .choiceList, .sizeChoices, .templateChoices, .fieldList { grid-template-columns: 1fr; }
+
+  .designHeading {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+  .designHeading > div:first-child { min-width: 0; }
+  .designHeading small { display: none; }
+  .viewModeToggle { width: 100%; }
+  .viewModeToggle button { min-height: 44px; flex: 1 1 0; justify-content: center; }
+
+  .editor {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto auto auto;
+  }
+  .editorToolbar { min-height: 50px; padding-inline: 8px; }
+  .editorToolbar button span { display: none; }
+  .editorToolbar button:has(span) { width: var(--config-icon-control); padding: 0; }
+  .designCompletion { grid-template-columns: auto minmax(0, 1fr); gap: 7px 10px; padding: 10px 12px; }
+  .completionPreflight { grid-column: 1 / -1; text-align: left; white-space: normal; }
+  .completionChecklist { gap: 7px 10px; }
+  .surfaceTabs { overflow-x: auto; }
+  .surfaceTabs button { flex: 0 0 auto; }
+  .artboardViewport {
+    min-height: 0;
+    height: clamp(210px, 62vw, 300px);
+    padding: 16px;
+  }
+  .artboardScale { min-width: 100%; }
+  .guideLegend { flex-wrap: wrap; min-height: 44px; }
+  .inspector { grid-column: 1; grid-row: auto; padding: 14px; border-top: 1px solid var(--border-divider); border-left: 0; }
+
+  .mobileBuyBar {
+    position: sticky;
+    z-index: 45;
+    bottom: 0;
+    min-height: 66px;
+    padding: 8px 11px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid var(--border-divider);
+    background: var(--surface-main);
+  }
+}
+
+/* The artwork editor is a full workspace, not a narrow sidebar. Use the phone composition on every compact viewport. */
+@media (max-width: 900px) {
+  .editor {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto auto auto auto auto;
+  }
+  .inspector {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 16px;
+    border-top: 1px solid var(--border-divider);
+    border-left: 0;
+  }
+  .designHeading {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+  .designHeading > div:first-child { min-width: 0; }
+  .viewModeToggle { width: 100%; }
+  .viewModeToggle button { min-height: 44px; flex: 1 1 0; justify-content: center; }
+  .editorToolbar { min-height: 50px; padding-inline: 8px; }
+  .editorToolbar button span { display: none; }
+  .editorToolbar button:has(span) { width: var(--config-icon-control); padding: 0; }
+  .designCompletion { grid-template-columns: auto minmax(0, 1fr); gap: 7px 10px; padding: 10px 12px; }
+  .completionPreflight { grid-column: 1 / -1; text-align: left; white-space: normal; }
+  .completionChecklist { gap: 7px 10px; }
+  .surfaceTabs { overflow-x: auto; }
+  .surfaceTabs button { flex: 0 0 auto; }
+  .artboardViewport { min-height: 0; height: clamp(220px, 54vw, 360px); padding: 16px; }
+  .artboardScale { min-width: 100%; }
+  .guideLegend { flex-wrap: wrap; min-height: 44px; }
+  .propertyGrid, .imageActions { grid-template-columns: 1fr; }
+  .rotationPresets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .properties { gap: 14px; }
+}
