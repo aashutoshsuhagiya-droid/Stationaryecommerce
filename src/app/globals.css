@@ -1167,3 +1167,126 @@ body { letter-spacing: -.01em; }
   .quality-note { left: 20%; width: min(245px, 74vw); }
   .collection-card { padding: 27px; }
 }
+
+/* Responsive safeguards for compact tablets and narrow phones. */
+@media (max-width: 900px) {
+  .shell { width: min(100% - 32px, 1180px); }
+  .header-main { grid-template-columns: 150px minmax(0, 1fr) auto; gap: 14px; }
+  .header-search { min-width: 0; }
+  .header-search kbd { display: none; }
+  .nav-row { gap: 18px; overflow-x: auto; scrollbar-width: none; }
+  .nav-row::-webkit-scrollbar { display: none; }
+  .primary-nav { gap: 18px; white-space: nowrap; }
+  .product-detail { grid-template-columns: 1fr; gap: 34px; padding-bottom: 48px; }
+  .product-gallery { position: static; top: auto; }
+  .cart-layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; }
+  .checkout-layout { grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; }
+}
+
+@media (max-width: 700px) {
+  :root { --shell: calc(100vw - 28px); }
+  .section-header { align-items: flex-start; flex-direction: column; gap: 14px; }
+  .section-header > .text-link { min-height: 44px; }
+  .mega-menu-panel { width: min(100vw - 28px, 640px); padding: 22px 18px 0; }
+  .mega-menu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .mega-menu-feature { display: none; }
+  .cart-layout, .checkout-layout { grid-template-columns: 1fr; }
+  .cart-summary, .checkout-summary { position: static; }
+  .checkout-summary { grid-row: 1; }
+  .checkout-head > div { grid-template-columns: 1fr auto; }
+  .checkout-steps { display: none; }
+  .checkout-form-area { padding: 22px; }
+  .product-gallery { grid-template-columns: 52px minmax(0, 1fr); }
+  .gallery-thumbs button { width: 52px; height: 52px; }
+  .live-preview-stage { min-height: min(520px, 76vw); }
+}
+
+@media (max-width: 420px) {
+  .shell { width: calc(100vw - 24px); }
+  .announcement { padding-inline: 12px; }
+  .header-main { grid-template-columns: 42px 1fr auto; gap: 4px; }
+  .header-actions { gap: 0; }
+  .icon-button { width: 42px; height: 42px; }
+  .mega-menu-grid { grid-template-columns: 1fr; }
+  .mega-menu-footer { align-items: flex-start; flex-direction: column; }
+  .mobile-drawer { width: min(92vw, 380px); padding: 20px 16px; }
+  .page-hero h1, .catalog-heading h1 { font-size: clamp(1.85rem, 10vw, 2.25rem); }
+  .section-header h2, .how-heading h2, .faq-intro h2 { font-size: 1.55rem; }
+  .cart-item { grid-template-columns: 82px minmax(0, 1fr); gap: 10px; }
+  .cart-item-bottom { gap: 10px; }
+  .cart-item-bottom .quantity-control { width: 112px; grid-template-columns: 40px 32px 40px; }
+  .checkout-form-area { padding: 18px 14px; }
+  .shipping-option, .payment-options label { gap: 8px; padding: 11px 9px; }
+  .checkout-items > div { grid-template-columns: 48px minmax(0, 1fr) auto; gap: 8px; }
+  .product-gallery { grid-template-columns: 1fr; }
+  .gallery-thumbs { display: none; }
+  .live-preview-stage { min-height: 320px; padding-inline: 12px; }
+}
+
+/* ---- All-devices responsive hardening (appended block) ---- */
+
+/* Tiny phones (320-380px): guarantee no horizontal overflow */
+@media (max-width: 380px) {
+  :root { --shell: calc(100vw - 20px); }
+  .hero-copy h1 { font-size: 1.9rem; }
+  .hero-stage { min-height: 270px; }
+  .process-grid { gap: 18px; }
+  .product-grid, .category-grid { gap: 8px; }
+  .product-card-body { padding: 8px; }
+  .product-card h3 { min-height: 0; font-size: .72rem; }
+  .category-card { min-height: 180px; padding: 12px; }
+  .trust-grid strong { font-size: .58rem; }
+  .trust-grid small { font-size: .5rem; }
+  .cart-item { grid-template-columns: 72px 1fr; gap: 10px; }
+  .cart-item-bottom .quantity-control { width: 108px; grid-template-columns: 42px 24px 42px; }
+  .checkout-form-area { padding: 18px 12px; }
+  .footer-main { grid-template-columns: 1fr; gap: 30px; }
+  .newsletter-form { grid-template-columns: 1fr; }
+  .mobile-buy-bar { grid-template-columns: 1fr auto; gap: 10px; }
+  .mobile-buy-bar .button { min-height: 40px; font-size: .7rem; }
+}
+
+/* Tablet portrait (521-780px): two-column product grids, comfortable hero */
+@media (min-width: 521px) and (max-width: 780px) {
+  .hero-stage { min-height: 420px; }
+  .trust-grid { grid-template-columns: 1fr 1fr; }
+  .process-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Tablet landscape / small desktop (781-1024px) */
+@media (min-width: 781px) and (max-width: 1024px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .trust-grid { grid-template-columns: repeat(4, 1fr); }
+  .process-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Mega-menu must not overflow narrow viewports */
+.mega-menu-panel { max-width: min(960px, 92vw); overflow-x: auto; }
+.mega-menu-grid { min-width: 640px; }
+
+/* Data tables: allow horizontal scroll inside their wrapper, never the page */
+.table-wrap, .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+th, td { overflow-wrap: anywhere; }
+
+/* Prevent any fixed-width child from forcing page-level horizontal scroll */
+body { overflow-x: clip; }
+
+/* 3D preview stage: never wider than the viewport on any device */
+[data-product-3d] { max-width: 100%; }
+
+/* Large desktops: keep centered, don't stretch */
+@media (min-width: 1720px) {
+  :root { --shell: min(1360px, calc(100vw - 80px)); }
+}
+
+/* Touch devices: enlarge tap targets that are below 44px on small screens */
+@media (hover: none) and (max-width: 780px) {
+  .icon-button { width: 44px; height: 44px; }
+  .card-quick-add { width: 44px; height: 44px; }
+}
+
+/* Very tall, narrow foldable phones */
+@media (max-width: 414px) and (min-width: 360px) {
+  .hero-stage { min-height: 300px; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+}
