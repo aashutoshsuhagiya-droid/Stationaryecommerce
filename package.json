@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "prisma generate",
     "build": "next build",
+    "postinstall": "prisma generate",
     "start": "next start",
     "test:domain": "tsx --test src/lib/*.test.ts src/components/configurator/*.test.ts",
     "typecheck": "tsc --noEmit",
