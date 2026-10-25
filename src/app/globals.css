@@ -1223,6 +1223,58 @@ body { letter-spacing: -.01em; }
   .live-preview-stage { min-height: 320px; padding-inline: 12px; }
 }
 
+/* Phone-first composition: preserve scanability instead of squeezing desktop sections. */
+@media (max-width: 600px) {
+  .section { padding-block: 56px; }
+  .section-header { margin-bottom: 24px; }
+  .section-header > div, .how-heading, .faq-intro { width: 100%; }
+  .section-header p, .how-heading p, .faq-intro p { max-width: 38rem; }
+
+  .hero-grid { padding-block: 36px 30px; }
+  .hero-copy { text-align: left; }
+  .hero-copy h1, .hero-copy > p { margin-inline: 0; }
+  .hero-kicker, .hero-actions, .hero-reassurance { margin-inline: 0; justify-content: flex-start; }
+  .hero-actions { width: 100%; grid-template-columns: 1fr; }
+  .hero-actions .button { width: 100%; }
+  .hero-stage { min-height: min(78vw, 350px); }
+
+  .trust-grid { grid-template-columns: 1fr; padding-block: 8px; }
+  .trust-grid > div, .trust-grid > div:first-child, .trust-grid > div:last-child {
+    min-height: 56px;
+    height: auto;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-divider);
+  }
+  .trust-grid > div:last-child { border-bottom: 0; }
+  .trust-grid strong, .trust-grid small { overflow: visible; white-space: normal; text-overflow: clip; }
+
+  .category-grid, .collection-grid { grid-template-columns: 1fr; }
+  .category-card { min-height: 230px; }
+  .collection-card { min-height: 300px; }
+  .process-grid { grid-template-columns: 1fr; gap: 22px; }
+  .process-card { grid-template-columns: 50px minmax(0, 1fr); }
+
+  .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .product-card h3 { min-height: 0; }
+  .product-card h3 a { min-height: 0; }
+  .card-actions { grid-template-columns: 1fr; }
+  .card-quick-add { display: none; }
+
+  .story-grid, .faq-grid { grid-template-columns: 1fr; gap: 38px; }
+  .story-visual { min-height: 320px; }
+  .quality-note { left: 10%; width: 80%; }
+  .footer-main { grid-template-columns: 1fr; gap: 30px; }
+  .footer-brand { grid-column: auto; }
+  .footer-bottom { align-items: flex-start; flex-direction: column; gap: 8px; }
+}
+
+@media (max-width: 360px) {
+  .product-grid { grid-template-columns: 1fr; }
+  .hero-copy h1 { font-size: 2rem; }
+  .hero-stage { min-height: 270px; }
+  .page-hero h1, .catalog-heading h1 { font-size: 1.8rem; }
+}
+
 /* ---- All-devices responsive hardening (appended block) ---- */
 
 /* Tiny phones (320-380px): guarantee no horizontal overflow */
