@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import {
   Archive,
   ChevronDown,
@@ -22,6 +22,19 @@ export function ProductsPanel() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All categories");
   const [adding, setAdding] = useState(false);
+  const [categoryRecords, setCategoryRecords] = useState<Array<{ id: string; name: string }>>([]);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  async function loadCatalog() {
+    const response = await fetch("/api/admin/catalog", { cache: "no-store" });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.error?.message || "Could not load the live catalog.");
+    setCatalog(payload.data.products);
+    setCategoryRecords(payload.data.categories.map((item: { id: string; name: string }) => ({ id: item.id, name: item.name })));
+  }
+
+  useEffect(() => { loadCatalog().catch(() => undefined); }, []);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -31,24 +44,25 @@ export function ProductsPanel() {
     );
   }, [catalog, query, category]);
 
-  function createProduct(event: FormEvent<HTMLFormElement>) {
+  async function createProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const name = String(data.get("name") || "Untitled product");
-    const newProduct: AdminProduct = {
-      id: `p${Date.now()}`,
-      name,
-      category: String(data.get("category") || "Name labels"),
-      sku: String(data.get("sku") || "NEW-001"),
-      price: Number(data.get("price") || 0),
-      stock: 0,
-      orders: 0,
-      status: "Draft",
-      personalized: data.get("personalized") === "on",
-      art: "labels",
-    };
-    setCatalog((current) => [newProduct, ...current]);
-    setAdding(false);
+    setSaving(true); setError("");
+    try {
+      const response = await fetch("/api/admin/catalog", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "product", name: String(data.get("name")), sku: String(data.get("sku")), categoryId: String(data.get("category")), price: Number(data.get("price")), imageUrl: String(data.get("imageUrl")), material: String(data.get("material") || ""), sizes: String(data.get("sizes") || "").split(",").map((value) => value.trim()).filter(Boolean), sizeDescription: String(data.get("sizeDescription") || ""), features: String(data.get("features") || "").split(",").map((value) => value.trim()).filter(Boolean), description: String(data.get("description") || ""), customizable: data.get("personalized") === "on", published: data.get("published") === "on", allow2D: data.get("allow2D") === "on", allow3D: data.get("allow3D") === "on", quantityMin: Number(data.get("quantityMin") || 1), quantityMax: Number(data.get("quantityMax") || 100), productionDaysMin: Number(data.get("productionDaysMin") || 0), productionDaysMax: Number(data.get("productionDaysMax") || 0) }) });
+      const payload = await response.json(); if (!response.ok) throw new Error(payload.error?.message || "Could not save product.");
+      await loadCatalog(); setAdding(false);
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not save product."); } finally { setSaving(false); }
+  }
+
+  async function addCategory() {
+    const name = window.prompt("Category name");
+    if (!name?.trim()) return;
+    const parentName = window.prompt(`Parent category (optional). Available: ${categoryRecords.map((category) => category.name).join(", ") || "none"}`)?.trim();
+    const parentId = parentName ? categoryRecords.find((category) => category.name.toLowerCase() === parentName.toLowerCase())?.id : undefined;
+    if (parentName && !parentId) { setError("Parent category was not found. Create it first or leave the parent blank."); return; }
+    const response = await fetch("/api/admin/catalog", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "category", name: name.trim(), parentId }) });
+    if (response.ok) await loadCatalog(); else setError("Could not create the category.");
   }
 
   const categories = Array.from(new Set(catalog.map((product) => product.category)));
@@ -61,6 +75,7 @@ export function ProductsPanel() {
         actions={
           <>
             <button className={styles.buttonSecondary} type="button"><Download size={14} /> Export</button>
+            <button className={styles.buttonSecondary} onClick={addCategory} type="button"><Plus size={14} /> Add category</button>
             <button className={styles.buttonPrimary} onClick={() => setAdding(true)} type="button"><Plus size={14} /> Add product</button>
           </>
         }
@@ -147,17 +162,27 @@ export function ProductsPanel() {
                     <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Price (₹)</span><input className={styles.input} min="0" name="price" placeholder="649" required type="number" /></label>
                   </div>
                   <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Category</span>
-                    <select className={styles.select} name="category">{categories.map((option) => <option key={option}>{option}</option>)}</select>
+                    <select className={styles.select} name="category" required>{categoryRecords.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}</select>
                   </label>
+                  <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Product image URL</span><input className={styles.input} name="imageUrl" placeholder="https://…" required type="url" /></label>
+                  <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Material</span><input className={styles.input} name="material" placeholder="e.g. Vinyl, cotton, stainless steel" /></label>
+                  <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Sizes / formats</span><input className={styles.input} name="sizes" placeholder="e.g. A5, A4, 50 × 30 mm" /><small>Separate options with commas.</small></label>
+                  <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Size guide shown to customers</span><input className={styles.input} name="sizeDescription" placeholder="e.g. 50 × 30 mm per label; fits most lunch boxes" /></label>
+                  <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Customer-facing features</span><input className={styles.input} name="features" placeholder="Waterproof, Dishwasher safe" /><small>Separate features with commas.</small></label>
+                  <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Description</span><textarea className={styles.textarea} name="description" placeholder="What customers should know about this product" /></label>
+                  <div className={styles.fieldGrid}><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Min production days</span><input className={styles.input} min="0" name="productionDaysMin" type="number" defaultValue="0" /></label><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Max production days</span><input className={styles.input} min="0" name="productionDaysMax" type="number" defaultValue="0" /></label></div>
                   <label className={styles.toggleRow}>
                     <span className={styles.toggleCopy}><strong>Enable personalization</strong><span>Attach text fields and design templates.</span></span>
                     <input defaultChecked name="personalized" type="checkbox" />
                   </label>
+                  <div className={styles.detailSection}><p className={styles.sectionCaption}>Customer configurator</p><label className={styles.toggleRow}><span className={styles.toggleCopy}><strong>Enable 2D layout editor</strong><span>Customers can position text and artwork on the product.</span></span><input defaultChecked name="allow2D" type="checkbox" /></label><label className={styles.toggleRow}><span className={styles.toggleCopy}><strong>Enable 3D preview</strong><span>Customers can inspect the live design in 3D.</span></span><input defaultChecked name="allow3D" type="checkbox" /></label><div className={styles.fieldGrid}><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Minimum quantity</span><input className={styles.input} defaultValue="1" min="1" name="quantityMin" type="number" /></label><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Maximum quantity</span><input className={styles.input} defaultValue="100" min="1" name="quantityMax" type="number" /></label></div></div>
+                  <label className={styles.toggleRow}><span className={styles.toggleCopy}><strong>Publish on storefront</strong><span>Customers can see it immediately after saving.</span></span><input name="published" type="checkbox" /></label>
+                  {error && <p className={styles.formError} role="alert">{error}</p>}
                 </div>
               </div>
               <div className={styles.drawerFooter}>
                 <button className={styles.buttonSecondary} onClick={() => setAdding(false)} type="button">Cancel</button>
-                <button className={styles.buttonPrimary} type="submit"><Archive size={13} /> Save draft</button>
+                <button className={styles.buttonPrimary} disabled={saving || !categoryRecords.length} type="submit"><Archive size={13} /> {saving ? "Saving…" : "Save product"}</button>
               </div>
             </form>
           </aside>

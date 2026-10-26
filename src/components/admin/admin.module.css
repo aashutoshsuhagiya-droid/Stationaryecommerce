@@ -352,6 +352,35 @@
   cursor: pointer;
 }
 
+.profileMenu {
+  position: relative;
+}
+
+.profileDropdown {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 230px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--admin-card-radius);
+  background: var(--surface-main);
+  box-shadow: 0 12px 28px rgb(28 42 47 / 16%);
+}
+
+.profileDropdown p {
+  margin: 3px 5px 8px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.profileDropdown p strong {
+  color: var(--text-body);
+}
+
 .profileAvatar,
 .avatar {
   display: grid;
@@ -958,6 +987,12 @@
   border-color: var(--border-focus);
   box-shadow: 0 0 0 3px var(--admin-surface-quiet);
 }
+
+.tagEditor { display: flex; flex-wrap: wrap; gap: 7px; margin: 9px 0; }
+.tagEditor span { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 999px; background: var(--admin-surface-quiet); color: var(--text-body); font-size: 11px; font-weight: 700; }
+.tagEditor button { display: grid; padding: 0; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.inlineAdd { display: flex; gap: 8px; }
+.inlineAdd .input { flex: 1; }
 
 .segmentControl {
   display: flex;
@@ -1592,6 +1627,7 @@
   .topbarTitle { min-width: 0; flex: 1; }
   .topbarTitle strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .topbarTitle span, .globalSearch, .profileCopy, .profileButton svg { display: none; }
+  .profileDropdown { width: 200px; }
   .topActions { margin-left: auto; }
   .pageArea { padding: 22px 13px 35px; }
   .pageHeader { align-items: flex-start; flex-direction: column; margin-bottom: 19px; }
@@ -1645,6 +1681,7 @@
   .topbarTitle { min-width: 0; flex: 1; }
   .topbarTitle strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .topbarTitle span, .globalSearch, .profileCopy, .profileButton svg { display: none; }
+  .profileDropdown { width: 200px; }
   .topActions { margin-left: auto; }
   .pageArea { padding: 22px 13px 35px; }
   .pageHeader { align-items: flex-start; flex-direction: column; margin-bottom: 19px; }

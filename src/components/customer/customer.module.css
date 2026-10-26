@@ -256,6 +256,7 @@ a.contactMethod:hover { border-color: var(--border-strong); background: var(--su
 .accountNav a:hover { color: var(--ink); background: var(--cloud); }
 .accountNav a.accountNavActive { color: var(--teal-dark); background: var(--soft-line); }
 .accountNav svg { width: 18px; height: 18px; }
+.accountSignOut { margin-top: 5px; padding: 9px 2px 0; border-top: 1px solid var(--line); }
 .accountMain { min-width: 0; }
 .accountCards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .accountStat { padding: 22px; border: 1px solid var(--line); border-radius: var(--customer-radius-card); background: var(--paper); }
@@ -505,6 +506,8 @@ a.contactMethod:hover { border-color: var(--border-strong); background: var(--su
   .accountLayout { grid-template-columns: 1fr; }
   .accountNav { position: static; display: flex; overflow-x: auto; }
   .accountNav a { flex: 0 0 auto; }
+  .accountSignOut { flex: 0 0 auto; margin: 0 0 0 4px; padding: 0 0 0 4px; border-top: 0; border-left: 1px solid var(--line); }
+  .accountSignOut :global(button) { width: auto; white-space: nowrap; }
   .wishlistGrid { grid-template-columns: repeat(2, 1fr); }
   .valueGrid { grid-template-columns: repeat(2, 1fr); }
   .faqLayout, .policyLayout { grid-template-columns: 1fr; gap: 25px; }

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import { VendorDashboard } from "@/components/vendor/VendorDashboard";
 import { getPageActor } from "@/lib/auth-session";
-import { categories } from "@/lib/data";
+import { getVendorCategoryOptions } from "@/lib/runtime-catalog";
 import { getVendorApplicationForUser } from "@/lib/vendor-onboarding";
 
 export const metadata: Metadata = {
@@ -28,10 +28,7 @@ export default async function VendorPage() {
     redirect("/");
   }
 
-  const categoryOptions = categories
-    .slice()
-    .sort((left, right) => left.sortOrder - right.sortOrder)
-    .map(({ id, name, description }) => ({ id, name, description }));
+  const categoryOptions = await getVendorCategoryOptions();
 
   return <VendorDashboard application={application} categories={categoryOptions} email={actor.email} />;
 }

@@ -14,5 +14,5 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   if (!actor) redirect("/login?next=/admin");
   if (!actor.roles.includes("admin")) redirect("/");
 
-  return <AdminShell>{children}</AdminShell>;
+  return <AdminShell email={actor.email}>{children}</AdminShell>;
 }

@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import { FormEvent, useRef, useState } from "react";
 
+import { INDIA_CITIES, INDIA_STATES } from "@/lib/india-cities";
+
 import styles from "./vendor-registration.module.css";
 
 type CategoryOption = {
@@ -38,6 +40,8 @@ type DocumentEntry = {
   type: DocumentType;
   file: File | null;
 };
+
+type OwnerDocumentKey = "aadhaar" | "pan" | "electricityBill";
 
 type OtpPhase = "idle" | "requesting" | "sent" | "verifying" | "verified";
 
@@ -64,31 +68,13 @@ type FormStatus = {
   message: string;
 };
 
-const serviceOptions = [
-  "Digital printing",
-  "Vinyl label printing",
-  "UV printing",
-  "Screen printing",
-  "Sublimation printing",
-  "Laser engraving",
-] as const;
-
-const equipmentOptions = [
-  "Digital production press",
-  "Wide-format printer",
-  "Laminator",
-  "Vinyl cutter / plotter",
-  "Laser cutter / engraver",
-  "Heat press",
-] as const;
-
 const documentTypeOptions: Array<{ value: DocumentType; label: string }> = [
   { value: "BUSINESS_REGISTRATION", label: "Business registration" },
   { value: "GST_CERTIFICATE", label: "GST certificate" },
   { value: "SHOP_LICENSE", label: "Shop licence" },
   { value: "IDENTITY_PROOF", label: "Identity proof" },
   { value: "ADDRESS_PROOF", label: "Address proof" },
-  { value: "OTHER", label: "Other supporting document" },
+  { value: "OTHER", label: "Other business document" },
 ];
 
 const acceptedDocumentTypes = new Set(["application/pdf", "image/png", "image/jpeg"]);
@@ -122,13 +108,15 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   return <span className={styles.fieldError} id={id}>{message}</span>;
 }
 
-export default function VendorRegistrationForm({ categories }: { categories: CategoryOption[] }) {
+export default function VendorRegistrationForm({ categories, serviceOptions, equipmentOptions }: { categories: CategoryOption[]; serviceOptions: string[]; equipmentOptions: string[] }) {
   const router = useRouter();
   const errorSummaryRef = useRef<HTMLDivElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
   const otpInputRef = useRef<HTMLInputElement>(null);
   const documentId = useRef(1);
   const [mobile, setMobile] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
   const [otpCode, setOtpCode] = useState("");
   const [otp, setOtp] = useState<OtpState>({
     phase: "idle",
@@ -142,6 +130,7 @@ export default function VendorRegistrationForm({ categories }: { categories: Cat
   const [documents, setDocuments] = useState<DocumentEntry[]>([
     { id: documentId.current, type: "BUSINESS_REGISTRATION", file: null },
   ]);
+  const [ownerDocuments, setOwnerDocuments] = useState<Record<OwnerDocumentKey, File | null>>({ aadhaar: null, pan: null, electricityBill: null });
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<FormStatus | null>(null);
@@ -294,7 +283,7 @@ export default function VendorRegistrationForm({ categories }: { categories: Cat
   }
 
   function addDocument() {
-    if (documents.length >= 5) return;
+    if (documents.length + Object.values(ownerDocuments).filter(Boolean).length >= 5) return;
     documentId.current += 1;
     setDocuments((current) => [...current, {
       id: documentId.current,
@@ -358,7 +347,10 @@ export default function VendorRegistrationForm({ categories }: { categories: Cat
     const password = String(values.get("password") ?? "");
     const confirmPassword = String(values.get("confirmPassword") ?? "");
     const gstin = value("gstin").toUpperCase();
-    const selectedDocuments = documents.filter((document): document is DocumentEntry & { file: File } => Boolean(document.file));
+    const selectedDocuments = [
+      ...documents.filter((document): document is DocumentEntry & { file: File } => Boolean(document.file)),
+      ...([{ key: "aadhaar", type: "IDENTITY_PROOF" }, { key: "pan", type: "IDENTITY_PROOF" }, { key: "electricityBill", type: "ADDRESS_PROOF" }] as const).flatMap(({ key, type }) => ownerDocuments[key] ? [{ id: -1, type, file: ownerDocuments[key]! }] : []),
+    ];
     const errors: Record<string, string> = {};
     const otpExpired = Boolean(otp.expiresAt && new Date(otp.expiresAt).getTime() <= Date.now());
 
@@ -598,14 +590,14 @@ export default function VendorRegistrationForm({ categories }: { categories: Cat
               <FieldError id="application-addressLine2-error" message={fieldError("application.addressLine2")} />
             </div>
             <div className={styles.field}>
-              <label htmlFor="city">City <span aria-hidden="true">*</span></label>
-              <input id="city" name="city" autoComplete="address-level2" minLength={2} maxLength={80} required aria-invalid={Boolean(fieldError("application.city"))} aria-describedby={describedBy("application.city")} />
-              <FieldError id="application-city-error" message={fieldError("application.city")} />
+              <label htmlFor="state">State <span aria-hidden="true">*</span></label>
+              <select id="state" name="state" autoComplete="address-level1" required value={state} onChange={(event) => { setState(event.target.value); setCity(""); }} aria-invalid={Boolean(fieldError("application.state"))} aria-describedby={describedBy("application.state")}><option value="" disabled>Select your workshop state</option>{INDIA_STATES.map((stateName) => <option key={stateName} value={stateName}>{stateName}</option>)}</select>
+              <FieldError id="application-state-error" message={fieldError("application.state")} />
             </div>
             <div className={styles.field}>
-              <label htmlFor="state">State <span aria-hidden="true">*</span></label>
-              <input id="state" name="state" autoComplete="address-level1" minLength={2} maxLength={80} required aria-invalid={Boolean(fieldError("application.state"))} aria-describedby={describedBy("application.state")} />
-              <FieldError id="application-state-error" message={fieldError("application.state")} />
+              <label htmlFor="city">City <span aria-hidden="true">*</span></label>
+              <select id="city" name="city" autoComplete="address-level2" required disabled={!state} value={city} onChange={(event) => setCity(event.target.value)} aria-invalid={Boolean(fieldError("application.city"))} aria-describedby={describedBy("application.city")}><option value="" disabled>{state ? "Select your workshop city" : "Select state first"}</option>{INDIA_CITIES.filter(([, stateName]) => stateName === state).map(([cityName]) => <option key={cityName} value={cityName}>{cityName}</option>)}</select>
+              <FieldError id="application-city-error" message={fieldError("application.city")} />
             </div>
             <div className={styles.field}>
               <label htmlFor="postalCode">Workshop PIN code <span aria-hidden="true">*</span></label>
@@ -683,7 +675,7 @@ export default function VendorRegistrationForm({ categories }: { categories: Cat
 
         <fieldset className={styles.section}>
           <legend><span>05</span><strong>Registration, GST & documents</strong></legend>
-          <p className={styles.sectionDescription}>Supporting records help our team review your business accurately.</p>
+          <p className={styles.sectionDescription}>Business and owner records help our team review your application accurately.</p>
           <div className={styles.gridTwo}>
             <div className={styles.field}>
               <label htmlFor="businessRegistrationNumber">Business registration number <small>Optional</small></label>
@@ -708,9 +700,25 @@ export default function VendorRegistrationForm({ categories }: { categories: Cat
             )}
           </div>
 
+          <div className={styles.documentArea} aria-describedby="owner-document-help documentTypes-error">
+            <div className={styles.documentHeading}>
+              <div><h3>Owner documents</h3><p id="owner-document-help">Upload Aadhaar, PAN card, and/or electricity bill. PDF, PNG or JPEG; 4 MB per file.</p></div>
+              <FilePlus2 aria-hidden="true" />
+            </div>
+            <div className={styles.documentList}>
+              {([ ["aadhaar", "Aadhaar card"], ["pan", "PAN card"], ["electricityBill", "Electricity bill"] ] as Array<[OwnerDocumentKey, string]>).map(([key, label], index) => (
+                <div className={styles.documentRow} key={key}>
+                  <span className={styles.documentNumber}>{index + 1}</span>
+                  <div className={styles.field}><label htmlFor={`owner-document-${key}`}>{label}</label><small className={styles.hint}>{key === "electricityBill" ? "Accepted as owner address proof." : "Accepted as owner identity proof."}</small></div>
+                  <div className={styles.field}><label htmlFor={`owner-document-${key}-file`}>Choose file</label><input id={`owner-document-${key}-file`} type="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg" onChange={(event) => { setOwnerDocuments((current) => ({ ...current, [key]: event.target.files?.[0] ?? null })); clearFieldError("documentTypes"); }} /></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className={styles.documentArea} aria-describedby="document-help documentTypes-error">
             <div className={styles.documentHeading}>
-              <div><h3>Supporting documents</h3><p id="document-help">Optional at submission. Upload up to 5 PDF, PNG or JPEG files, 4 MB each.</p></div>
+              <div><h3>Business documents</h3><p id="document-help">Optional at submission. Upload up to 5 PDF, PNG or JPEG files, 4 MB each.</p></div>
               <FilePlus2 aria-hidden="true" />
             </div>
             <div className={styles.documentList}>
@@ -732,7 +740,7 @@ export default function VendorRegistrationForm({ categories }: { categories: Cat
               ))}
             </div>
             <FieldError id="documentTypes-error" message={fieldError("documentTypes")} />
-            <button className={styles.addDocument} type="button" onClick={addDocument} disabled={documents.length >= 5}><Plus aria-hidden="true" /> Add another document</button>
+            <button className={styles.addDocument} type="button" onClick={addDocument} disabled={documents.length + Object.values(ownerDocuments).filter(Boolean).length >= 5}><Plus aria-hidden="true" /> Add another document</button>
           </div>
         </fieldset>
 

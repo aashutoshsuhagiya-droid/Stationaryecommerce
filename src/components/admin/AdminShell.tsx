@@ -21,6 +21,7 @@ import {
   UserRoundCheck,
   X,
 } from "lucide-react";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 import styles from "./admin.module.css";
 
 const navigation = [
@@ -64,9 +65,11 @@ const titles: Record<string, string> = {
   "/admin/settings": "Store settings",
 };
 
-export function AdminShell({ children }: { children: ReactNode }) {
+export function AdminShell({ children, email }: { children: ReactNode; email: string }) {
   const pathname = usePathname();
   const [navOpen, setNavOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const initials = email.slice(0, 2).toUpperCase();
 
   useEffect(() => setNavOpen(false), [pathname]);
 
@@ -164,14 +167,22 @@ export function AdminShell({ children }: { children: ReactNode }) {
               <Bell size={17} />
               <span className={styles.noticeDot} />
             </button>
-            <button className={styles.profileButton} type="button">
-              <span className={styles.profileAvatar}>AS</span>
-              <span className={styles.profileCopy}>
-                <strong>Aashi</strong>
-                <span>Store owner</span>
-              </span>
-              <ChevronDown size={13} />
-            </button>
+            <div className={styles.profileMenu}>
+              <button aria-controls="admin-profile-actions" aria-expanded={profileOpen} className={styles.profileButton} onClick={() => setProfileOpen((open) => !open)} type="button">
+                <span className={styles.profileAvatar}>{initials}</span>
+                <span className={styles.profileCopy}>
+                  <strong>{email}</strong>
+                  <span>Super admin</span>
+                </span>
+                <ChevronDown size={13} />
+              </button>
+              {profileOpen && (
+                <div className={styles.profileDropdown} id="admin-profile-actions">
+                  <p>Signed in as <strong>{email}</strong></p>
+                  <SignOutButton compact />
+                </div>
+              )}
+            </div>
           </div>
         </header>
 

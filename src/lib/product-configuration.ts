@@ -78,13 +78,13 @@ export interface ProductConfigurationSchema {
     fields: CustomizationField[];
     templates: ConfiguratorTemplate[];
   };
-  quantity: { minimum: 1; maximum: 100; increment: 1; default: 1 };
+  quantity: { minimum: number; maximum: number; increment: number; default: number };
   artwork: {
     mode: "template_fields" | "none";
     surfaces: Array<{ id: string; label: string }>;
     uploads: { supported: false; acceptedMimeTypes: never[]; reason: string };
   };
-  preview: { mode: "catalog_2d"; artworkKey: string };
+  preview: { mode: "catalog_2d"; artworkKey: string; supportedModes: Array<"2d" | "3d">; defaultMode: "2d" | "3d" };
   pricing: {
     mode: "server_quote";
     currency: CurrencyCode;
@@ -152,7 +152,8 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
   );
   const hasNumericDimensions = presets.some((preset) => preset.dimensionsMm !== null);
   const defaultPreset = presets[0];
-  const defaultQuantity = 1;
+  const defaultQuantity = product.configurator?.quantityMin ?? 1;
+  const previewModes = ([product.configurator?.allow2D !== false && "2d", product.configurator?.allow3D !== false && "3d"].filter(Boolean) as Array<"2d" | "3d">);
   const modes: ProductCustomizationMode[] = ["standard", "specification_based"];
   if (product.customizable) modes.push("personalized", "design_studio");
   if (productSupportsMultipleNames(product)) modes.push("bulk_order");
@@ -203,10 +204,10 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
       fields: product.customizationFields,
       templates: activeTemplates(product),
     },
-    quantity: { minimum: 1, maximum: 100, increment: 1, default: defaultQuantity },
+    quantity: { minimum: defaultQuantity, maximum: Math.max(defaultQuantity, product.configurator?.quantityMax ?? 100), increment: 1, default: defaultQuantity },
     artwork: {
       mode: product.customizable ? "template_fields" : "none",
-      surfaces: product.customizable ? [{ id: "primary", label: "Primary print area" }] : [],
+      surfaces: product.customizable ? (product.configurator?.printAreas ?? [{ id: "primary", label: "Primary print area" }]) : [],
       uploads: {
         supported: false,
         acceptedMimeTypes: [],
@@ -214,7 +215,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
           "Private asset storage, MIME sniffing, malware scanning and production preflight are not configured.",
       },
     },
-    preview: { mode: "catalog_2d", artworkKey: product.artwork },
+    preview: { mode: "catalog_2d", artworkKey: product.artwork, supportedModes: previewModes.length ? previewModes : ["2d"], defaultMode: previewModes.includes("3d") ? "3d" : "2d" },
     pricing: {
       mode: "server_quote",
       currency: "INR",

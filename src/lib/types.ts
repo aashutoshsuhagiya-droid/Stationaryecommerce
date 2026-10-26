@@ -98,6 +98,13 @@ export interface Product {
   variants: ProductVariant[];
   customizationFields: CustomizationField[];
   templateIds: string[];
+  configurator?: {
+    allow2D: boolean;
+    allow3D: boolean;
+    quantityMin: number;
+    quantityMax: number;
+    printAreas: Array<{ id: string; label: string }>;
+  };
 }
 
 export interface PersonalizationTemplate {

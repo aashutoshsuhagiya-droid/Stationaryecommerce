@@ -2163,12 +2163,23 @@
     display: none;
   }
 
+  .topbar {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    min-height: 60px;
+    padding: 12px 14px;
+  }
+
   .topbar > div:first-child span {
     display: none;
   }
 
+  .topbar > div:first-child {
+    flex: 1 1 100%;
+  }
+
   .topbar > div:first-child strong {
-    max-width: 190px;
+    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

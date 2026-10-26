@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ChevronDown, ChevronRight, Filter, Search, SlidersHorizontal, X } from "lucide-react";
 import { searchCatalog } from "@/lib/catalog";
-import { categories, formatPrice, products } from "@/lib/data";
+import { categories as initialCategories, formatPrice, products as initialProducts } from "@/lib/data";
+import type { Category, Product } from "@/lib/types";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { useScrollReveal } from "@/components/ui/use-scroll-reveal";
 import { ProductCard } from "./ProductCard";
@@ -13,7 +14,7 @@ import { ProductCard } from "./ProductCard";
 type SortOption = "recommended" | "price-low" | "price-high" | "newest";
 
 const sortOptions: SortOption[] = ["recommended", "price-low", "price-high", "newest"];
-const catalogPrices = products.map((product) => product.price);
+const catalogPrices = initialProducts.map((product) => product.price);
 const catalogPriceRange = {
   min: catalogPrices.length ? Math.min(...catalogPrices) : 0,
   max: catalogPrices.length ? Math.max(...catalogPrices) : 0,
@@ -24,6 +25,8 @@ function isSortOption(value: string | null): value is SortOption {
 }
 
 export function ProductCatalog({ searchMode = false }: { searchMode?: boolean }) {
+  const [catalog, setCatalog] = useState<Product[]>(initialProducts);
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
   const params = useSearchParams();
   const queryParam = params.get("q") || "";
   const requestedCategory = params.get("category");
@@ -40,6 +43,13 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const filterDrawerRef = useRef<HTMLElement>(null);
   const catalogReveal = useScrollReveal<HTMLElement>();
+
+  useEffect(() => {
+    fetch("/api/products?limit=48", { cache: "no-store" }).then((response) => response.ok ? response.json() : null).then((payload) => {
+      if (Array.isArray(payload?.data)) setCatalog(payload.data);
+      if (Array.isArray(payload?.categories)) setCategories(payload.categories);
+    }).catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     setQuery(queryParam);
@@ -83,9 +93,9 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
   const results = useMemo(() => {
     const term = query.trim().toLowerCase();
     const matchingSearchIds = term
-      ? new Set(searchCatalog(term, products.length).products.map((product) => product.id))
+      ? new Set(searchCatalog(term, catalog.length).products.map((product) => product.id))
       : null;
-    const list = products.filter((product) => {
+    const list = catalog.filter((product) => {
       const matchesSearch = !matchingSearchIds || matchingSearchIds.has(product.id);
       const matchesCategory = category === "all" || product.categorySlug === category;
       const matchesCustom = !customOnly || product.customizable;
@@ -98,14 +108,14 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
       if (sort === "newest") return Number(b.newArrival) - Number(a.newArrival);
       return Number(b.featured) - Number(a.featured);
     });
-  }, [query, category, customOnly, inStockOnly, sort]);
+  }, [query, category, customOnly, inStockOnly, sort, catalog]);
 
   const selectedCategory = categories.find((item) => item.slug === category);
   const reset = () => { setCategory("all"); setCustomOnly(false); setInStockOnly(false); setQuery(""); setVisible(8); };
 
   const filters = <>
     <div className="filter-heading"><strong>Filters</strong><button onClick={reset}>Clear all</button></div>
-    <div className="filter-group"><h3>Category <ChevronDown /></h3><div className="filter-options"><label><input type="radio" name="category" checked={category === "all"} onChange={() => setCategory("all")} /><span>All products</span><small>{products.length}</small></label>{categories.filter((item) => item.productCount > 0).map((item) => <label key={item.id}><input type="radio" name="category" checked={category === item.slug} onChange={() => { setCategory(item.slug); setVisible(8); }} /><span>{item.shortName}</span><small>{item.productCount}</small></label>)}</div></div>
+    <div className="filter-group"><h3>Category <ChevronDown /></h3><div className="filter-options"><label><input type="radio" name="category" checked={category === "all"} onChange={() => setCategory("all")} /><span>All products</span><small>{catalog.length}</small></label>{categories.filter((item) => item.productCount > 0).map((item) => <label key={item.id}><input type="radio" name="category" checked={category === item.slug} onChange={() => { setCategory(item.slug); setVisible(8); }} /><span>{item.shortName}</span><small>{item.productCount}</small></label>)}</div></div>
     <div className="filter-group"><h3>Shopping options <ChevronDown /></h3><div className="filter-options"><label><input type="checkbox" checked={customOnly} onChange={(event) => setCustomOnly(event.target.checked)} /><span>Personalised only</span></label><label><input type="checkbox" checked={inStockOnly} onChange={(event) => setInStockOnly(event.target.checked)} /><span>Available to order</span></label></div></div>
     <div className="filter-group"><h3>Current price range <ChevronDown /></h3><div className="price-guide"><div><span style={{ width: "100%" }} /></div><p><span>{formatPrice(catalogPriceRange.min)}</span><span>{formatPrice(catalogPriceRange.max)}</span></p></div></div>
     <div className="filter-help"><SlidersHorizontal /><strong>Can’t find the right format?</strong><p>Tell us what you need and we’ll point you in the right direction.</p><Link href="/contact">Ask customer care →</Link></div>

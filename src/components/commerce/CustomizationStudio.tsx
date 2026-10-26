@@ -331,7 +331,7 @@ export function CustomizationStudio({
   const defaultPreset = configuration.dimensions.presets.find(
     (preset) => preset.id === configuration.dimensions.defaultPresetId,
   ) ?? configuration.dimensions.presets[0];
-  const [previewMode, setPreviewMode] = useState<"3d" | "2d">("3d");
+  const [previewMode, setPreviewMode] = useState<"3d" | "2d">(configuration.preview.defaultMode);
   const [configurationId, setConfigurationId] = useState(uniqueId);
   const [variantId, setVariantId] = useState(firstVariant?.id ?? "");
   const [templateId, setTemplateId] = useState(firstTemplate?.id ?? "");
@@ -844,7 +844,7 @@ export function CustomizationStudio({
             <div className={configuratorStyles.designHeading}>
               <div><Sparkles /><span><strong>{previewMode === "3d" ? "Interactive 3D preview" : "Live 2D artwork studio"}</strong><small>{previewMode === "3d" ? "Rotate and inspect your customized product in 3D." : "Drag elements on the print area. Dashed guides mark the safe zone."}</small></span></div>
               <div className={configuratorStyles.viewModeToggle} role="group" aria-label="Preview mode">
-                <button
+                {configuration.preview.supportedModes.includes("3d") && <button
                   type="button"
                   aria-pressed={previewMode === "3d"}
                   className={previewMode === "3d" ? configuratorStyles.viewModeActive : ""}
@@ -852,8 +852,8 @@ export function CustomizationStudio({
                   title="3D interactive model"
                 >
                   <Box className="w-3.5 h-3.5" /> 3D View
-                </button>
-                <button
+                </button>}
+                {configuration.preview.supportedModes.includes("2d") && <button
                   type="button"
                   aria-pressed={previewMode === "2d"}
                   className={previewMode === "2d" ? configuratorStyles.viewModeActive : ""}
@@ -861,7 +861,7 @@ export function CustomizationStudio({
                   title="2D design editor"
                 >
                   <Layers3 className="w-3.5 h-3.5" /> 2D Studio
-                </button>
+                </button>}
               </div>
             </div>
             {configuration.personalization.supported ? (

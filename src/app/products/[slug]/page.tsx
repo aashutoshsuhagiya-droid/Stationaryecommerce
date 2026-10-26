@@ -4,33 +4,35 @@ import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { CustomizationStudio } from "@/components/commerce/CustomizationStudio";
 import { ProductEngagement } from "@/components/commerce/ProductEngagement";
-import { designTemplates, getProductBySlug, products } from "@/lib/data";
+import { designTemplates, products } from "@/lib/data";
 import { buildProductConfiguration } from "@/lib/product-configuration";
+import { getStorefrontCatalog, getStorefrontProduct } from "@/lib/runtime-catalog";
 
 export function generateStaticParams() { return products.map((product) => ({ slug: product.slug })); }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getStorefrontProduct(slug);
   return product ? { title: product.name, description: product.shortDescription } : { title: "Product not found" };
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getStorefrontProduct(slug);
   if (!product) notFound();
   const templates = designTemplates.filter((template) => product.templateIds.includes(template.id) && template.active);
   const configuration = buildProductConfiguration(product);
+  const catalog = await getStorefrontCatalog();
   const relatedProducts = [
-    ...products.filter((candidate) => (
+    ...catalog.products.filter((candidate) => (
       candidate.id !== product.id && candidate.categorySlug === product.categorySlug
     )),
-    ...products.filter((candidate) => (
+    ...catalog.products.filter((candidate) => (
       candidate.id !== product.id
       && candidate.categorySlug !== product.categorySlug
       && candidate.featured
     )),
-    ...products.filter((candidate) => candidate.id !== product.id),
+    ...catalog.products.filter((candidate) => candidate.id !== product.id),
   ].filter((candidate, index, list) => (
     list.findIndex((item) => item.id === candidate.id) === index
   )).slice(0, 4);

@@ -3,7 +3,8 @@ import { BadgeCheck, ClipboardCheck, MapPinned, Settings2 } from "lucide-react";
 
 import VendorRegistrationForm from "@/components/vendor/VendorRegistrationForm";
 import styles from "@/components/vendor/vendor-registration.module.css";
-import { categories } from "@/lib/data";
+import { getVendorCategoryOptions } from "@/lib/runtime-catalog";
+import { getVendorRegistrationOptions } from "@/lib/vendor-registration-options";
 
 export const metadata: Metadata = {
   title: "Become a vendor",
@@ -24,15 +25,13 @@ const applicationSteps = [
   {
     icon: ClipboardCheck,
     title: "Submit for review",
-    text: "Our team reviews your details and any supporting documents before activation.",
+    text: "Our team reviews your details and business documents before activation.",
   },
 ] as const;
 
-export default function VendorRegisterPage() {
-  const categoryOptions = categories
-    .slice()
-    .sort((left, right) => left.sortOrder - right.sortOrder)
-    .map(({ id, name, description }) => ({ id, name, description }));
+export default async function VendorRegisterPage() {
+  const categoryOptions = await getVendorCategoryOptions();
+  const registrationOptions = await getVendorRegistrationOptions();
 
   return (
     <div className={styles.page}>
@@ -75,7 +74,7 @@ export default function VendorRegisterPage() {
           </div>
         </aside>
 
-        <VendorRegistrationForm categories={categoryOptions} />
+        <VendorRegistrationForm categories={categoryOptions} equipmentOptions={registrationOptions.equipment} serviceOptions={registrationOptions.printingServices} />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { cityStateByCity } from "./india-cities";
 
 const mobile = z.string().trim().transform((value) => value.replace(/[\s()-]/g, "")).refine(
   (value) => /^(?:\+?91)?[6-9]\d{9}$/.test(value),
@@ -46,6 +47,10 @@ const vendorApplicationFieldsBaseSchema = z.object({
 }).strict();
 
 export const vendorApplicationFieldsSchema = vendorApplicationFieldsBaseSchema.superRefine((value, context) => {
+  const expectedState = cityStateByCity.get(value.city);
+  if (!expectedState || value.state !== expectedState) {
+    context.addIssue({ code: "custom", path: ["city"], message: "Choose a city from the registration list." });
+  }
   if ((typeof value.latitude === "number") !== (typeof value.longitude === "number")) {
     context.addIssue({ code: "custom", path: ["latitude"], message: "Provide both latitude and longitude" });
   }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Heart, LayoutDashboard, MapPin, Package, UserRound } from "lucide-react";
+import { SignOutButton } from "@/components/auth/SignOutButton";
 import styles from "./customer.module.css";
 
 const links = [
@@ -27,6 +28,9 @@ export default function AccountNav() {
           </Link>
         );
       })}
+      <div className={styles.accountSignOut}>
+        <SignOutButton />
+      </div>
     </nav>
   );
 }

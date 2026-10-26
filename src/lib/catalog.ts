@@ -62,13 +62,13 @@ const searchableProductText = (product: Product) =>
 const uniqueSorted = (values: string[]) =>
   [...new Set(values)].sort((a, b) => a.localeCompare(b, "en-IN"));
 
-export function queryProducts(query: ProductQuery = {}): ProductQueryResult {
+export function queryProducts(query: ProductQuery = {}, catalog: Product[] = products): ProductQueryResult {
   const q = query.q ? normalize(query.q) : "";
   const material = query.material ? normalize(query.material) : "";
   const size = query.size ? normalize(query.size) : "";
   const theme = query.theme ? normalize(query.theme) : "";
 
-  let filtered = products.filter((product) => {
+  let filtered = catalog.filter((product) => {
     if (query.category && product.categorySlug !== query.category) return false;
     if (q && !searchableProductText(product).includes(q)) return false;
     if (typeof query.minPrice === "number" && product.price < query.minPrice) return false;
@@ -113,7 +113,7 @@ export function queryProducts(query: ProductQuery = {}): ProductQueryResult {
   const total = filtered.length;
   const pageCount = total === 0 ? 0 : Math.ceil(total / limit);
   const start = (page - 1) * limit;
-  const allPrices = products.map((product) => product.price);
+  const allPrices = catalog.map((product) => product.price);
 
   return {
     items: filtered.slice(start, start + limit),
@@ -122,9 +122,9 @@ export function queryProducts(query: ProductQuery = {}): ProductQueryResult {
     limit,
     pageCount,
     availableFilters: {
-      materials: uniqueSorted(products.map((product) => product.material)),
-      sizes: uniqueSorted(products.flatMap((product) => product.sizes ?? [])),
-      themes: uniqueSorted(products.flatMap((product) => product.themes ?? [])),
+      materials: uniqueSorted(catalog.map((product) => product.material)),
+      sizes: uniqueSorted(catalog.flatMap((product) => product.sizes ?? [])),
+      themes: uniqueSorted(catalog.flatMap((product) => product.themes ?? [])),
       price: {
         min: Math.min(...allPrices),
         max: Math.max(...allPrices),
