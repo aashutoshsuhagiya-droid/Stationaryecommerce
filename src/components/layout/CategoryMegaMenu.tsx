@@ -19,7 +19,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { categories } from "@/lib/data";
+import { categories as initialCategories } from "@/lib/data";
+import type { Category } from "@/lib/types";
 
 type QuickLink = { label: string; href: string; icon: LucideIcon };
 
@@ -37,6 +38,7 @@ const itemIcons: LucideIcon[] = [Tag, ShieldCheck, Droplets, School, BookOpen, P
 
 export function CategoryMegaMenu() {
   const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -57,10 +59,17 @@ export function CategoryMegaMenu() {
   }, [open]);
 
   useEffect(() => {
+    fetch("/api/products?limit=1", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((payload) => { if (Array.isArray(payload?.categories)) setCategories(payload.categories); })
+      .catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
     if (open) buttonRef.current?.focus();
   }, [open]);
 
-  const groups = groupSlugs.map((slugs, index) => ({
+  const staticGroups = groupSlugs.map((slugs, index) => ({
     title: groupTitles[index],
     Icon: groupIcons[index],
     items: slugs
@@ -73,6 +82,12 @@ export function CategoryMegaMenu() {
         Icon: itemIcons[(index * 4 + itemIndex) % itemIcons.length],
       })),
   }));
+  const dynamicGroups = categories.filter((category) => !category.parentId).map((parent, index) => {
+    const children = categories.filter((category) => category.parentId === parent.id);
+    const items = children.length ? children : [parent];
+    return { title: parent.name, Icon: groupIcons[index % groupIcons.length], items: items.map((category, itemIndex) => ({ categorySlug: category.slug, name: category.name, productCount: category.productCount, Icon: itemIcons[(index * 4 + itemIndex) % itemIcons.length] })) };
+  });
+  const groups = categories.some((category) => category.parentId) ? dynamicGroups : staticGroups;
 
   const quickLinks: QuickLink[] = [
     { label: "New arrivals", href: "/products?sort=newest", icon: Sparkles },

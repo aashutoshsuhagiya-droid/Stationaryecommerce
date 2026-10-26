@@ -55,10 +55,13 @@ export function ProductsPanel() {
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not save product."); } finally { setSaving(false); }
   }
 
-  async function addCategory() {
-    const name = window.prompt("Category name");
+  async function addCategory(parentRequired = false) {
+    const name = window.prompt(parentRequired ? "Subcategory name" : "Top-level category name");
     if (!name?.trim()) return;
-    const parentName = window.prompt(`Parent category (optional). Available: ${categoryRecords.map((category) => category.name).join(", ") || "none"}`)?.trim();
+    const parentName = parentRequired
+      ? window.prompt(`Parent category (required). Available: ${categoryRecords.map((category) => category.name).join(", ") || "none"}`)?.trim()
+      : undefined;
+    if (parentRequired && !parentName) { setError("Select a parent category before creating a subcategory."); return; }
     const parentId = parentName ? categoryRecords.find((category) => category.name.toLowerCase() === parentName.toLowerCase())?.id : undefined;
     if (parentName && !parentId) { setError("Parent category was not found. Create it first or leave the parent blank."); return; }
     const response = await fetch("/api/admin/catalog", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "category", name: name.trim(), parentId }) });
@@ -75,7 +78,8 @@ export function ProductsPanel() {
         actions={
           <>
             <button className={styles.buttonSecondary} type="button"><Download size={14} /> Export</button>
-            <button className={styles.buttonSecondary} onClick={addCategory} type="button"><Plus size={14} /> Add category</button>
+            <button className={styles.buttonSecondary} onClick={() => void addCategory(false)} type="button"><Plus size={14} /> Add category</button>
+            <button className={styles.buttonSecondary} onClick={() => void addCategory(true)} type="button"><Plus size={14} /> Add subcategory</button>
             <button className={styles.buttonPrimary} onClick={() => setAdding(true)} type="button"><Plus size={14} /> Add product</button>
           </>
         }

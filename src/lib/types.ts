@@ -10,6 +10,7 @@ export type ProductBadge = "Bestseller" | "New" | "Premium" | "Bulk value";
 
 export interface Category {
   id: string;
+  parentId?: string | null;
   slug: string;
   name: string;
   shortName: string;

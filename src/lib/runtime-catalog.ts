@@ -15,8 +15,8 @@ function stockStatus(variant: { isActive: boolean; inventoryPolicy: string; inve
   return (variant.inventory?.quantityOnHand ?? 0) <= 5 ? "low_stock" : "in_stock";
 }
 
-function mapCategory(category: { id: string; slug: string; name: string; description: string | null; imageUrl: string | null; sortOrder: number }, productCount = 0): Category {
-  return { id: category.id, slug: category.slug, name: category.name, shortName: category.name, description: category.description ?? "", image: category.imageUrl ?? "", artwork: "labels", accent: "mint", sortOrder: category.sortOrder, featured: false, productCount };
+function mapCategory(category: { id: string; parentId: string | null; slug: string; name: string; description: string | null; imageUrl: string | null; sortOrder: number }, productCount = 0): Category {
+  return { id: category.id, parentId: category.parentId, slug: category.slug, name: category.name, shortName: category.name, description: category.description ?? "", image: category.imageUrl ?? "", artwork: "labels", accent: "mint", sortOrder: category.sortOrder, featured: false, productCount };
 }
 
 function mapProduct(product: any): Product {
