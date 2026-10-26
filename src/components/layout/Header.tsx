@@ -91,10 +91,10 @@ export function Header() {
           <div className="drawer-header"><Logo /><button className="icon-button" onClick={() => setMenuOpen(false)} aria-label="Close menu"><X /></button></div>
           <form className="drawer-search" onSubmit={submitSearch}><Search size={18} aria-hidden="true" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="What are you looking for?" aria-label="Search products" /></form>
           <nav>
-            <Link href="/products">All products <span>→</span></Link>
-            {navItems.map((item) => <Link key={item.href} href={item.href}>{item.label}<span>→</span></Link>)}
-            <Link href="/track-order">Track order <span>→</span></Link>
-            <Link href="/contact">Help & support <span>→</span></Link>
+            <Link href="/products" onClick={() => setMenuOpen(false)}>All products <span>→</span></Link>
+            {navItems.map((item) => <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}<span>→</span></Link>)}
+            <Link href="/track-order" onClick={() => setMenuOpen(false)}>Track order <span>→</span></Link>
+            <Link href="/contact" onClick={() => setMenuOpen(false)}>Help & support <span>→</span></Link>
           </nav>
           <div className="drawer-note"><strong>Made for your name.</strong><p>Preview every personalised design before you order.</p></div>
         </aside>
