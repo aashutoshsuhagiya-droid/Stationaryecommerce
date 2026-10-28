@@ -485,6 +485,7 @@ model Product {
   visualizationTemplates VisualizationTemplate[]
   visualizationJobs      VisualizationProcessingJob[]
   visualizationAssets    VisualizationAsset[]
+  imageAssets            ProductImageAsset[]
 
   @@index([categoryId, status])
   @@index([status, publishedAt])
@@ -674,6 +675,26 @@ model ProductImage {
 
   @@unique([productId, sortOrder])
   @@index([productId])
+}
+
+model ProductImageAsset {
+  id        String   @id @default(cuid())
+  productId String
+  kind      String   @db.VarChar(80)
+  surfaceId String?  @db.VarChar(80)
+  altText   String?  @db.VarChar(240)
+  mimeType  String   @db.VarChar(100)
+  sizeBytes Int
+  width     Int
+  height    Int
+  sha256    String   @db.Char(64)
+  // Database bytes keep this additive feature self-contained; object storage is the production cutover.
+  content   Bytes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, kind])
 }
 
 model ProductPersonalizationField {

@@ -8,7 +8,7 @@
     "build": "next build",
     "postinstall": "prisma generate",
     "start": "next start",
-    "test:domain": "tsx --test src/lib/*.test.ts src/components/configurator/*.test.ts",
+    "test:domain": "tsx --conditions=react-server --test src/lib/*.test.ts src/components/configurator/*.test.ts",
     "typecheck": "tsc --noEmit",
     "typecheck:scripts": "tsc --noEmit -p tsconfig.prisma.json",
     "db:generate": "prisma generate",
@@ -30,6 +30,7 @@
     "pg": "8.16.3",
     "react": "latest",
     "react-dom": "latest",
+    "server-only": "^0.0.1",
     "sharp": "0.35.5",
     "three": "^0.186.1",
     "zod": "latest"

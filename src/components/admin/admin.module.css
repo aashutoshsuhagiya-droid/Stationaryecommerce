@@ -1238,6 +1238,81 @@
 
 .configList { display: grid; gap: 10px; }
 
+.assetPicker {
+  display: grid;
+  grid-template-columns: minmax(110px, 180px) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-quiet);
+}
+
+.assetPreview,
+.baseImagePreview {
+  display: grid;
+  min-height: 104px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: var(--admin-control-radius);
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.assetPreview img,
+.baseImagePreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.assetFileInput {
+  width: 100%;
+  min-height: 39px;
+  padding: 7px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--admin-control-radius);
+  background: var(--surface-main);
+  color: var(--text-body);
+}
+
+.assetUrlFallback {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--admin-control-radius);
+  background: var(--surface-main);
+}
+
+.assetUrlFallback summary {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.assetUrlFallback[open] summary { color: var(--text-body); }
+
+.baseImageList { display: grid; gap: 10px; }
+
+.baseImageCard {
+  display: grid;
+  grid-template-columns: minmax(110px, 160px) minmax(0, 1fr);
+  gap: 11px;
+  padding: 10px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-quiet);
+}
+
+.baseImageControls { display: grid; align-content: start; gap: 8px; }
+.baseImageControls strong { color: var(--text-body); font-size: 11px; }
+.baseImageControls small { color: var(--text-muted); font-size: 9px; line-height: 1.45; }
+
 .configCard {
   display: grid;
   gap: 9px;

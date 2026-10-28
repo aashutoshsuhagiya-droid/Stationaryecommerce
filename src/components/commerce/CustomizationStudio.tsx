@@ -548,21 +548,27 @@ export function CustomizationStudio({
   const selectedVariant = configuration.variants.find((variant) => variant.id === variantId) ?? firstVariant;
   const selectedTemplate = configuration.personalization.templates.find((template) => template.id === templateId) ?? firstTemplate;
   const templateBaseImages = useMemo<Record<string, string>>(() => {
-    const images: Record<string, string> = Object.fromEntries(
-      configuration.preview.visualization?.surfaces.flatMap((surface) =>
-        surface.textureUrl ? [[surface.surfaceId, surface.textureUrl]] : []) ?? [],
-    );
+    const images: Record<string, string> = {};
     const production = selectedTemplate?.production;
-    if (!production) return images;
-    const defaultSurface = production.surfaces.find((surface) => surface.id === production.defaultSurfaceId)
-      ?? production.surfaces[0];
-    for (const [surfaceId, baseImageUrl] of configuration.artwork.surfaces.flatMap((surface, index) => {
-      const templateSurface = production.surfaces.find((candidate) => candidate.id === surface.id)
-        ?? (index === 0 ? defaultSurface : undefined);
-      return templateSurface?.baseImageUrl ? [[surface.id, templateSurface.baseImageUrl]] : [];
-    })) images[surfaceId] = baseImageUrl;
+
+    // Lowest precedence: the selected template's production surface image.
+    if (production) {
+      const defaultSurface = production.surfaces.find((surface) => surface.id === production.defaultSurfaceId)
+        ?? production.surfaces[0];
+      for (const [surfaceId, baseImageUrl] of configuration.artwork.surfaces.flatMap((surface, index) => {
+        const templateSurface = production.surfaces.find((candidate) => candidate.id === surface.id)
+          ?? (index === 0 ? defaultSurface : undefined);
+        return templateSurface?.baseImageUrl ? [[surface.id, templateSurface.baseImageUrl] as const] : [];
+      })) images[surfaceId] = baseImageUrl;
+    }
+
+    // Published visualization textures supplement templates, but an admin base wins.
+    for (const [surfaceId, textureUrl] of configuration.preview.visualization?.surfaces.flatMap((surface) =>
+      surface.textureUrl ? [[surface.surfaceId, surface.textureUrl] as const] : [],
+    ) ?? []) images[surfaceId] = textureUrl;
+    Object.assign(images, configuration.preview.baseImages ?? {});
     return images;
-  }, [configuration.artwork.surfaces, configuration.preview.visualization, selectedTemplate]);
+  }, [configuration.artwork.surfaces, configuration.preview.baseImages, configuration.preview.visualization, selectedTemplate]);
   const selectedPreset = configuration.dimensions.presets.find((preset) => preset.id === dimensionPresetId) ?? defaultPreset;
   const activeSurfaceDefinitions = useMemo(
     () => surfaceDefinitions(configuration, selectedPreset),

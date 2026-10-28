@@ -99,3 +99,14 @@ test("surface identifiers and the eight-surface limit are enforced", () => {
     })),
   }, false).success, false);
 });
+
+test("templates accept the narrow first-party product image path", () => {
+  assert.equal(validateAdminTemplate({
+    ...validTemplate,
+    surfaces: [{ ...validSurface, baseImageUrl: "/api/product-images/asset_123" }],
+  }, false).success, true);
+  assert.equal(validateAdminTemplate({
+    ...validTemplate,
+    surfaces: [{ ...validSurface, baseImageUrl: "/relative/image.png" }],
+  }, false).success, false);
+});

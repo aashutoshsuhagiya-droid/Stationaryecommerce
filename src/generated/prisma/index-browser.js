@@ -375,6 +375,22 @@ exports.Prisma.ProductImageScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ProductImageAssetScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  kind: 'kind',
+  surfaceId: 'surfaceId',
+  altText: 'altText',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  width: 'width',
+  height: 'height',
+  sha256: 'sha256',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProductPersonalizationFieldScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
@@ -1279,6 +1295,7 @@ exports.Prisma.ModelName = {
   VisualizationAsset: 'VisualizationAsset',
   ProductVariant: 'ProductVariant',
   ProductImage: 'ProductImage',
+  ProductImageAsset: 'ProductImageAsset',
   ProductPersonalizationField: 'ProductPersonalizationField',
   PersonalizationTemplate: 'PersonalizationTemplate',
   ProductTemplate: 'ProductTemplate',

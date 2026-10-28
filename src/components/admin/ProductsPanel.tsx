@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import {
   Archive,
   ChevronDown,
@@ -66,6 +66,7 @@ type PrintAreaInput = { id: string; label: string; widthMm: string; heightMm: st
 type QuantityTierInput = { id: string; minimum: string; priceDelta: string; label: string };
 type TemplateOption = { id: string; name: string; slug: string; theme: string; thumbnailUrl: string; premiumPrice: number };
 type TemplateLinkInput = { templateId: string; isDefault: boolean; sortOrder?: number };
+type ProductBaseImage = { id: string; url: string; altText: string | null };
 type EditingProduct = {
   id: string;
   name: string;
@@ -75,6 +76,7 @@ type EditingProduct = {
   productType: string;
   price: number;
   imageUrl: string;
+  baseImages?: Record<string, ProductBaseImage>;
   material: string;
   sizes: string[];
   sizeDescription: string;
@@ -189,6 +191,14 @@ export function ProductsPanel() {
       allowedMimeTypes: ["image/png", "image/jpeg"],
     }));
   const [editingProduct, setEditingProduct] = useState<EditingProduct | null>(null);
+  const [productImageUrl, setProductImageUrl] = useState("");
+  const [productImagePreview, setProductImagePreview] = useState("");
+  const [pendingProductImage, setPendingProductImage] = useState<File | null>(null);
+  const [surfaceBaseImages, setSurfaceBaseImages] = useState<Record<string, ProductBaseImage>>({});
+  const [surfaceBasePreviews, setSurfaceBasePreviews] = useState<Record<string, string>>({});
+  const [pendingSurfaceBaseImages, setPendingSurfaceBaseImages] = useState<Record<string, File>>({});
+  const [pendingProductId, setPendingProductId] = useState<string | null>(null);
+  const objectUrls = useRef(new Set<string>());
   const [managingCategories, setManagingCategories] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -204,6 +214,28 @@ export function ProductsPanel() {
   const packagingProductSelected = isEzpacPackagingProductType(productType);
   const packaging3DActivated = packagingProductSelected && editingProduct?.allow3D === true;
   const packaging3DUnavailable = packagingProductSelected && !packaging3DActivated;
+
+  useEffect(() => () => {
+    objectUrls.current.forEach((url) => URL.revokeObjectURL(url));
+  }, []);
+
+  function previewFile(file: File) {
+    const url = URL.createObjectURL(file);
+    objectUrls.current.add(url);
+    return url;
+  }
+
+  function clearImageDrafts() {
+    objectUrls.current.forEach((url) => URL.revokeObjectURL(url));
+    objectUrls.current.clear();
+    setProductImageUrl("");
+    setProductImagePreview("");
+    setPendingProductImage(null);
+    setSurfaceBaseImages({});
+    setSurfaceBasePreviews({});
+    setPendingSurfaceBaseImages({});
+    setPendingProductId(null);
+  }
 
   async function loadCatalog() {
     const response = await fetch("/api/admin/catalog", { cache: "no-store" });
@@ -244,6 +276,147 @@ export function ProductsPanel() {
     ));
   }, [acceptedArtworkTypes, artworkUploadEnabled, printAreas]);
 
+  async function uploadProductImage(productId: string, kind: "primary" | "surface-base", file: File, surfaceId?: string) {
+    const form = new FormData();
+    form.set("productId", productId);
+    form.set("kind", kind);
+    if (surfaceId) form.set("surfaceId", surfaceId);
+    form.set("image", file);
+    const response = await fetch("/api/admin/catalog/images", { method: "POST", body: form });
+    const payload = await response.json().catch(() => null) as {
+      data?: { asset?: ProductBaseImage & { url: string } };
+      error?: { message?: string };
+    } | null;
+    const asset = payload?.data?.asset;
+    if (!response.ok || !asset) throw new Error(payload?.error?.message || "The image could not be uploaded.");
+    return asset;
+  }
+
+  async function uploadExistingPrimary(file: File) {
+    if (!editingProduct) return;
+    setSaving(true);
+    setError("");
+    try {
+      const asset = await uploadProductImage(editingProduct.id, "primary", file);
+      setProductImageUrl(asset.url);
+      setProductImagePreview((current) => current.startsWith("blob:") ? current : asset.url);
+      setPendingProductImage(null);
+      await loadCatalog();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The product image could not be uploaded.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function uploadExistingSurfaceBase(surfaceId: string, file: File) {
+    if (!editingProduct) return;
+    setSaving(true);
+    setError("");
+    try {
+      const asset = await uploadProductImage(editingProduct.id, "surface-base", file, surfaceId);
+      setSurfaceBaseImages((current) => ({ ...current, [surfaceId]: asset }));
+      setSurfaceBasePreviews((current) => ({
+        ...current,
+        [surfaceId]: current[surfaceId]?.startsWith("blob:") ? current[surfaceId] : asset.url,
+      }));
+      setPendingSurfaceBaseImages((current) => {
+        const { [surfaceId]: _uploaded, ...remaining } = current;
+        return remaining;
+      });
+      await loadCatalog();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The base image could not be uploaded.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function removeSurfaceBase(surfaceId: string) {
+    const asset = surfaceBaseImages[surfaceId];
+    if (!asset) {
+      setPendingSurfaceBaseImages((current) => {
+        const { [surfaceId]: _removed, ...remaining } = current;
+        return remaining;
+      });
+      setSurfaceBasePreviews((current) => {
+        const { [surfaceId]: _removed, ...remaining } = current;
+        return remaining;
+      });
+      return;
+    }
+    if (!editingProduct) return;
+    setSaving(true);
+    setError("");
+    try {
+      const response = await fetch("/api/admin/catalog/images", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: editingProduct.id, assetId: asset.id }),
+      });
+      const payload = await response.json().catch(() => null) as { error?: { message?: string } } | null;
+      if (!response.ok) throw new Error(payload?.error?.message || "The base image could not be removed.");
+      setSurfaceBaseImages((current) => {
+        const { [surfaceId]: _removed, ...remaining } = current;
+        return remaining;
+      });
+      setSurfaceBasePreviews((current) => {
+        const { [surfaceId]: _removed, ...remaining } = current;
+        return remaining;
+      });
+      await loadCatalog();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The base image could not be removed.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function changePrintAreaId(index: number, value: string) {
+    const previousId = printAreas[index]?.id ?? "";
+    const nextId = safeKey(value, previousId || `surface-${index + 1}`);
+    setPrintAreas((current) => current.map((area, areaIndex) =>
+      areaIndex === index ? { ...area, id: nextId } : area,
+    ));
+    if (!previousId || previousId === nextId) return;
+    setPendingSurfaceBaseImages((current) => {
+      const pending = current[previousId];
+      if (!pending) return current;
+      const { [previousId]: _moved, ...remaining } = current;
+      return { ...remaining, [nextId]: pending };
+    });
+    setSurfaceBasePreviews((current) => {
+      const preview = current[previousId];
+      if (!preview) return current;
+      const { [previousId]: _moved, ...remaining } = current;
+      return { ...remaining, [nextId]: preview };
+    });
+    // Persisted base-image ownership stays with its original surface. The catalog PATCH
+    // drops that old metadata pointer; only a newly selected image may follow a rename.
+    setSurfaceBaseImages((current) => {
+      const { [previousId]: _removed, ...remaining } = current;
+      return remaining;
+    });
+  }
+
+  function removePrintArea(index: number) {
+    const surfaceId = printAreas[index]?.id;
+    setPrintAreas((current) => current.filter((_, areaIndex) => areaIndex !== index));
+    if (!surfaceId) return;
+    setPendingSurfaceBaseImages((current) => {
+      const { [surfaceId]: _removed, ...remaining } = current;
+      return remaining;
+    });
+    setSurfaceBasePreviews((current) => {
+      const { [surfaceId]: _removed, ...remaining } = current;
+      return remaining;
+    });
+    setSurfaceBaseImages((current) => {
+      const { [surfaceId]: _removed, ...remaining } = current;
+      return remaining;
+    });
+  }
+
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return catalog.filter((product) =>
@@ -262,10 +435,87 @@ export function ProductsPanel() {
         uploadsEnabled: artworkUploadEnabled,
         allowedMimeTypes: acceptedArtworkTypes,
       });
-      const requestBody = { type: "product", ...(editingProduct ? { id: editingProduct.id } : {}), name: String(data.get("name")), sku: String(data.get("sku")), categoryId: productCategoryId, categoryIds: [productCategoryId, ...productCategoryIds.filter((id) => id !== productCategoryId)], productType: productType || undefined, price: Number(data.get("price")), imageUrl: String(data.get("imageUrl")), material: String(data.get("material") || ""), sizes: String(data.get("sizes") || "").split(",").map((value) => value.trim()).filter(Boolean), sizeDescription: String(data.get("sizeDescription") || ""), features: String(data.get("features") || "").split(",").map((value) => value.trim()).filter(Boolean), description: String(data.get("description") || ""), configurationFields: configurationFields.map((field, index) => ({ key: safeKey(field.key, `attribute-${index + 1}`), label: field.label.trim(), inputType: field.inputType, required: field.required, placeholder: field.placeholder.trim() || null, helpText: field.helpText.trim() || null, defaultValue: field.defaultValue || null, unit: field.unit.trim() || null, enabled: field.enabled, customerVisible: field.customerVisible, visibleWhen: field.visibleWhenFieldId ? { fieldId: safeKey(field.visibleWhenFieldId, field.visibleWhenFieldId), equals: field.visibleWhenEquals } : null, minLength: optionalNumber(field.minLength), maxLength: optionalNumber(field.maxLength), allowedPattern: field.inputType === "text" ? field.allowedPattern.trim() || null : null, minValue: optionalNumber(field.minValue), maxValue: optionalNumber(field.maxValue), step: optionalNumber(field.step), priceDelta: optionalNumber(field.priceDelta) ?? 0, options: field.inputType === "select" ? parseFieldOptions(field.options) : [] })), templateLinks: templateLinks.map(({ templateId, isDefault }) => ({ templateId, isDefault })), printAreas: submittedPrintAreas, previewTemplate: String(data.get("previewTemplate") || "").trim() || undefined, productModel: String(data.get("productModel") || "").trim() || undefined, artworkUpload: artworkUploadEnabled, acceptedArtworkTypes, artworkPolicy: submittedArtworkPolicy, customizable: data.get("personalized") === "on", published: data.get("published") === "on", allow2D: data.get("allow2D") === "on", allow3D: data.get("allow3D") === "on", quantityMin: Number(data.get("quantityMin") || 1), quantityMax: Number(data.get("quantityMax") || 100), quantityTiers: quantityTiers.map((tier) => ({ minimum: Number(tier.minimum), priceDelta: optionalNumber(tier.priceDelta) ?? 0, label: tier.label.trim() || undefined })), setupCharge: Number(data.get("setupCharge") || 0), productionDaysMin: Number(data.get("productionDaysMin") || 0), productionDaysMax: Number(data.get("productionDaysMax") || 0) };
-      const response = await fetch("/api/admin/catalog", { method: editingProduct ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(requestBody) });
-      const responsePayload = await response.json(); if (!response.ok) throw new Error(responsePayload.error?.message || "Could not save product.");
-      await loadCatalog(); setAdding(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setArtworkUploadEnabled(false); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] }));
+      let productId = editingProduct?.id ?? pendingProductId;
+      const requestedPublished = data.get("published") === "on";
+      const queuedSurfaceImages = Object.entries(pendingSurfaceBaseImages)
+        .filter(([surfaceId]) => submittedPrintAreas.some((area) => area.id === surfaceId));
+      const hasQueuedImages = Boolean(pendingProductImage || queuedSurfaceImages.length);
+      const enteredImageUrl = productImageUrl.trim();
+      if (!enteredImageUrl && !pendingProductImage) {
+        throw new Error("Choose a product image or enter an image URL.");
+      }
+      const initialImageUrl = pendingProductImage ? "/api/product-images/pending" : enteredImageUrl;
+      const requestBody = {
+        type: "product",
+        ...(productId ? { id: productId } : {}),
+        name: String(data.get("name")),
+        sku: String(data.get("sku")),
+        categoryId: productCategoryId,
+        categoryIds: [productCategoryId, ...productCategoryIds.filter((id) => id !== productCategoryId)],
+        productType: productType || undefined,
+        price: Number(data.get("price")),
+        imageUrl: initialImageUrl,
+        material: String(data.get("material") || ""),
+        sizes: String(data.get("sizes") || "").split(",").map((value) => value.trim()).filter(Boolean),
+        sizeDescription: String(data.get("sizeDescription") || ""),
+        features: String(data.get("features") || "").split(",").map((value) => value.trim()).filter(Boolean),
+        description: String(data.get("description") || ""),
+        configurationFields: configurationFields.map((field, index) => ({ key: safeKey(field.key, `attribute-${index + 1}`), label: field.label.trim(), inputType: field.inputType, required: field.required, placeholder: field.placeholder.trim() || null, helpText: field.helpText.trim() || null, defaultValue: field.defaultValue || null, unit: field.unit.trim() || null, enabled: field.enabled, customerVisible: field.customerVisible, visibleWhen: field.visibleWhenFieldId ? { fieldId: safeKey(field.visibleWhenFieldId, field.visibleWhenFieldId), equals: field.visibleWhenEquals } : null, minLength: optionalNumber(field.minLength), maxLength: optionalNumber(field.maxLength), allowedPattern: field.inputType === "text" ? field.allowedPattern.trim() || null : null, minValue: optionalNumber(field.minValue), maxValue: optionalNumber(field.maxValue), step: optionalNumber(field.step), priceDelta: optionalNumber(field.priceDelta) ?? 0, options: field.inputType === "select" ? parseFieldOptions(field.options) : [] })),
+        templateLinks: templateLinks.map(({ templateId, isDefault }) => ({ templateId, isDefault })),
+        printAreas: submittedPrintAreas,
+        previewTemplate: String(data.get("previewTemplate") || "").trim() || undefined,
+        productModel: String(data.get("productModel") || "").trim() || undefined,
+        artworkUpload: artworkUploadEnabled,
+        acceptedArtworkTypes,
+        artworkPolicy: submittedArtworkPolicy,
+        customizable: data.get("personalized") === "on",
+        published: hasQueuedImages && !editingProduct ? false : requestedPublished,
+        allow2D: data.get("allow2D") === "on",
+        allow3D: data.get("allow3D") === "on",
+        quantityMin: Number(data.get("quantityMin") || 1),
+        quantityMax: Number(data.get("quantityMax") || 100),
+        quantityTiers: quantityTiers.map((tier) => ({ minimum: Number(tier.minimum), priceDelta: optionalNumber(tier.priceDelta) ?? 0, label: tier.label.trim() || undefined })),
+        setupCharge: Number(data.get("setupCharge") || 0),
+        productionDaysMin: Number(data.get("productionDaysMin") || 0),
+        productionDaysMax: Number(data.get("productionDaysMax") || 0),
+      };
+      const response = await fetch("/api/admin/catalog", { method: productId ? "PATCH" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(requestBody) });
+      const responsePayload = await response.json();
+      if (!response.ok) throw new Error(responsePayload.error?.message || "Could not save product.");
+      productId = productId ?? responsePayload.data?.id;
+      if (!productId || typeof productId !== "string") throw new Error("The saved product is missing its ID.");
+      setPendingProductId(productId);
+
+      let finalImageUrl = initialImageUrl;
+      if (pendingProductImage) {
+        const uploaded = await uploadProductImage(productId, "primary", pendingProductImage);
+        finalImageUrl = uploaded.url;
+        setProductImageUrl(uploaded.url);
+        setProductImagePreview((current) => current.startsWith("blob:") ? current : uploaded.url);
+        setPendingProductImage(null);
+      }
+      for (const [surfaceId, file] of queuedSurfaceImages) {
+        const uploaded = await uploadProductImage(productId, "surface-base", file, surfaceId);
+        setSurfaceBaseImages((current) => ({ ...current, [surfaceId]: uploaded }));
+        setSurfaceBasePreviews((current) => ({
+          ...current,
+          [surfaceId]: current[surfaceId]?.startsWith("blob:") ? current[surfaceId] : uploaded.url,
+        }));
+        setPendingSurfaceBaseImages((current) => {
+          const { [surfaceId]: _uploaded, ...remaining } = current;
+          return remaining;
+        });
+      }
+      if (hasQueuedImages) {
+        const patchResponse = await fetch("/api/admin/catalog", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...requestBody, id: productId, imageUrl: finalImageUrl, published: requestedPublished }),
+        });
+        const patchPayload = await patchResponse.json();
+        if (!patchResponse.ok) throw new Error(patchPayload.error?.message || "The uploaded images could not be attached.");
+      }
+      await loadCatalog(); setAdding(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setArtworkUploadEnabled(false); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts();
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not save product."); } finally { setSaving(false); }
   }
 
@@ -457,7 +707,16 @@ export function ProductsPanel() {
       const payload = await response.json() as { data?: { product?: EditingProduct }; error?: { message?: string } };
       const product = payload.data?.product;
       if (!response.ok || !product) throw new Error(payload.error?.message || "Could not load this product.");
+      clearImageDrafts();
       setEditingProduct(product);
+      setProductImageUrl(product.imageUrl);
+      setProductImagePreview(product.published ? product.imageUrl : "");
+      setPendingProductImage(null);
+      setSurfaceBaseImages(product.baseImages ?? {});
+      setSurfaceBasePreviews(product.published
+        ? Object.fromEntries(Object.entries(product.baseImages ?? {}).map(([surfaceId, asset]) => [surfaceId, asset.url]))
+        : {});
+      setPendingSurfaceBaseImages({});
       setProductCategoryId(product.categoryId);
       setProductCategoryIds((product.categoryIds ?? [product.categoryId]).filter((categoryId) => categoryId !== product.categoryId));
       setProductType(product.productType ?? "");
@@ -509,7 +768,7 @@ export function ProductsPanel() {
             <button className={styles.buttonSecondary} onClick={() => void addCategory(false)} type="button"><Plus size={14} /> Add category</button>
             <button className={styles.buttonSecondary} onClick={() => void addCategory(true)} type="button"><Plus size={14} /> Add subcategory</button>
             <button className={styles.buttonSecondary} onClick={() => { setError(""); setManagingCategories(true); }} type="button"><SlidersHorizontal size={14} /> Manage categories</button>
-            <button className={styles.buttonPrimary} onClick={() => { setError(""); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkUploadEnabled(false); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); setAdding(true); }} type="button"><Plus size={14} /> Add product</button>
+            <button className={styles.buttonPrimary} onClick={() => { setError(""); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkUploadEnabled(false); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts(); setAdding(true); }} type="button"><Plus size={14} /> Add product</button>
           </>
         }
         description="Build a clean catalog, control inventory, and connect each personalized product to the right design experience."
@@ -633,13 +892,13 @@ export function ProductsPanel() {
 
       {adding && (
         <>
-          <button aria-label="Close product form" className={styles.drawerBackdrop} onClick={() => { setAdding(false); setEditingProduct(null); }} type="button" />
+          <button aria-label="Close product form" className={styles.drawerBackdrop} onClick={() => { setAdding(false); setEditingProduct(null); clearImageDrafts(); }} type="button" />
           <aside aria-label="Add product" className={styles.drawer}>
             <div className={styles.drawerHeader}>
               <div><h3>{editingProduct ? "Configure product" : "Add a new product"}</h3><p>{editingProduct ? "Changes update the live product configuration without changing its product ID or URL." : "Start with the essentials. You can add variants next."}</p></div>
-              <button aria-label="Close" className={styles.iconButton} onClick={() => { setAdding(false); setEditingProduct(null); }} type="button"><X size={16} /></button>
+              <button aria-label="Close" className={styles.iconButton} onClick={() => { setAdding(false); setEditingProduct(null); clearImageDrafts(); }} type="button"><X size={16} /></button>
             </div>
-            <form className={styles.drawerBody} key={editingProduct?.id ?? "new"} onSubmit={createProduct}>
+            <form className={styles.drawerBody} key={editingProduct?.id ?? "new"} noValidate onSubmit={createProduct}>
               <div className={styles.personalizationCard}>
                 <span>{editingProduct ? "Live catalog item" : "New catalog item"}</span><strong>{editingProduct ? "Update its customer options" : "Ready for your details"}</strong><p>{editingProduct ? "Existing orders retain their order-time product snapshots." : "Products are saved as drafts until you publish them."}</p>
               </div>
@@ -664,7 +923,31 @@ export function ProductsPanel() {
                     <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Product type starter <small>Optional</small></span><select className={styles.select} value={productType} onChange={(event) => setProductType(event.target.value)}><option value="">Custom / existing configuration</option>{packagingProductTypeStarters.map((starter) => <option key={starter.id} value={starter.id}>{starter.name}</option>)}</select></label>
                     <div className={styles.fieldGroup}><span className={styles.fieldLabel}>Product type fields</span><button className={styles.buttonSecondary} disabled={!productType} onClick={() => applyProductTypeStarter(productType)} type="button">Apply starter fields</button><small>Replaces unsaved fields only. Admin-configured choices stay hidden until you enable them.</small></div>
                   </div>
-                  <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Product image URL</span><input className={styles.input} defaultValue={editingProduct?.imageUrl} name="imageUrl" placeholder="https://…" required type="url" /></label>
+                  <div className={styles.assetPicker}>
+                    <div className={styles.assetPreview}>
+                      {productImagePreview ? <img alt="Product image preview" src={productImagePreview} /> : <span>No product image selected</span>}
+                    </div>
+                    <label className={styles.fieldGroup}>
+                      <span className={styles.fieldLabel}>Product image upload</span>
+                      <input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} disabled={saving} onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        event.target.value = "";
+                        if (!file) return;
+                        setProductImagePreview(previewFile(file));
+                        if (editingProduct) {
+                          setPendingProductImage(null);
+                          void uploadExistingPrimary(file);
+                        } else {
+                          setPendingProductImage(file);
+                        }
+                      }} type="file" />
+                      <small>{editingProduct ? "Uploads immediately and updates the product image URL." : "A selected file is uploaded after the initial product save, then attached as its primary image."}</small>
+                    </label>
+                  </div>
+                  <details className={styles.assetUrlFallback}>
+                    <summary>Use an image URL instead</summary>
+                    <input className={styles.input} inputMode="url" name="imageUrl" onChange={(event) => setProductImageUrl(event.target.value)} placeholder="https://… or /api/product-images/…" type="text" value={productImageUrl} />
+                  </details>
                   <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Material</span><input className={styles.input} defaultValue={editingProduct?.material} name="material" placeholder="e.g. Vinyl, cotton, stainless steel" /></label>
                   <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Sizes / formats</span><input className={styles.input} defaultValue={editingProduct?.sizes.join(", ")} name="sizes" placeholder="e.g. A5, A4, 50 × 30 mm" /><small>Separate options with commas.</small></label>
                   <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Size guide shown to customers</span><input className={styles.input} defaultValue={editingProduct?.sizeDescription} name="sizeDescription" placeholder="e.g. 50 × 30 mm per label; fits most lunch boxes" /></label>
@@ -803,7 +1086,54 @@ export function ProductsPanel() {
 
                     <div className={styles.configSection}>
                       <div className={styles.configSectionHead}><div><strong>Printable surfaces</strong><small>Define the customer-facing areas used by the 2D editor.</small></div><button className={styles.buttonSecondary} onClick={() => setPrintAreas((current) => [...current, { id: `surface-${current.length + 1}`, label: "", widthMm: "", heightMm: "", safeInsetMm: "" }])} type="button"><Plus size={13} /> Add surface</button></div>
-                      <div className={styles.configList}>{printAreas.map((area, index) => <div className={styles.configCard} key={`${area.id}-${index}`}><div className={styles.configCardHead}><strong>Surface {index + 1}</strong>{printAreas.length > 1 && <button aria-label={`Remove surface ${index + 1}`} className={styles.buttonGhost} onClick={() => setPrintAreas((current) => current.filter((_, itemIndex) => itemIndex !== index))} type="button"><Trash2 size={14} /></button>}</div><div className={styles.fieldGrid}><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Label</span><input className={styles.input} value={area.label} onChange={(event) => setPrintAreas((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, label: event.target.value } : item))} placeholder="Front" /></label><label className={styles.fieldGroup}><span className={styles.fieldLabel}>ID</span><input className={styles.input} value={area.id} onChange={(event) => setPrintAreas((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, id: safeKey(event.target.value, item.id) } : item))} placeholder="front" /></label><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Width (mm)</span><input className={styles.input} inputMode="decimal" value={area.widthMm} onChange={(event) => setPrintAreas((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, widthMm: event.target.value } : item))} /></label><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Height (mm)</span><input className={styles.input} inputMode="decimal" value={area.heightMm} onChange={(event) => setPrintAreas((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, heightMm: event.target.value } : item))} /></label><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Safe inset (mm)</span><input className={styles.input} inputMode="decimal" value={area.safeInsetMm} onChange={(event) => setPrintAreas((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, safeInsetMm: event.target.value } : item))} /></label></div></div>)}</div>
+                      <div className={styles.configList}>
+                        {printAreas.map((area, index) => (
+                          <div className={styles.configCard} key={`${area.id}-${index}`}>
+                            <div className={styles.configCardHead}>
+                              <strong>Surface {index + 1}</strong>
+                              {printAreas.length > 1 && (
+                                <button aria-label={`Remove surface ${index + 1}`} className={styles.buttonGhost} onClick={() => removePrintArea(index)} type="button"><Trash2 size={14} /></button>
+                              )}
+                            </div>
+                            <div className={styles.fieldGrid}>
+                              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Label</span><input className={styles.input} value={area.label} onChange={(event) => setPrintAreas((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, label: event.target.value } : item))} placeholder="Front" /></label>
+                              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>ID</span><input className={styles.input} value={area.id} onChange={(event) => changePrintAreaId(index, event.target.value)} placeholder="front" /></label>
+                              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Width (mm)</span><input className={styles.input} inputMode="decimal" value={area.widthMm} onChange={(event) => setPrintAreas((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, widthMm: event.target.value } : item))} /></label>
+                              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Height (mm)</span><input className={styles.input} inputMode="decimal" value={area.heightMm} onChange={(event) => setPrintAreas((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, heightMm: event.target.value } : item))} /></label>
+                              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Safe inset (mm)</span><input className={styles.input} inputMode="decimal" value={area.safeInsetMm} onChange={(event) => setPrintAreas((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, safeInsetMm: event.target.value } : item))} /></label>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className={styles.configSection}>
+                      <div className={styles.configSectionHead}><div><strong>Base images</strong><small>Customers see this image behind their design on each configured surface.</small></div></div>
+                      {!editingProduct && <p className={styles.configHint}>Selected base images are uploaded after this new product is saved.</p>}
+                      <div className={styles.baseImageList}>
+                        {printAreas.map((area, index) => {
+                          const surfaceId = area.id;
+                          const imageUrl = surfaceBasePreviews[surfaceId] ?? (editingProduct?.published ? surfaceBaseImages[surfaceId]?.url : undefined);
+                          const canUpload = Boolean(surfaceId && /^[a-z][a-z0-9-]{0,79}$/.test(surfaceId));
+                          return <div className={styles.baseImageCard} key={`base-${surfaceId || index}`}>
+                            <div className={styles.baseImagePreview}>{imageUrl ? <img alt={`${area.label || `Surface ${index + 1}`} base image`} src={imageUrl} /> : <span>No base image</span>}</div>
+                            <div className={styles.baseImageControls}>
+                              <strong>{area.label.trim() || `Surface ${index + 1}`}</strong>
+                              <small>Customers see this image behind their design on the {area.label.trim() || `surface ${index + 1}`} surface.</small>
+                              <input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} disabled={saving || !canUpload} onChange={(event) => {
+                                const file = event.target.files?.[0];
+                                event.target.value = "";
+                                if (!file || !canUpload) return;
+                                setPendingSurfaceBaseImages((current) => ({ ...current, [surfaceId]: file }));
+                                setSurfaceBasePreviews((current) => ({ ...current, [surfaceId]: previewFile(file) }));
+                                const isPersistedSurface = Boolean(editingProduct?.printAreas.some((surface) => surface.id === surfaceId));
+                                if (isPersistedSurface) void uploadExistingSurfaceBase(surfaceId, file);
+                              }} type="file" />
+                              {(surfaceBaseImages[surfaceId] || pendingSurfaceBaseImages[surfaceId]) && <button className={styles.buttonGhost} disabled={saving} onClick={() => void removeSurfaceBase(surfaceId)} type="button"><Trash2 size={13} /> Remove</button>}
+                            </div>
+                          </div>;
+                        })}
+                      </div>
                     </div>
 
                     <div className={styles.configSection}>
@@ -821,7 +1151,7 @@ export function ProductsPanel() {
                 </div>
               </div>
               <div className={styles.drawerFooter}>
-                <button className={styles.buttonSecondary} onClick={() => { setAdding(false); setEditingProduct(null); }} type="button">Cancel</button>
+                <button className={styles.buttonSecondary} onClick={() => { setAdding(false); setEditingProduct(null); clearImageDrafts(); }} type="button">Cancel</button>
                 <button className={styles.buttonPrimary} disabled={saving || !categoryRecords.length} type="submit"><Archive size={13} /> {saving ? "Saving…" : editingProduct ? "Save changes" : "Save product"}</button>
               </div>
             </form>

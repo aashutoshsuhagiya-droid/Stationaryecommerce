@@ -99,6 +99,11 @@ export type ProductVariant = $Result.DefaultSelection<Prisma.$ProductVariantPayl
  */
 export type ProductImage = $Result.DefaultSelection<Prisma.$ProductImagePayload>
 /**
+ * Model ProductImageAsset
+ * 
+ */
+export type ProductImageAsset = $Result.DefaultSelection<Prisma.$ProductImageAssetPayload>
+/**
  * Model ProductPersonalizationField
  * 
  */
@@ -1120,6 +1125,16 @@ export class PrismaClient<
   get productImage(): Prisma.ProductImageDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.productImageAsset`: Exposes CRUD operations for the **ProductImageAsset** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProductImageAssets
+    * const productImageAssets = await prisma.productImageAsset.findMany()
+    * ```
+    */
+  get productImageAsset(): Prisma.ProductImageAssetDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.productPersonalizationField`: Exposes CRUD operations for the **ProductPersonalizationField** model.
     * Example usage:
     * ```ts
@@ -1992,6 +2007,7 @@ export namespace Prisma {
     VisualizationAsset: 'VisualizationAsset',
     ProductVariant: 'ProductVariant',
     ProductImage: 'ProductImage',
+    ProductImageAsset: 'ProductImageAsset',
     ProductPersonalizationField: 'ProductPersonalizationField',
     PersonalizationTemplate: 'PersonalizationTemplate',
     ProductTemplate: 'ProductTemplate',
@@ -2048,7 +2064,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "authSession" | "phoneVerificationChallenge" | "role" | "permission" | "userRole" | "rolePermission" | "address" | "category" | "product" | "productCategory" | "artworkAsset" | "visualizationTemplate" | "visualizationProcessingJob" | "visualizationAsset" | "productVariant" | "productImage" | "productPersonalizationField" | "personalizationTemplate" | "productTemplate" | "inventory" | "inventoryMovement" | "customizationConfiguration" | "cart" | "cartItem" | "order" | "vendorProfile" | "vendorApplication" | "vendorDocument" | "vendorApplicationEvent" | "vendorCapability" | "orderAssignment" | "vendorOrderOffer" | "assignmentEvent" | "orderAddress" | "orderItem" | "orderPersonalization" | "productionJob" | "payment" | "paymentEvent" | "refund" | "shipment" | "coupon" | "couponProduct" | "couponCategory" | "couponRedemption" | "review" | "wishlist" | "wishlistItem" | "bulkOrderRequest" | "bulkOrderRow" | "supportTicket" | "supportMessage" | "notification" | "auditLog" | "storeSetting" | "announcement" | "faq"
+      modelProps: "user" | "authSession" | "phoneVerificationChallenge" | "role" | "permission" | "userRole" | "rolePermission" | "address" | "category" | "product" | "productCategory" | "artworkAsset" | "visualizationTemplate" | "visualizationProcessingJob" | "visualizationAsset" | "productVariant" | "productImage" | "productImageAsset" | "productPersonalizationField" | "personalizationTemplate" | "productTemplate" | "inventory" | "inventoryMovement" | "customizationConfiguration" | "cart" | "cartItem" | "order" | "vendorProfile" | "vendorApplication" | "vendorDocument" | "vendorApplicationEvent" | "vendorCapability" | "orderAssignment" | "vendorOrderOffer" | "assignmentEvent" | "orderAddress" | "orderItem" | "orderPersonalization" | "productionJob" | "payment" | "paymentEvent" | "refund" | "shipment" | "coupon" | "couponProduct" | "couponCategory" | "couponRedemption" | "review" | "wishlist" | "wishlistItem" | "bulkOrderRequest" | "bulkOrderRow" | "supportTicket" | "supportMessage" | "notification" | "auditLog" | "storeSetting" | "announcement" | "faq"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3307,6 +3323,80 @@ export namespace Prisma {
           count: {
             args: Prisma.ProductImageCountArgs<ExtArgs>
             result: $Utils.Optional<ProductImageCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProductImageAsset: {
+        payload: Prisma.$ProductImageAssetPayload<ExtArgs>
+        fields: Prisma.ProductImageAssetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProductImageAssetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProductImageAssetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload>
+          }
+          findFirst: {
+            args: Prisma.ProductImageAssetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProductImageAssetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload>
+          }
+          findMany: {
+            args: Prisma.ProductImageAssetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload>[]
+          }
+          create: {
+            args: Prisma.ProductImageAssetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload>
+          }
+          createMany: {
+            args: Prisma.ProductImageAssetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProductImageAssetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload>[]
+          }
+          delete: {
+            args: Prisma.ProductImageAssetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload>
+          }
+          update: {
+            args: Prisma.ProductImageAssetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProductImageAssetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProductImageAssetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProductImageAssetUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProductImageAssetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductImageAssetPayload>
+          }
+          aggregate: {
+            args: Prisma.ProductImageAssetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProductImageAsset>
+          }
+          groupBy: {
+            args: Prisma.ProductImageAssetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProductImageAssetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProductImageAssetCountArgs<ExtArgs>
+            result: $Utils.Optional<ProductImageAssetCountAggregateOutputType> | number
           }
         }
       }
@@ -6484,6 +6574,7 @@ export namespace Prisma {
     visualizationAsset?: VisualizationAssetOmit
     productVariant?: ProductVariantOmit
     productImage?: ProductImageOmit
+    productImageAsset?: ProductImageAssetOmit
     productPersonalizationField?: ProductPersonalizationFieldOmit
     personalizationTemplate?: PersonalizationTemplateOmit
     productTemplate?: ProductTemplateOmit
@@ -6980,6 +7071,7 @@ export namespace Prisma {
     visualizationTemplates: number
     visualizationJobs: number
     visualizationAssets: number
+    imageAssets: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7000,6 +7092,7 @@ export namespace Prisma {
     visualizationTemplates?: boolean | ProductCountOutputTypeCountVisualizationTemplatesArgs
     visualizationJobs?: boolean | ProductCountOutputTypeCountVisualizationJobsArgs
     visualizationAssets?: boolean | ProductCountOutputTypeCountVisualizationAssetsArgs
+    imageAssets?: boolean | ProductCountOutputTypeCountImageAssetsArgs
   }
 
   // Custom InputTypes
@@ -7130,6 +7223,13 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountVisualizationAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VisualizationAssetWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountImageAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductImageAssetWhereInput
   }
 
 
@@ -19010,6 +19110,7 @@ export namespace Prisma {
     visualizationTemplates?: boolean | Product$visualizationTemplatesArgs<ExtArgs>
     visualizationJobs?: boolean | Product$visualizationJobsArgs<ExtArgs>
     visualizationAssets?: boolean | Product$visualizationAssetsArgs<ExtArgs>
+    imageAssets?: boolean | Product$imageAssetsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -19128,6 +19229,7 @@ export namespace Prisma {
     visualizationTemplates?: boolean | Product$visualizationTemplatesArgs<ExtArgs>
     visualizationJobs?: boolean | Product$visualizationJobsArgs<ExtArgs>
     visualizationAssets?: boolean | Product$visualizationAssetsArgs<ExtArgs>
+    imageAssets?: boolean | Product$imageAssetsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19158,6 +19260,7 @@ export namespace Prisma {
       visualizationTemplates: Prisma.$VisualizationTemplatePayload<ExtArgs>[]
       visualizationJobs: Prisma.$VisualizationProcessingJobPayload<ExtArgs>[]
       visualizationAssets: Prisma.$VisualizationAssetPayload<ExtArgs>[]
+      imageAssets: Prisma.$ProductImageAssetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19600,6 +19703,7 @@ export namespace Prisma {
     visualizationTemplates<T extends Product$visualizationTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Product$visualizationTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     visualizationJobs<T extends Product$visualizationJobsArgs<ExtArgs> = {}>(args?: Subset<T, Product$visualizationJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     visualizationAssets<T extends Product$visualizationAssetsArgs<ExtArgs> = {}>(args?: Subset<T, Product$visualizationAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    imageAssets<T extends Product$imageAssetsArgs<ExtArgs> = {}>(args?: Subset<T, Product$imageAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20463,6 +20567,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: VisualizationAssetScalarFieldEnum | VisualizationAssetScalarFieldEnum[]
+  }
+
+  /**
+   * Product.imageAssets
+   */
+  export type Product$imageAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    where?: ProductImageAssetWhereInput
+    orderBy?: ProductImageAssetOrderByWithRelationInput | ProductImageAssetOrderByWithRelationInput[]
+    cursor?: ProductImageAssetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductImageAssetScalarFieldEnum | ProductImageAssetScalarFieldEnum[]
   }
 
   /**
@@ -29535,6 +29663,1215 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProductImageInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProductImageAsset
+   */
+
+  export type AggregateProductImageAsset = {
+    _count: ProductImageAssetCountAggregateOutputType | null
+    _avg: ProductImageAssetAvgAggregateOutputType | null
+    _sum: ProductImageAssetSumAggregateOutputType | null
+    _min: ProductImageAssetMinAggregateOutputType | null
+    _max: ProductImageAssetMaxAggregateOutputType | null
+  }
+
+  export type ProductImageAssetAvgAggregateOutputType = {
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+  }
+
+  export type ProductImageAssetSumAggregateOutputType = {
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+  }
+
+  export type ProductImageAssetMinAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    kind: string | null
+    surfaceId: string | null
+    altText: string | null
+    mimeType: string | null
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+    sha256: string | null
+    content: Bytes | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProductImageAssetMaxAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    kind: string | null
+    surfaceId: string | null
+    altText: string | null
+    mimeType: string | null
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+    sha256: string | null
+    content: Bytes | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProductImageAssetCountAggregateOutputType = {
+    id: number
+    productId: number
+    kind: number
+    surfaceId: number
+    altText: number
+    mimeType: number
+    sizeBytes: number
+    width: number
+    height: number
+    sha256: number
+    content: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProductImageAssetAvgAggregateInputType = {
+    sizeBytes?: true
+    width?: true
+    height?: true
+  }
+
+  export type ProductImageAssetSumAggregateInputType = {
+    sizeBytes?: true
+    width?: true
+    height?: true
+  }
+
+  export type ProductImageAssetMinAggregateInputType = {
+    id?: true
+    productId?: true
+    kind?: true
+    surfaceId?: true
+    altText?: true
+    mimeType?: true
+    sizeBytes?: true
+    width?: true
+    height?: true
+    sha256?: true
+    content?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProductImageAssetMaxAggregateInputType = {
+    id?: true
+    productId?: true
+    kind?: true
+    surfaceId?: true
+    altText?: true
+    mimeType?: true
+    sizeBytes?: true
+    width?: true
+    height?: true
+    sha256?: true
+    content?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProductImageAssetCountAggregateInputType = {
+    id?: true
+    productId?: true
+    kind?: true
+    surfaceId?: true
+    altText?: true
+    mimeType?: true
+    sizeBytes?: true
+    width?: true
+    height?: true
+    sha256?: true
+    content?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProductImageAssetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductImageAsset to aggregate.
+     */
+    where?: ProductImageAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductImageAssets to fetch.
+     */
+    orderBy?: ProductImageAssetOrderByWithRelationInput | ProductImageAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProductImageAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductImageAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductImageAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProductImageAssets
+    **/
+    _count?: true | ProductImageAssetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProductImageAssetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProductImageAssetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProductImageAssetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProductImageAssetMaxAggregateInputType
+  }
+
+  export type GetProductImageAssetAggregateType<T extends ProductImageAssetAggregateArgs> = {
+        [P in keyof T & keyof AggregateProductImageAsset]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProductImageAsset[P]>
+      : GetScalarType<T[P], AggregateProductImageAsset[P]>
+  }
+
+
+
+
+  export type ProductImageAssetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductImageAssetWhereInput
+    orderBy?: ProductImageAssetOrderByWithAggregationInput | ProductImageAssetOrderByWithAggregationInput[]
+    by: ProductImageAssetScalarFieldEnum[] | ProductImageAssetScalarFieldEnum
+    having?: ProductImageAssetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProductImageAssetCountAggregateInputType | true
+    _avg?: ProductImageAssetAvgAggregateInputType
+    _sum?: ProductImageAssetSumAggregateInputType
+    _min?: ProductImageAssetMinAggregateInputType
+    _max?: ProductImageAssetMaxAggregateInputType
+  }
+
+  export type ProductImageAssetGroupByOutputType = {
+    id: string
+    productId: string
+    kind: string
+    surfaceId: string | null
+    altText: string | null
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    sha256: string
+    content: Bytes
+    createdAt: Date
+    updatedAt: Date
+    _count: ProductImageAssetCountAggregateOutputType | null
+    _avg: ProductImageAssetAvgAggregateOutputType | null
+    _sum: ProductImageAssetSumAggregateOutputType | null
+    _min: ProductImageAssetMinAggregateOutputType | null
+    _max: ProductImageAssetMaxAggregateOutputType | null
+  }
+
+  type GetProductImageAssetGroupByPayload<T extends ProductImageAssetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProductImageAssetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProductImageAssetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProductImageAssetGroupByOutputType[P]>
+            : GetScalarType<T[P], ProductImageAssetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProductImageAssetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    kind?: boolean
+    surfaceId?: boolean
+    altText?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    sha256?: boolean
+    content?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productImageAsset"]>
+
+  export type ProductImageAssetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    kind?: boolean
+    surfaceId?: boolean
+    altText?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    sha256?: boolean
+    content?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productImageAsset"]>
+
+  export type ProductImageAssetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    kind?: boolean
+    surfaceId?: boolean
+    altText?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    sha256?: boolean
+    content?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productImageAsset"]>
+
+  export type ProductImageAssetSelectScalar = {
+    id?: boolean
+    productId?: boolean
+    kind?: boolean
+    surfaceId?: boolean
+    altText?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    sha256?: boolean
+    content?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProductImageAssetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "kind" | "surfaceId" | "altText" | "mimeType" | "sizeBytes" | "width" | "height" | "sha256" | "content" | "createdAt" | "updatedAt", ExtArgs["result"]["productImageAsset"]>
+  export type ProductImageAssetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type ProductImageAssetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+  export type ProductImageAssetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+  }
+
+  export type $ProductImageAssetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProductImageAsset"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      productId: string
+      kind: string
+      surfaceId: string | null
+      altText: string | null
+      mimeType: string
+      sizeBytes: number
+      width: number
+      height: number
+      sha256: string
+      content: Prisma.Bytes
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["productImageAsset"]>
+    composites: {}
+  }
+
+  type ProductImageAssetGetPayload<S extends boolean | null | undefined | ProductImageAssetDefaultArgs> = $Result.GetResult<Prisma.$ProductImageAssetPayload, S>
+
+  type ProductImageAssetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProductImageAssetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProductImageAssetCountAggregateInputType | true
+    }
+
+  export interface ProductImageAssetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProductImageAsset'], meta: { name: 'ProductImageAsset' } }
+    /**
+     * Find zero or one ProductImageAsset that matches the filter.
+     * @param {ProductImageAssetFindUniqueArgs} args - Arguments to find a ProductImageAsset
+     * @example
+     * // Get one ProductImageAsset
+     * const productImageAsset = await prisma.productImageAsset.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProductImageAssetFindUniqueArgs>(args: SelectSubset<T, ProductImageAssetFindUniqueArgs<ExtArgs>>): Prisma__ProductImageAssetClient<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProductImageAsset that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProductImageAssetFindUniqueOrThrowArgs} args - Arguments to find a ProductImageAsset
+     * @example
+     * // Get one ProductImageAsset
+     * const productImageAsset = await prisma.productImageAsset.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProductImageAssetFindUniqueOrThrowArgs>(args: SelectSubset<T, ProductImageAssetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProductImageAssetClient<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductImageAsset that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductImageAssetFindFirstArgs} args - Arguments to find a ProductImageAsset
+     * @example
+     * // Get one ProductImageAsset
+     * const productImageAsset = await prisma.productImageAsset.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProductImageAssetFindFirstArgs>(args?: SelectSubset<T, ProductImageAssetFindFirstArgs<ExtArgs>>): Prisma__ProductImageAssetClient<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductImageAsset that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductImageAssetFindFirstOrThrowArgs} args - Arguments to find a ProductImageAsset
+     * @example
+     * // Get one ProductImageAsset
+     * const productImageAsset = await prisma.productImageAsset.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProductImageAssetFindFirstOrThrowArgs>(args?: SelectSubset<T, ProductImageAssetFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProductImageAssetClient<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProductImageAssets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductImageAssetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProductImageAssets
+     * const productImageAssets = await prisma.productImageAsset.findMany()
+     * 
+     * // Get first 10 ProductImageAssets
+     * const productImageAssets = await prisma.productImageAsset.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const productImageAssetWithIdOnly = await prisma.productImageAsset.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProductImageAssetFindManyArgs>(args?: SelectSubset<T, ProductImageAssetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProductImageAsset.
+     * @param {ProductImageAssetCreateArgs} args - Arguments to create a ProductImageAsset.
+     * @example
+     * // Create one ProductImageAsset
+     * const ProductImageAsset = await prisma.productImageAsset.create({
+     *   data: {
+     *     // ... data to create a ProductImageAsset
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProductImageAssetCreateArgs>(args: SelectSubset<T, ProductImageAssetCreateArgs<ExtArgs>>): Prisma__ProductImageAssetClient<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProductImageAssets.
+     * @param {ProductImageAssetCreateManyArgs} args - Arguments to create many ProductImageAssets.
+     * @example
+     * // Create many ProductImageAssets
+     * const productImageAsset = await prisma.productImageAsset.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProductImageAssetCreateManyArgs>(args?: SelectSubset<T, ProductImageAssetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProductImageAssets and returns the data saved in the database.
+     * @param {ProductImageAssetCreateManyAndReturnArgs} args - Arguments to create many ProductImageAssets.
+     * @example
+     * // Create many ProductImageAssets
+     * const productImageAsset = await prisma.productImageAsset.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProductImageAssets and only return the `id`
+     * const productImageAssetWithIdOnly = await prisma.productImageAsset.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProductImageAssetCreateManyAndReturnArgs>(args?: SelectSubset<T, ProductImageAssetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProductImageAsset.
+     * @param {ProductImageAssetDeleteArgs} args - Arguments to delete one ProductImageAsset.
+     * @example
+     * // Delete one ProductImageAsset
+     * const ProductImageAsset = await prisma.productImageAsset.delete({
+     *   where: {
+     *     // ... filter to delete one ProductImageAsset
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProductImageAssetDeleteArgs>(args: SelectSubset<T, ProductImageAssetDeleteArgs<ExtArgs>>): Prisma__ProductImageAssetClient<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProductImageAsset.
+     * @param {ProductImageAssetUpdateArgs} args - Arguments to update one ProductImageAsset.
+     * @example
+     * // Update one ProductImageAsset
+     * const productImageAsset = await prisma.productImageAsset.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProductImageAssetUpdateArgs>(args: SelectSubset<T, ProductImageAssetUpdateArgs<ExtArgs>>): Prisma__ProductImageAssetClient<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProductImageAssets.
+     * @param {ProductImageAssetDeleteManyArgs} args - Arguments to filter ProductImageAssets to delete.
+     * @example
+     * // Delete a few ProductImageAssets
+     * const { count } = await prisma.productImageAsset.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProductImageAssetDeleteManyArgs>(args?: SelectSubset<T, ProductImageAssetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductImageAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductImageAssetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProductImageAssets
+     * const productImageAsset = await prisma.productImageAsset.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProductImageAssetUpdateManyArgs>(args: SelectSubset<T, ProductImageAssetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductImageAssets and returns the data updated in the database.
+     * @param {ProductImageAssetUpdateManyAndReturnArgs} args - Arguments to update many ProductImageAssets.
+     * @example
+     * // Update many ProductImageAssets
+     * const productImageAsset = await prisma.productImageAsset.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProductImageAssets and only return the `id`
+     * const productImageAssetWithIdOnly = await prisma.productImageAsset.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProductImageAssetUpdateManyAndReturnArgs>(args: SelectSubset<T, ProductImageAssetUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProductImageAsset.
+     * @param {ProductImageAssetUpsertArgs} args - Arguments to update or create a ProductImageAsset.
+     * @example
+     * // Update or create a ProductImageAsset
+     * const productImageAsset = await prisma.productImageAsset.upsert({
+     *   create: {
+     *     // ... data to create a ProductImageAsset
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProductImageAsset we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProductImageAssetUpsertArgs>(args: SelectSubset<T, ProductImageAssetUpsertArgs<ExtArgs>>): Prisma__ProductImageAssetClient<$Result.GetResult<Prisma.$ProductImageAssetPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProductImageAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductImageAssetCountArgs} args - Arguments to filter ProductImageAssets to count.
+     * @example
+     * // Count the number of ProductImageAssets
+     * const count = await prisma.productImageAsset.count({
+     *   where: {
+     *     // ... the filter for the ProductImageAssets we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProductImageAssetCountArgs>(
+      args?: Subset<T, ProductImageAssetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProductImageAssetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProductImageAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductImageAssetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProductImageAssetAggregateArgs>(args: Subset<T, ProductImageAssetAggregateArgs>): Prisma.PrismaPromise<GetProductImageAssetAggregateType<T>>
+
+    /**
+     * Group by ProductImageAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductImageAssetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProductImageAssetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProductImageAssetGroupByArgs['orderBy'] }
+        : { orderBy?: ProductImageAssetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProductImageAssetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductImageAssetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProductImageAsset model
+   */
+  readonly fields: ProductImageAssetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProductImageAsset.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProductImageAssetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProductImageAsset model
+   */
+  interface ProductImageAssetFieldRefs {
+    readonly id: FieldRef<"ProductImageAsset", 'String'>
+    readonly productId: FieldRef<"ProductImageAsset", 'String'>
+    readonly kind: FieldRef<"ProductImageAsset", 'String'>
+    readonly surfaceId: FieldRef<"ProductImageAsset", 'String'>
+    readonly altText: FieldRef<"ProductImageAsset", 'String'>
+    readonly mimeType: FieldRef<"ProductImageAsset", 'String'>
+    readonly sizeBytes: FieldRef<"ProductImageAsset", 'Int'>
+    readonly width: FieldRef<"ProductImageAsset", 'Int'>
+    readonly height: FieldRef<"ProductImageAsset", 'Int'>
+    readonly sha256: FieldRef<"ProductImageAsset", 'String'>
+    readonly content: FieldRef<"ProductImageAsset", 'Bytes'>
+    readonly createdAt: FieldRef<"ProductImageAsset", 'DateTime'>
+    readonly updatedAt: FieldRef<"ProductImageAsset", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProductImageAsset findUnique
+   */
+  export type ProductImageAssetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductImageAsset to fetch.
+     */
+    where: ProductImageAssetWhereUniqueInput
+  }
+
+  /**
+   * ProductImageAsset findUniqueOrThrow
+   */
+  export type ProductImageAssetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductImageAsset to fetch.
+     */
+    where: ProductImageAssetWhereUniqueInput
+  }
+
+  /**
+   * ProductImageAsset findFirst
+   */
+  export type ProductImageAssetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductImageAsset to fetch.
+     */
+    where?: ProductImageAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductImageAssets to fetch.
+     */
+    orderBy?: ProductImageAssetOrderByWithRelationInput | ProductImageAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductImageAssets.
+     */
+    cursor?: ProductImageAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductImageAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductImageAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductImageAssets.
+     */
+    distinct?: ProductImageAssetScalarFieldEnum | ProductImageAssetScalarFieldEnum[]
+  }
+
+  /**
+   * ProductImageAsset findFirstOrThrow
+   */
+  export type ProductImageAssetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductImageAsset to fetch.
+     */
+    where?: ProductImageAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductImageAssets to fetch.
+     */
+    orderBy?: ProductImageAssetOrderByWithRelationInput | ProductImageAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductImageAssets.
+     */
+    cursor?: ProductImageAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductImageAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductImageAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductImageAssets.
+     */
+    distinct?: ProductImageAssetScalarFieldEnum | ProductImageAssetScalarFieldEnum[]
+  }
+
+  /**
+   * ProductImageAsset findMany
+   */
+  export type ProductImageAssetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductImageAssets to fetch.
+     */
+    where?: ProductImageAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductImageAssets to fetch.
+     */
+    orderBy?: ProductImageAssetOrderByWithRelationInput | ProductImageAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProductImageAssets.
+     */
+    cursor?: ProductImageAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductImageAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductImageAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductImageAssets.
+     */
+    distinct?: ProductImageAssetScalarFieldEnum | ProductImageAssetScalarFieldEnum[]
+  }
+
+  /**
+   * ProductImageAsset create
+   */
+  export type ProductImageAssetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProductImageAsset.
+     */
+    data: XOR<ProductImageAssetCreateInput, ProductImageAssetUncheckedCreateInput>
+  }
+
+  /**
+   * ProductImageAsset createMany
+   */
+  export type ProductImageAssetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProductImageAssets.
+     */
+    data: ProductImageAssetCreateManyInput | ProductImageAssetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProductImageAsset createManyAndReturn
+   */
+  export type ProductImageAssetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProductImageAssets.
+     */
+    data: ProductImageAssetCreateManyInput | ProductImageAssetCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductImageAsset update
+   */
+  export type ProductImageAssetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProductImageAsset.
+     */
+    data: XOR<ProductImageAssetUpdateInput, ProductImageAssetUncheckedUpdateInput>
+    /**
+     * Choose, which ProductImageAsset to update.
+     */
+    where: ProductImageAssetWhereUniqueInput
+  }
+
+  /**
+   * ProductImageAsset updateMany
+   */
+  export type ProductImageAssetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProductImageAssets.
+     */
+    data: XOR<ProductImageAssetUpdateManyMutationInput, ProductImageAssetUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductImageAssets to update
+     */
+    where?: ProductImageAssetWhereInput
+    /**
+     * Limit how many ProductImageAssets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductImageAsset updateManyAndReturn
+   */
+  export type ProductImageAssetUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * The data used to update ProductImageAssets.
+     */
+    data: XOR<ProductImageAssetUpdateManyMutationInput, ProductImageAssetUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductImageAssets to update
+     */
+    where?: ProductImageAssetWhereInput
+    /**
+     * Limit how many ProductImageAssets to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductImageAsset upsert
+   */
+  export type ProductImageAssetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProductImageAsset to update in case it exists.
+     */
+    where: ProductImageAssetWhereUniqueInput
+    /**
+     * In case the ProductImageAsset found by the `where` argument doesn't exist, create a new ProductImageAsset with this data.
+     */
+    create: XOR<ProductImageAssetCreateInput, ProductImageAssetUncheckedCreateInput>
+    /**
+     * In case the ProductImageAsset was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProductImageAssetUpdateInput, ProductImageAssetUncheckedUpdateInput>
+  }
+
+  /**
+   * ProductImageAsset delete
+   */
+  export type ProductImageAssetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
+    /**
+     * Filter which ProductImageAsset to delete.
+     */
+    where: ProductImageAssetWhereUniqueInput
+  }
+
+  /**
+   * ProductImageAsset deleteMany
+   */
+  export type ProductImageAssetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductImageAssets to delete
+     */
+    where?: ProductImageAssetWhereInput
+    /**
+     * Limit how many ProductImageAssets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductImageAsset without action
+   */
+  export type ProductImageAssetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductImageAsset
+     */
+    select?: ProductImageAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductImageAsset
+     */
+    omit?: ProductImageAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductImageAssetInclude<ExtArgs> | null
   }
 
 
@@ -79048,6 +80385,25 @@ export namespace Prisma {
   export type ProductImageScalarFieldEnum = (typeof ProductImageScalarFieldEnum)[keyof typeof ProductImageScalarFieldEnum]
 
 
+  export const ProductImageAssetScalarFieldEnum: {
+    id: 'id',
+    productId: 'productId',
+    kind: 'kind',
+    surfaceId: 'surfaceId',
+    altText: 'altText',
+    mimeType: 'mimeType',
+    sizeBytes: 'sizeBytes',
+    width: 'width',
+    height: 'height',
+    sha256: 'sha256',
+    content: 'content',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProductImageAssetScalarFieldEnum = (typeof ProductImageAssetScalarFieldEnum)[keyof typeof ProductImageAssetScalarFieldEnum]
+
+
   export const ProductPersonalizationFieldScalarFieldEnum: {
     id: 'id',
     productId: 'productId',
@@ -81176,6 +82532,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateListRelationFilter
     visualizationJobs?: VisualizationProcessingJobListRelationFilter
     visualizationAssets?: VisualizationAssetListRelationFilter
+    imageAssets?: ProductImageAssetListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -81225,6 +82582,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateOrderByRelationAggregateInput
     visualizationJobs?: VisualizationProcessingJobOrderByRelationAggregateInput
     visualizationAssets?: VisualizationAssetOrderByRelationAggregateInput
+    imageAssets?: ProductImageAssetOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -81277,6 +82635,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateListRelationFilter
     visualizationJobs?: VisualizationProcessingJobListRelationFilter
     visualizationAssets?: VisualizationAssetListRelationFilter
+    imageAssets?: ProductImageAssetListRelationFilter
   }, "id" | "slug" | "baseSku">
 
   export type ProductOrderByWithAggregationInput = {
@@ -82157,6 +83516,103 @@ export namespace Prisma {
     height?: IntNullableWithAggregatesFilter<"ProductImage"> | number | null
     sortOrder?: IntWithAggregatesFilter<"ProductImage"> | number
     createdAt?: DateTimeWithAggregatesFilter<"ProductImage"> | Date | string
+  }
+
+  export type ProductImageAssetWhereInput = {
+    AND?: ProductImageAssetWhereInput | ProductImageAssetWhereInput[]
+    OR?: ProductImageAssetWhereInput[]
+    NOT?: ProductImageAssetWhereInput | ProductImageAssetWhereInput[]
+    id?: StringFilter<"ProductImageAsset"> | string
+    productId?: StringFilter<"ProductImageAsset"> | string
+    kind?: StringFilter<"ProductImageAsset"> | string
+    surfaceId?: StringNullableFilter<"ProductImageAsset"> | string | null
+    altText?: StringNullableFilter<"ProductImageAsset"> | string | null
+    mimeType?: StringFilter<"ProductImageAsset"> | string
+    sizeBytes?: IntFilter<"ProductImageAsset"> | number
+    width?: IntFilter<"ProductImageAsset"> | number
+    height?: IntFilter<"ProductImageAsset"> | number
+    sha256?: StringFilter<"ProductImageAsset"> | string
+    content?: BytesFilter<"ProductImageAsset"> | Bytes
+    createdAt?: DateTimeFilter<"ProductImageAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"ProductImageAsset"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }
+
+  export type ProductImageAssetOrderByWithRelationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    kind?: SortOrder
+    surfaceId?: SortOrderInput | SortOrder
+    altText?: SortOrderInput | SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    product?: ProductOrderByWithRelationInput
+  }
+
+  export type ProductImageAssetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ProductImageAssetWhereInput | ProductImageAssetWhereInput[]
+    OR?: ProductImageAssetWhereInput[]
+    NOT?: ProductImageAssetWhereInput | ProductImageAssetWhereInput[]
+    productId?: StringFilter<"ProductImageAsset"> | string
+    kind?: StringFilter<"ProductImageAsset"> | string
+    surfaceId?: StringNullableFilter<"ProductImageAsset"> | string | null
+    altText?: StringNullableFilter<"ProductImageAsset"> | string | null
+    mimeType?: StringFilter<"ProductImageAsset"> | string
+    sizeBytes?: IntFilter<"ProductImageAsset"> | number
+    width?: IntFilter<"ProductImageAsset"> | number
+    height?: IntFilter<"ProductImageAsset"> | number
+    sha256?: StringFilter<"ProductImageAsset"> | string
+    content?: BytesFilter<"ProductImageAsset"> | Bytes
+    createdAt?: DateTimeFilter<"ProductImageAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"ProductImageAsset"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+  }, "id">
+
+  export type ProductImageAssetOrderByWithAggregationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    kind?: SortOrder
+    surfaceId?: SortOrderInput | SortOrder
+    altText?: SortOrderInput | SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProductImageAssetCountOrderByAggregateInput
+    _avg?: ProductImageAssetAvgOrderByAggregateInput
+    _max?: ProductImageAssetMaxOrderByAggregateInput
+    _min?: ProductImageAssetMinOrderByAggregateInput
+    _sum?: ProductImageAssetSumOrderByAggregateInput
+  }
+
+  export type ProductImageAssetScalarWhereWithAggregatesInput = {
+    AND?: ProductImageAssetScalarWhereWithAggregatesInput | ProductImageAssetScalarWhereWithAggregatesInput[]
+    OR?: ProductImageAssetScalarWhereWithAggregatesInput[]
+    NOT?: ProductImageAssetScalarWhereWithAggregatesInput | ProductImageAssetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ProductImageAsset"> | string
+    productId?: StringWithAggregatesFilter<"ProductImageAsset"> | string
+    kind?: StringWithAggregatesFilter<"ProductImageAsset"> | string
+    surfaceId?: StringNullableWithAggregatesFilter<"ProductImageAsset"> | string | null
+    altText?: StringNullableWithAggregatesFilter<"ProductImageAsset"> | string | null
+    mimeType?: StringWithAggregatesFilter<"ProductImageAsset"> | string
+    sizeBytes?: IntWithAggregatesFilter<"ProductImageAsset"> | number
+    width?: IntWithAggregatesFilter<"ProductImageAsset"> | number
+    height?: IntWithAggregatesFilter<"ProductImageAsset"> | number
+    sha256?: StringWithAggregatesFilter<"ProductImageAsset"> | string
+    content?: BytesWithAggregatesFilter<"ProductImageAsset"> | Bytes
+    createdAt?: DateTimeWithAggregatesFilter<"ProductImageAsset"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ProductImageAsset"> | Date | string
   }
 
   export type ProductPersonalizationFieldWhereInput = {
@@ -86781,6 +88237,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -86829,6 +88286,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -86877,6 +88335,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -86925,6 +88384,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -87917,6 +89377,117 @@ export namespace Prisma {
     height?: NullableIntFieldUpdateOperationsInput | number | null
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductImageAssetCreateInput = {
+    id?: string
+    kind: string
+    surfaceId?: string | null
+    altText?: string | null
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    sha256: string
+    content: Bytes
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutImageAssetsInput
+  }
+
+  export type ProductImageAssetUncheckedCreateInput = {
+    id?: string
+    productId: string
+    kind: string
+    surfaceId?: string | null
+    altText?: string | null
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    sha256: string
+    content: Bytes
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductImageAssetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    surfaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutImageAssetsNestedInput
+  }
+
+  export type ProductImageAssetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    surfaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductImageAssetCreateManyInput = {
+    id?: string
+    productId: string
+    kind: string
+    surfaceId?: string | null
+    altText?: string | null
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    sha256: string
+    content: Bytes
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductImageAssetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    surfaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductImageAssetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    surfaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProductPersonalizationFieldCreateInput = {
@@ -92995,6 +94566,12 @@ export namespace Prisma {
     none?: VendorCapabilityWhereInput
   }
 
+  export type ProductImageAssetListRelationFilter = {
+    every?: ProductImageAssetWhereInput
+    some?: ProductImageAssetWhereInput
+    none?: ProductImageAssetWhereInput
+  }
+
   export type ProductVariantOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -93028,6 +94605,10 @@ export namespace Prisma {
   }
 
   export type VendorCapabilityOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProductImageAssetOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -93883,6 +95464,66 @@ export namespace Prisma {
     width?: SortOrder
     height?: SortOrder
     sortOrder?: SortOrder
+  }
+
+  export type ProductImageAssetCountOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    kind?: SortOrder
+    surfaceId?: SortOrder
+    altText?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProductImageAssetAvgOrderByAggregateInput = {
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+  }
+
+  export type ProductImageAssetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    kind?: SortOrder
+    surfaceId?: SortOrder
+    altText?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProductImageAssetMinOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    kind?: SortOrder
+    surfaceId?: SortOrder
+    altText?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProductImageAssetSumOrderByAggregateInput = {
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
   }
 
   export type ProductPersonalizationFieldProductIdKeyCompoundUniqueInput = {
@@ -98160,6 +99801,13 @@ export namespace Prisma {
     connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
   }
 
+  export type ProductImageAssetCreateNestedManyWithoutProductInput = {
+    create?: XOR<ProductImageAssetCreateWithoutProductInput, ProductImageAssetUncheckedCreateWithoutProductInput> | ProductImageAssetCreateWithoutProductInput[] | ProductImageAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductImageAssetCreateOrConnectWithoutProductInput | ProductImageAssetCreateOrConnectWithoutProductInput[]
+    createMany?: ProductImageAssetCreateManyProductInputEnvelope
+    connect?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
+  }
+
   export type ProductCategoryUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput> | ProductCategoryCreateWithoutProductInput[] | ProductCategoryUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductCategoryCreateOrConnectWithoutProductInput | ProductCategoryCreateOrConnectWithoutProductInput[]
@@ -98277,6 +99925,13 @@ export namespace Prisma {
     connectOrCreate?: VisualizationAssetCreateOrConnectWithoutProductInput | VisualizationAssetCreateOrConnectWithoutProductInput[]
     createMany?: VisualizationAssetCreateManyProductInputEnvelope
     connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+  }
+
+  export type ProductImageAssetUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<ProductImageAssetCreateWithoutProductInput, ProductImageAssetUncheckedCreateWithoutProductInput> | ProductImageAssetCreateWithoutProductInput[] | ProductImageAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductImageAssetCreateOrConnectWithoutProductInput | ProductImageAssetCreateOrConnectWithoutProductInput[]
+    createMany?: ProductImageAssetCreateManyProductInputEnvelope
+    connect?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
   }
 
   export type EnumProductStatusFieldUpdateOperationsInput = {
@@ -98542,6 +100197,20 @@ export namespace Prisma {
     deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
   }
 
+  export type ProductImageAssetUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ProductImageAssetCreateWithoutProductInput, ProductImageAssetUncheckedCreateWithoutProductInput> | ProductImageAssetCreateWithoutProductInput[] | ProductImageAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductImageAssetCreateOrConnectWithoutProductInput | ProductImageAssetCreateOrConnectWithoutProductInput[]
+    upsert?: ProductImageAssetUpsertWithWhereUniqueWithoutProductInput | ProductImageAssetUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ProductImageAssetCreateManyProductInputEnvelope
+    set?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
+    disconnect?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
+    delete?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
+    connect?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
+    update?: ProductImageAssetUpdateWithWhereUniqueWithoutProductInput | ProductImageAssetUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ProductImageAssetUpdateManyWithWhereWithoutProductInput | ProductImageAssetUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ProductImageAssetScalarWhereInput | ProductImageAssetScalarWhereInput[]
+  }
+
   export type ProductCategoryUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput> | ProductCategoryCreateWithoutProductInput[] | ProductCategoryUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductCategoryCreateOrConnectWithoutProductInput | ProductCategoryCreateOrConnectWithoutProductInput[]
@@ -98778,6 +100447,20 @@ export namespace Prisma {
     update?: VisualizationAssetUpdateWithWhereUniqueWithoutProductInput | VisualizationAssetUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: VisualizationAssetUpdateManyWithWhereWithoutProductInput | VisualizationAssetUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+  }
+
+  export type ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ProductImageAssetCreateWithoutProductInput, ProductImageAssetUncheckedCreateWithoutProductInput> | ProductImageAssetCreateWithoutProductInput[] | ProductImageAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductImageAssetCreateOrConnectWithoutProductInput | ProductImageAssetCreateOrConnectWithoutProductInput[]
+    upsert?: ProductImageAssetUpsertWithWhereUniqueWithoutProductInput | ProductImageAssetUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ProductImageAssetCreateManyProductInputEnvelope
+    set?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
+    disconnect?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
+    delete?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
+    connect?: ProductImageAssetWhereUniqueInput | ProductImageAssetWhereUniqueInput[]
+    update?: ProductImageAssetUpdateWithWhereUniqueWithoutProductInput | ProductImageAssetUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ProductImageAssetUpdateManyWithWhereWithoutProductInput | ProductImageAssetUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ProductImageAssetScalarWhereInput | ProductImageAssetScalarWhereInput[]
   }
 
   export type ProductCreateNestedOneWithoutCategoryLinksInput = {
@@ -99450,6 +101133,20 @@ export namespace Prisma {
     upsert?: ProductUpsertWithoutImagesInput
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutImagesInput, ProductUpdateWithoutImagesInput>, ProductUncheckedUpdateWithoutImagesInput>
+  }
+
+  export type ProductCreateNestedOneWithoutImageAssetsInput = {
+    create?: XOR<ProductCreateWithoutImageAssetsInput, ProductUncheckedCreateWithoutImageAssetsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutImageAssetsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type ProductUpdateOneRequiredWithoutImageAssetsNestedInput = {
+    create?: XOR<ProductCreateWithoutImageAssetsInput, ProductUncheckedCreateWithoutImageAssetsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutImageAssetsInput
+    upsert?: ProductUpsertWithoutImageAssetsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutImageAssetsInput, ProductUpdateWithoutImageAssetsInput>, ProductUncheckedUpdateWithoutImageAssetsInput>
   }
 
   export type ProductCreateNestedOneWithoutPersonalizationFieldsInput = {
@@ -105865,6 +107562,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCategoryInput = {
@@ -105912,6 +107610,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCategoryInput = {
@@ -106954,6 +108653,46 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProductImageAssetCreateWithoutProductInput = {
+    id?: string
+    kind: string
+    surfaceId?: string | null
+    altText?: string | null
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    sha256: string
+    content: Bytes
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductImageAssetUncheckedCreateWithoutProductInput = {
+    id?: string
+    kind: string
+    surfaceId?: string | null
+    altText?: string | null
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    sha256: string
+    content: Bytes
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductImageAssetCreateOrConnectWithoutProductInput = {
+    where: ProductImageAssetWhereUniqueInput
+    create: XOR<ProductImageAssetCreateWithoutProductInput, ProductImageAssetUncheckedCreateWithoutProductInput>
+  }
+
+  export type ProductImageAssetCreateManyProductInputEnvelope = {
+    data: ProductImageAssetCreateManyProductInput | ProductImageAssetCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CategoryUpsertWithoutProductsInput = {
     update: XOR<CategoryUpdateWithoutProductsInput, CategoryUncheckedUpdateWithoutProductsInput>
     create: XOR<CategoryCreateWithoutProductsInput, CategoryUncheckedCreateWithoutProductsInput>
@@ -107407,6 +109146,41 @@ export namespace Prisma {
     data: XOR<VisualizationAssetUpdateManyMutationInput, VisualizationAssetUncheckedUpdateManyWithoutProductInput>
   }
 
+  export type ProductImageAssetUpsertWithWhereUniqueWithoutProductInput = {
+    where: ProductImageAssetWhereUniqueInput
+    update: XOR<ProductImageAssetUpdateWithoutProductInput, ProductImageAssetUncheckedUpdateWithoutProductInput>
+    create: XOR<ProductImageAssetCreateWithoutProductInput, ProductImageAssetUncheckedCreateWithoutProductInput>
+  }
+
+  export type ProductImageAssetUpdateWithWhereUniqueWithoutProductInput = {
+    where: ProductImageAssetWhereUniqueInput
+    data: XOR<ProductImageAssetUpdateWithoutProductInput, ProductImageAssetUncheckedUpdateWithoutProductInput>
+  }
+
+  export type ProductImageAssetUpdateManyWithWhereWithoutProductInput = {
+    where: ProductImageAssetScalarWhereInput
+    data: XOR<ProductImageAssetUpdateManyMutationInput, ProductImageAssetUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type ProductImageAssetScalarWhereInput = {
+    AND?: ProductImageAssetScalarWhereInput | ProductImageAssetScalarWhereInput[]
+    OR?: ProductImageAssetScalarWhereInput[]
+    NOT?: ProductImageAssetScalarWhereInput | ProductImageAssetScalarWhereInput[]
+    id?: StringFilter<"ProductImageAsset"> | string
+    productId?: StringFilter<"ProductImageAsset"> | string
+    kind?: StringFilter<"ProductImageAsset"> | string
+    surfaceId?: StringNullableFilter<"ProductImageAsset"> | string | null
+    altText?: StringNullableFilter<"ProductImageAsset"> | string | null
+    mimeType?: StringFilter<"ProductImageAsset"> | string
+    sizeBytes?: IntFilter<"ProductImageAsset"> | number
+    width?: IntFilter<"ProductImageAsset"> | number
+    height?: IntFilter<"ProductImageAsset"> | number
+    sha256?: StringFilter<"ProductImageAsset"> | string
+    content?: BytesFilter<"ProductImageAsset"> | Bytes
+    createdAt?: DateTimeFilter<"ProductImageAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"ProductImageAsset"> | Date | string
+  }
+
   export type ProductCreateWithoutCategoryLinksInput = {
     id?: string
     name: string
@@ -107452,6 +109226,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCategoryLinksInput = {
@@ -107499,6 +109274,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCategoryLinksInput = {
@@ -107605,6 +109381,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCategoryLinksInput = {
@@ -107652,6 +109429,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type CategoryUpsertWithoutProductLinksInput = {
@@ -107748,6 +109526,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutArtworkAssetsInput = {
@@ -107795,6 +109574,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutArtworkAssetsInput = {
@@ -107988,6 +109768,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutArtworkAssetsInput = {
@@ -108035,6 +109816,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type OrderItemUpsertWithoutArtworkAssetsInput = {
@@ -108224,6 +110006,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVisualizationTemplatesInput = {
@@ -108271,6 +110054,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVisualizationTemplatesInput = {
@@ -108584,6 +110368,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVisualizationTemplatesInput = {
@@ -108631,6 +110416,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type VisualizationProcessingJobUpsertWithoutTemplatesCreatedInput = {
@@ -108860,6 +110646,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVisualizationJobsInput = {
@@ -108907,6 +110694,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVisualizationJobsInput = {
@@ -109267,6 +111055,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVisualizationJobsInput = {
@@ -109314,6 +111103,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type VisualizationAssetUpsertWithoutSourceForJobsInput = {
@@ -109596,6 +111386,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVisualizationAssetsInput = {
@@ -109643,6 +111434,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVisualizationAssetsInput = {
@@ -109959,6 +111751,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVisualizationAssetsInput = {
@@ -110006,6 +111799,7 @@ export namespace Prisma {
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type VisualizationProcessingJobUpsertWithoutAssetsInput = {
@@ -110280,6 +112074,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVariantsInput = {
@@ -110327,6 +112122,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVariantsInput = {
@@ -110525,6 +112321,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVariantsInput = {
@@ -110572,6 +112369,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type InventoryUpsertWithoutVariantInput = {
@@ -110708,6 +112506,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutImagesInput = {
@@ -110755,6 +112554,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutImagesInput = {
@@ -110818,6 +112618,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutImagesInput = {
@@ -110851,6 +112652,215 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductCreateWithoutImageAssetsInput = {
+    id?: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
+    variants?: ProductVariantCreateNestedManyWithoutProductInput
+    images?: ProductImageCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductInput
+    reviews?: ReviewCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutImageAssetsInput = {
+    id?: string
+    categoryId: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
+    variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
+    images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateUncheckedCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutImageAssetsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutImageAssetsInput, ProductUncheckedCreateWithoutImageAssetsInput>
+  }
+
+  export type ProductUpsertWithoutImageAssetsInput = {
+    update: XOR<ProductUpdateWithoutImageAssetsInput, ProductUncheckedUpdateWithoutImageAssetsInput>
+    create: XOR<ProductCreateWithoutImageAssetsInput, ProductUncheckedCreateWithoutImageAssetsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutImageAssetsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutImageAssetsInput, ProductUncheckedUpdateWithoutImageAssetsInput>
+  }
+
+  export type ProductUpdateWithoutImageAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUpdateManyWithoutProductNestedInput
+    images?: ProductImageUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutImageAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+    images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
     templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
     customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutProductNestedInput
@@ -110912,6 +112922,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutPersonalizationFieldsInput = {
@@ -110959,6 +112970,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutPersonalizationFieldsInput = {
@@ -111022,6 +113034,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutPersonalizationFieldsInput = {
@@ -111069,6 +113082,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type CategoryCreateWithoutTemplatesInput = {
@@ -111374,6 +113388,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutTemplateLinksInput = {
@@ -111421,6 +113436,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutTemplateLinksInput = {
@@ -111533,6 +113549,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutTemplateLinksInput = {
@@ -111580,6 +113597,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PersonalizationTemplateUpsertWithoutProductLinksInput = {
@@ -111965,6 +113983,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCustomizationsInput = {
@@ -112012,6 +114031,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCustomizationsInput = {
@@ -112240,6 +114260,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCustomizationsInput = {
@@ -112287,6 +114308,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PersonalizationTemplateUpsertWithoutCustomizationsInput = {
@@ -112669,6 +114691,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCartItemsInput = {
@@ -112716,6 +114739,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCartItemsInput = {
@@ -112894,6 +114918,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCartItemsInput = {
@@ -112941,6 +114966,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductVariantUpsertWithoutCartItemsInput = {
@@ -115889,6 +117915,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVendorCapabilitiesInput = {
@@ -115936,6 +117963,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVendorCapabilitiesInput = {
@@ -116074,6 +118102,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVendorCapabilitiesInput = {
@@ -116121,6 +118150,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type OrderCreateWithoutAssignmentInput = {
@@ -117363,6 +119393,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutOrderItemsInput = {
@@ -117410,6 +119441,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutOrderItemsInput = {
@@ -117746,6 +119778,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutOrderItemsInput = {
@@ -117793,6 +119826,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductVariantUpsertWithoutOrderItemsInput = {
@@ -119105,6 +121139,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCouponLinksInput = {
@@ -119152,6 +121187,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCouponLinksInput = {
@@ -119266,6 +121302,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCouponLinksInput = {
@@ -119313,6 +121350,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type CouponCreateWithoutCategoryLinksInput = {
@@ -119964,6 +122002,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutReviewsInput = {
@@ -120011,6 +122050,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutReviewsInput = {
@@ -120204,6 +122244,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutReviewsInput = {
@@ -120251,6 +122292,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserUpsertWithoutReviewsInput = {
@@ -120669,6 +122711,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutWishlistItemsInput = {
@@ -120716,6 +122759,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutWishlistItemsInput = {
@@ -120806,6 +122850,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutWishlistItemsInput = {
@@ -120853,6 +122898,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutBulkRequestsInput = {
@@ -120983,6 +123029,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutBulkRequestsInput = {
@@ -121030,6 +123077,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
     visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
     visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+    imageAssets?: ProductImageAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutBulkRequestsInput = {
@@ -121212,6 +123260,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutBulkRequestsInput = {
@@ -121259,6 +123308,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type BulkOrderRowUpsertWithWhereUniqueWithoutBulkRequestInput = {
@@ -124002,6 +126052,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCategoryInput = {
@@ -124049,6 +126100,7 @@ export namespace Prisma {
     visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
     visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
     visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+    imageAssets?: ProductImageAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutCategoryInput = {
@@ -124404,6 +126456,21 @@ export namespace Prisma {
     content?: Bytes | null
     privateRef?: string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductImageAssetCreateManyProductInput = {
+    id?: string
+    kind: string
+    surfaceId?: string | null
+    altText?: string | null
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    sha256: string
+    content: Bytes
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -125145,6 +127212,51 @@ export namespace Prisma {
     content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
     privateRef?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductImageAssetUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    surfaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductImageAssetUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    surfaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductImageAssetUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    surfaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    altText?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -102,6 +102,7 @@ export interface ProductConfigurationSchema {
   preview: {
     mode: "catalog_2d";
     artworkKey: string;
+    baseImages?: Record<string, string>;
     template?: string;
     model?: string;
     visualization?: ProductVisualizationTemplate;
@@ -189,6 +190,12 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
   const hasNumericDimensions = presets.some((preset) => preset.dimensionsMm !== null);
   const defaultPreset = presets[0];
   const defaultQuantity = product.configurator?.quantityMin ?? 1;
+  const configuredBaseImages = Object.fromEntries(
+    Object.entries(product.configurator?.baseImages ?? {}).filter(([surfaceId, imageUrl]) =>
+      typeof imageUrl === "string" &&
+      product.configurator?.printAreas?.some((area) => area.id === surfaceId),
+    ),
+  );
   const previewModes = ([
     product.configurator?.allow2D !== false && "2d",
     product.configurator?.allow3D === true &&
@@ -285,6 +292,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
     preview: {
       mode: "catalog_2d",
       artworkKey: product.artwork,
+      ...(Object.keys(configuredBaseImages).length ? { baseImages: configuredBaseImages } : {}),
       template: product.configurator?.previewTemplate,
       model: product.configurator?.productModel,
       ...(publishedVisualization ? { visualization: publishedVisualization } : {}),

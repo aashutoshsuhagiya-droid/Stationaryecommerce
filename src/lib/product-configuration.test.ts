@@ -128,3 +128,27 @@ test("EZPAC packaging products stay 2D-only until a packaging model is validated
   assert.deepEqual(buildProductConfiguration(packagingProduct).preview.supportedModes, ["2d"]);
   assert.deepEqual(buildProductConfiguration(stationeryProduct).preview.supportedModes, ["2d", "3d"]);
 });
+
+test("configuration exposes only configured per-surface product base images", () => {
+  const source = getProductById("prod-everyday-name-slips");
+  assert.ok(source);
+  const product = {
+    ...source,
+    configurator: {
+      ...source.configurator,
+      allow2D: source.configurator?.allow2D ?? true,
+      allow3D: source.configurator?.allow3D ?? false,
+      quantityMin: source.configurator?.quantityMin ?? 1,
+      quantityMax: source.configurator?.quantityMax ?? 100,
+      printAreas: [{ id: "front", label: "Front" }],
+      baseImages: {
+        front: "/api/product-images/front-image",
+        retired: "/api/product-images/retired-image",
+      },
+    },
+  };
+
+  assert.deepEqual(buildProductConfiguration(product).preview.baseImages, {
+    front: "/api/product-images/front-image",
+  });
+});

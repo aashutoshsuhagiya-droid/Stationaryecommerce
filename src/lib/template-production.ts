@@ -12,11 +12,15 @@ const recordValue = (value: unknown): Record<string, unknown> =>
 const nonEmptyText = (value: unknown) =>
   typeof value === "string" && value.trim() ? value.trim() : undefined;
 
+const isFirstPartyProductImageUrl = (value: string) =>
+  /^\/api\/product-images\/[A-Za-z0-9_-]{1,100}$/.test(value);
+
 /** Allows only browser-renderable remote images or raster data URLs in UI-facing metadata. */
 export function safeTemplateBaseImageUrl(value: unknown): string | undefined {
   const candidate = nonEmptyText(value);
   if (!candidate) return undefined;
   if (/^data:image\/(?:png|jpeg|webp);base64,[a-z0-9+/=\s]+$/i.test(candidate)) return candidate;
+  if (isFirstPartyProductImageUrl(candidate)) return candidate;
   try {
     const url = new URL(candidate);
     return url.protocol === "https:" || url.protocol === "http:" ? url.href : undefined;

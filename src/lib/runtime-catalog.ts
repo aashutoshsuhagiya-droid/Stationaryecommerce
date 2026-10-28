@@ -12,7 +12,19 @@ import type { Category, CustomizationField, PersonalizationTemplate, Product, Pr
 
 const jsonObject = (value: unknown): Record<string, unknown> => value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
 const stringList = (value: unknown) => Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+const isFirstPartyProductImageUrl = (value: unknown): value is string =>
+  typeof value === "string" && /^\/api\/product-images\/[A-Za-z0-9_-]{1,100}$/.test(value);
 const fieldType = (value: string): CustomizationField["type"] => ["text", "select", "color", "template", "image", "number"].includes(value) ? value as CustomizationField["type"] : "text";
+
+function mappedBaseImages(
+  configurator: Record<string, unknown>,
+  areas: Array<{ id: string }>,
+) {
+  return Object.fromEntries(areas.flatMap((area) => {
+    const imageUrl = configurator[`${area.id}.baseImage`];
+    return isFirstPartyProductImageUrl(imageUrl) ? [[area.id, imageUrl] as const] : [];
+  }));
+}
 
 function mappedVisibleWhen(value: unknown, productId: string, fieldKey: string): CustomizationField["visibleWhen"] | undefined {
   if (value === undefined || value === null) return undefined;
@@ -357,7 +369,43 @@ function mapProduct(product: any): Product {
     description: product.description ?? product.shortDescription ?? "", shortDescription: product.shortDescription ?? "", material: product.material ?? "Not specified", dimensions: typeof dimensions.display === "string" ? dimensions.display : "Not specified", packSize: product.packSize,
     artwork: typeof metadata.artwork === "string" ? metadata.artwork : "labels", image: images[0]?.src ?? "", images, stockStatus: variantList[0]?.stockStatus ?? "made_to_order", featured: Boolean(metadata.featured), newArrival: Boolean(metadata.newArrival), tags: product.tags, features: stringList(metadata.features), careInstructions: typeof metadata.careInstructions === "string" ? metadata.careInstructions : undefined,
     productionDays: { min: product.productionDaysMin, max: product.productionDaysMax }, variants: variantList, customizationFields: fields, templateIds: templateLinks.map((link) => link.template.id), templateLinks, sizes: stringList(metadata.sizes), colors: stringList(metadata.colors), themes: stringList(metadata.themes), productType: typeof metadata.productType === "string" ? metadata.productType : undefined, badge: undefined,
-    configurator: (() => { const areas = Array.isArray(configurator.printAreas) ? configurator.printAreas.flatMap((area) => { if (!area || typeof area !== "object") return []; const record = area as Record<string, unknown>; if (typeof record.id !== "string" || typeof record.label !== "string") return []; return [{ id: record.id, label: record.label, widthMm: typeof record.widthMm === "number" ? record.widthMm : undefined, heightMm: typeof record.heightMm === "number" ? record.heightMm : undefined, safeInsetMm: typeof record.safeInsetMm === "number" ? record.safeInsetMm : undefined }]; }) : []; const mimeTypes = stringList(configurator.acceptedMimeTypes); return { allow2D: configurator.allow2D !== false, allow3D: configurator.allow3D === true, quantityMin: typeof configurator.quantityMin === "number" ? configurator.quantityMin : 1, quantityMax: typeof configurator.quantityMax === "number" ? configurator.quantityMax : 100, quantityTiers: mappedQuantityTiers(configurator.quantityTiers, product.id), setupCharge: mappedSetupCharge(configurator.setupCharge, product.id), printAreas: areas.length ? areas : [{ id: "primary", label: "Primary print area" }], artworkUpload: { enabled: Boolean(configurator.artworkUpload), acceptedMimeTypes: mimeTypes, maximumBytes: typeof configurator.maximumArtworkBytes === "number" ? configurator.maximumArtworkBytes : 2_000_000 }, artworkPolicy: mappedArtworkPolicy(configurator.artworkPolicy, product.id), previewTemplate: typeof configurator.previewTemplate === "string" ? configurator.previewTemplate : undefined, productModel: typeof configurator.productModel === "string" ? configurator.productModel : undefined, configurationVersion: typeof configurator.configurationVersion === "string" ? configurator.configurationVersion : undefined, ...(visualizationTemplate ? { visualizationTemplate } : {}) }; })(),
+    configurator: (() => {
+      const areas = Array.isArray(configurator.printAreas) ? configurator.printAreas.flatMap((area) => {
+        if (!area || typeof area !== "object") return [];
+        const record = area as Record<string, unknown>;
+        if (typeof record.id !== "string" || typeof record.label !== "string") return [];
+        return [{
+          id: record.id,
+          label: record.label,
+          widthMm: typeof record.widthMm === "number" ? record.widthMm : undefined,
+          heightMm: typeof record.heightMm === "number" ? record.heightMm : undefined,
+          safeInsetMm: typeof record.safeInsetMm === "number" ? record.safeInsetMm : undefined,
+        }];
+      }) : [];
+      const printedAreas = areas.length ? areas : [{ id: "primary", label: "Primary print area" }];
+      const mimeTypes = stringList(configurator.acceptedMimeTypes);
+      const baseImages = mappedBaseImages(configurator, areas);
+      return {
+        allow2D: configurator.allow2D !== false,
+        allow3D: configurator.allow3D === true,
+        quantityMin: typeof configurator.quantityMin === "number" ? configurator.quantityMin : 1,
+        quantityMax: typeof configurator.quantityMax === "number" ? configurator.quantityMax : 100,
+        quantityTiers: mappedQuantityTiers(configurator.quantityTiers, product.id),
+        setupCharge: mappedSetupCharge(configurator.setupCharge, product.id),
+        printAreas: printedAreas,
+        ...(Object.keys(baseImages).length ? { baseImages } : {}),
+        artworkUpload: {
+          enabled: Boolean(configurator.artworkUpload),
+          acceptedMimeTypes: mimeTypes,
+          maximumBytes: typeof configurator.maximumArtworkBytes === "number" ? configurator.maximumArtworkBytes : 2_000_000,
+        },
+        artworkPolicy: mappedArtworkPolicy(configurator.artworkPolicy, product.id),
+        previewTemplate: typeof configurator.previewTemplate === "string" ? configurator.previewTemplate : undefined,
+        productModel: typeof configurator.productModel === "string" ? configurator.productModel : undefined,
+        configurationVersion: typeof configurator.configurationVersion === "string" ? configurator.configurationVersion : undefined,
+        ...(visualizationTemplate ? { visualizationTemplate } : {}),
+      };
+    })(),
   };
 }
 

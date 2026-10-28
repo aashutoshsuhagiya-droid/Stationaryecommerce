@@ -148,6 +148,8 @@ export interface Product {
     };
     /** Optional product-specific artwork constraints. Missing policies use legacy-safe defaults. */
     artworkPolicy?: ProductArtworkPolicy;
+    /** Locked customer-preview imagery keyed by printable surface ID. */
+    baseImages?: Record<string, string>;
     previewTemplate?: string;
     productModel?: string;
     configurationVersion?: string;

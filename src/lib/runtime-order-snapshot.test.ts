@@ -151,6 +151,10 @@ test("normalized base images reject active or unsupported URL schemes", () => {
   assert.equal(safeTemplateBaseImageUrl("javascript:alert(1)"), undefined);
   assert.equal(safeTemplateBaseImageUrl("/relative/image.png"), undefined);
   assert.equal(
+    safeTemplateBaseImageUrl("/api/product-images/asset-123"),
+    "/api/product-images/asset-123",
+  );
+  assert.equal(
     safeTemplateBaseImageUrl("data:image/png;base64,iVBORw0KGgo="),
     "data:image/png;base64,iVBORw0KGgo=",
   );

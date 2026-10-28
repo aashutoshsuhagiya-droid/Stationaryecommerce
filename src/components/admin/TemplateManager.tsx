@@ -38,6 +38,7 @@ type ManagedTemplate = {
 };
 
 type TemplateDraft = Pick<ManagedTemplate, "name" | "theme" | "description" | "thumbnailUrl" | "premiumPrice" | "rightsReference" | "surfaces">;
+type ImageOwnerProduct = { id: string; name: string; sku: string; status: string; published: boolean };
 
 const newSurface = (id: SurfaceId, label = id === "front" ? "Front" : "Back"): TemplateSurface => ({
   id,
@@ -94,6 +95,9 @@ export function TemplateManager() {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [imageOwners, setImageOwners] = useState<ImageOwnerProduct[]>([]);
+  const [imageOwnerProductId, setImageOwnerProductId] = useState("");
+  const [uploadingBaseImage, setUploadingBaseImage] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -116,6 +120,21 @@ export function TemplateManager() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    void (async () => {
+      try {
+        const response = await fetch("/api/admin/catalog", { cache: "no-store", signal: controller.signal });
+        const payload = await response.json() as { data?: { products?: ImageOwnerProduct[] } };
+        if (!response.ok || controller.signal.aborted) return;
+        setImageOwners((payload.data?.products ?? []).filter((product) => product.status === "ACTIVE" && product.published));
+      } catch {
+        // The URL fallback remains available when the catalog owner list cannot load.
+      }
+    })();
+    return () => controller.abort();
+  }, []);
+
   const selected = templates.find((template) => template.id === selectedId) ?? null;
   const activeSurface = draft?.surfaces.find((surface) => surface.id === surfaceId) ?? draft?.surfaces[0] ?? null;
   const visible = useMemo(() => {
@@ -131,6 +150,7 @@ export function TemplateManager() {
     setSelectedId(template.id);
     setDraft(cloneDraft(template));
     setSurfaceId(template.surfaces.some((surface) => surface.id === "front") ? "front" : template.surfaces[0]?.id ?? "front");
+    setImageOwnerProductId("");
     setError("");
     setMessage("");
   }
@@ -178,6 +198,35 @@ export function TemplateManager() {
     if (!selected || !draft) return;
     const updated = await send("/api/admin/templates", "PATCH", { action, id: selected.id, template: draft });
     if (updated) setMessage(action === "publish" ? "Template published." : "Template saved as a draft.");
+  }
+
+  async function uploadTemplateBaseImage(file: File) {
+    const productId = imageOwnerProductId;
+    if (!productId) {
+      setError("Choose an active product to own this first-party image before uploading it.");
+      return;
+    }
+    setUploadingBaseImage(true);
+    setError("");
+    try {
+      const form = new FormData();
+      form.set("productId", productId);
+      form.set("kind", "gallery");
+      form.set("image", file);
+      const response = await fetch("/api/admin/catalog/images", { method: "POST", body: form });
+      const payload = await response.json().catch(() => null) as {
+        data?: { asset?: { url?: string } };
+        error?: { message?: string };
+      } | null;
+      const url = payload?.data?.asset?.url;
+      if (!response.ok || !url) throw new Error(payload?.error?.message || "The template base image could not be uploaded.");
+      updateSurface({ baseImageUrl: url });
+      setMessage("Base image uploaded. Save this template to use it.");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "The template base image could not be uploaded.");
+    } finally {
+      setUploadingBaseImage(false);
+    }
   }
 
   function updateDraft<K extends keyof TemplateDraft>(key: K, value: TemplateDraft[K]) {
@@ -313,7 +362,16 @@ export function TemplateManager() {
                 <div className={styles.templateSectionHeading}><strong>{activeSurface.label} surface</strong>{activeSurface.id !== "front" && <button className={styles.buttonGhost} onClick={removeSurface} type="button"><Trash2 size={12} /> Remove</button>}</div>
                 <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Surface label</span><input className={styles.input} maxLength={60} onChange={(event) => updateSurface({ label: event.target.value })} value={activeSurface.label} /></label>
                 <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Sample text <span className={styles.fieldHint}>{activeSurface.sampleText.length}/120</span></span><input className={styles.input} maxLength={120} onChange={(event) => updateSurface({ sampleText: event.target.value })} value={activeSurface.sampleText} /></label>
-                <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Base image URL</span><input className={styles.input} onChange={(event) => updateSurface({ baseImageUrl: event.target.value })} placeholder="https://…" value={activeSurface.baseImageUrl} /></label>
+                <label className={styles.fieldGroup}>
+                  <span className={styles.fieldLabel}>Image owner product</span>
+                  <select className={styles.select} onChange={(event) => setImageOwnerProductId(event.target.value)} value={imageOwnerProductId}>
+                    <option value="">Choose an active product</option>
+                    {imageOwners.map((product) => <option key={product.id} value={product.id}>{product.name} · {product.sku}</option>)}
+                  </select>
+                  <small>The selected active product owns this first-party file; the template stores its public image reference.</small>
+                </label>
+                <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Base image upload</span><input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} disabled={saving || uploadingBaseImage || !imageOwnerProductId} onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ""; if (file) void uploadTemplateBaseImage(file); }} type="file" /><small>{uploadingBaseImage ? "Uploading image…" : "JPG, PNG, or WEBP. Save the template to apply the uploaded image."}</small></label>
+                <details className={styles.assetUrlFallback}><summary>Use an image URL instead</summary><input className={styles.input} inputMode="url" onChange={(event) => updateSurface({ baseImageUrl: event.target.value })} placeholder="https://… or /api/product-images/…" type="text" value={activeSurface.baseImageUrl} /></details>
                 <div className={styles.templateColorGrid}>
                   {(["background", "foreground", "accent"] as const).map((key) => <label className={styles.fieldGroup} key={key}><span className={styles.fieldLabel}>{key[0].toUpperCase() + key.slice(1)}</span><input aria-label={`${key} colour`} className={styles.templateColorInput} onChange={(event) => updateSurface({ [key]: event.target.value })} type="color" value={activeSurface[key]} /></label>)}
                 </div>

@@ -1,15 +1,19 @@
 import { z } from "zod";
 
+const isFirstPartyProductImageUrl = (value: string) =>
+  /^\/api\/product-images\/[A-Za-z0-9_-]{1,100}$/.test(value);
+
 const imageReferenceSchema = z.string().trim().max(2_000).refine((value) => {
   if (!value) return true;
   if (value.startsWith("data:image/")) return true;
+  if (isFirstPartyProductImageUrl(value)) return true;
   try {
     const url = new URL(value);
     return url.protocol === "https:" || url.protocol === "http:";
   } catch {
     return false;
   }
-}, "Enter an HTTP(S) image URL or an image data URL.");
+}, "Enter an HTTP(S), first-party catalog image URL, or image data URL.");
 
 const colorSchema = z.string().trim().regex(/^#[0-9a-f]{6}$/i, "Use a six-digit hex colour.");
 
