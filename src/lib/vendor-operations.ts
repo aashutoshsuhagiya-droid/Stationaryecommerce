@@ -28,6 +28,17 @@ const orderSummarySelect = {
       productNameSnapshot: true,
       quantity: true,
       lineTotalPaise: true,
+      personalization: { select: { values: true, artworkStatus: true } },
+      artworkAssets: {
+        select: {
+          id: true,
+          originalName: true,
+          mimeType: true,
+          sizeBytes: true,
+          width: true,
+          height: true,
+        },
+      },
     },
   },
   addresses: {
@@ -56,7 +67,14 @@ const offerOrderSummarySelect = {
   totalPaise: true,
   placedAt: true,
   completedAt: true,
-  items: orderSummarySelect.items,
+  items: {
+    select: {
+      id: true,
+      productNameSnapshot: true,
+      quantity: true,
+      lineTotalPaise: true,
+    },
+  },
   addresses: {
     where: { type: "SHIPPING" as const },
     select: { city: true, state: true, postalCode: true },

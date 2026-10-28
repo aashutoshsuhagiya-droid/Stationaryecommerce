@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { CustomizationStudio } from "@/components/commerce/CustomizationStudio";
 import { ProductEngagement } from "@/components/commerce/ProductEngagement";
-import { designTemplates, products } from "@/lib/data";
+import { products } from "@/lib/data";
 import { buildProductConfiguration } from "@/lib/product-configuration";
 import { getStorefrontCatalog, getStorefrontProduct } from "@/lib/runtime-catalog";
+
+export const dynamic = "force-dynamic";
 
 export function generateStaticParams() { return products.map((product) => ({ slug: product.slug })); }
 
@@ -20,7 +22,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const product = await getStorefrontProduct(slug);
   if (!product) notFound();
-  const templates = designTemplates.filter((template) => product.templateIds.includes(template.id) && template.active);
   const configuration = buildProductConfiguration(product);
   const catalog = await getStorefrontCatalog();
   const relatedProducts = [
@@ -38,7 +39,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   )).slice(0, 4);
   return <>
     <div className="product-breadcrumb shell"><div className="breadcrumbs"><Link href="/">Home</Link><ChevronRight /><Link href="/products">Products</Link><ChevronRight /><Link href={`/products?category=${product.categorySlug}`}>{product.category}</Link><ChevronRight /><span>{product.name}</span></div></div>
-    <CustomizationStudio product={product} templates={templates} configuration={configuration} />
+    <CustomizationStudio product={product} configuration={configuration} />
     <ProductEngagement
       currentProductId={product.id}
       categorySlug={product.categorySlug}

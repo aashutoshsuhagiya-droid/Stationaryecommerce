@@ -34,10 +34,15 @@ export type CartItem = {
   slug: string;
   name: string;
   price: number;
+  lineAdjustment?: number;
   quantity: number;
   visual: string;
   customization?: Customization;
 };
+
+export function cartLineTotal(item: Pick<CartItem, "price" | "quantity" | "lineAdjustment">) {
+  return item.price * item.quantity + (item.lineAdjustment ?? 0);
+}
 
 type StoreContextValue = {
   cart: CartItem[];
@@ -56,7 +61,7 @@ type StoreContextValue = {
 const StoreContext = createContext<StoreContextValue | null>(null);
 const CART_KEY = "naamly-cart-v1";
 const WISHLIST_KEY = "naamly-wishlist-v1";
-export const MAX_CART_ITEM_QUANTITY = 100;
+export const MAX_CART_ITEM_QUANTITY = 1000;
 
 function clampCartItemQuantity(quantity: number) {
   if (!Number.isFinite(quantity)) return 1;
@@ -75,6 +80,7 @@ function isStoredCartItem(value: unknown): value is CartItem {
     typeof item.price === "number" &&
     Number.isFinite(item.price) &&
     item.price >= 0 &&
+    (typeof item.lineAdjustment === "undefined" || (typeof item.lineAdjustment === "number" && Number.isFinite(item.lineAdjustment))) &&
     typeof item.quantity === "number" &&
     Number.isInteger(item.quantity) &&
     item.quantity > 0 &&
@@ -134,12 +140,14 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [cartToast]);
 
   const addItem = useCallback((item: Omit<CartItem, "key">) => {
-    const signature = JSON.stringify([item.productId, item.variantId, item.customization]);
+    const signature = JSON.stringify([item.productId, item.variantId, item.lineAdjustment ?? 0, item.customization]);
     const quantity = clampCartItemQuantity(item.quantity);
     toastSequenceRef.current += 1;
     setCartToast({ id: toastSequenceRef.current, name: item.name });
     setCart((current) => {
-      const match = current.find((entry) => JSON.stringify([entry.productId, entry.variantId, entry.customization]) === signature);
+      const match = !item.customization?.quote && !item.lineAdjustment
+        ? current.find((entry) => JSON.stringify([entry.productId, entry.variantId, entry.lineAdjustment ?? 0, entry.customization]) === signature)
+        : undefined;
       if (match) {
         return current.map((entry) => entry.key === match.key ? {
           ...entry,
@@ -152,7 +160,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const updateQuantity = useCallback((key: string, quantity: number) => {
-    setCart((current) => current.map((item) => item.key === key ? {
+    setCart((current) => current.map((item) => item.key === key && !item.customization?.quote ? {
       ...item,
       quantity: clampCartItemQuantity(quantity),
     } : item));
@@ -173,7 +181,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     wishlist,
     isHydrated: hydrated,
     cartCount: cart.reduce((sum, item) => sum + item.quantity, 0),
-    subtotal: cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    subtotal: cart.reduce((sum, item) => sum + cartLineTotal(item), 0),
     addItem,
     updateQuantity,
     removeItem,

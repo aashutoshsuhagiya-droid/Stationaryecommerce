@@ -96,5 +96,10 @@ test("every catalog product has valid dimension and quantity defaults", () => {
       0,
       `${product.id} quantity default must follow its increment`,
     );
+    assert.ok(configuration.artwork.policy.maximumElements > 0);
+    assert.deepEqual(
+      configuration.artwork.policy.surfaces.map((surface) => surface.id),
+      configuration.artwork.surfaces.map((surface) => surface.id),
+    );
   }
 });

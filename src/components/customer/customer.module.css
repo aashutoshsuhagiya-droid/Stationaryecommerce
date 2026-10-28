@@ -493,9 +493,24 @@ a.contactMethod:hover { border-color: var(--border-strong); background: var(--su
 .confirmationCard h2 { margin: 0 0 20px; color: var(--ink); font-size: 19px; }
 .confirmationProduct { display: grid; grid-template-columns: 72px 1fr auto; gap: 14px; align-items: center; padding: 16px 0; border-top: 1px solid var(--soft-line); }
 .confirmationProduct:first-of-type { border-top: 0; }
+.confirmationProduct > div:nth-child(2) { min-width: 0; }
 .confirmationProduct h3 { margin: 0; color: var(--ink); font-size: 14px; }
 .confirmationProduct p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
 .confirmationProduct strong { color: var(--ink); font-size: 13px; }
+.confirmationPersonalization { display: flex; flex-wrap: wrap; gap: 5px 10px; margin: 9px 0 0; }
+.confirmationPersonalization div { display: inline-flex; min-width: 0; gap: 4px; color: var(--muted); font-size: 10px; }
+.confirmationPersonalization dt { font-weight: 750; }
+.confirmationPersonalization dt::after { content: ":"; }
+.confirmationPersonalization dd { overflow-wrap: anywhere; margin: 0; }
+.confirmationArtworkReceipt { display: flex; align-items: flex-start; gap: 7px; margin-top: 10px; padding: 8px 9px; border: 1px solid var(--soft-line); border-radius: var(--customer-radius-control); color: var(--teal-dark); background: var(--cloud); }
+.confirmationArtworkReceipt > svg { width: 15px; height: 15px; flex: 0 0 auto; margin-top: 1px; }
+.confirmationArtworkReceipt span { display: grid; min-width: 0; gap: 2px; }
+.confirmationArtworkReceipt b { font-size: 10px; }
+.confirmationArtworkReceipt small { color: var(--muted); font-size: 9px; line-height: 1.4; }
+.confirmationArtworkDownload { align-items: center; background: transparent; border: 0; color: var(--teal-dark); cursor: pointer; display: inline-flex; font: inherit; font-size: 10px; font-weight: 800; gap: 5px; margin-top: 5px; padding: 0; }
+.confirmationArtworkDownload svg { height: 13px; width: 13px; }
+.confirmationArtworkDownload:disabled { cursor: wait; opacity: .55; }
+.confirmationArtworkError { color: var(--danger); font-size: 11px; margin: 12px 0 0; }
 .confirmationActions { display: flex; gap: 10px; justify-content: center; margin-top: 26px; }
 
 @media (max-width: 960px) {

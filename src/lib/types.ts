@@ -55,14 +55,31 @@ export interface CustomizationOption {
 export interface CustomizationField {
   id: string;
   label: string;
-  type: "text" | "select" | "color" | "template" | "image";
+  type: "text" | "select" | "color" | "template" | "image" | "number";
   required: boolean;
   placeholder?: string;
   helpText?: string;
+  /** A catalog-defined initial value. It is always revalidated on the server. */
+  defaultValue?: string;
+  /** Display-only unit for a numeric or specification value, such as mm or GSM. */
+  unit?: string;
+  /** Disabled fields are retained in the catalog but never exposed or priced. */
+  enabled?: boolean;
+  /** Lets an administrator retain an internal field without showing it to customers. */
+  customerVisible?: boolean;
+  /** Shows a field only when the controlling field has the selected value. */
+  visibleWhen?: {
+    fieldId: string;
+    equals: string;
+  };
   minLength?: number;
   maxLength?: number;
+  minValue?: number;
+  maxValue?: number;
+  step?: number;
   allowedPattern?: string;
   options?: CustomizationOption[];
+  priceDelta?: number;
 }
 
 export interface Product {
@@ -72,6 +89,9 @@ export interface Product {
   name: string;
   categorySlug: string;
   category: string;
+  /** Includes the legacy primary category and any additive cross-listings. */
+  categoryIds?: string[];
+  categorySlugs?: string[];
   price: number;
   compareAtPrice?: number;
   rating?: number;
@@ -93,19 +113,54 @@ export interface Product {
   featured: boolean;
   newArrival: boolean;
   tags: string[];
+  /** Optional catalog product type selected by a Super Admin. */
+  productType?: string;
   features: string[];
   careInstructions?: string;
   productionDays: { min: number; max: number };
   variants: ProductVariant[];
   customizationFields: CustomizationField[];
   templateIds: string[];
+  /** Undefined means the legacy demo catalog; an empty array means no linked live templates. */
+  templateLinks?: ProductTemplateLink[];
   configurator?: {
     allow2D: boolean;
     allow3D: boolean;
     quantityMin: number;
     quantityMax: number;
-    printAreas: Array<{ id: string; label: string }>;
+    quantityTiers?: Array<{
+      minimum: number;
+      priceDelta: number;
+      label?: string;
+    }>;
+    setupCharge?: number;
+    printAreas: Array<{
+      id: string;
+      label: string;
+      widthMm?: number;
+      heightMm?: number;
+      safeInsetMm?: number;
+    }>;
+    artworkUpload?: {
+      enabled: boolean;
+      acceptedMimeTypes: string[];
+      maximumBytes: number;
+    };
+    /** Optional product-specific artwork constraints. Missing policies use legacy-safe defaults. */
+    artworkPolicy?: ProductArtworkPolicy;
+    previewTemplate?: string;
+    productModel?: string;
+    configurationVersion?: string;
   };
+}
+
+export interface PersonalizationTemplateSurface {
+  id: string;
+  label: string;
+  baseImageUrl?: string;
+  widthPx?: number;
+  heightPx?: number;
+  dpi?: number;
 }
 
 export interface PersonalizationTemplate {
@@ -128,6 +183,58 @@ export interface PersonalizationTemplate {
     textAlign: "left" | "center" | "right";
     safeArea: { x: number; y: number; width: number; height: number };
   };
+  /**
+   * Complete production-critical data from a live PersonalizationTemplate row.
+   * Legacy in-memory templates intentionally omit this field.
+   */
+  production?: {
+    previewConfig: SnapshotJsonValue;
+    productionConfig: SnapshotJsonValue;
+    widthPx: number;
+    heightPx: number;
+    dpi: number;
+    defaultSurfaceId?: string;
+    surfaces: PersonalizationTemplateSurface[];
+  };
+}
+
+export type SnapshotJsonValue =
+  | null
+  | boolean
+  | number
+  | string
+  | SnapshotJsonValue[]
+  | { [key: string]: SnapshotJsonValue };
+
+/** Immutable template specification copied into OrderPersonalization.templateSnapshot. */
+export interface OrderTemplateSnapshot {
+  schemaVersion: 1;
+  templateId: string;
+  slug: string;
+  name: string;
+  theme: string;
+  description: string;
+  thumbnail: string;
+  artwork: string;
+  premiumPricePaise: number;
+  rightsStatement: string;
+  preview: PersonalizationTemplate["preview"];
+  previewConfig: SnapshotJsonValue;
+  productionConfig: SnapshotJsonValue | null;
+  productionOutput: {
+    widthPx: number | null;
+    heightPx: number | null;
+    dpi: number | null;
+  };
+  defaultSurfaceId?: string;
+  surfaces: PersonalizationTemplateSurface[];
+}
+
+/** A template explicitly linked to a product in the live catalog. */
+export interface ProductTemplateLink {
+  template: PersonalizationTemplate;
+  sortOrder: number;
+  isDefault: boolean;
 }
 
 export interface PersonalizationValues {
@@ -157,6 +264,108 @@ export interface PersonalizationValues {
   };
 }
 
+export type ArtworkFontFamily = "sans" | "serif" | "rounded";
+export type ArtworkTextAlignment = "left" | "center" | "right";
+export type ArtworkImageMimeType = "image/jpeg" | "image/png" | "image/webp";
+
+export interface ArtworkGeometry {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  rotation: number;
+}
+
+export interface ArtworkBounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface ArtworkEditPermissions {
+  move: boolean;
+  resize: boolean;
+  rotate: boolean;
+  color: boolean;
+  font: boolean;
+}
+
+export interface ArtworkGeometryPolicy {
+  default: ArtworkGeometry;
+  minimumWidth: number;
+  maximumWidth: number;
+  minimumHeight: number;
+  maximumHeight: number;
+  minimumRotation: number;
+  maximumRotation: number;
+}
+
+export interface ArtworkTextPolicy {
+  enabled: boolean;
+  maximumElements: number;
+  permissions: ArtworkEditPermissions;
+  geometry: ArtworkGeometryPolicy;
+  defaultColor: string;
+  allowedColors: string[];
+  defaultFontFamily: ArtworkFontFamily;
+  allowedFontFamilies: ArtworkFontFamily[];
+  /** Optional for compatibility with policies saved before typography controls existed. */
+  defaultFontSize?: number;
+  minimumFontSize?: number;
+  maximumFontSize?: number;
+  defaultTextAlign?: ArtworkTextAlignment;
+  allowedTextAlignments?: ArtworkTextAlignment[];
+}
+
+export interface ArtworkImagePolicy {
+  enabled: boolean;
+  required: boolean;
+  maximumElements: number;
+  permissions: ArtworkEditPermissions;
+  geometry: ArtworkGeometryPolicy;
+  allowedMimeTypes: ArtworkImageMimeType[];
+  maximumBytes: number;
+  minimumSourceWidth: number;
+  maximumSourceWidth: number;
+  minimumSourceHeight: number;
+  maximumSourceHeight: number;
+  /** Empty means any positive source aspect ratio. */
+  allowedAspectRatios: number[];
+  aspectRatioTolerance: number;
+  allowTransparency: boolean;
+  allowCrop: boolean;
+  approvalRequired: boolean;
+  /** Policy metadata for a future pricing rule; this validator never changes prices. */
+  chargePerImagePaise: number;
+}
+
+export interface ArtworkSurfacePolicy {
+  id: string;
+  label: string;
+  coordinateSpace: { width: number; height: number };
+  printableBounds: ArtworkBounds;
+  text: ArtworkTextPolicy;
+  image: ArtworkImagePolicy;
+}
+
+export interface ProductArtworkPolicy {
+  maximumElements: number;
+  surfaces: ArtworkSurfacePolicy[];
+}
+
+export interface ArtworkImageAssetReference {
+  id: string;
+  /** Required on checkout input; removed from persisted order snapshots after the asset is claimed. */
+  claimToken?: string;
+  mimeType: ArtworkImageMimeType;
+  sizeBytes: number;
+  width: number;
+  height: number;
+  hasTransparency?: boolean;
+  sha256?: string;
+}
+
 export type ArtworkLayerSnapshot =
   | {
       id: string;
@@ -171,7 +380,9 @@ export type ArtworkLayerSnapshot =
       text: string;
       color: string;
       fontSize: number;
-      fontFamily: "sans" | "serif" | "rounded";
+      fontFamily: ArtworkFontFamily;
+      /** Missing in legacy snapshots means centered text. */
+      textAlign?: ArtworkTextAlignment;
     }
   | {
       id: string;
@@ -183,7 +394,9 @@ export type ArtworkLayerSnapshot =
       height: number;
       rotation: number;
       opacity: number;
-      src: string;
+      /** Local preview. Persisted order snapshots may omit it once an asset is claimed. */
+      src?: string;
+      asset?: ArtworkImageAssetReference;
       sourceWidth: number;
       sourceHeight: number;
       imageFit?: "contain" | "cover" | "stretch";

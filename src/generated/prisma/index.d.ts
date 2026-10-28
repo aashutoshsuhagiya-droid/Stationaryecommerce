@@ -64,6 +64,16 @@ export type Category = $Result.DefaultSelection<Prisma.$CategoryPayload>
  */
 export type Product = $Result.DefaultSelection<Prisma.$ProductPayload>
 /**
+ * Model ProductCategory
+ * 
+ */
+export type ProductCategory = $Result.DefaultSelection<Prisma.$ProductCategoryPayload>
+/**
+ * Model ArtworkAsset
+ * 
+ */
+export type ArtworkAsset = $Result.DefaultSelection<Prisma.$ArtworkAssetPayload>
+/**
  * Model ProductVariant
  * 
  */
@@ -339,6 +349,16 @@ export const ArtworkStatus: {
 };
 
 export type ArtworkStatus = (typeof ArtworkStatus)[keyof typeof ArtworkStatus]
+
+
+export const ArtworkAssetStatus: {
+  UPLOADED: 'UPLOADED',
+  ATTACHED: 'ATTACHED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export type ArtworkAssetStatus = (typeof ArtworkAssetStatus)[keyof typeof ArtworkAssetStatus]
 
 
 export const CartStatus: {
@@ -626,6 +646,10 @@ export const TemplateStatus: typeof $Enums.TemplateStatus
 export type ArtworkStatus = $Enums.ArtworkStatus
 
 export const ArtworkStatus: typeof $Enums.ArtworkStatus
+
+export type ArtworkAssetStatus = $Enums.ArtworkAssetStatus
+
+export const ArtworkAssetStatus: typeof $Enums.ArtworkAssetStatus
 
 export type CartStatus = $Enums.CartStatus
 
@@ -939,6 +963,26 @@ export class PrismaClient<
     * ```
     */
   get product(): Prisma.ProductDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.productCategory`: Exposes CRUD operations for the **ProductCategory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProductCategories
+    * const productCategories = await prisma.productCategory.findMany()
+    * ```
+    */
+  get productCategory(): Prisma.ProductCategoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.artworkAsset`: Exposes CRUD operations for the **ArtworkAsset** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ArtworkAssets
+    * const artworkAssets = await prisma.artworkAsset.findMany()
+    * ```
+    */
+  get artworkAsset(): Prisma.ArtworkAssetDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.productVariant`: Exposes CRUD operations for the **ProductVariant** model.
@@ -1826,6 +1870,8 @@ export namespace Prisma {
     Address: 'Address',
     Category: 'Category',
     Product: 'Product',
+    ProductCategory: 'ProductCategory',
+    ArtworkAsset: 'ArtworkAsset',
     ProductVariant: 'ProductVariant',
     ProductImage: 'ProductImage',
     ProductPersonalizationField: 'ProductPersonalizationField',
@@ -1884,7 +1930,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "authSession" | "phoneVerificationChallenge" | "role" | "permission" | "userRole" | "rolePermission" | "address" | "category" | "product" | "productVariant" | "productImage" | "productPersonalizationField" | "personalizationTemplate" | "productTemplate" | "inventory" | "inventoryMovement" | "customizationConfiguration" | "cart" | "cartItem" | "order" | "vendorProfile" | "vendorApplication" | "vendorDocument" | "vendorApplicationEvent" | "vendorCapability" | "orderAssignment" | "vendorOrderOffer" | "assignmentEvent" | "orderAddress" | "orderItem" | "orderPersonalization" | "productionJob" | "payment" | "paymentEvent" | "refund" | "shipment" | "coupon" | "couponProduct" | "couponCategory" | "couponRedemption" | "review" | "wishlist" | "wishlistItem" | "bulkOrderRequest" | "bulkOrderRow" | "supportTicket" | "supportMessage" | "notification" | "auditLog" | "storeSetting" | "announcement" | "faq"
+      modelProps: "user" | "authSession" | "phoneVerificationChallenge" | "role" | "permission" | "userRole" | "rolePermission" | "address" | "category" | "product" | "productCategory" | "artworkAsset" | "productVariant" | "productImage" | "productPersonalizationField" | "personalizationTemplate" | "productTemplate" | "inventory" | "inventoryMovement" | "customizationConfiguration" | "cart" | "cartItem" | "order" | "vendorProfile" | "vendorApplication" | "vendorDocument" | "vendorApplicationEvent" | "vendorCapability" | "orderAssignment" | "vendorOrderOffer" | "assignmentEvent" | "orderAddress" | "orderItem" | "orderPersonalization" | "productionJob" | "payment" | "paymentEvent" | "refund" | "shipment" | "coupon" | "couponProduct" | "couponCategory" | "couponRedemption" | "review" | "wishlist" | "wishlistItem" | "bulkOrderRequest" | "bulkOrderRow" | "supportTicket" | "supportMessage" | "notification" | "auditLog" | "storeSetting" | "announcement" | "faq"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2625,6 +2671,154 @@ export namespace Prisma {
           count: {
             args: Prisma.ProductCountArgs<ExtArgs>
             result: $Utils.Optional<ProductCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProductCategory: {
+        payload: Prisma.$ProductCategoryPayload<ExtArgs>
+        fields: Prisma.ProductCategoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProductCategoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProductCategoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+          }
+          findFirst: {
+            args: Prisma.ProductCategoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProductCategoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+          }
+          findMany: {
+            args: Prisma.ProductCategoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload>[]
+          }
+          create: {
+            args: Prisma.ProductCategoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+          }
+          createMany: {
+            args: Prisma.ProductCategoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProductCategoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload>[]
+          }
+          delete: {
+            args: Prisma.ProductCategoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+          }
+          update: {
+            args: Prisma.ProductCategoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProductCategoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProductCategoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProductCategoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProductCategoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProductCategoryPayload>
+          }
+          aggregate: {
+            args: Prisma.ProductCategoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProductCategory>
+          }
+          groupBy: {
+            args: Prisma.ProductCategoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProductCategoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProductCategoryCountArgs<ExtArgs>
+            result: $Utils.Optional<ProductCategoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      ArtworkAsset: {
+        payload: Prisma.$ArtworkAssetPayload<ExtArgs>
+        fields: Prisma.ArtworkAssetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ArtworkAssetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ArtworkAssetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload>
+          }
+          findFirst: {
+            args: Prisma.ArtworkAssetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ArtworkAssetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload>
+          }
+          findMany: {
+            args: Prisma.ArtworkAssetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload>[]
+          }
+          create: {
+            args: Prisma.ArtworkAssetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload>
+          }
+          createMany: {
+            args: Prisma.ArtworkAssetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ArtworkAssetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload>[]
+          }
+          delete: {
+            args: Prisma.ArtworkAssetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload>
+          }
+          update: {
+            args: Prisma.ArtworkAssetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload>
+          }
+          deleteMany: {
+            args: Prisma.ArtworkAssetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ArtworkAssetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ArtworkAssetUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload>[]
+          }
+          upsert: {
+            args: Prisma.ArtworkAssetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ArtworkAssetPayload>
+          }
+          aggregate: {
+            args: Prisma.ArtworkAssetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateArtworkAsset>
+          }
+          groupBy: {
+            args: Prisma.ArtworkAssetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ArtworkAssetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ArtworkAssetCountArgs<ExtArgs>
+            result: $Utils.Optional<ArtworkAssetCountAggregateOutputType> | number
           }
         }
       }
@@ -5943,6 +6137,8 @@ export namespace Prisma {
     address?: AddressOmit
     category?: CategoryOmit
     product?: ProductOmit
+    productCategory?: ProductCategoryOmit
+    artworkAsset?: ArtworkAssetOmit
     productVariant?: ProductVariantOmit
     productImage?: ProductImageOmit
     productPersonalizationField?: ProductPersonalizationFieldOmit
@@ -6084,6 +6280,7 @@ export namespace Prisma {
     vendorApplicationEvents: number
     uploadedVendorDocuments: number
     reviewedVendorDocuments: number
+    uploadedArtworkAssets: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6105,6 +6302,7 @@ export namespace Prisma {
     vendorApplicationEvents?: boolean | UserCountOutputTypeCountVendorApplicationEventsArgs
     uploadedVendorDocuments?: boolean | UserCountOutputTypeCountUploadedVendorDocumentsArgs
     reviewedVendorDocuments?: boolean | UserCountOutputTypeCountReviewedVendorDocumentsArgs
+    uploadedArtworkAssets?: boolean | UserCountOutputTypeCountUploadedArtworkAssetsArgs
   }
 
   // Custom InputTypes
@@ -6244,6 +6442,13 @@ export namespace Prisma {
     where?: VendorDocumentWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUploadedArtworkAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArtworkAssetWhereInput
+  }
+
 
   /**
    * Count Type RoleCountOutputType
@@ -6323,6 +6528,7 @@ export namespace Prisma {
   export type CategoryCountOutputType = {
     children: number
     products: number
+    productLinks: number
     templates: number
     couponLinks: number
   }
@@ -6330,6 +6536,7 @@ export namespace Prisma {
   export type CategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     children?: boolean | CategoryCountOutputTypeCountChildrenArgs
     products?: boolean | CategoryCountOutputTypeCountProductsArgs
+    productLinks?: boolean | CategoryCountOutputTypeCountProductLinksArgs
     templates?: boolean | CategoryCountOutputTypeCountTemplatesArgs
     couponLinks?: boolean | CategoryCountOutputTypeCountCouponLinksArgs
   }
@@ -6362,6 +6569,13 @@ export namespace Prisma {
   /**
    * CategoryCountOutputType without action
    */
+  export type CategoryCountOutputTypeCountProductLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductCategoryWhereInput
+  }
+
+  /**
+   * CategoryCountOutputType without action
+   */
   export type CategoryCountOutputTypeCountTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PersonalizationTemplateWhereInput
   }
@@ -6379,6 +6593,7 @@ export namespace Prisma {
    */
 
   export type ProductCountOutputType = {
+    categoryLinks: number
     variants: number
     images: number
     personalizationFields: number
@@ -6391,9 +6606,11 @@ export namespace Prisma {
     couponLinks: number
     bulkRequests: number
     vendorCapabilities: number
+    artworkAssets: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    categoryLinks?: boolean | ProductCountOutputTypeCountCategoryLinksArgs
     variants?: boolean | ProductCountOutputTypeCountVariantsArgs
     images?: boolean | ProductCountOutputTypeCountImagesArgs
     personalizationFields?: boolean | ProductCountOutputTypeCountPersonalizationFieldsArgs
@@ -6406,6 +6623,7 @@ export namespace Prisma {
     couponLinks?: boolean | ProductCountOutputTypeCountCouponLinksArgs
     bulkRequests?: boolean | ProductCountOutputTypeCountBulkRequestsArgs
     vendorCapabilities?: boolean | ProductCountOutputTypeCountVendorCapabilitiesArgs
+    artworkAssets?: boolean | ProductCountOutputTypeCountArtworkAssetsArgs
   }
 
   // Custom InputTypes
@@ -6417,6 +6635,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the ProductCountOutputType
      */
     select?: ProductCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountCategoryLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductCategoryWhereInput
   }
 
   /**
@@ -6501,6 +6726,13 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountVendorCapabilitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: VendorCapabilityWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountArtworkAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArtworkAssetWhereInput
   }
 
 
@@ -6853,6 +7085,37 @@ export namespace Prisma {
    */
   export type OrderAssignmentCountOutputTypeCountEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AssignmentEventWhereInput
+  }
+
+
+  /**
+   * Count Type OrderItemCountOutputType
+   */
+
+  export type OrderItemCountOutputType = {
+    artworkAssets: number
+  }
+
+  export type OrderItemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    artworkAssets?: boolean | OrderItemCountOutputTypeCountArtworkAssetsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * OrderItemCountOutputType without action
+   */
+  export type OrderItemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderItemCountOutputType
+     */
+    select?: OrderItemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * OrderItemCountOutputType without action
+   */
+  export type OrderItemCountOutputTypeCountArtworkAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArtworkAssetWhereInput
   }
 
 
@@ -7290,6 +7553,7 @@ export namespace Prisma {
     vendorApplicationEvents?: boolean | User$vendorApplicationEventsArgs<ExtArgs>
     uploadedVendorDocuments?: boolean | User$uploadedVendorDocumentsArgs<ExtArgs>
     reviewedVendorDocuments?: boolean | User$reviewedVendorDocumentsArgs<ExtArgs>
+    uploadedArtworkAssets?: boolean | User$uploadedArtworkAssetsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7363,6 +7627,7 @@ export namespace Prisma {
     vendorApplicationEvents?: boolean | User$vendorApplicationEventsArgs<ExtArgs>
     uploadedVendorDocuments?: boolean | User$uploadedVendorDocumentsArgs<ExtArgs>
     reviewedVendorDocuments?: boolean | User$reviewedVendorDocumentsArgs<ExtArgs>
+    uploadedArtworkAssets?: boolean | User$uploadedArtworkAssetsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7391,6 +7656,7 @@ export namespace Prisma {
       vendorApplicationEvents: Prisma.$VendorApplicationEventPayload<ExtArgs>[]
       uploadedVendorDocuments: Prisma.$VendorDocumentPayload<ExtArgs>[]
       reviewedVendorDocuments: Prisma.$VendorDocumentPayload<ExtArgs>[]
+      uploadedArtworkAssets: Prisma.$ArtworkAssetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7820,6 +8086,7 @@ export namespace Prisma {
     vendorApplicationEvents<T extends User$vendorApplicationEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$vendorApplicationEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VendorApplicationEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     uploadedVendorDocuments<T extends User$uploadedVendorDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$uploadedVendorDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VendorDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviewedVendorDocuments<T extends User$reviewedVendorDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewedVendorDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VendorDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    uploadedArtworkAssets<T extends User$uploadedArtworkAssetsArgs<ExtArgs> = {}>(args?: Subset<T, User$uploadedArtworkAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8722,6 +8989,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: VendorDocumentScalarFieldEnum | VendorDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * User.uploadedArtworkAssets
+   */
+  export type User$uploadedArtworkAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    where?: ArtworkAssetWhereInput
+    orderBy?: ArtworkAssetOrderByWithRelationInput | ArtworkAssetOrderByWithRelationInput[]
+    cursor?: ArtworkAssetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArtworkAssetScalarFieldEnum | ArtworkAssetScalarFieldEnum[]
   }
 
   /**
@@ -16623,6 +16914,7 @@ export namespace Prisma {
     parent?: boolean | Category$parentArgs<ExtArgs>
     children?: boolean | Category$childrenArgs<ExtArgs>
     products?: boolean | Category$productsArgs<ExtArgs>
+    productLinks?: boolean | Category$productLinksArgs<ExtArgs>
     templates?: boolean | Category$templatesArgs<ExtArgs>
     couponLinks?: boolean | Category$couponLinksArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -16680,6 +16972,7 @@ export namespace Prisma {
     parent?: boolean | Category$parentArgs<ExtArgs>
     children?: boolean | Category$childrenArgs<ExtArgs>
     products?: boolean | Category$productsArgs<ExtArgs>
+    productLinks?: boolean | Category$productLinksArgs<ExtArgs>
     templates?: boolean | Category$templatesArgs<ExtArgs>
     couponLinks?: boolean | Category$couponLinksArgs<ExtArgs>
     _count?: boolean | CategoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -16697,6 +16990,7 @@ export namespace Prisma {
       parent: Prisma.$CategoryPayload<ExtArgs> | null
       children: Prisma.$CategoryPayload<ExtArgs>[]
       products: Prisma.$ProductPayload<ExtArgs>[]
+      productLinks: Prisma.$ProductCategoryPayload<ExtArgs>[]
       templates: Prisma.$PersonalizationTemplatePayload<ExtArgs>[]
       couponLinks: Prisma.$CouponCategoryPayload<ExtArgs>[]
     }
@@ -17110,6 +17404,7 @@ export namespace Prisma {
     parent<T extends Category$parentArgs<ExtArgs> = {}>(args?: Subset<T, Category$parentArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     children<T extends Category$childrenArgs<ExtArgs> = {}>(args?: Subset<T, Category$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     products<T extends Category$productsArgs<ExtArgs> = {}>(args?: Subset<T, Category$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    productLinks<T extends Category$productLinksArgs<ExtArgs> = {}>(args?: Subset<T, Category$productLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     templates<T extends Category$templatesArgs<ExtArgs> = {}>(args?: Subset<T, Category$templatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonalizationTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     couponLinks<T extends Category$couponLinksArgs<ExtArgs> = {}>(args?: Subset<T, Category$couponLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CouponCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -17621,6 +17916,30 @@ export namespace Prisma {
   }
 
   /**
+   * Category.productLinks
+   */
+  export type Category$productLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    where?: ProductCategoryWhereInput
+    orderBy?: ProductCategoryOrderByWithRelationInput | ProductCategoryOrderByWithRelationInput[]
+    cursor?: ProductCategoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductCategoryScalarFieldEnum | ProductCategoryScalarFieldEnum[]
+  }
+
+  /**
    * Category.templates
    */
   export type Category$templatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18082,6 +18401,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    categoryLinks?: boolean | Product$categoryLinksArgs<ExtArgs>
     variants?: boolean | Product$variantsArgs<ExtArgs>
     images?: boolean | Product$imagesArgs<ExtArgs>
     personalizationFields?: boolean | Product$personalizationFieldsArgs<ExtArgs>
@@ -18094,6 +18414,7 @@ export namespace Prisma {
     couponLinks?: boolean | Product$couponLinksArgs<ExtArgs>
     bulkRequests?: boolean | Product$bulkRequestsArgs<ExtArgs>
     vendorCapabilities?: boolean | Product$vendorCapabilitiesArgs<ExtArgs>
+    artworkAssets?: boolean | Product$artworkAssetsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -18195,6 +18516,7 @@ export namespace Prisma {
   export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "categoryId" | "name" | "slug" | "baseSku" | "status" | "shortDescription" | "description" | "basePricePaise" | "compareAtPricePaise" | "currency" | "customizable" | "material" | "dimensions" | "weightGrams" | "packSize" | "taxCode" | "taxRateBasisPoints" | "productionDaysMin" | "productionDaysMax" | "seoTitle" | "seoDescription" | "tags" | "metadata" | "publishedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     category?: boolean | CategoryDefaultArgs<ExtArgs>
+    categoryLinks?: boolean | Product$categoryLinksArgs<ExtArgs>
     variants?: boolean | Product$variantsArgs<ExtArgs>
     images?: boolean | Product$imagesArgs<ExtArgs>
     personalizationFields?: boolean | Product$personalizationFieldsArgs<ExtArgs>
@@ -18207,6 +18529,7 @@ export namespace Prisma {
     couponLinks?: boolean | Product$couponLinksArgs<ExtArgs>
     bulkRequests?: boolean | Product$bulkRequestsArgs<ExtArgs>
     vendorCapabilities?: boolean | Product$vendorCapabilitiesArgs<ExtArgs>
+    artworkAssets?: boolean | Product$artworkAssetsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18220,6 +18543,7 @@ export namespace Prisma {
     name: "Product"
     objects: {
       category: Prisma.$CategoryPayload<ExtArgs>
+      categoryLinks: Prisma.$ProductCategoryPayload<ExtArgs>[]
       variants: Prisma.$ProductVariantPayload<ExtArgs>[]
       images: Prisma.$ProductImagePayload<ExtArgs>[]
       personalizationFields: Prisma.$ProductPersonalizationFieldPayload<ExtArgs>[]
@@ -18232,6 +18556,7 @@ export namespace Prisma {
       couponLinks: Prisma.$CouponProductPayload<ExtArgs>[]
       bulkRequests: Prisma.$BulkOrderRequestPayload<ExtArgs>[]
       vendorCapabilities: Prisma.$VendorCapabilityPayload<ExtArgs>[]
+      artworkAssets: Prisma.$ArtworkAssetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18657,6 +18982,7 @@ export namespace Prisma {
   export interface Prisma__ProductClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    categoryLinks<T extends Product$categoryLinksArgs<ExtArgs> = {}>(args?: Subset<T, Product$categoryLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     variants<T extends Product$variantsArgs<ExtArgs> = {}>(args?: Subset<T, Product$variantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductVariantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     images<T extends Product$imagesArgs<ExtArgs> = {}>(args?: Subset<T, Product$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     personalizationFields<T extends Product$personalizationFieldsArgs<ExtArgs> = {}>(args?: Subset<T, Product$personalizationFieldsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPersonalizationFieldPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -18669,6 +18995,7 @@ export namespace Prisma {
     couponLinks<T extends Product$couponLinksArgs<ExtArgs> = {}>(args?: Subset<T, Product$couponLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CouponProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bulkRequests<T extends Product$bulkRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Product$bulkRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkOrderRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     vendorCapabilities<T extends Product$vendorCapabilitiesArgs<ExtArgs> = {}>(args?: Subset<T, Product$vendorCapabilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VendorCapabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    artworkAssets<T extends Product$artworkAssetsArgs<ExtArgs> = {}>(args?: Subset<T, Product$artworkAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19127,6 +19454,30 @@ export namespace Prisma {
   }
 
   /**
+   * Product.categoryLinks
+   */
+  export type Product$categoryLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    where?: ProductCategoryWhereInput
+    orderBy?: ProductCategoryOrderByWithRelationInput | ProductCategoryOrderByWithRelationInput[]
+    cursor?: ProductCategoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductCategoryScalarFieldEnum | ProductCategoryScalarFieldEnum[]
+  }
+
+  /**
    * Product.variants
    */
   export type Product$variantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19415,6 +19766,30 @@ export namespace Prisma {
   }
 
   /**
+   * Product.artworkAssets
+   */
+  export type Product$artworkAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    where?: ArtworkAssetWhereInput
+    orderBy?: ArtworkAssetOrderByWithRelationInput | ArtworkAssetOrderByWithRelationInput[]
+    cursor?: ArtworkAssetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArtworkAssetScalarFieldEnum | ArtworkAssetScalarFieldEnum[]
+  }
+
+  /**
    * Product without action
    */
   export type ProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19430,6 +19805,2392 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProductInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProductCategory
+   */
+
+  export type AggregateProductCategory = {
+    _count: ProductCategoryCountAggregateOutputType | null
+    _min: ProductCategoryMinAggregateOutputType | null
+    _max: ProductCategoryMaxAggregateOutputType | null
+  }
+
+  export type ProductCategoryMinAggregateOutputType = {
+    productId: string | null
+    categoryId: string | null
+    createdAt: Date | null
+  }
+
+  export type ProductCategoryMaxAggregateOutputType = {
+    productId: string | null
+    categoryId: string | null
+    createdAt: Date | null
+  }
+
+  export type ProductCategoryCountAggregateOutputType = {
+    productId: number
+    categoryId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ProductCategoryMinAggregateInputType = {
+    productId?: true
+    categoryId?: true
+    createdAt?: true
+  }
+
+  export type ProductCategoryMaxAggregateInputType = {
+    productId?: true
+    categoryId?: true
+    createdAt?: true
+  }
+
+  export type ProductCategoryCountAggregateInputType = {
+    productId?: true
+    categoryId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ProductCategoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductCategory to aggregate.
+     */
+    where?: ProductCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductCategories to fetch.
+     */
+    orderBy?: ProductCategoryOrderByWithRelationInput | ProductCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProductCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProductCategories
+    **/
+    _count?: true | ProductCategoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProductCategoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProductCategoryMaxAggregateInputType
+  }
+
+  export type GetProductCategoryAggregateType<T extends ProductCategoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateProductCategory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProductCategory[P]>
+      : GetScalarType<T[P], AggregateProductCategory[P]>
+  }
+
+
+
+
+  export type ProductCategoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductCategoryWhereInput
+    orderBy?: ProductCategoryOrderByWithAggregationInput | ProductCategoryOrderByWithAggregationInput[]
+    by: ProductCategoryScalarFieldEnum[] | ProductCategoryScalarFieldEnum
+    having?: ProductCategoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProductCategoryCountAggregateInputType | true
+    _min?: ProductCategoryMinAggregateInputType
+    _max?: ProductCategoryMaxAggregateInputType
+  }
+
+  export type ProductCategoryGroupByOutputType = {
+    productId: string
+    categoryId: string
+    createdAt: Date
+    _count: ProductCategoryCountAggregateOutputType | null
+    _min: ProductCategoryMinAggregateOutputType | null
+    _max: ProductCategoryMaxAggregateOutputType | null
+  }
+
+  type GetProductCategoryGroupByPayload<T extends ProductCategoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProductCategoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProductCategoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProductCategoryGroupByOutputType[P]>
+            : GetScalarType<T[P], ProductCategoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProductCategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    productId?: boolean
+    categoryId?: boolean
+    createdAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productCategory"]>
+
+  export type ProductCategorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    productId?: boolean
+    categoryId?: boolean
+    createdAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productCategory"]>
+
+  export type ProductCategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    productId?: boolean
+    categoryId?: boolean
+    createdAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["productCategory"]>
+
+  export type ProductCategorySelectScalar = {
+    productId?: boolean
+    categoryId?: boolean
+    createdAt?: boolean
+  }
+
+  export type ProductCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"productId" | "categoryId" | "createdAt", ExtArgs["result"]["productCategory"]>
+  export type ProductCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
+  }
+  export type ProductCategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
+  }
+  export type ProductCategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    category?: boolean | CategoryDefaultArgs<ExtArgs>
+  }
+
+  export type $ProductCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProductCategory"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs>
+      category: Prisma.$CategoryPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      productId: string
+      categoryId: string
+      createdAt: Date
+    }, ExtArgs["result"]["productCategory"]>
+    composites: {}
+  }
+
+  type ProductCategoryGetPayload<S extends boolean | null | undefined | ProductCategoryDefaultArgs> = $Result.GetResult<Prisma.$ProductCategoryPayload, S>
+
+  type ProductCategoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProductCategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProductCategoryCountAggregateInputType | true
+    }
+
+  export interface ProductCategoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProductCategory'], meta: { name: 'ProductCategory' } }
+    /**
+     * Find zero or one ProductCategory that matches the filter.
+     * @param {ProductCategoryFindUniqueArgs} args - Arguments to find a ProductCategory
+     * @example
+     * // Get one ProductCategory
+     * const productCategory = await prisma.productCategory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProductCategoryFindUniqueArgs>(args: SelectSubset<T, ProductCategoryFindUniqueArgs<ExtArgs>>): Prisma__ProductCategoryClient<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProductCategory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProductCategoryFindUniqueOrThrowArgs} args - Arguments to find a ProductCategory
+     * @example
+     * // Get one ProductCategory
+     * const productCategory = await prisma.productCategory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProductCategoryFindUniqueOrThrowArgs>(args: SelectSubset<T, ProductCategoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProductCategoryClient<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductCategory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductCategoryFindFirstArgs} args - Arguments to find a ProductCategory
+     * @example
+     * // Get one ProductCategory
+     * const productCategory = await prisma.productCategory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProductCategoryFindFirstArgs>(args?: SelectSubset<T, ProductCategoryFindFirstArgs<ExtArgs>>): Prisma__ProductCategoryClient<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProductCategory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductCategoryFindFirstOrThrowArgs} args - Arguments to find a ProductCategory
+     * @example
+     * // Get one ProductCategory
+     * const productCategory = await prisma.productCategory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProductCategoryFindFirstOrThrowArgs>(args?: SelectSubset<T, ProductCategoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProductCategoryClient<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProductCategories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductCategoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProductCategories
+     * const productCategories = await prisma.productCategory.findMany()
+     * 
+     * // Get first 10 ProductCategories
+     * const productCategories = await prisma.productCategory.findMany({ take: 10 })
+     * 
+     * // Only select the `productId`
+     * const productCategoryWithProductIdOnly = await prisma.productCategory.findMany({ select: { productId: true } })
+     * 
+     */
+    findMany<T extends ProductCategoryFindManyArgs>(args?: SelectSubset<T, ProductCategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProductCategory.
+     * @param {ProductCategoryCreateArgs} args - Arguments to create a ProductCategory.
+     * @example
+     * // Create one ProductCategory
+     * const ProductCategory = await prisma.productCategory.create({
+     *   data: {
+     *     // ... data to create a ProductCategory
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProductCategoryCreateArgs>(args: SelectSubset<T, ProductCategoryCreateArgs<ExtArgs>>): Prisma__ProductCategoryClient<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProductCategories.
+     * @param {ProductCategoryCreateManyArgs} args - Arguments to create many ProductCategories.
+     * @example
+     * // Create many ProductCategories
+     * const productCategory = await prisma.productCategory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProductCategoryCreateManyArgs>(args?: SelectSubset<T, ProductCategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProductCategories and returns the data saved in the database.
+     * @param {ProductCategoryCreateManyAndReturnArgs} args - Arguments to create many ProductCategories.
+     * @example
+     * // Create many ProductCategories
+     * const productCategory = await prisma.productCategory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProductCategories and only return the `productId`
+     * const productCategoryWithProductIdOnly = await prisma.productCategory.createManyAndReturn({
+     *   select: { productId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProductCategoryCreateManyAndReturnArgs>(args?: SelectSubset<T, ProductCategoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProductCategory.
+     * @param {ProductCategoryDeleteArgs} args - Arguments to delete one ProductCategory.
+     * @example
+     * // Delete one ProductCategory
+     * const ProductCategory = await prisma.productCategory.delete({
+     *   where: {
+     *     // ... filter to delete one ProductCategory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProductCategoryDeleteArgs>(args: SelectSubset<T, ProductCategoryDeleteArgs<ExtArgs>>): Prisma__ProductCategoryClient<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProductCategory.
+     * @param {ProductCategoryUpdateArgs} args - Arguments to update one ProductCategory.
+     * @example
+     * // Update one ProductCategory
+     * const productCategory = await prisma.productCategory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProductCategoryUpdateArgs>(args: SelectSubset<T, ProductCategoryUpdateArgs<ExtArgs>>): Prisma__ProductCategoryClient<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProductCategories.
+     * @param {ProductCategoryDeleteManyArgs} args - Arguments to filter ProductCategories to delete.
+     * @example
+     * // Delete a few ProductCategories
+     * const { count } = await prisma.productCategory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProductCategoryDeleteManyArgs>(args?: SelectSubset<T, ProductCategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductCategoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProductCategories
+     * const productCategory = await prisma.productCategory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProductCategoryUpdateManyArgs>(args: SelectSubset<T, ProductCategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProductCategories and returns the data updated in the database.
+     * @param {ProductCategoryUpdateManyAndReturnArgs} args - Arguments to update many ProductCategories.
+     * @example
+     * // Update many ProductCategories
+     * const productCategory = await prisma.productCategory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProductCategories and only return the `productId`
+     * const productCategoryWithProductIdOnly = await prisma.productCategory.updateManyAndReturn({
+     *   select: { productId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProductCategoryUpdateManyAndReturnArgs>(args: SelectSubset<T, ProductCategoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProductCategory.
+     * @param {ProductCategoryUpsertArgs} args - Arguments to update or create a ProductCategory.
+     * @example
+     * // Update or create a ProductCategory
+     * const productCategory = await prisma.productCategory.upsert({
+     *   create: {
+     *     // ... data to create a ProductCategory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProductCategory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProductCategoryUpsertArgs>(args: SelectSubset<T, ProductCategoryUpsertArgs<ExtArgs>>): Prisma__ProductCategoryClient<$Result.GetResult<Prisma.$ProductCategoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProductCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductCategoryCountArgs} args - Arguments to filter ProductCategories to count.
+     * @example
+     * // Count the number of ProductCategories
+     * const count = await prisma.productCategory.count({
+     *   where: {
+     *     // ... the filter for the ProductCategories we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProductCategoryCountArgs>(
+      args?: Subset<T, ProductCategoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProductCategoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProductCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductCategoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProductCategoryAggregateArgs>(args: Subset<T, ProductCategoryAggregateArgs>): Prisma.PrismaPromise<GetProductCategoryAggregateType<T>>
+
+    /**
+     * Group by ProductCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProductCategoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProductCategoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProductCategoryGroupByArgs['orderBy'] }
+        : { orderBy?: ProductCategoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProductCategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProductCategoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProductCategory model
+   */
+  readonly fields: ProductCategoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProductCategory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProductCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    category<T extends CategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CategoryDefaultArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProductCategory model
+   */
+  interface ProductCategoryFieldRefs {
+    readonly productId: FieldRef<"ProductCategory", 'String'>
+    readonly categoryId: FieldRef<"ProductCategory", 'String'>
+    readonly createdAt: FieldRef<"ProductCategory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProductCategory findUnique
+   */
+  export type ProductCategoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductCategory to fetch.
+     */
+    where: ProductCategoryWhereUniqueInput
+  }
+
+  /**
+   * ProductCategory findUniqueOrThrow
+   */
+  export type ProductCategoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductCategory to fetch.
+     */
+    where: ProductCategoryWhereUniqueInput
+  }
+
+  /**
+   * ProductCategory findFirst
+   */
+  export type ProductCategoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductCategory to fetch.
+     */
+    where?: ProductCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductCategories to fetch.
+     */
+    orderBy?: ProductCategoryOrderByWithRelationInput | ProductCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductCategories.
+     */
+    cursor?: ProductCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductCategories.
+     */
+    distinct?: ProductCategoryScalarFieldEnum | ProductCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * ProductCategory findFirstOrThrow
+   */
+  export type ProductCategoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductCategory to fetch.
+     */
+    where?: ProductCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductCategories to fetch.
+     */
+    orderBy?: ProductCategoryOrderByWithRelationInput | ProductCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProductCategories.
+     */
+    cursor?: ProductCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductCategories.
+     */
+    distinct?: ProductCategoryScalarFieldEnum | ProductCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * ProductCategory findMany
+   */
+  export type ProductCategoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which ProductCategories to fetch.
+     */
+    where?: ProductCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProductCategories to fetch.
+     */
+    orderBy?: ProductCategoryOrderByWithRelationInput | ProductCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProductCategories.
+     */
+    cursor?: ProductCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProductCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProductCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProductCategories.
+     */
+    distinct?: ProductCategoryScalarFieldEnum | ProductCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * ProductCategory create
+   */
+  export type ProductCategoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProductCategory.
+     */
+    data: XOR<ProductCategoryCreateInput, ProductCategoryUncheckedCreateInput>
+  }
+
+  /**
+   * ProductCategory createMany
+   */
+  export type ProductCategoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProductCategories.
+     */
+    data: ProductCategoryCreateManyInput | ProductCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProductCategory createManyAndReturn
+   */
+  export type ProductCategoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProductCategories.
+     */
+    data: ProductCategoryCreateManyInput | ProductCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductCategory update
+   */
+  export type ProductCategoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProductCategory.
+     */
+    data: XOR<ProductCategoryUpdateInput, ProductCategoryUncheckedUpdateInput>
+    /**
+     * Choose, which ProductCategory to update.
+     */
+    where: ProductCategoryWhereUniqueInput
+  }
+
+  /**
+   * ProductCategory updateMany
+   */
+  export type ProductCategoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProductCategories.
+     */
+    data: XOR<ProductCategoryUpdateManyMutationInput, ProductCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductCategories to update
+     */
+    where?: ProductCategoryWhereInput
+    /**
+     * Limit how many ProductCategories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductCategory updateManyAndReturn
+   */
+  export type ProductCategoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to update ProductCategories.
+     */
+    data: XOR<ProductCategoryUpdateManyMutationInput, ProductCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which ProductCategories to update
+     */
+    where?: ProductCategoryWhereInput
+    /**
+     * Limit how many ProductCategories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ProductCategory upsert
+   */
+  export type ProductCategoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProductCategory to update in case it exists.
+     */
+    where: ProductCategoryWhereUniqueInput
+    /**
+     * In case the ProductCategory found by the `where` argument doesn't exist, create a new ProductCategory with this data.
+     */
+    create: XOR<ProductCategoryCreateInput, ProductCategoryUncheckedCreateInput>
+    /**
+     * In case the ProductCategory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProductCategoryUpdateInput, ProductCategoryUncheckedUpdateInput>
+  }
+
+  /**
+   * ProductCategory delete
+   */
+  export type ProductCategoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+    /**
+     * Filter which ProductCategory to delete.
+     */
+    where: ProductCategoryWhereUniqueInput
+  }
+
+  /**
+   * ProductCategory deleteMany
+   */
+  export type ProductCategoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProductCategories to delete
+     */
+    where?: ProductCategoryWhereInput
+    /**
+     * Limit how many ProductCategories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProductCategory without action
+   */
+  export type ProductCategoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProductCategory
+     */
+    select?: ProductCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProductCategory
+     */
+    omit?: ProductCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductCategoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ArtworkAsset
+   */
+
+  export type AggregateArtworkAsset = {
+    _count: ArtworkAssetCountAggregateOutputType | null
+    _avg: ArtworkAssetAvgAggregateOutputType | null
+    _sum: ArtworkAssetSumAggregateOutputType | null
+    _min: ArtworkAssetMinAggregateOutputType | null
+    _max: ArtworkAssetMaxAggregateOutputType | null
+  }
+
+  export type ArtworkAssetAvgAggregateOutputType = {
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+  }
+
+  export type ArtworkAssetSumAggregateOutputType = {
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+  }
+
+  export type ArtworkAssetMinAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    orderItemId: string | null
+    ownerUserId: string | null
+    surfaceId: string | null
+    claimTokenHash: string | null
+    originalName: string | null
+    mimeType: string | null
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+    hasTransparency: boolean | null
+    sha256: string | null
+    content: Bytes | null
+    status: $Enums.ArtworkAssetStatus | null
+    expiresAt: Date | null
+    attachedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ArtworkAssetMaxAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    orderItemId: string | null
+    ownerUserId: string | null
+    surfaceId: string | null
+    claimTokenHash: string | null
+    originalName: string | null
+    mimeType: string | null
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+    hasTransparency: boolean | null
+    sha256: string | null
+    content: Bytes | null
+    status: $Enums.ArtworkAssetStatus | null
+    expiresAt: Date | null
+    attachedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ArtworkAssetCountAggregateOutputType = {
+    id: number
+    productId: number
+    orderItemId: number
+    ownerUserId: number
+    surfaceId: number
+    claimTokenHash: number
+    originalName: number
+    mimeType: number
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency: number
+    sha256: number
+    content: number
+    status: number
+    expiresAt: number
+    attachedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ArtworkAssetAvgAggregateInputType = {
+    sizeBytes?: true
+    width?: true
+    height?: true
+  }
+
+  export type ArtworkAssetSumAggregateInputType = {
+    sizeBytes?: true
+    width?: true
+    height?: true
+  }
+
+  export type ArtworkAssetMinAggregateInputType = {
+    id?: true
+    productId?: true
+    orderItemId?: true
+    ownerUserId?: true
+    surfaceId?: true
+    claimTokenHash?: true
+    originalName?: true
+    mimeType?: true
+    sizeBytes?: true
+    width?: true
+    height?: true
+    hasTransparency?: true
+    sha256?: true
+    content?: true
+    status?: true
+    expiresAt?: true
+    attachedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ArtworkAssetMaxAggregateInputType = {
+    id?: true
+    productId?: true
+    orderItemId?: true
+    ownerUserId?: true
+    surfaceId?: true
+    claimTokenHash?: true
+    originalName?: true
+    mimeType?: true
+    sizeBytes?: true
+    width?: true
+    height?: true
+    hasTransparency?: true
+    sha256?: true
+    content?: true
+    status?: true
+    expiresAt?: true
+    attachedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ArtworkAssetCountAggregateInputType = {
+    id?: true
+    productId?: true
+    orderItemId?: true
+    ownerUserId?: true
+    surfaceId?: true
+    claimTokenHash?: true
+    originalName?: true
+    mimeType?: true
+    sizeBytes?: true
+    width?: true
+    height?: true
+    hasTransparency?: true
+    sha256?: true
+    content?: true
+    status?: true
+    expiresAt?: true
+    attachedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ArtworkAssetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArtworkAsset to aggregate.
+     */
+    where?: ArtworkAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArtworkAssets to fetch.
+     */
+    orderBy?: ArtworkAssetOrderByWithRelationInput | ArtworkAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ArtworkAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArtworkAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArtworkAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ArtworkAssets
+    **/
+    _count?: true | ArtworkAssetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ArtworkAssetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ArtworkAssetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ArtworkAssetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ArtworkAssetMaxAggregateInputType
+  }
+
+  export type GetArtworkAssetAggregateType<T extends ArtworkAssetAggregateArgs> = {
+        [P in keyof T & keyof AggregateArtworkAsset]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateArtworkAsset[P]>
+      : GetScalarType<T[P], AggregateArtworkAsset[P]>
+  }
+
+
+
+
+  export type ArtworkAssetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ArtworkAssetWhereInput
+    orderBy?: ArtworkAssetOrderByWithAggregationInput | ArtworkAssetOrderByWithAggregationInput[]
+    by: ArtworkAssetScalarFieldEnum[] | ArtworkAssetScalarFieldEnum
+    having?: ArtworkAssetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ArtworkAssetCountAggregateInputType | true
+    _avg?: ArtworkAssetAvgAggregateInputType
+    _sum?: ArtworkAssetSumAggregateInputType
+    _min?: ArtworkAssetMinAggregateInputType
+    _max?: ArtworkAssetMaxAggregateInputType
+  }
+
+  export type ArtworkAssetGroupByOutputType = {
+    id: string
+    productId: string
+    orderItemId: string | null
+    ownerUserId: string | null
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency: boolean
+    sha256: string
+    content: Bytes
+    status: $Enums.ArtworkAssetStatus
+    expiresAt: Date
+    attachedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ArtworkAssetCountAggregateOutputType | null
+    _avg: ArtworkAssetAvgAggregateOutputType | null
+    _sum: ArtworkAssetSumAggregateOutputType | null
+    _min: ArtworkAssetMinAggregateOutputType | null
+    _max: ArtworkAssetMaxAggregateOutputType | null
+  }
+
+  type GetArtworkAssetGroupByPayload<T extends ArtworkAssetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ArtworkAssetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ArtworkAssetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ArtworkAssetGroupByOutputType[P]>
+            : GetScalarType<T[P], ArtworkAssetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ArtworkAssetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    orderItemId?: boolean
+    ownerUserId?: boolean
+    surfaceId?: boolean
+    claimTokenHash?: boolean
+    originalName?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    hasTransparency?: boolean
+    sha256?: boolean
+    content?: boolean
+    status?: boolean
+    expiresAt?: boolean
+    attachedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    orderItem?: boolean | ArtworkAsset$orderItemArgs<ExtArgs>
+    owner?: boolean | ArtworkAsset$ownerArgs<ExtArgs>
+  }, ExtArgs["result"]["artworkAsset"]>
+
+  export type ArtworkAssetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    orderItemId?: boolean
+    ownerUserId?: boolean
+    surfaceId?: boolean
+    claimTokenHash?: boolean
+    originalName?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    hasTransparency?: boolean
+    sha256?: boolean
+    content?: boolean
+    status?: boolean
+    expiresAt?: boolean
+    attachedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    orderItem?: boolean | ArtworkAsset$orderItemArgs<ExtArgs>
+    owner?: boolean | ArtworkAsset$ownerArgs<ExtArgs>
+  }, ExtArgs["result"]["artworkAsset"]>
+
+  export type ArtworkAssetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    orderItemId?: boolean
+    ownerUserId?: boolean
+    surfaceId?: boolean
+    claimTokenHash?: boolean
+    originalName?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    hasTransparency?: boolean
+    sha256?: boolean
+    content?: boolean
+    status?: boolean
+    expiresAt?: boolean
+    attachedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    orderItem?: boolean | ArtworkAsset$orderItemArgs<ExtArgs>
+    owner?: boolean | ArtworkAsset$ownerArgs<ExtArgs>
+  }, ExtArgs["result"]["artworkAsset"]>
+
+  export type ArtworkAssetSelectScalar = {
+    id?: boolean
+    productId?: boolean
+    orderItemId?: boolean
+    ownerUserId?: boolean
+    surfaceId?: boolean
+    claimTokenHash?: boolean
+    originalName?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    hasTransparency?: boolean
+    sha256?: boolean
+    content?: boolean
+    status?: boolean
+    expiresAt?: boolean
+    attachedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ArtworkAssetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "orderItemId" | "ownerUserId" | "surfaceId" | "claimTokenHash" | "originalName" | "mimeType" | "sizeBytes" | "width" | "height" | "hasTransparency" | "sha256" | "content" | "status" | "expiresAt" | "attachedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["artworkAsset"]>
+  export type ArtworkAssetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    orderItem?: boolean | ArtworkAsset$orderItemArgs<ExtArgs>
+    owner?: boolean | ArtworkAsset$ownerArgs<ExtArgs>
+  }
+  export type ArtworkAssetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    orderItem?: boolean | ArtworkAsset$orderItemArgs<ExtArgs>
+    owner?: boolean | ArtworkAsset$ownerArgs<ExtArgs>
+  }
+  export type ArtworkAssetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    orderItem?: boolean | ArtworkAsset$orderItemArgs<ExtArgs>
+    owner?: boolean | ArtworkAsset$ownerArgs<ExtArgs>
+  }
+
+  export type $ArtworkAssetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ArtworkAsset"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs>
+      orderItem: Prisma.$OrderItemPayload<ExtArgs> | null
+      owner: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      productId: string
+      orderItemId: string | null
+      ownerUserId: string | null
+      surfaceId: string
+      claimTokenHash: string
+      originalName: string
+      mimeType: string
+      sizeBytes: number
+      width: number
+      height: number
+      hasTransparency: boolean
+      sha256: string
+      content: Prisma.Bytes
+      status: $Enums.ArtworkAssetStatus
+      expiresAt: Date
+      attachedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["artworkAsset"]>
+    composites: {}
+  }
+
+  type ArtworkAssetGetPayload<S extends boolean | null | undefined | ArtworkAssetDefaultArgs> = $Result.GetResult<Prisma.$ArtworkAssetPayload, S>
+
+  type ArtworkAssetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ArtworkAssetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ArtworkAssetCountAggregateInputType | true
+    }
+
+  export interface ArtworkAssetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArtworkAsset'], meta: { name: 'ArtworkAsset' } }
+    /**
+     * Find zero or one ArtworkAsset that matches the filter.
+     * @param {ArtworkAssetFindUniqueArgs} args - Arguments to find a ArtworkAsset
+     * @example
+     * // Get one ArtworkAsset
+     * const artworkAsset = await prisma.artworkAsset.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ArtworkAssetFindUniqueArgs>(args: SelectSubset<T, ArtworkAssetFindUniqueArgs<ExtArgs>>): Prisma__ArtworkAssetClient<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ArtworkAsset that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ArtworkAssetFindUniqueOrThrowArgs} args - Arguments to find a ArtworkAsset
+     * @example
+     * // Get one ArtworkAsset
+     * const artworkAsset = await prisma.artworkAsset.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ArtworkAssetFindUniqueOrThrowArgs>(args: SelectSubset<T, ArtworkAssetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArtworkAssetClient<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArtworkAsset that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArtworkAssetFindFirstArgs} args - Arguments to find a ArtworkAsset
+     * @example
+     * // Get one ArtworkAsset
+     * const artworkAsset = await prisma.artworkAsset.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ArtworkAssetFindFirstArgs>(args?: SelectSubset<T, ArtworkAssetFindFirstArgs<ExtArgs>>): Prisma__ArtworkAssetClient<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ArtworkAsset that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArtworkAssetFindFirstOrThrowArgs} args - Arguments to find a ArtworkAsset
+     * @example
+     * // Get one ArtworkAsset
+     * const artworkAsset = await prisma.artworkAsset.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ArtworkAssetFindFirstOrThrowArgs>(args?: SelectSubset<T, ArtworkAssetFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArtworkAssetClient<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ArtworkAssets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArtworkAssetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ArtworkAssets
+     * const artworkAssets = await prisma.artworkAsset.findMany()
+     * 
+     * // Get first 10 ArtworkAssets
+     * const artworkAssets = await prisma.artworkAsset.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const artworkAssetWithIdOnly = await prisma.artworkAsset.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ArtworkAssetFindManyArgs>(args?: SelectSubset<T, ArtworkAssetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ArtworkAsset.
+     * @param {ArtworkAssetCreateArgs} args - Arguments to create a ArtworkAsset.
+     * @example
+     * // Create one ArtworkAsset
+     * const ArtworkAsset = await prisma.artworkAsset.create({
+     *   data: {
+     *     // ... data to create a ArtworkAsset
+     *   }
+     * })
+     * 
+     */
+    create<T extends ArtworkAssetCreateArgs>(args: SelectSubset<T, ArtworkAssetCreateArgs<ExtArgs>>): Prisma__ArtworkAssetClient<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ArtworkAssets.
+     * @param {ArtworkAssetCreateManyArgs} args - Arguments to create many ArtworkAssets.
+     * @example
+     * // Create many ArtworkAssets
+     * const artworkAsset = await prisma.artworkAsset.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ArtworkAssetCreateManyArgs>(args?: SelectSubset<T, ArtworkAssetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ArtworkAssets and returns the data saved in the database.
+     * @param {ArtworkAssetCreateManyAndReturnArgs} args - Arguments to create many ArtworkAssets.
+     * @example
+     * // Create many ArtworkAssets
+     * const artworkAsset = await prisma.artworkAsset.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ArtworkAssets and only return the `id`
+     * const artworkAssetWithIdOnly = await prisma.artworkAsset.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ArtworkAssetCreateManyAndReturnArgs>(args?: SelectSubset<T, ArtworkAssetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ArtworkAsset.
+     * @param {ArtworkAssetDeleteArgs} args - Arguments to delete one ArtworkAsset.
+     * @example
+     * // Delete one ArtworkAsset
+     * const ArtworkAsset = await prisma.artworkAsset.delete({
+     *   where: {
+     *     // ... filter to delete one ArtworkAsset
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ArtworkAssetDeleteArgs>(args: SelectSubset<T, ArtworkAssetDeleteArgs<ExtArgs>>): Prisma__ArtworkAssetClient<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ArtworkAsset.
+     * @param {ArtworkAssetUpdateArgs} args - Arguments to update one ArtworkAsset.
+     * @example
+     * // Update one ArtworkAsset
+     * const artworkAsset = await prisma.artworkAsset.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ArtworkAssetUpdateArgs>(args: SelectSubset<T, ArtworkAssetUpdateArgs<ExtArgs>>): Prisma__ArtworkAssetClient<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ArtworkAssets.
+     * @param {ArtworkAssetDeleteManyArgs} args - Arguments to filter ArtworkAssets to delete.
+     * @example
+     * // Delete a few ArtworkAssets
+     * const { count } = await prisma.artworkAsset.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ArtworkAssetDeleteManyArgs>(args?: SelectSubset<T, ArtworkAssetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArtworkAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArtworkAssetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ArtworkAssets
+     * const artworkAsset = await prisma.artworkAsset.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ArtworkAssetUpdateManyArgs>(args: SelectSubset<T, ArtworkAssetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ArtworkAssets and returns the data updated in the database.
+     * @param {ArtworkAssetUpdateManyAndReturnArgs} args - Arguments to update many ArtworkAssets.
+     * @example
+     * // Update many ArtworkAssets
+     * const artworkAsset = await prisma.artworkAsset.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ArtworkAssets and only return the `id`
+     * const artworkAssetWithIdOnly = await prisma.artworkAsset.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ArtworkAssetUpdateManyAndReturnArgs>(args: SelectSubset<T, ArtworkAssetUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ArtworkAsset.
+     * @param {ArtworkAssetUpsertArgs} args - Arguments to update or create a ArtworkAsset.
+     * @example
+     * // Update or create a ArtworkAsset
+     * const artworkAsset = await prisma.artworkAsset.upsert({
+     *   create: {
+     *     // ... data to create a ArtworkAsset
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ArtworkAsset we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ArtworkAssetUpsertArgs>(args: SelectSubset<T, ArtworkAssetUpsertArgs<ExtArgs>>): Prisma__ArtworkAssetClient<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ArtworkAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArtworkAssetCountArgs} args - Arguments to filter ArtworkAssets to count.
+     * @example
+     * // Count the number of ArtworkAssets
+     * const count = await prisma.artworkAsset.count({
+     *   where: {
+     *     // ... the filter for the ArtworkAssets we want to count
+     *   }
+     * })
+    **/
+    count<T extends ArtworkAssetCountArgs>(
+      args?: Subset<T, ArtworkAssetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ArtworkAssetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ArtworkAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArtworkAssetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ArtworkAssetAggregateArgs>(args: Subset<T, ArtworkAssetAggregateArgs>): Prisma.PrismaPromise<GetArtworkAssetAggregateType<T>>
+
+    /**
+     * Group by ArtworkAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ArtworkAssetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ArtworkAssetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ArtworkAssetGroupByArgs['orderBy'] }
+        : { orderBy?: ArtworkAssetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ArtworkAssetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArtworkAssetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ArtworkAsset model
+   */
+  readonly fields: ArtworkAssetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ArtworkAsset.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ArtworkAssetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    orderItem<T extends ArtworkAsset$orderItemArgs<ExtArgs> = {}>(args?: Subset<T, ArtworkAsset$orderItemArgs<ExtArgs>>): Prisma__OrderItemClient<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    owner<T extends ArtworkAsset$ownerArgs<ExtArgs> = {}>(args?: Subset<T, ArtworkAsset$ownerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ArtworkAsset model
+   */
+  interface ArtworkAssetFieldRefs {
+    readonly id: FieldRef<"ArtworkAsset", 'String'>
+    readonly productId: FieldRef<"ArtworkAsset", 'String'>
+    readonly orderItemId: FieldRef<"ArtworkAsset", 'String'>
+    readonly ownerUserId: FieldRef<"ArtworkAsset", 'String'>
+    readonly surfaceId: FieldRef<"ArtworkAsset", 'String'>
+    readonly claimTokenHash: FieldRef<"ArtworkAsset", 'String'>
+    readonly originalName: FieldRef<"ArtworkAsset", 'String'>
+    readonly mimeType: FieldRef<"ArtworkAsset", 'String'>
+    readonly sizeBytes: FieldRef<"ArtworkAsset", 'Int'>
+    readonly width: FieldRef<"ArtworkAsset", 'Int'>
+    readonly height: FieldRef<"ArtworkAsset", 'Int'>
+    readonly hasTransparency: FieldRef<"ArtworkAsset", 'Boolean'>
+    readonly sha256: FieldRef<"ArtworkAsset", 'String'>
+    readonly content: FieldRef<"ArtworkAsset", 'Bytes'>
+    readonly status: FieldRef<"ArtworkAsset", 'ArtworkAssetStatus'>
+    readonly expiresAt: FieldRef<"ArtworkAsset", 'DateTime'>
+    readonly attachedAt: FieldRef<"ArtworkAsset", 'DateTime'>
+    readonly createdAt: FieldRef<"ArtworkAsset", 'DateTime'>
+    readonly updatedAt: FieldRef<"ArtworkAsset", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ArtworkAsset findUnique
+   */
+  export type ArtworkAssetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ArtworkAsset to fetch.
+     */
+    where: ArtworkAssetWhereUniqueInput
+  }
+
+  /**
+   * ArtworkAsset findUniqueOrThrow
+   */
+  export type ArtworkAssetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ArtworkAsset to fetch.
+     */
+    where: ArtworkAssetWhereUniqueInput
+  }
+
+  /**
+   * ArtworkAsset findFirst
+   */
+  export type ArtworkAssetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ArtworkAsset to fetch.
+     */
+    where?: ArtworkAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArtworkAssets to fetch.
+     */
+    orderBy?: ArtworkAssetOrderByWithRelationInput | ArtworkAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArtworkAssets.
+     */
+    cursor?: ArtworkAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArtworkAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArtworkAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArtworkAssets.
+     */
+    distinct?: ArtworkAssetScalarFieldEnum | ArtworkAssetScalarFieldEnum[]
+  }
+
+  /**
+   * ArtworkAsset findFirstOrThrow
+   */
+  export type ArtworkAssetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ArtworkAsset to fetch.
+     */
+    where?: ArtworkAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArtworkAssets to fetch.
+     */
+    orderBy?: ArtworkAssetOrderByWithRelationInput | ArtworkAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ArtworkAssets.
+     */
+    cursor?: ArtworkAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArtworkAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArtworkAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArtworkAssets.
+     */
+    distinct?: ArtworkAssetScalarFieldEnum | ArtworkAssetScalarFieldEnum[]
+  }
+
+  /**
+   * ArtworkAsset findMany
+   */
+  export type ArtworkAssetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which ArtworkAssets to fetch.
+     */
+    where?: ArtworkAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ArtworkAssets to fetch.
+     */
+    orderBy?: ArtworkAssetOrderByWithRelationInput | ArtworkAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ArtworkAssets.
+     */
+    cursor?: ArtworkAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ArtworkAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ArtworkAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ArtworkAssets.
+     */
+    distinct?: ArtworkAssetScalarFieldEnum | ArtworkAssetScalarFieldEnum[]
+  }
+
+  /**
+   * ArtworkAsset create
+   */
+  export type ArtworkAssetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ArtworkAsset.
+     */
+    data: XOR<ArtworkAssetCreateInput, ArtworkAssetUncheckedCreateInput>
+  }
+
+  /**
+   * ArtworkAsset createMany
+   */
+  export type ArtworkAssetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ArtworkAssets.
+     */
+    data: ArtworkAssetCreateManyInput | ArtworkAssetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ArtworkAsset createManyAndReturn
+   */
+  export type ArtworkAssetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * The data used to create many ArtworkAssets.
+     */
+    data: ArtworkAssetCreateManyInput | ArtworkAssetCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ArtworkAsset update
+   */
+  export type ArtworkAssetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ArtworkAsset.
+     */
+    data: XOR<ArtworkAssetUpdateInput, ArtworkAssetUncheckedUpdateInput>
+    /**
+     * Choose, which ArtworkAsset to update.
+     */
+    where: ArtworkAssetWhereUniqueInput
+  }
+
+  /**
+   * ArtworkAsset updateMany
+   */
+  export type ArtworkAssetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ArtworkAssets.
+     */
+    data: XOR<ArtworkAssetUpdateManyMutationInput, ArtworkAssetUncheckedUpdateManyInput>
+    /**
+     * Filter which ArtworkAssets to update
+     */
+    where?: ArtworkAssetWhereInput
+    /**
+     * Limit how many ArtworkAssets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArtworkAsset updateManyAndReturn
+   */
+  export type ArtworkAssetUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * The data used to update ArtworkAssets.
+     */
+    data: XOR<ArtworkAssetUpdateManyMutationInput, ArtworkAssetUncheckedUpdateManyInput>
+    /**
+     * Filter which ArtworkAssets to update
+     */
+    where?: ArtworkAssetWhereInput
+    /**
+     * Limit how many ArtworkAssets to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ArtworkAsset upsert
+   */
+  export type ArtworkAssetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ArtworkAsset to update in case it exists.
+     */
+    where: ArtworkAssetWhereUniqueInput
+    /**
+     * In case the ArtworkAsset found by the `where` argument doesn't exist, create a new ArtworkAsset with this data.
+     */
+    create: XOR<ArtworkAssetCreateInput, ArtworkAssetUncheckedCreateInput>
+    /**
+     * In case the ArtworkAsset was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ArtworkAssetUpdateInput, ArtworkAssetUncheckedUpdateInput>
+  }
+
+  /**
+   * ArtworkAsset delete
+   */
+  export type ArtworkAssetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    /**
+     * Filter which ArtworkAsset to delete.
+     */
+    where: ArtworkAssetWhereUniqueInput
+  }
+
+  /**
+   * ArtworkAsset deleteMany
+   */
+  export type ArtworkAssetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ArtworkAssets to delete
+     */
+    where?: ArtworkAssetWhereInput
+    /**
+     * Limit how many ArtworkAssets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ArtworkAsset.orderItem
+   */
+  export type ArtworkAsset$orderItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderItem
+     */
+    select?: OrderItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderItem
+     */
+    omit?: OrderItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderItemInclude<ExtArgs> | null
+    where?: OrderItemWhereInput
+  }
+
+  /**
+   * ArtworkAsset.owner
+   */
+  export type ArtworkAsset$ownerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * ArtworkAsset without action
+   */
+  export type ArtworkAssetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
   }
 
 
@@ -44635,6 +47396,8 @@ export namespace Prisma {
     personalization?: boolean | OrderItem$personalizationArgs<ExtArgs>
     productionJob?: boolean | OrderItem$productionJobArgs<ExtArgs>
     review?: boolean | OrderItem$reviewArgs<ExtArgs>
+    artworkAssets?: boolean | OrderItem$artworkAssetsArgs<ExtArgs>
+    _count?: boolean | OrderItemCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["orderItem"]>
 
   export type OrderItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -44705,6 +47468,8 @@ export namespace Prisma {
     personalization?: boolean | OrderItem$personalizationArgs<ExtArgs>
     productionJob?: boolean | OrderItem$productionJobArgs<ExtArgs>
     review?: boolean | OrderItem$reviewArgs<ExtArgs>
+    artworkAssets?: boolean | OrderItem$artworkAssetsArgs<ExtArgs>
+    _count?: boolean | OrderItemCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
@@ -44726,6 +47491,7 @@ export namespace Prisma {
       personalization: Prisma.$OrderPersonalizationPayload<ExtArgs> | null
       productionJob: Prisma.$ProductionJobPayload<ExtArgs> | null
       review: Prisma.$ReviewPayload<ExtArgs> | null
+      artworkAssets: Prisma.$ArtworkAssetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -45143,6 +47909,7 @@ export namespace Prisma {
     personalization<T extends OrderItem$personalizationArgs<ExtArgs> = {}>(args?: Subset<T, OrderItem$personalizationArgs<ExtArgs>>): Prisma__OrderPersonalizationClient<$Result.GetResult<Prisma.$OrderPersonalizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     productionJob<T extends OrderItem$productionJobArgs<ExtArgs> = {}>(args?: Subset<T, OrderItem$productionJobArgs<ExtArgs>>): Prisma__ProductionJobClient<$Result.GetResult<Prisma.$ProductionJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     review<T extends OrderItem$reviewArgs<ExtArgs> = {}>(args?: Subset<T, OrderItem$reviewArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    artworkAssets<T extends OrderItem$artworkAssetsArgs<ExtArgs> = {}>(args?: Subset<T, OrderItem$artworkAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -45680,6 +48447,30 @@ export namespace Prisma {
      */
     include?: ReviewInclude<ExtArgs> | null
     where?: ReviewWhereInput
+  }
+
+  /**
+   * OrderItem.artworkAssets
+   */
+  export type OrderItem$artworkAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ArtworkAsset
+     */
+    select?: ArtworkAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ArtworkAsset
+     */
+    omit?: ArtworkAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ArtworkAssetInclude<ExtArgs> | null
+    where?: ArtworkAssetWhereInput
+    orderBy?: ArtworkAssetOrderByWithRelationInput | ArtworkAssetOrderByWithRelationInput[]
+    cursor?: ArtworkAssetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ArtworkAssetScalarFieldEnum | ArtworkAssetScalarFieldEnum[]
   }
 
   /**
@@ -71258,6 +74049,40 @@ export namespace Prisma {
   export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
+  export const ProductCategoryScalarFieldEnum: {
+    productId: 'productId',
+    categoryId: 'categoryId',
+    createdAt: 'createdAt'
+  };
+
+  export type ProductCategoryScalarFieldEnum = (typeof ProductCategoryScalarFieldEnum)[keyof typeof ProductCategoryScalarFieldEnum]
+
+
+  export const ArtworkAssetScalarFieldEnum: {
+    id: 'id',
+    productId: 'productId',
+    orderItemId: 'orderItemId',
+    ownerUserId: 'ownerUserId',
+    surfaceId: 'surfaceId',
+    claimTokenHash: 'claimTokenHash',
+    originalName: 'originalName',
+    mimeType: 'mimeType',
+    sizeBytes: 'sizeBytes',
+    width: 'width',
+    height: 'height',
+    hasTransparency: 'hasTransparency',
+    sha256: 'sha256',
+    content: 'content',
+    status: 'status',
+    expiresAt: 'expiresAt',
+    attachedAt: 'attachedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ArtworkAssetScalarFieldEnum = (typeof ArtworkAssetScalarFieldEnum)[keyof typeof ArtworkAssetScalarFieldEnum]
+
+
   export const ProductVariantScalarFieldEnum: {
     id: 'id',
     productId: 'productId',
@@ -72158,6 +74983,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Bytes'
+   */
+  export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
+    
+
+
+  /**
+   * Reference to a field of type 'Bytes[]'
+   */
+  export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ArtworkAssetStatus'
+   */
+  export type EnumArtworkAssetStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ArtworkAssetStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ArtworkAssetStatus[]'
+   */
+  export type ListEnumArtworkAssetStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ArtworkAssetStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'InventoryPolicy'
    */
   export type EnumInventoryPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InventoryPolicy'>
@@ -72350,20 +75203,6 @@ export namespace Prisma {
    * Reference to a field of type 'VendorDocumentReviewStatus[]'
    */
   export type ListEnumVendorDocumentReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VendorDocumentReviewStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Bytes'
-   */
-  export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
-    
-
-
-  /**
-   * Reference to a field of type 'Bytes[]'
-   */
-  export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
     
 
 
@@ -72603,6 +75442,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventListRelationFilter
     uploadedVendorDocuments?: VendorDocumentListRelationFilter
     reviewedVendorDocuments?: VendorDocumentListRelationFilter
+    uploadedArtworkAssets?: ArtworkAssetListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -72639,6 +75479,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventOrderByRelationAggregateInput
     uploadedVendorDocuments?: VendorDocumentOrderByRelationAggregateInput
     reviewedVendorDocuments?: VendorDocumentOrderByRelationAggregateInput
+    uploadedArtworkAssets?: ArtworkAssetOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -72678,6 +75519,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventListRelationFilter
     uploadedVendorDocuments?: VendorDocumentListRelationFilter
     reviewedVendorDocuments?: VendorDocumentListRelationFilter
+    uploadedArtworkAssets?: ArtworkAssetListRelationFilter
   }, "id" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -73187,6 +76029,7 @@ export namespace Prisma {
     parent?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     children?: CategoryListRelationFilter
     products?: ProductListRelationFilter
+    productLinks?: ProductCategoryListRelationFilter
     templates?: PersonalizationTemplateListRelationFilter
     couponLinks?: CouponCategoryListRelationFilter
   }
@@ -73207,6 +76050,7 @@ export namespace Prisma {
     parent?: CategoryOrderByWithRelationInput
     children?: CategoryOrderByRelationAggregateInput
     products?: ProductOrderByRelationAggregateInput
+    productLinks?: ProductCategoryOrderByRelationAggregateInput
     templates?: PersonalizationTemplateOrderByRelationAggregateInput
     couponLinks?: CouponCategoryOrderByRelationAggregateInput
   }
@@ -73230,6 +76074,7 @@ export namespace Prisma {
     parent?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     children?: CategoryListRelationFilter
     products?: ProductListRelationFilter
+    productLinks?: ProductCategoryListRelationFilter
     templates?: PersonalizationTemplateListRelationFilter
     couponLinks?: CouponCategoryListRelationFilter
   }, "id" | "slug">
@@ -73305,6 +76150,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+    categoryLinks?: ProductCategoryListRelationFilter
     variants?: ProductVariantListRelationFilter
     images?: ProductImageListRelationFilter
     personalizationFields?: ProductPersonalizationFieldListRelationFilter
@@ -73317,6 +76163,7 @@ export namespace Prisma {
     couponLinks?: CouponProductListRelationFilter
     bulkRequests?: BulkOrderRequestListRelationFilter
     vendorCapabilities?: VendorCapabilityListRelationFilter
+    artworkAssets?: ArtworkAssetListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -73349,6 +76196,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     category?: CategoryOrderByWithRelationInput
+    categoryLinks?: ProductCategoryOrderByRelationAggregateInput
     variants?: ProductVariantOrderByRelationAggregateInput
     images?: ProductImageOrderByRelationAggregateInput
     personalizationFields?: ProductPersonalizationFieldOrderByRelationAggregateInput
@@ -73361,6 +76209,7 @@ export namespace Prisma {
     couponLinks?: CouponProductOrderByRelationAggregateInput
     bulkRequests?: BulkOrderRequestOrderByRelationAggregateInput
     vendorCapabilities?: VendorCapabilityOrderByRelationAggregateInput
+    artworkAssets?: ArtworkAssetOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -73396,6 +76245,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+    categoryLinks?: ProductCategoryListRelationFilter
     variants?: ProductVariantListRelationFilter
     images?: ProductImageListRelationFilter
     personalizationFields?: ProductPersonalizationFieldListRelationFilter
@@ -73408,6 +76258,7 @@ export namespace Prisma {
     couponLinks?: CouponProductListRelationFilter
     bulkRequests?: BulkOrderRequestListRelationFilter
     vendorCapabilities?: VendorCapabilityListRelationFilter
+    artworkAssets?: ArtworkAssetListRelationFilter
   }, "id" | "slug" | "baseSku">
 
   export type ProductOrderByWithAggregationInput = {
@@ -73478,6 +76329,188 @@ export namespace Prisma {
     archivedAt?: DateTimeNullableWithAggregatesFilter<"Product"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+  }
+
+  export type ProductCategoryWhereInput = {
+    AND?: ProductCategoryWhereInput | ProductCategoryWhereInput[]
+    OR?: ProductCategoryWhereInput[]
+    NOT?: ProductCategoryWhereInput | ProductCategoryWhereInput[]
+    productId?: StringFilter<"ProductCategory"> | string
+    categoryId?: StringFilter<"ProductCategory"> | string
+    createdAt?: DateTimeFilter<"ProductCategory"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+  }
+
+  export type ProductCategoryOrderByWithRelationInput = {
+    productId?: SortOrder
+    categoryId?: SortOrder
+    createdAt?: SortOrder
+    product?: ProductOrderByWithRelationInput
+    category?: CategoryOrderByWithRelationInput
+  }
+
+  export type ProductCategoryWhereUniqueInput = Prisma.AtLeast<{
+    productId_categoryId?: ProductCategoryProductIdCategoryIdCompoundUniqueInput
+    AND?: ProductCategoryWhereInput | ProductCategoryWhereInput[]
+    OR?: ProductCategoryWhereInput[]
+    NOT?: ProductCategoryWhereInput | ProductCategoryWhereInput[]
+    productId?: StringFilter<"ProductCategory"> | string
+    categoryId?: StringFilter<"ProductCategory"> | string
+    createdAt?: DateTimeFilter<"ProductCategory"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    category?: XOR<CategoryScalarRelationFilter, CategoryWhereInput>
+  }, "productId_categoryId">
+
+  export type ProductCategoryOrderByWithAggregationInput = {
+    productId?: SortOrder
+    categoryId?: SortOrder
+    createdAt?: SortOrder
+    _count?: ProductCategoryCountOrderByAggregateInput
+    _max?: ProductCategoryMaxOrderByAggregateInput
+    _min?: ProductCategoryMinOrderByAggregateInput
+  }
+
+  export type ProductCategoryScalarWhereWithAggregatesInput = {
+    AND?: ProductCategoryScalarWhereWithAggregatesInput | ProductCategoryScalarWhereWithAggregatesInput[]
+    OR?: ProductCategoryScalarWhereWithAggregatesInput[]
+    NOT?: ProductCategoryScalarWhereWithAggregatesInput | ProductCategoryScalarWhereWithAggregatesInput[]
+    productId?: StringWithAggregatesFilter<"ProductCategory"> | string
+    categoryId?: StringWithAggregatesFilter<"ProductCategory"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ProductCategory"> | Date | string
+  }
+
+  export type ArtworkAssetWhereInput = {
+    AND?: ArtworkAssetWhereInput | ArtworkAssetWhereInput[]
+    OR?: ArtworkAssetWhereInput[]
+    NOT?: ArtworkAssetWhereInput | ArtworkAssetWhereInput[]
+    id?: StringFilter<"ArtworkAsset"> | string
+    productId?: StringFilter<"ArtworkAsset"> | string
+    orderItemId?: StringNullableFilter<"ArtworkAsset"> | string | null
+    ownerUserId?: StringNullableFilter<"ArtworkAsset"> | string | null
+    surfaceId?: StringFilter<"ArtworkAsset"> | string
+    claimTokenHash?: StringFilter<"ArtworkAsset"> | string
+    originalName?: StringFilter<"ArtworkAsset"> | string
+    mimeType?: StringFilter<"ArtworkAsset"> | string
+    sizeBytes?: IntFilter<"ArtworkAsset"> | number
+    width?: IntFilter<"ArtworkAsset"> | number
+    height?: IntFilter<"ArtworkAsset"> | number
+    hasTransparency?: BoolFilter<"ArtworkAsset"> | boolean
+    sha256?: StringFilter<"ArtworkAsset"> | string
+    content?: BytesFilter<"ArtworkAsset"> | Bytes
+    status?: EnumArtworkAssetStatusFilter<"ArtworkAsset"> | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
+    attachedAt?: DateTimeNullableFilter<"ArtworkAsset"> | Date | string | null
+    createdAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    orderItem?: XOR<OrderItemNullableScalarRelationFilter, OrderItemWhereInput> | null
+    owner?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type ArtworkAssetOrderByWithRelationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    orderItemId?: SortOrderInput | SortOrder
+    ownerUserId?: SortOrderInput | SortOrder
+    surfaceId?: SortOrder
+    claimTokenHash?: SortOrder
+    originalName?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    hasTransparency?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    attachedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    product?: ProductOrderByWithRelationInput
+    orderItem?: OrderItemOrderByWithRelationInput
+    owner?: UserOrderByWithRelationInput
+  }
+
+  export type ArtworkAssetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    claimTokenHash?: string
+    AND?: ArtworkAssetWhereInput | ArtworkAssetWhereInput[]
+    OR?: ArtworkAssetWhereInput[]
+    NOT?: ArtworkAssetWhereInput | ArtworkAssetWhereInput[]
+    productId?: StringFilter<"ArtworkAsset"> | string
+    orderItemId?: StringNullableFilter<"ArtworkAsset"> | string | null
+    ownerUserId?: StringNullableFilter<"ArtworkAsset"> | string | null
+    surfaceId?: StringFilter<"ArtworkAsset"> | string
+    originalName?: StringFilter<"ArtworkAsset"> | string
+    mimeType?: StringFilter<"ArtworkAsset"> | string
+    sizeBytes?: IntFilter<"ArtworkAsset"> | number
+    width?: IntFilter<"ArtworkAsset"> | number
+    height?: IntFilter<"ArtworkAsset"> | number
+    hasTransparency?: BoolFilter<"ArtworkAsset"> | boolean
+    sha256?: StringFilter<"ArtworkAsset"> | string
+    content?: BytesFilter<"ArtworkAsset"> | Bytes
+    status?: EnumArtworkAssetStatusFilter<"ArtworkAsset"> | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
+    attachedAt?: DateTimeNullableFilter<"ArtworkAsset"> | Date | string | null
+    createdAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    orderItem?: XOR<OrderItemNullableScalarRelationFilter, OrderItemWhereInput> | null
+    owner?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id" | "claimTokenHash">
+
+  export type ArtworkAssetOrderByWithAggregationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    orderItemId?: SortOrderInput | SortOrder
+    ownerUserId?: SortOrderInput | SortOrder
+    surfaceId?: SortOrder
+    claimTokenHash?: SortOrder
+    originalName?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    hasTransparency?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    attachedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ArtworkAssetCountOrderByAggregateInput
+    _avg?: ArtworkAssetAvgOrderByAggregateInput
+    _max?: ArtworkAssetMaxOrderByAggregateInput
+    _min?: ArtworkAssetMinOrderByAggregateInput
+    _sum?: ArtworkAssetSumOrderByAggregateInput
+  }
+
+  export type ArtworkAssetScalarWhereWithAggregatesInput = {
+    AND?: ArtworkAssetScalarWhereWithAggregatesInput | ArtworkAssetScalarWhereWithAggregatesInput[]
+    OR?: ArtworkAssetScalarWhereWithAggregatesInput[]
+    NOT?: ArtworkAssetScalarWhereWithAggregatesInput | ArtworkAssetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ArtworkAsset"> | string
+    productId?: StringWithAggregatesFilter<"ArtworkAsset"> | string
+    orderItemId?: StringNullableWithAggregatesFilter<"ArtworkAsset"> | string | null
+    ownerUserId?: StringNullableWithAggregatesFilter<"ArtworkAsset"> | string | null
+    surfaceId?: StringWithAggregatesFilter<"ArtworkAsset"> | string
+    claimTokenHash?: StringWithAggregatesFilter<"ArtworkAsset"> | string
+    originalName?: StringWithAggregatesFilter<"ArtworkAsset"> | string
+    mimeType?: StringWithAggregatesFilter<"ArtworkAsset"> | string
+    sizeBytes?: IntWithAggregatesFilter<"ArtworkAsset"> | number
+    width?: IntWithAggregatesFilter<"ArtworkAsset"> | number
+    height?: IntWithAggregatesFilter<"ArtworkAsset"> | number
+    hasTransparency?: BoolWithAggregatesFilter<"ArtworkAsset"> | boolean
+    sha256?: StringWithAggregatesFilter<"ArtworkAsset"> | string
+    content?: BytesWithAggregatesFilter<"ArtworkAsset"> | Bytes
+    status?: EnumArtworkAssetStatusWithAggregatesFilter<"ArtworkAsset"> | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeWithAggregatesFilter<"ArtworkAsset"> | Date | string
+    attachedAt?: DateTimeNullableWithAggregatesFilter<"ArtworkAsset"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ArtworkAsset"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ArtworkAsset"> | Date | string
   }
 
   export type ProductVariantWhereInput = {
@@ -75552,6 +78585,7 @@ export namespace Prisma {
     personalization?: XOR<OrderPersonalizationNullableScalarRelationFilter, OrderPersonalizationWhereInput> | null
     productionJob?: XOR<ProductionJobNullableScalarRelationFilter, ProductionJobWhereInput> | null
     review?: XOR<ReviewNullableScalarRelationFilter, ReviewWhereInput> | null
+    artworkAssets?: ArtworkAssetListRelationFilter
   }
 
   export type OrderItemOrderByWithRelationInput = {
@@ -75576,6 +78610,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationOrderByWithRelationInput
     productionJob?: ProductionJobOrderByWithRelationInput
     review?: ReviewOrderByWithRelationInput
+    artworkAssets?: ArtworkAssetOrderByRelationAggregateInput
   }
 
   export type OrderItemWhereUniqueInput = Prisma.AtLeast<{
@@ -75603,6 +78638,7 @@ export namespace Prisma {
     personalization?: XOR<OrderPersonalizationNullableScalarRelationFilter, OrderPersonalizationWhereInput> | null
     productionJob?: XOR<ProductionJobNullableScalarRelationFilter, ProductionJobWhereInput> | null
     review?: XOR<ReviewNullableScalarRelationFilter, ReviewWhereInput> | null
+    artworkAssets?: ArtworkAssetListRelationFilter
   }, "id">
 
   export type OrderItemOrderByWithAggregationInput = {
@@ -77471,6 +80507,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -77507,6 +80544,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUpdateInput = {
@@ -77543,6 +80581,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -77579,6 +80618,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -78120,6 +81160,7 @@ export namespace Prisma {
     parent?: CategoryCreateNestedOneWithoutChildrenInput
     children?: CategoryCreateNestedManyWithoutParentInput
     products?: ProductCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryCreateNestedManyWithoutCategoryInput
   }
@@ -78139,6 +81180,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     children?: CategoryUncheckedCreateNestedManyWithoutParentInput
     products?: ProductUncheckedCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateUncheckedCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryUncheckedCreateNestedManyWithoutCategoryInput
   }
@@ -78158,6 +81200,7 @@ export namespace Prisma {
     parent?: CategoryUpdateOneWithoutChildrenNestedInput
     children?: CategoryUpdateManyWithoutParentNestedInput
     products?: ProductUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUpdateManyWithoutCategoryNestedInput
   }
@@ -78177,6 +81220,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     children?: CategoryUncheckedUpdateManyWithoutParentNestedInput
     products?: ProductUncheckedUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUncheckedUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUncheckedUpdateManyWithoutCategoryNestedInput
   }
@@ -78254,6 +81298,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -78266,6 +81311,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -78297,6 +81343,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -78309,6 +81356,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -78340,6 +81388,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -78352,6 +81401,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -78383,6 +81433,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -78395,6 +81446,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -78485,6 +81537,197 @@ export namespace Prisma {
     metadata?: NullableJsonNullValueInput | InputJsonValue
     publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductCategoryCreateInput = {
+    createdAt?: Date | string
+    product: ProductCreateNestedOneWithoutCategoryLinksInput
+    category: CategoryCreateNestedOneWithoutProductLinksInput
+  }
+
+  export type ProductCategoryUncheckedCreateInput = {
+    productId: string
+    categoryId: string
+    createdAt?: Date | string
+  }
+
+  export type ProductCategoryUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutCategoryLinksNestedInput
+    category?: CategoryUpdateOneRequiredWithoutProductLinksNestedInput
+  }
+
+  export type ProductCategoryUncheckedUpdateInput = {
+    productId?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductCategoryCreateManyInput = {
+    productId: string
+    categoryId: string
+    createdAt?: Date | string
+  }
+
+  export type ProductCategoryUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductCategoryUncheckedUpdateManyInput = {
+    productId?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArtworkAssetCreateInput = {
+    id?: string
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutArtworkAssetsInput
+    orderItem?: OrderItemCreateNestedOneWithoutArtworkAssetsInput
+    owner?: UserCreateNestedOneWithoutUploadedArtworkAssetsInput
+  }
+
+  export type ArtworkAssetUncheckedCreateInput = {
+    id?: string
+    productId: string
+    orderItemId?: string | null
+    ownerUserId?: string | null
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArtworkAssetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutArtworkAssetsNestedInput
+    orderItem?: OrderItemUpdateOneWithoutArtworkAssetsNestedInput
+    owner?: UserUpdateOneWithoutUploadedArtworkAssetsNestedInput
+  }
+
+  export type ArtworkAssetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArtworkAssetCreateManyInput = {
+    id?: string
+    productId: string
+    orderItemId?: string | null
+    ownerUserId?: string | null
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArtworkAssetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArtworkAssetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -80795,6 +84038,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobCreateNestedOneWithoutOrderItemInput
     review?: ReviewCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateInput = {
@@ -80816,6 +84060,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUncheckedCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobUncheckedCreateNestedOneWithoutOrderItemInput
     review?: ReviewUncheckedCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUpdateInput = {
@@ -80837,6 +84082,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateInput = {
@@ -80858,6 +84104,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUncheckedUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUncheckedUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUncheckedUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemCreateManyInput = {
@@ -83026,6 +86273,12 @@ export namespace Prisma {
     none?: VendorDocumentWhereInput
   }
 
+  export type ArtworkAssetListRelationFilter = {
+    every?: ArtworkAssetWhereInput
+    some?: ArtworkAssetWhereInput
+    none?: ArtworkAssetWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -83096,6 +86349,10 @@ export namespace Prisma {
   }
 
   export type VendorDocumentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ArtworkAssetOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -83539,6 +86796,12 @@ export namespace Prisma {
     none?: ProductWhereInput
   }
 
+  export type ProductCategoryListRelationFilter = {
+    every?: ProductCategoryWhereInput
+    some?: ProductCategoryWhereInput
+    none?: ProductCategoryWhereInput
+  }
+
   export type PersonalizationTemplateListRelationFilter = {
     every?: PersonalizationTemplateWhereInput
     some?: PersonalizationTemplateWhereInput
@@ -83556,6 +86819,10 @@ export namespace Prisma {
   }
 
   export type ProductOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProductCategoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -83922,6 +87189,156 @@ export namespace Prisma {
     _min?: NestedJsonNullableFilter<$PrismaModel>
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
+
+  export type ProductScalarRelationFilter = {
+    is?: ProductWhereInput
+    isNot?: ProductWhereInput
+  }
+
+  export type ProductCategoryProductIdCategoryIdCompoundUniqueInput = {
+    productId: string
+    categoryId: string
+  }
+
+  export type ProductCategoryCountOrderByAggregateInput = {
+    productId?: SortOrder
+    categoryId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ProductCategoryMaxOrderByAggregateInput = {
+    productId?: SortOrder
+    categoryId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ProductCategoryMinOrderByAggregateInput = {
+    productId?: SortOrder
+    categoryId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type BytesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesFilter<$PrismaModel> | Bytes
+  }
+
+  export type EnumArtworkAssetStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ArtworkAssetStatus | EnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ArtworkAssetStatus[] | ListEnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ArtworkAssetStatus[] | ListEnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumArtworkAssetStatusFilter<$PrismaModel> | $Enums.ArtworkAssetStatus
+  }
+
+  export type OrderItemNullableScalarRelationFilter = {
+    is?: OrderItemWhereInput | null
+    isNot?: OrderItemWhereInput | null
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type ArtworkAssetCountOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    orderItemId?: SortOrder
+    ownerUserId?: SortOrder
+    surfaceId?: SortOrder
+    claimTokenHash?: SortOrder
+    originalName?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    hasTransparency?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    attachedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ArtworkAssetAvgOrderByAggregateInput = {
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+  }
+
+  export type ArtworkAssetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    orderItemId?: SortOrder
+    ownerUserId?: SortOrder
+    surfaceId?: SortOrder
+    claimTokenHash?: SortOrder
+    originalName?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    hasTransparency?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    attachedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ArtworkAssetMinOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    orderItemId?: SortOrder
+    ownerUserId?: SortOrder
+    surfaceId?: SortOrder
+    claimTokenHash?: SortOrder
+    originalName?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    hasTransparency?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    status?: SortOrder
+    expiresAt?: SortOrder
+    attachedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ArtworkAssetSumOrderByAggregateInput = {
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+  }
+
+  export type BytesWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Bytes
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBytesFilter<$PrismaModel>
+    _max?: NestedBytesFilter<$PrismaModel>
+  }
+
+  export type EnumArtworkAssetStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ArtworkAssetStatus | EnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ArtworkAssetStatus[] | ListEnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ArtworkAssetStatus[] | ListEnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumArtworkAssetStatusWithAggregatesFilter<$PrismaModel> | $Enums.ArtworkAssetStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumArtworkAssetStatusFilter<$PrismaModel>
+    _max?: NestedEnumArtworkAssetStatusFilter<$PrismaModel>
+  }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -83951,11 +87368,6 @@ export namespace Prisma {
     in?: $Enums.InventoryPolicy[] | ListEnumInventoryPolicyFieldRefInput<$PrismaModel>
     notIn?: $Enums.InventoryPolicy[] | ListEnumInventoryPolicyFieldRefInput<$PrismaModel>
     not?: NestedEnumInventoryPolicyFilter<$PrismaModel> | $Enums.InventoryPolicy
-  }
-
-  export type ProductScalarRelationFilter = {
-    is?: ProductWhereInput
-    isNot?: ProductWhereInput
   }
 
   export type InventoryNullableScalarRelationFilter = {
@@ -84436,11 +87848,6 @@ export namespace Prisma {
     in?: $Enums.ArtworkStatus[] | ListEnumArtworkStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ArtworkStatus[] | ListEnumArtworkStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumArtworkStatusFilter<$PrismaModel> | $Enums.ArtworkStatus
-  }
-
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
   }
 
   export type PersonalizationTemplateNullableScalarRelationFilter = {
@@ -85130,13 +88537,6 @@ export namespace Prisma {
     not?: NestedEnumVendorDocumentReviewStatusFilter<$PrismaModel> | $Enums.VendorDocumentReviewStatus
   }
 
-  export type BytesFilter<$PrismaModel = never> = {
-    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
-    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
-    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
-    not?: NestedBytesFilter<$PrismaModel> | Bytes
-  }
-
   export type VendorDocumentCountOrderByAggregateInput = {
     id?: SortOrder
     applicationId?: SortOrder
@@ -85217,16 +88617,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumVendorDocumentReviewStatusFilter<$PrismaModel>
     _max?: NestedEnumVendorDocumentReviewStatusFilter<$PrismaModel>
-  }
-
-  export type BytesWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
-    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
-    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
-    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Bytes
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBytesFilter<$PrismaModel>
-    _max?: NestedBytesFilter<$PrismaModel>
   }
 
   export type EnumVendorApplicationStatusNullableFilter<$PrismaModel = never> = {
@@ -86224,11 +89614,6 @@ export namespace Prisma {
     not?: NestedEnumReviewStatusFilter<$PrismaModel> | $Enums.ReviewStatus
   }
 
-  export type OrderItemNullableScalarRelationFilter = {
-    is?: OrderItemWhereInput | null
-    isNot?: OrderItemWhereInput | null
-  }
-
   export type ReviewCountOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
@@ -86983,6 +90368,13 @@ export namespace Prisma {
     connect?: VendorDocumentWhereUniqueInput | VendorDocumentWhereUniqueInput[]
   }
 
+  export type ArtworkAssetCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<ArtworkAssetCreateWithoutOwnerInput, ArtworkAssetUncheckedCreateWithoutOwnerInput> | ArtworkAssetCreateWithoutOwnerInput[] | ArtworkAssetUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutOwnerInput | ArtworkAssetCreateOrConnectWithoutOwnerInput[]
+    createMany?: ArtworkAssetCreateManyOwnerInputEnvelope
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+  }
+
   export type AddressUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput> | AddressCreateWithoutUserInput[] | AddressUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AddressCreateOrConnectWithoutUserInput | AddressCreateOrConnectWithoutUserInput[]
@@ -87119,6 +90511,13 @@ export namespace Prisma {
     connectOrCreate?: VendorDocumentCreateOrConnectWithoutReviewedByInput | VendorDocumentCreateOrConnectWithoutReviewedByInput[]
     createMany?: VendorDocumentCreateManyReviewedByInputEnvelope
     connect?: VendorDocumentWhereUniqueInput | VendorDocumentWhereUniqueInput[]
+  }
+
+  export type ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<ArtworkAssetCreateWithoutOwnerInput, ArtworkAssetUncheckedCreateWithoutOwnerInput> | ArtworkAssetCreateWithoutOwnerInput[] | ArtworkAssetUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutOwnerInput | ArtworkAssetCreateOrConnectWithoutOwnerInput[]
+    createMany?: ArtworkAssetCreateManyOwnerInputEnvelope
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -87413,6 +90812,20 @@ export namespace Prisma {
     deleteMany?: VendorDocumentScalarWhereInput | VendorDocumentScalarWhereInput[]
   }
 
+  export type ArtworkAssetUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<ArtworkAssetCreateWithoutOwnerInput, ArtworkAssetUncheckedCreateWithoutOwnerInput> | ArtworkAssetCreateWithoutOwnerInput[] | ArtworkAssetUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutOwnerInput | ArtworkAssetCreateOrConnectWithoutOwnerInput[]
+    upsert?: ArtworkAssetUpsertWithWhereUniqueWithoutOwnerInput | ArtworkAssetUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: ArtworkAssetCreateManyOwnerInputEnvelope
+    set?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    disconnect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    delete?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    update?: ArtworkAssetUpdateWithWhereUniqueWithoutOwnerInput | ArtworkAssetUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: ArtworkAssetUpdateManyWithWhereWithoutOwnerInput | ArtworkAssetUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
+  }
+
   export type AddressUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput> | AddressCreateWithoutUserInput[] | AddressUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AddressCreateOrConnectWithoutUserInput | AddressCreateOrConnectWithoutUserInput[]
@@ -87685,6 +91098,20 @@ export namespace Prisma {
     deleteMany?: VendorDocumentScalarWhereInput | VendorDocumentScalarWhereInput[]
   }
 
+  export type ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<ArtworkAssetCreateWithoutOwnerInput, ArtworkAssetUncheckedCreateWithoutOwnerInput> | ArtworkAssetCreateWithoutOwnerInput[] | ArtworkAssetUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutOwnerInput | ArtworkAssetCreateOrConnectWithoutOwnerInput[]
+    upsert?: ArtworkAssetUpsertWithWhereUniqueWithoutOwnerInput | ArtworkAssetUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: ArtworkAssetCreateManyOwnerInputEnvelope
+    set?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    disconnect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    delete?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    update?: ArtworkAssetUpdateWithWhereUniqueWithoutOwnerInput | ArtworkAssetUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: ArtworkAssetUpdateManyWithWhereWithoutOwnerInput | ArtworkAssetUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutAuthSessionsInput = {
     create?: XOR<UserCreateWithoutAuthSessionsInput, UserUncheckedCreateWithoutAuthSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAuthSessionsInput
@@ -87931,6 +91358,13 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
   }
 
+  export type ProductCategoryCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<ProductCategoryCreateWithoutCategoryInput, ProductCategoryUncheckedCreateWithoutCategoryInput> | ProductCategoryCreateWithoutCategoryInput[] | ProductCategoryUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: ProductCategoryCreateOrConnectWithoutCategoryInput | ProductCategoryCreateOrConnectWithoutCategoryInput[]
+    createMany?: ProductCategoryCreateManyCategoryInputEnvelope
+    connect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+  }
+
   export type PersonalizationTemplateCreateNestedManyWithoutCategoryInput = {
     create?: XOR<PersonalizationTemplateCreateWithoutCategoryInput, PersonalizationTemplateUncheckedCreateWithoutCategoryInput> | PersonalizationTemplateCreateWithoutCategoryInput[] | PersonalizationTemplateUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: PersonalizationTemplateCreateOrConnectWithoutCategoryInput | PersonalizationTemplateCreateOrConnectWithoutCategoryInput[]
@@ -87957,6 +91391,13 @@ export namespace Prisma {
     connectOrCreate?: ProductCreateOrConnectWithoutCategoryInput | ProductCreateOrConnectWithoutCategoryInput[]
     createMany?: ProductCreateManyCategoryInputEnvelope
     connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+  }
+
+  export type ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<ProductCategoryCreateWithoutCategoryInput, ProductCategoryUncheckedCreateWithoutCategoryInput> | ProductCategoryCreateWithoutCategoryInput[] | ProductCategoryUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: ProductCategoryCreateOrConnectWithoutCategoryInput | ProductCategoryCreateOrConnectWithoutCategoryInput[]
+    createMany?: ProductCategoryCreateManyCategoryInputEnvelope
+    connect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
   }
 
   export type PersonalizationTemplateUncheckedCreateNestedManyWithoutCategoryInput = {
@@ -88009,6 +91450,20 @@ export namespace Prisma {
     update?: ProductUpdateWithWhereUniqueWithoutCategoryInput | ProductUpdateWithWhereUniqueWithoutCategoryInput[]
     updateMany?: ProductUpdateManyWithWhereWithoutCategoryInput | ProductUpdateManyWithWhereWithoutCategoryInput[]
     deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  }
+
+  export type ProductCategoryUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<ProductCategoryCreateWithoutCategoryInput, ProductCategoryUncheckedCreateWithoutCategoryInput> | ProductCategoryCreateWithoutCategoryInput[] | ProductCategoryUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: ProductCategoryCreateOrConnectWithoutCategoryInput | ProductCategoryCreateOrConnectWithoutCategoryInput[]
+    upsert?: ProductCategoryUpsertWithWhereUniqueWithoutCategoryInput | ProductCategoryUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: ProductCategoryCreateManyCategoryInputEnvelope
+    set?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    disconnect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    delete?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    connect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    update?: ProductCategoryUpdateWithWhereUniqueWithoutCategoryInput | ProductCategoryUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: ProductCategoryUpdateManyWithWhereWithoutCategoryInput | ProductCategoryUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: ProductCategoryScalarWhereInput | ProductCategoryScalarWhereInput[]
   }
 
   export type PersonalizationTemplateUpdateManyWithoutCategoryNestedInput = {
@@ -88067,6 +91522,20 @@ export namespace Prisma {
     deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
   }
 
+  export type ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput = {
+    create?: XOR<ProductCategoryCreateWithoutCategoryInput, ProductCategoryUncheckedCreateWithoutCategoryInput> | ProductCategoryCreateWithoutCategoryInput[] | ProductCategoryUncheckedCreateWithoutCategoryInput[]
+    connectOrCreate?: ProductCategoryCreateOrConnectWithoutCategoryInput | ProductCategoryCreateOrConnectWithoutCategoryInput[]
+    upsert?: ProductCategoryUpsertWithWhereUniqueWithoutCategoryInput | ProductCategoryUpsertWithWhereUniqueWithoutCategoryInput[]
+    createMany?: ProductCategoryCreateManyCategoryInputEnvelope
+    set?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    disconnect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    delete?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    connect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    update?: ProductCategoryUpdateWithWhereUniqueWithoutCategoryInput | ProductCategoryUpdateWithWhereUniqueWithoutCategoryInput[]
+    updateMany?: ProductCategoryUpdateManyWithWhereWithoutCategoryInput | ProductCategoryUpdateManyWithWhereWithoutCategoryInput[]
+    deleteMany?: ProductCategoryScalarWhereInput | ProductCategoryScalarWhereInput[]
+  }
+
   export type PersonalizationTemplateUncheckedUpdateManyWithoutCategoryNestedInput = {
     create?: XOR<PersonalizationTemplateCreateWithoutCategoryInput, PersonalizationTemplateUncheckedCreateWithoutCategoryInput> | PersonalizationTemplateCreateWithoutCategoryInput[] | PersonalizationTemplateUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: PersonalizationTemplateCreateOrConnectWithoutCategoryInput | PersonalizationTemplateCreateOrConnectWithoutCategoryInput[]
@@ -88103,6 +91572,13 @@ export namespace Prisma {
     create?: XOR<CategoryCreateWithoutProductsInput, CategoryUncheckedCreateWithoutProductsInput>
     connectOrCreate?: CategoryCreateOrConnectWithoutProductsInput
     connect?: CategoryWhereUniqueInput
+  }
+
+  export type ProductCategoryCreateNestedManyWithoutProductInput = {
+    create?: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput> | ProductCategoryCreateWithoutProductInput[] | ProductCategoryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductCategoryCreateOrConnectWithoutProductInput | ProductCategoryCreateOrConnectWithoutProductInput[]
+    createMany?: ProductCategoryCreateManyProductInputEnvelope
+    connect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
   }
 
   export type ProductVariantCreateNestedManyWithoutProductInput = {
@@ -88189,6 +91665,20 @@ export namespace Prisma {
     connect?: VendorCapabilityWhereUniqueInput | VendorCapabilityWhereUniqueInput[]
   }
 
+  export type ArtworkAssetCreateNestedManyWithoutProductInput = {
+    create?: XOR<ArtworkAssetCreateWithoutProductInput, ArtworkAssetUncheckedCreateWithoutProductInput> | ArtworkAssetCreateWithoutProductInput[] | ArtworkAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutProductInput | ArtworkAssetCreateOrConnectWithoutProductInput[]
+    createMany?: ArtworkAssetCreateManyProductInputEnvelope
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+  }
+
+  export type ProductCategoryUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput> | ProductCategoryCreateWithoutProductInput[] | ProductCategoryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductCategoryCreateOrConnectWithoutProductInput | ProductCategoryCreateOrConnectWithoutProductInput[]
+    createMany?: ProductCategoryCreateManyProductInputEnvelope
+    connect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+  }
+
   export type ProductVariantUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<ProductVariantCreateWithoutProductInput, ProductVariantUncheckedCreateWithoutProductInput> | ProductVariantCreateWithoutProductInput[] | ProductVariantUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductVariantCreateOrConnectWithoutProductInput | ProductVariantCreateOrConnectWithoutProductInput[]
@@ -88273,6 +91763,13 @@ export namespace Prisma {
     connect?: VendorCapabilityWhereUniqueInput | VendorCapabilityWhereUniqueInput[]
   }
 
+  export type ArtworkAssetUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<ArtworkAssetCreateWithoutProductInput, ArtworkAssetUncheckedCreateWithoutProductInput> | ArtworkAssetCreateWithoutProductInput[] | ArtworkAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutProductInput | ArtworkAssetCreateOrConnectWithoutProductInput[]
+    createMany?: ArtworkAssetCreateManyProductInputEnvelope
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+  }
+
   export type EnumProductStatusFieldUpdateOperationsInput = {
     set?: $Enums.ProductStatus
   }
@@ -88296,6 +91793,20 @@ export namespace Prisma {
     upsert?: CategoryUpsertWithoutProductsInput
     connect?: CategoryWhereUniqueInput
     update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutProductsInput, CategoryUpdateWithoutProductsInput>, CategoryUncheckedUpdateWithoutProductsInput>
+  }
+
+  export type ProductCategoryUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput> | ProductCategoryCreateWithoutProductInput[] | ProductCategoryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductCategoryCreateOrConnectWithoutProductInput | ProductCategoryCreateOrConnectWithoutProductInput[]
+    upsert?: ProductCategoryUpsertWithWhereUniqueWithoutProductInput | ProductCategoryUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ProductCategoryCreateManyProductInputEnvelope
+    set?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    disconnect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    delete?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    connect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    update?: ProductCategoryUpdateWithWhereUniqueWithoutProductInput | ProductCategoryUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ProductCategoryUpdateManyWithWhereWithoutProductInput | ProductCategoryUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ProductCategoryScalarWhereInput | ProductCategoryScalarWhereInput[]
   }
 
   export type ProductVariantUpdateManyWithoutProductNestedInput = {
@@ -88466,6 +91977,34 @@ export namespace Prisma {
     deleteMany?: VendorCapabilityScalarWhereInput | VendorCapabilityScalarWhereInput[]
   }
 
+  export type ArtworkAssetUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ArtworkAssetCreateWithoutProductInput, ArtworkAssetUncheckedCreateWithoutProductInput> | ArtworkAssetCreateWithoutProductInput[] | ArtworkAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutProductInput | ArtworkAssetCreateOrConnectWithoutProductInput[]
+    upsert?: ArtworkAssetUpsertWithWhereUniqueWithoutProductInput | ArtworkAssetUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ArtworkAssetCreateManyProductInputEnvelope
+    set?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    disconnect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    delete?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    update?: ArtworkAssetUpdateWithWhereUniqueWithoutProductInput | ArtworkAssetUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ArtworkAssetUpdateManyWithWhereWithoutProductInput | ArtworkAssetUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
+  }
+
+  export type ProductCategoryUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput> | ProductCategoryCreateWithoutProductInput[] | ProductCategoryUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ProductCategoryCreateOrConnectWithoutProductInput | ProductCategoryCreateOrConnectWithoutProductInput[]
+    upsert?: ProductCategoryUpsertWithWhereUniqueWithoutProductInput | ProductCategoryUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ProductCategoryCreateManyProductInputEnvelope
+    set?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    disconnect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    delete?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    connect?: ProductCategoryWhereUniqueInput | ProductCategoryWhereUniqueInput[]
+    update?: ProductCategoryUpdateWithWhereUniqueWithoutProductInput | ProductCategoryUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ProductCategoryUpdateManyWithWhereWithoutProductInput | ProductCategoryUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ProductCategoryScalarWhereInput | ProductCategoryScalarWhereInput[]
+  }
+
   export type ProductVariantUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<ProductVariantCreateWithoutProductInput, ProductVariantUncheckedCreateWithoutProductInput> | ProductVariantCreateWithoutProductInput[] | ProductVariantUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductVariantCreateOrConnectWithoutProductInput | ProductVariantCreateOrConnectWithoutProductInput[]
@@ -88632,6 +92171,102 @@ export namespace Prisma {
     update?: VendorCapabilityUpdateWithWhereUniqueWithoutProductInput | VendorCapabilityUpdateWithWhereUniqueWithoutProductInput[]
     updateMany?: VendorCapabilityUpdateManyWithWhereWithoutProductInput | VendorCapabilityUpdateManyWithWhereWithoutProductInput[]
     deleteMany?: VendorCapabilityScalarWhereInput | VendorCapabilityScalarWhereInput[]
+  }
+
+  export type ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<ArtworkAssetCreateWithoutProductInput, ArtworkAssetUncheckedCreateWithoutProductInput> | ArtworkAssetCreateWithoutProductInput[] | ArtworkAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutProductInput | ArtworkAssetCreateOrConnectWithoutProductInput[]
+    upsert?: ArtworkAssetUpsertWithWhereUniqueWithoutProductInput | ArtworkAssetUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: ArtworkAssetCreateManyProductInputEnvelope
+    set?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    disconnect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    delete?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    update?: ArtworkAssetUpdateWithWhereUniqueWithoutProductInput | ArtworkAssetUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: ArtworkAssetUpdateManyWithWhereWithoutProductInput | ArtworkAssetUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
+  }
+
+  export type ProductCreateNestedOneWithoutCategoryLinksInput = {
+    create?: XOR<ProductCreateWithoutCategoryLinksInput, ProductUncheckedCreateWithoutCategoryLinksInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutCategoryLinksInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type CategoryCreateNestedOneWithoutProductLinksInput = {
+    create?: XOR<CategoryCreateWithoutProductLinksInput, CategoryUncheckedCreateWithoutProductLinksInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutProductLinksInput
+    connect?: CategoryWhereUniqueInput
+  }
+
+  export type ProductUpdateOneRequiredWithoutCategoryLinksNestedInput = {
+    create?: XOR<ProductCreateWithoutCategoryLinksInput, ProductUncheckedCreateWithoutCategoryLinksInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutCategoryLinksInput
+    upsert?: ProductUpsertWithoutCategoryLinksInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutCategoryLinksInput, ProductUpdateWithoutCategoryLinksInput>, ProductUncheckedUpdateWithoutCategoryLinksInput>
+  }
+
+  export type CategoryUpdateOneRequiredWithoutProductLinksNestedInput = {
+    create?: XOR<CategoryCreateWithoutProductLinksInput, CategoryUncheckedCreateWithoutProductLinksInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutProductLinksInput
+    upsert?: CategoryUpsertWithoutProductLinksInput
+    connect?: CategoryWhereUniqueInput
+    update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutProductLinksInput, CategoryUpdateWithoutProductLinksInput>, CategoryUncheckedUpdateWithoutProductLinksInput>
+  }
+
+  export type ProductCreateNestedOneWithoutArtworkAssetsInput = {
+    create?: XOR<ProductCreateWithoutArtworkAssetsInput, ProductUncheckedCreateWithoutArtworkAssetsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutArtworkAssetsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type OrderItemCreateNestedOneWithoutArtworkAssetsInput = {
+    create?: XOR<OrderItemCreateWithoutArtworkAssetsInput, OrderItemUncheckedCreateWithoutArtworkAssetsInput>
+    connectOrCreate?: OrderItemCreateOrConnectWithoutArtworkAssetsInput
+    connect?: OrderItemWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutUploadedArtworkAssetsInput = {
+    create?: XOR<UserCreateWithoutUploadedArtworkAssetsInput, UserUncheckedCreateWithoutUploadedArtworkAssetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUploadedArtworkAssetsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BytesFieldUpdateOperationsInput = {
+    set?: Bytes
+  }
+
+  export type EnumArtworkAssetStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ArtworkAssetStatus
+  }
+
+  export type ProductUpdateOneRequiredWithoutArtworkAssetsNestedInput = {
+    create?: XOR<ProductCreateWithoutArtworkAssetsInput, ProductUncheckedCreateWithoutArtworkAssetsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutArtworkAssetsInput
+    upsert?: ProductUpsertWithoutArtworkAssetsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutArtworkAssetsInput, ProductUpdateWithoutArtworkAssetsInput>, ProductUncheckedUpdateWithoutArtworkAssetsInput>
+  }
+
+  export type OrderItemUpdateOneWithoutArtworkAssetsNestedInput = {
+    create?: XOR<OrderItemCreateWithoutArtworkAssetsInput, OrderItemUncheckedCreateWithoutArtworkAssetsInput>
+    connectOrCreate?: OrderItemCreateOrConnectWithoutArtworkAssetsInput
+    upsert?: OrderItemUpsertWithoutArtworkAssetsInput
+    disconnect?: OrderItemWhereInput | boolean
+    delete?: OrderItemWhereInput | boolean
+    connect?: OrderItemWhereUniqueInput
+    update?: XOR<XOR<OrderItemUpdateToOneWithWhereWithoutArtworkAssetsInput, OrderItemUpdateWithoutArtworkAssetsInput>, OrderItemUncheckedUpdateWithoutArtworkAssetsInput>
+  }
+
+  export type UserUpdateOneWithoutUploadedArtworkAssetsNestedInput = {
+    create?: XOR<UserCreateWithoutUploadedArtworkAssetsInput, UserUncheckedCreateWithoutUploadedArtworkAssetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUploadedArtworkAssetsInput
+    upsert?: UserUpsertWithoutUploadedArtworkAssetsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUploadedArtworkAssetsInput, UserUpdateWithoutUploadedArtworkAssetsInput>, UserUncheckedUpdateWithoutUploadedArtworkAssetsInput>
   }
 
   export type ProductCreateNestedOneWithoutVariantsInput = {
@@ -90042,10 +93677,6 @@ export namespace Prisma {
     set?: $Enums.VendorDocumentReviewStatus
   }
 
-  export type BytesFieldUpdateOperationsInput = {
-    set?: Bytes
-  }
-
   export type VendorApplicationUpdateOneRequiredWithoutDocumentsNestedInput = {
     create?: XOR<VendorApplicationCreateWithoutDocumentsInput, VendorApplicationUncheckedCreateWithoutDocumentsInput>
     connectOrCreate?: VendorApplicationCreateOrConnectWithoutDocumentsInput
@@ -90386,6 +94017,13 @@ export namespace Prisma {
     connect?: ReviewWhereUniqueInput
   }
 
+  export type ArtworkAssetCreateNestedManyWithoutOrderItemInput = {
+    create?: XOR<ArtworkAssetCreateWithoutOrderItemInput, ArtworkAssetUncheckedCreateWithoutOrderItemInput> | ArtworkAssetCreateWithoutOrderItemInput[] | ArtworkAssetUncheckedCreateWithoutOrderItemInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutOrderItemInput | ArtworkAssetCreateOrConnectWithoutOrderItemInput[]
+    createMany?: ArtworkAssetCreateManyOrderItemInputEnvelope
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+  }
+
   export type OrderPersonalizationUncheckedCreateNestedOneWithoutOrderItemInput = {
     create?: XOR<OrderPersonalizationCreateWithoutOrderItemInput, OrderPersonalizationUncheckedCreateWithoutOrderItemInput>
     connectOrCreate?: OrderPersonalizationCreateOrConnectWithoutOrderItemInput
@@ -90402,6 +94040,13 @@ export namespace Prisma {
     create?: XOR<ReviewCreateWithoutOrderItemInput, ReviewUncheckedCreateWithoutOrderItemInput>
     connectOrCreate?: ReviewCreateOrConnectWithoutOrderItemInput
     connect?: ReviewWhereUniqueInput
+  }
+
+  export type ArtworkAssetUncheckedCreateNestedManyWithoutOrderItemInput = {
+    create?: XOR<ArtworkAssetCreateWithoutOrderItemInput, ArtworkAssetUncheckedCreateWithoutOrderItemInput> | ArtworkAssetCreateWithoutOrderItemInput[] | ArtworkAssetUncheckedCreateWithoutOrderItemInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutOrderItemInput | ArtworkAssetCreateOrConnectWithoutOrderItemInput[]
+    createMany?: ArtworkAssetCreateManyOrderItemInputEnvelope
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
   }
 
   export type OrderUpdateOneRequiredWithoutItemsNestedInput = {
@@ -90462,6 +94107,20 @@ export namespace Prisma {
     update?: XOR<XOR<ReviewUpdateToOneWithWhereWithoutOrderItemInput, ReviewUpdateWithoutOrderItemInput>, ReviewUncheckedUpdateWithoutOrderItemInput>
   }
 
+  export type ArtworkAssetUpdateManyWithoutOrderItemNestedInput = {
+    create?: XOR<ArtworkAssetCreateWithoutOrderItemInput, ArtworkAssetUncheckedCreateWithoutOrderItemInput> | ArtworkAssetCreateWithoutOrderItemInput[] | ArtworkAssetUncheckedCreateWithoutOrderItemInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutOrderItemInput | ArtworkAssetCreateOrConnectWithoutOrderItemInput[]
+    upsert?: ArtworkAssetUpsertWithWhereUniqueWithoutOrderItemInput | ArtworkAssetUpsertWithWhereUniqueWithoutOrderItemInput[]
+    createMany?: ArtworkAssetCreateManyOrderItemInputEnvelope
+    set?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    disconnect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    delete?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    update?: ArtworkAssetUpdateWithWhereUniqueWithoutOrderItemInput | ArtworkAssetUpdateWithWhereUniqueWithoutOrderItemInput[]
+    updateMany?: ArtworkAssetUpdateManyWithWhereWithoutOrderItemInput | ArtworkAssetUpdateManyWithWhereWithoutOrderItemInput[]
+    deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
+  }
+
   export type OrderPersonalizationUncheckedUpdateOneWithoutOrderItemNestedInput = {
     create?: XOR<OrderPersonalizationCreateWithoutOrderItemInput, OrderPersonalizationUncheckedCreateWithoutOrderItemInput>
     connectOrCreate?: OrderPersonalizationCreateOrConnectWithoutOrderItemInput
@@ -90490,6 +94149,20 @@ export namespace Prisma {
     delete?: ReviewWhereInput | boolean
     connect?: ReviewWhereUniqueInput
     update?: XOR<XOR<ReviewUpdateToOneWithWhereWithoutOrderItemInput, ReviewUpdateWithoutOrderItemInput>, ReviewUncheckedUpdateWithoutOrderItemInput>
+  }
+
+  export type ArtworkAssetUncheckedUpdateManyWithoutOrderItemNestedInput = {
+    create?: XOR<ArtworkAssetCreateWithoutOrderItemInput, ArtworkAssetUncheckedCreateWithoutOrderItemInput> | ArtworkAssetCreateWithoutOrderItemInput[] | ArtworkAssetUncheckedCreateWithoutOrderItemInput[]
+    connectOrCreate?: ArtworkAssetCreateOrConnectWithoutOrderItemInput | ArtworkAssetCreateOrConnectWithoutOrderItemInput[]
+    upsert?: ArtworkAssetUpsertWithWhereUniqueWithoutOrderItemInput | ArtworkAssetUpsertWithWhereUniqueWithoutOrderItemInput[]
+    createMany?: ArtworkAssetCreateManyOrderItemInputEnvelope
+    set?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    disconnect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    delete?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+    update?: ArtworkAssetUpdateWithWhereUniqueWithoutOrderItemInput | ArtworkAssetUpdateWithWhereUniqueWithoutOrderItemInput[]
+    updateMany?: ArtworkAssetUpdateManyWithWhereWithoutOrderItemInput | ArtworkAssetUpdateManyWithWhereWithoutOrderItemInput[]
+    deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
   }
 
   export type OrderItemCreateNestedOneWithoutPersonalizationInput = {
@@ -91587,6 +95260,40 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedBytesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesFilter<$PrismaModel> | Bytes
+  }
+
+  export type NestedEnumArtworkAssetStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ArtworkAssetStatus | EnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ArtworkAssetStatus[] | ListEnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ArtworkAssetStatus[] | ListEnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumArtworkAssetStatusFilter<$PrismaModel> | $Enums.ArtworkAssetStatus
+  }
+
+  export type NestedBytesWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Bytes
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBytesFilter<$PrismaModel>
+    _max?: NestedBytesFilter<$PrismaModel>
+  }
+
+  export type NestedEnumArtworkAssetStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ArtworkAssetStatus | EnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ArtworkAssetStatus[] | ListEnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ArtworkAssetStatus[] | ListEnumArtworkAssetStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumArtworkAssetStatusWithAggregatesFilter<$PrismaModel> | $Enums.ArtworkAssetStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumArtworkAssetStatusFilter<$PrismaModel>
+    _max?: NestedEnumArtworkAssetStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumInventoryPolicyFilter<$PrismaModel = never> = {
     equals?: $Enums.InventoryPolicy | EnumInventoryPolicyFieldRefInput<$PrismaModel>
     in?: $Enums.InventoryPolicy[] | ListEnumInventoryPolicyFieldRefInput<$PrismaModel>
@@ -91838,13 +95545,6 @@ export namespace Prisma {
     not?: NestedEnumVendorDocumentReviewStatusFilter<$PrismaModel> | $Enums.VendorDocumentReviewStatus
   }
 
-  export type NestedBytesFilter<$PrismaModel = never> = {
-    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
-    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
-    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
-    not?: NestedBytesFilter<$PrismaModel> | Bytes
-  }
-
   export type NestedEnumVendorDocumentTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.VendorDocumentType | EnumVendorDocumentTypeFieldRefInput<$PrismaModel>
     in?: $Enums.VendorDocumentType[] | ListEnumVendorDocumentTypeFieldRefInput<$PrismaModel>
@@ -91863,16 +95563,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumVendorDocumentReviewStatusFilter<$PrismaModel>
     _max?: NestedEnumVendorDocumentReviewStatusFilter<$PrismaModel>
-  }
-
-  export type NestedBytesWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Bytes | BytesFieldRefInput<$PrismaModel>
-    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
-    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel>
-    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Bytes
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBytesFilter<$PrismaModel>
-    _max?: NestedBytesFilter<$PrismaModel>
   }
 
   export type NestedEnumVendorApplicationStatusNullableFilter<$PrismaModel = never> = {
@@ -93001,6 +96691,58 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ArtworkAssetCreateWithoutOwnerInput = {
+    id?: string
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutArtworkAssetsInput
+    orderItem?: OrderItemCreateNestedOneWithoutArtworkAssetsInput
+  }
+
+  export type ArtworkAssetUncheckedCreateWithoutOwnerInput = {
+    id?: string
+    productId: string
+    orderItemId?: string | null
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArtworkAssetCreateOrConnectWithoutOwnerInput = {
+    where: ArtworkAssetWhereUniqueInput
+    create: XOR<ArtworkAssetCreateWithoutOwnerInput, ArtworkAssetUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type ArtworkAssetCreateManyOwnerInputEnvelope = {
+    data: ArtworkAssetCreateManyOwnerInput | ArtworkAssetCreateManyOwnerInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AddressUpsertWithWhereUniqueWithoutUserInput = {
     where: AddressWhereUniqueInput
     update: XOR<AddressUpdateWithoutUserInput, AddressUncheckedUpdateWithoutUserInput>
@@ -93765,6 +97507,47 @@ export namespace Prisma {
     data: XOR<VendorDocumentUpdateManyMutationInput, VendorDocumentUncheckedUpdateManyWithoutReviewedByInput>
   }
 
+  export type ArtworkAssetUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: ArtworkAssetWhereUniqueInput
+    update: XOR<ArtworkAssetUpdateWithoutOwnerInput, ArtworkAssetUncheckedUpdateWithoutOwnerInput>
+    create: XOR<ArtworkAssetCreateWithoutOwnerInput, ArtworkAssetUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type ArtworkAssetUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: ArtworkAssetWhereUniqueInput
+    data: XOR<ArtworkAssetUpdateWithoutOwnerInput, ArtworkAssetUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type ArtworkAssetUpdateManyWithWhereWithoutOwnerInput = {
+    where: ArtworkAssetScalarWhereInput
+    data: XOR<ArtworkAssetUpdateManyMutationInput, ArtworkAssetUncheckedUpdateManyWithoutOwnerInput>
+  }
+
+  export type ArtworkAssetScalarWhereInput = {
+    AND?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
+    OR?: ArtworkAssetScalarWhereInput[]
+    NOT?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
+    id?: StringFilter<"ArtworkAsset"> | string
+    productId?: StringFilter<"ArtworkAsset"> | string
+    orderItemId?: StringNullableFilter<"ArtworkAsset"> | string | null
+    ownerUserId?: StringNullableFilter<"ArtworkAsset"> | string | null
+    surfaceId?: StringFilter<"ArtworkAsset"> | string
+    claimTokenHash?: StringFilter<"ArtworkAsset"> | string
+    originalName?: StringFilter<"ArtworkAsset"> | string
+    mimeType?: StringFilter<"ArtworkAsset"> | string
+    sizeBytes?: IntFilter<"ArtworkAsset"> | number
+    width?: IntFilter<"ArtworkAsset"> | number
+    height?: IntFilter<"ArtworkAsset"> | number
+    hasTransparency?: BoolFilter<"ArtworkAsset"> | boolean
+    sha256?: StringFilter<"ArtworkAsset"> | string
+    content?: BytesFilter<"ArtworkAsset"> | Bytes
+    status?: EnumArtworkAssetStatusFilter<"ArtworkAsset"> | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
+    attachedAt?: DateTimeNullableFilter<"ArtworkAsset"> | Date | string | null
+    createdAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
+  }
+
   export type UserCreateWithoutAuthSessionsInput = {
     id?: string
     email: string
@@ -93798,6 +97581,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutAuthSessionsInput = {
@@ -93833,6 +97617,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutAuthSessionsInput = {
@@ -93884,6 +97669,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuthSessionsInput = {
@@ -93919,6 +97705,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserRoleCreateWithoutRoleInput = {
@@ -94066,6 +97853,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutRolesInput = {
@@ -94101,6 +97889,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutRolesInput = {
@@ -94179,6 +97968,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRolesInput = {
@@ -94214,6 +98004,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type RoleUpsertWithoutUsersInput = {
@@ -94382,6 +98173,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutAddressesInput = {
@@ -94417,6 +98209,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutAddressesInput = {
@@ -94468,6 +98261,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAddressesInput = {
@@ -94503,6 +98297,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type CategoryCreateWithoutChildrenInput = {
@@ -94519,6 +98314,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     parent?: CategoryCreateNestedOneWithoutChildrenInput
     products?: ProductCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryCreateNestedManyWithoutCategoryInput
   }
@@ -94537,6 +98333,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateUncheckedCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryUncheckedCreateNestedManyWithoutCategoryInput
   }
@@ -94560,6 +98357,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     children?: CategoryCreateNestedManyWithoutParentInput
     products?: ProductCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryCreateNestedManyWithoutCategoryInput
   }
@@ -94578,6 +98376,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     children?: CategoryUncheckedCreateNestedManyWithoutParentInput
     products?: ProductUncheckedCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateUncheckedCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryUncheckedCreateNestedManyWithoutCategoryInput
   }
@@ -94620,6 +98419,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -94632,6 +98432,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCategoryInput = {
@@ -94662,6 +98463,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -94674,6 +98476,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCategoryInput = {
@@ -94683,6 +98486,26 @@ export namespace Prisma {
 
   export type ProductCreateManyCategoryInputEnvelope = {
     data: ProductCreateManyCategoryInput | ProductCreateManyCategoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductCategoryCreateWithoutCategoryInput = {
+    createdAt?: Date | string
+    product: ProductCreateNestedOneWithoutCategoryLinksInput
+  }
+
+  export type ProductCategoryUncheckedCreateWithoutCategoryInput = {
+    productId: string
+    createdAt?: Date | string
+  }
+
+  export type ProductCategoryCreateOrConnectWithoutCategoryInput = {
+    where: ProductCategoryWhereUniqueInput
+    create: XOR<ProductCategoryCreateWithoutCategoryInput, ProductCategoryUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type ProductCategoryCreateManyCategoryInputEnvelope = {
+    data: ProductCategoryCreateManyCategoryInput | ProductCategoryCreateManyCategoryInput[]
     skipDuplicates?: boolean
   }
 
@@ -94783,6 +98606,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parent?: CategoryUpdateOneWithoutChildrenNestedInput
     products?: ProductUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUpdateManyWithoutCategoryNestedInput
   }
@@ -94801,6 +98625,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUncheckedUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUncheckedUpdateManyWithoutCategoryNestedInput
   }
@@ -94889,6 +98714,31 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Product"> | Date | string
   }
 
+  export type ProductCategoryUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: ProductCategoryWhereUniqueInput
+    update: XOR<ProductCategoryUpdateWithoutCategoryInput, ProductCategoryUncheckedUpdateWithoutCategoryInput>
+    create: XOR<ProductCategoryCreateWithoutCategoryInput, ProductCategoryUncheckedCreateWithoutCategoryInput>
+  }
+
+  export type ProductCategoryUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: ProductCategoryWhereUniqueInput
+    data: XOR<ProductCategoryUpdateWithoutCategoryInput, ProductCategoryUncheckedUpdateWithoutCategoryInput>
+  }
+
+  export type ProductCategoryUpdateManyWithWhereWithoutCategoryInput = {
+    where: ProductCategoryScalarWhereInput
+    data: XOR<ProductCategoryUpdateManyMutationInput, ProductCategoryUncheckedUpdateManyWithoutCategoryInput>
+  }
+
+  export type ProductCategoryScalarWhereInput = {
+    AND?: ProductCategoryScalarWhereInput | ProductCategoryScalarWhereInput[]
+    OR?: ProductCategoryScalarWhereInput[]
+    NOT?: ProductCategoryScalarWhereInput | ProductCategoryScalarWhereInput[]
+    productId?: StringFilter<"ProductCategory"> | string
+    categoryId?: StringFilter<"ProductCategory"> | string
+    createdAt?: DateTimeFilter<"ProductCategory"> | Date | string
+  }
+
   export type PersonalizationTemplateUpsertWithWhereUniqueWithoutCategoryInput = {
     where: PersonalizationTemplateWhereUniqueInput
     update: XOR<PersonalizationTemplateUpdateWithoutCategoryInput, PersonalizationTemplateUncheckedUpdateWithoutCategoryInput>
@@ -94966,6 +98816,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     parent?: CategoryCreateNestedOneWithoutChildrenInput
     children?: CategoryCreateNestedManyWithoutParentInput
+    productLinks?: ProductCategoryCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryCreateNestedManyWithoutCategoryInput
   }
@@ -94984,6 +98835,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     children?: CategoryUncheckedCreateNestedManyWithoutParentInput
+    productLinks?: ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateUncheckedCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryUncheckedCreateNestedManyWithoutCategoryInput
   }
@@ -94991,6 +98843,26 @@ export namespace Prisma {
   export type CategoryCreateOrConnectWithoutProductsInput = {
     where: CategoryWhereUniqueInput
     create: XOR<CategoryCreateWithoutProductsInput, CategoryUncheckedCreateWithoutProductsInput>
+  }
+
+  export type ProductCategoryCreateWithoutProductInput = {
+    createdAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductLinksInput
+  }
+
+  export type ProductCategoryUncheckedCreateWithoutProductInput = {
+    categoryId: string
+    createdAt?: Date | string
+  }
+
+  export type ProductCategoryCreateOrConnectWithoutProductInput = {
+    where: ProductCategoryWhereUniqueInput
+    create: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput>
+  }
+
+  export type ProductCategoryCreateManyProductInputEnvelope = {
+    data: ProductCategoryCreateManyProductInput | ProductCategoryCreateManyProductInput[]
+    skipDuplicates?: boolean
   }
 
   export type ProductVariantCreateWithoutProductInput = {
@@ -95229,6 +99101,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobCreateNestedOneWithoutOrderItemInput
     review?: ReviewCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutProductInput = {
@@ -95249,6 +99122,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUncheckedCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobUncheckedCreateNestedOneWithoutOrderItemInput
     review?: ReviewUncheckedCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemCreateOrConnectWithoutProductInput = {
@@ -95421,6 +99295,58 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ArtworkAssetCreateWithoutProductInput = {
+    id?: string
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orderItem?: OrderItemCreateNestedOneWithoutArtworkAssetsInput
+    owner?: UserCreateNestedOneWithoutUploadedArtworkAssetsInput
+  }
+
+  export type ArtworkAssetUncheckedCreateWithoutProductInput = {
+    id?: string
+    orderItemId?: string | null
+    ownerUserId?: string | null
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArtworkAssetCreateOrConnectWithoutProductInput = {
+    where: ArtworkAssetWhereUniqueInput
+    create: XOR<ArtworkAssetCreateWithoutProductInput, ArtworkAssetUncheckedCreateWithoutProductInput>
+  }
+
+  export type ArtworkAssetCreateManyProductInputEnvelope = {
+    data: ArtworkAssetCreateManyProductInput | ArtworkAssetCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CategoryUpsertWithoutProductsInput = {
     update: XOR<CategoryUpdateWithoutProductsInput, CategoryUncheckedUpdateWithoutProductsInput>
     create: XOR<CategoryCreateWithoutProductsInput, CategoryUncheckedCreateWithoutProductsInput>
@@ -95446,6 +99372,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     parent?: CategoryUpdateOneWithoutChildrenNestedInput
     children?: CategoryUpdateManyWithoutParentNestedInput
+    productLinks?: ProductCategoryUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUpdateManyWithoutCategoryNestedInput
   }
@@ -95464,8 +99391,25 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     children?: CategoryUncheckedUpdateManyWithoutParentNestedInput
+    productLinks?: ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUncheckedUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type ProductCategoryUpsertWithWhereUniqueWithoutProductInput = {
+    where: ProductCategoryWhereUniqueInput
+    update: XOR<ProductCategoryUpdateWithoutProductInput, ProductCategoryUncheckedUpdateWithoutProductInput>
+    create: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput>
+  }
+
+  export type ProductCategoryUpdateWithWhereUniqueWithoutProductInput = {
+    where: ProductCategoryWhereUniqueInput
+    data: XOR<ProductCategoryUpdateWithoutProductInput, ProductCategoryUncheckedUpdateWithoutProductInput>
+  }
+
+  export type ProductCategoryUpdateManyWithWhereWithoutProductInput = {
+    where: ProductCategoryScalarWhereInput
+    data: XOR<ProductCategoryUpdateManyMutationInput, ProductCategoryUncheckedUpdateManyWithoutProductInput>
   }
 
   export type ProductVariantUpsertWithWhereUniqueWithoutProductInput = {
@@ -95792,6 +99736,758 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"VendorCapability"> | Date | string
   }
 
+  export type ArtworkAssetUpsertWithWhereUniqueWithoutProductInput = {
+    where: ArtworkAssetWhereUniqueInput
+    update: XOR<ArtworkAssetUpdateWithoutProductInput, ArtworkAssetUncheckedUpdateWithoutProductInput>
+    create: XOR<ArtworkAssetCreateWithoutProductInput, ArtworkAssetUncheckedCreateWithoutProductInput>
+  }
+
+  export type ArtworkAssetUpdateWithWhereUniqueWithoutProductInput = {
+    where: ArtworkAssetWhereUniqueInput
+    data: XOR<ArtworkAssetUpdateWithoutProductInput, ArtworkAssetUncheckedUpdateWithoutProductInput>
+  }
+
+  export type ArtworkAssetUpdateManyWithWhereWithoutProductInput = {
+    where: ArtworkAssetScalarWhereInput
+    data: XOR<ArtworkAssetUpdateManyMutationInput, ArtworkAssetUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type ProductCreateWithoutCategoryLinksInput = {
+    id?: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    variants?: ProductVariantCreateNestedManyWithoutProductInput
+    images?: ProductImageCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductInput
+    reviews?: ReviewCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutCategoryLinksInput = {
+    id?: string
+    categoryId: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
+    images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateUncheckedCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutCategoryLinksInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutCategoryLinksInput, ProductUncheckedCreateWithoutCategoryLinksInput>
+  }
+
+  export type CategoryCreateWithoutProductLinksInput = {
+    id?: string
+    name: string
+    slug: string
+    description?: string | null
+    imageUrl?: string | null
+    seoTitle?: string | null
+    seoDescription?: string | null
+    sortOrder?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: CategoryCreateNestedOneWithoutChildrenInput
+    children?: CategoryCreateNestedManyWithoutParentInput
+    products?: ProductCreateNestedManyWithoutCategoryInput
+    templates?: PersonalizationTemplateCreateNestedManyWithoutCategoryInput
+    couponLinks?: CouponCategoryCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryUncheckedCreateWithoutProductLinksInput = {
+    id?: string
+    parentId?: string | null
+    name: string
+    slug: string
+    description?: string | null
+    imageUrl?: string | null
+    seoTitle?: string | null
+    seoDescription?: string | null
+    sortOrder?: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: CategoryUncheckedCreateNestedManyWithoutParentInput
+    products?: ProductUncheckedCreateNestedManyWithoutCategoryInput
+    templates?: PersonalizationTemplateUncheckedCreateNestedManyWithoutCategoryInput
+    couponLinks?: CouponCategoryUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type CategoryCreateOrConnectWithoutProductLinksInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutProductLinksInput, CategoryUncheckedCreateWithoutProductLinksInput>
+  }
+
+  export type ProductUpsertWithoutCategoryLinksInput = {
+    update: XOR<ProductUpdateWithoutCategoryLinksInput, ProductUncheckedUpdateWithoutCategoryLinksInput>
+    create: XOR<ProductCreateWithoutCategoryLinksInput, ProductUncheckedCreateWithoutCategoryLinksInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutCategoryLinksInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutCategoryLinksInput, ProductUncheckedUpdateWithoutCategoryLinksInput>
+  }
+
+  export type ProductUpdateWithoutCategoryLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    variants?: ProductVariantUpdateManyWithoutProductNestedInput
+    images?: ProductImageUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutCategoryLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+    images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type CategoryUpsertWithoutProductLinksInput = {
+    update: XOR<CategoryUpdateWithoutProductLinksInput, CategoryUncheckedUpdateWithoutProductLinksInput>
+    create: XOR<CategoryCreateWithoutProductLinksInput, CategoryUncheckedCreateWithoutProductLinksInput>
+    where?: CategoryWhereInput
+  }
+
+  export type CategoryUpdateToOneWithWhereWithoutProductLinksInput = {
+    where?: CategoryWhereInput
+    data: XOR<CategoryUpdateWithoutProductLinksInput, CategoryUncheckedUpdateWithoutProductLinksInput>
+  }
+
+  export type CategoryUpdateWithoutProductLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: CategoryUpdateOneWithoutChildrenNestedInput
+    children?: CategoryUpdateManyWithoutParentNestedInput
+    products?: ProductUpdateManyWithoutCategoryNestedInput
+    templates?: PersonalizationTemplateUpdateManyWithoutCategoryNestedInput
+    couponLinks?: CouponCategoryUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type CategoryUncheckedUpdateWithoutProductLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: CategoryUncheckedUpdateManyWithoutParentNestedInput
+    products?: ProductUncheckedUpdateManyWithoutCategoryNestedInput
+    templates?: PersonalizationTemplateUncheckedUpdateManyWithoutCategoryNestedInput
+    couponLinks?: CouponCategoryUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type ProductCreateWithoutArtworkAssetsInput = {
+    id?: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
+    variants?: ProductVariantCreateNestedManyWithoutProductInput
+    images?: ProductImageCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductInput
+    reviews?: ReviewCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutArtworkAssetsInput = {
+    id?: string
+    categoryId: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
+    variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
+    images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateUncheckedCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutArtworkAssetsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutArtworkAssetsInput, ProductUncheckedCreateWithoutArtworkAssetsInput>
+  }
+
+  export type OrderItemCreateWithoutArtworkAssetsInput = {
+    id?: string
+    productNameSnapshot: string
+    productSlugSnapshot: string
+    skuSnapshot: string
+    variantSnapshot: JsonNullValueInput | InputJsonValue
+    productSnapshot: JsonNullValueInput | InputJsonValue
+    quantity: number
+    unitPricePaise: number
+    discountPaise?: number
+    taxPaise?: number
+    lineTotalPaise: number
+    createdAt?: Date | string
+    order: OrderCreateNestedOneWithoutItemsInput
+    product?: ProductCreateNestedOneWithoutOrderItemsInput
+    variant?: ProductVariantCreateNestedOneWithoutOrderItemsInput
+    personalization?: OrderPersonalizationCreateNestedOneWithoutOrderItemInput
+    productionJob?: ProductionJobCreateNestedOneWithoutOrderItemInput
+    review?: ReviewCreateNestedOneWithoutOrderItemInput
+  }
+
+  export type OrderItemUncheckedCreateWithoutArtworkAssetsInput = {
+    id?: string
+    orderId: string
+    productId?: string | null
+    variantId?: string | null
+    productNameSnapshot: string
+    productSlugSnapshot: string
+    skuSnapshot: string
+    variantSnapshot: JsonNullValueInput | InputJsonValue
+    productSnapshot: JsonNullValueInput | InputJsonValue
+    quantity: number
+    unitPricePaise: number
+    discountPaise?: number
+    taxPaise?: number
+    lineTotalPaise: number
+    createdAt?: Date | string
+    personalization?: OrderPersonalizationUncheckedCreateNestedOneWithoutOrderItemInput
+    productionJob?: ProductionJobUncheckedCreateNestedOneWithoutOrderItemInput
+    review?: ReviewUncheckedCreateNestedOneWithoutOrderItemInput
+  }
+
+  export type OrderItemCreateOrConnectWithoutArtworkAssetsInput = {
+    where: OrderItemWhereUniqueInput
+    create: XOR<OrderItemCreateWithoutArtworkAssetsInput, OrderItemUncheckedCreateWithoutArtworkAssetsInput>
+  }
+
+  export type UserCreateWithoutUploadedArtworkAssetsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    passwordHash?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    status?: $Enums.UserStatus
+    emailVerifiedAt?: Date | string | null
+    phoneVerifiedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addresses?: AddressCreateNestedManyWithoutUserInput
+    roles?: UserRoleCreateNestedManyWithoutUserInput
+    carts?: CartCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    wishlists?: WishlistCreateNestedManyWithoutUserInput
+    couponRedemptions?: CouponRedemptionCreateNestedManyWithoutUserInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketCreateNestedManyWithoutUserInput
+    supportMessages?: SupportMessageCreateNestedManyWithoutAuthorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    vendorProfile?: VendorProfileCreateNestedOneWithoutUserInput
+    vendorApplication?: VendorApplicationCreateNestedOneWithoutUserInput
+    authSessions?: AuthSessionCreateNestedManyWithoutUserInput
+    reviewedVendorApplications?: VendorApplicationCreateNestedManyWithoutReviewerInput
+    vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
+    uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
+    reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+  }
+
+  export type UserUncheckedCreateWithoutUploadedArtworkAssetsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    passwordHash?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    status?: $Enums.UserStatus
+    emailVerifiedAt?: Date | string | null
+    phoneVerifiedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
+    roles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    carts?: CartUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    wishlists?: WishlistUncheckedCreateNestedManyWithoutUserInput
+    couponRedemptions?: CouponRedemptionUncheckedCreateNestedManyWithoutUserInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketUncheckedCreateNestedManyWithoutUserInput
+    supportMessages?: SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    vendorProfile?: VendorProfileUncheckedCreateNestedOneWithoutUserInput
+    vendorApplication?: VendorApplicationUncheckedCreateNestedOneWithoutUserInput
+    authSessions?: AuthSessionUncheckedCreateNestedManyWithoutUserInput
+    reviewedVendorApplications?: VendorApplicationUncheckedCreateNestedManyWithoutReviewerInput
+    vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
+    uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+    reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  }
+
+  export type UserCreateOrConnectWithoutUploadedArtworkAssetsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutUploadedArtworkAssetsInput, UserUncheckedCreateWithoutUploadedArtworkAssetsInput>
+  }
+
+  export type ProductUpsertWithoutArtworkAssetsInput = {
+    update: XOR<ProductUpdateWithoutArtworkAssetsInput, ProductUncheckedUpdateWithoutArtworkAssetsInput>
+    create: XOR<ProductCreateWithoutArtworkAssetsInput, ProductUncheckedCreateWithoutArtworkAssetsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutArtworkAssetsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutArtworkAssetsInput, ProductUncheckedUpdateWithoutArtworkAssetsInput>
+  }
+
+  export type ProductUpdateWithoutArtworkAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUpdateManyWithoutProductNestedInput
+    images?: ProductImageUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutArtworkAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+    images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type OrderItemUpsertWithoutArtworkAssetsInput = {
+    update: XOR<OrderItemUpdateWithoutArtworkAssetsInput, OrderItemUncheckedUpdateWithoutArtworkAssetsInput>
+    create: XOR<OrderItemCreateWithoutArtworkAssetsInput, OrderItemUncheckedCreateWithoutArtworkAssetsInput>
+    where?: OrderItemWhereInput
+  }
+
+  export type OrderItemUpdateToOneWithWhereWithoutArtworkAssetsInput = {
+    where?: OrderItemWhereInput
+    data: XOR<OrderItemUpdateWithoutArtworkAssetsInput, OrderItemUncheckedUpdateWithoutArtworkAssetsInput>
+  }
+
+  export type OrderItemUpdateWithoutArtworkAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productNameSnapshot?: StringFieldUpdateOperationsInput | string
+    productSlugSnapshot?: StringFieldUpdateOperationsInput | string
+    skuSnapshot?: StringFieldUpdateOperationsInput | string
+    variantSnapshot?: JsonNullValueInput | InputJsonValue
+    productSnapshot?: JsonNullValueInput | InputJsonValue
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPricePaise?: IntFieldUpdateOperationsInput | number
+    discountPaise?: IntFieldUpdateOperationsInput | number
+    taxPaise?: IntFieldUpdateOperationsInput | number
+    lineTotalPaise?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutItemsNestedInput
+    product?: ProductUpdateOneWithoutOrderItemsNestedInput
+    variant?: ProductVariantUpdateOneWithoutOrderItemsNestedInput
+    personalization?: OrderPersonalizationUpdateOneWithoutOrderItemNestedInput
+    productionJob?: ProductionJobUpdateOneWithoutOrderItemNestedInput
+    review?: ReviewUpdateOneWithoutOrderItemNestedInput
+  }
+
+  export type OrderItemUncheckedUpdateWithoutArtworkAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    variantId?: NullableStringFieldUpdateOperationsInput | string | null
+    productNameSnapshot?: StringFieldUpdateOperationsInput | string
+    productSlugSnapshot?: StringFieldUpdateOperationsInput | string
+    skuSnapshot?: StringFieldUpdateOperationsInput | string
+    variantSnapshot?: JsonNullValueInput | InputJsonValue
+    productSnapshot?: JsonNullValueInput | InputJsonValue
+    quantity?: IntFieldUpdateOperationsInput | number
+    unitPricePaise?: IntFieldUpdateOperationsInput | number
+    discountPaise?: IntFieldUpdateOperationsInput | number
+    taxPaise?: IntFieldUpdateOperationsInput | number
+    lineTotalPaise?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    personalization?: OrderPersonalizationUncheckedUpdateOneWithoutOrderItemNestedInput
+    productionJob?: ProductionJobUncheckedUpdateOneWithoutOrderItemNestedInput
+    review?: ReviewUncheckedUpdateOneWithoutOrderItemNestedInput
+  }
+
+  export type UserUpsertWithoutUploadedArtworkAssetsInput = {
+    update: XOR<UserUpdateWithoutUploadedArtworkAssetsInput, UserUncheckedUpdateWithoutUploadedArtworkAssetsInput>
+    create: XOR<UserCreateWithoutUploadedArtworkAssetsInput, UserUncheckedCreateWithoutUploadedArtworkAssetsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUploadedArtworkAssetsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUploadedArtworkAssetsInput, UserUncheckedUpdateWithoutUploadedArtworkAssetsInput>
+  }
+
+  export type UserUpdateWithoutUploadedArtworkAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phoneVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addresses?: AddressUpdateManyWithoutUserNestedInput
+    roles?: UserRoleUpdateManyWithoutUserNestedInput
+    carts?: CartUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    wishlists?: WishlistUpdateManyWithoutUserNestedInput
+    couponRedemptions?: CouponRedemptionUpdateManyWithoutUserNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUpdateManyWithoutUserNestedInput
+    supportMessages?: SupportMessageUpdateManyWithoutAuthorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    vendorProfile?: VendorProfileUpdateOneWithoutUserNestedInput
+    vendorApplication?: VendorApplicationUpdateOneWithoutUserNestedInput
+    authSessions?: AuthSessionUpdateManyWithoutUserNestedInput
+    reviewedVendorApplications?: VendorApplicationUpdateManyWithoutReviewerNestedInput
+    vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
+    uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
+    reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUploadedArtworkAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phoneVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
+    roles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    carts?: CartUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    wishlists?: WishlistUncheckedUpdateManyWithoutUserNestedInput
+    couponRedemptions?: CouponRedemptionUncheckedUpdateManyWithoutUserNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+    supportMessages?: SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    vendorProfile?: VendorProfileUncheckedUpdateOneWithoutUserNestedInput
+    vendorApplication?: VendorApplicationUncheckedUpdateOneWithoutUserNestedInput
+    authSessions?: AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+    reviewedVendorApplications?: VendorApplicationUncheckedUpdateManyWithoutReviewerNestedInput
+    vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
+    uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+    reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  }
+
   export type ProductCreateWithoutVariantsInput = {
     id?: string
     name: string
@@ -95821,6 +100517,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
     templateLinks?: ProductTemplateCreateNestedManyWithoutProductInput
@@ -95832,6 +100529,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVariantsInput = {
@@ -95863,6 +100561,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
     templateLinks?: ProductTemplateUncheckedCreateNestedManyWithoutProductInput
@@ -95874,6 +100573,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVariantsInput = {
@@ -95982,6 +100682,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobCreateNestedOneWithoutOrderItemInput
     review?: ReviewCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutVariantInput = {
@@ -96002,6 +100703,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUncheckedCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobUncheckedCreateNestedOneWithoutOrderItemInput
     review?: ReviewUncheckedCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemCreateOrConnectWithoutVariantInput = {
@@ -96054,6 +100756,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
     templateLinks?: ProductTemplateUpdateManyWithoutProductNestedInput
@@ -96065,6 +100768,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVariantsInput = {
@@ -96096,6 +100800,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
     templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
@@ -96107,6 +100812,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type InventoryUpsertWithoutVariantInput = {
@@ -96227,6 +100933,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
     templateLinks?: ProductTemplateCreateNestedManyWithoutProductInput
@@ -96238,6 +100945,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutImagesInput = {
@@ -96269,6 +100977,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
     templateLinks?: ProductTemplateUncheckedCreateNestedManyWithoutProductInput
@@ -96280,6 +100989,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutImagesInput = {
@@ -96327,6 +101037,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
     templateLinks?: ProductTemplateUpdateManyWithoutProductNestedInput
@@ -96338,6 +101049,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutImagesInput = {
@@ -96369,6 +101081,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
     templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
@@ -96380,6 +101093,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateWithoutPersonalizationFieldsInput = {
@@ -96411,6 +101125,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     templateLinks?: ProductTemplateCreateNestedManyWithoutProductInput
@@ -96422,6 +101137,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutPersonalizationFieldsInput = {
@@ -96453,6 +101169,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     templateLinks?: ProductTemplateUncheckedCreateNestedManyWithoutProductInput
@@ -96464,6 +101181,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutPersonalizationFieldsInput = {
@@ -96511,6 +101229,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     templateLinks?: ProductTemplateUpdateManyWithoutProductNestedInput
@@ -96522,6 +101241,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutPersonalizationFieldsInput = {
@@ -96553,6 +101273,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
@@ -96564,6 +101285,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type CategoryCreateWithoutTemplatesInput = {
@@ -96581,6 +101303,7 @@ export namespace Prisma {
     parent?: CategoryCreateNestedOneWithoutChildrenInput
     children?: CategoryCreateNestedManyWithoutParentInput
     products?: ProductCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryCreateNestedManyWithoutCategoryInput
   }
 
@@ -96599,6 +101322,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     children?: CategoryUncheckedCreateNestedManyWithoutParentInput
     products?: ProductUncheckedCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
     couponLinks?: CouponCategoryUncheckedCreateNestedManyWithoutCategoryInput
   }
 
@@ -96733,6 +101457,7 @@ export namespace Prisma {
     parent?: CategoryUpdateOneWithoutChildrenNestedInput
     children?: CategoryUpdateManyWithoutParentNestedInput
     products?: ProductUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUpdateManyWithoutCategoryNestedInput
   }
 
@@ -96751,6 +101476,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     children?: CategoryUncheckedUpdateManyWithoutParentNestedInput
     products?: ProductUncheckedUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
@@ -96849,6 +101575,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -96860,6 +101587,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutTemplateLinksInput = {
@@ -96891,6 +101619,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -96902,6 +101631,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutTemplateLinksInput = {
@@ -96998,6 +101728,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -97009,6 +101740,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutTemplateLinksInput = {
@@ -97040,6 +101772,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -97051,6 +101784,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PersonalizationTemplateUpsertWithoutProductLinksInput = {
@@ -97341,6 +102075,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutCustomizationsInput = {
@@ -97376,6 +102111,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutCustomizationsInput = {
@@ -97412,6 +102148,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -97423,6 +102160,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCustomizationsInput = {
@@ -97454,6 +102192,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -97465,6 +102204,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCustomizationsInput = {
@@ -97592,6 +102332,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCustomizationsInput = {
@@ -97627,6 +102368,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type ProductUpsertWithoutCustomizationsInput = {
@@ -97669,6 +102411,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -97680,6 +102423,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCustomizationsInput = {
@@ -97711,6 +102455,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -97722,6 +102467,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PersonalizationTemplateUpsertWithoutCustomizationsInput = {
@@ -97845,6 +102591,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutCartsInput = {
@@ -97880,6 +102627,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutCartsInput = {
@@ -97963,6 +102711,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCartsInput = {
@@ -97998,6 +102747,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type CartItemUpsertWithWhereUniqueWithoutCartInput = {
@@ -98072,6 +102822,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -98083,6 +102834,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCartItemsInput = {
@@ -98114,6 +102866,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -98125,6 +102878,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCartItemsInput = {
@@ -98287,6 +103041,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -98298,6 +103053,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCartItemsInput = {
@@ -98329,6 +103085,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -98340,6 +103097,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductVariantUpsertWithoutCartItemsInput = {
@@ -98469,6 +103227,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -98504,6 +103263,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -98567,6 +103327,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobCreateNestedOneWithoutOrderItemInput
     review?: ReviewCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutOrderInput = {
@@ -98587,6 +103348,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUncheckedCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobUncheckedCreateNestedOneWithoutOrderItemInput
     review?: ReviewUncheckedCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemCreateOrConnectWithoutOrderInput = {
@@ -98868,6 +103630,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -98903,6 +103666,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type OrderAddressUpsertWithWhereUniqueWithoutOrderInput = {
@@ -99167,6 +103931,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutVendorProfileInput = {
@@ -99202,6 +103967,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutVendorProfileInput = {
@@ -99468,6 +104234,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVendorProfileInput = {
@@ -99503,6 +104270,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type VendorApplicationUpsertWithoutProfileInput = {
@@ -99723,6 +104491,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutVendorApplicationInput = {
@@ -99758,6 +104527,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutVendorApplicationInput = {
@@ -99798,6 +104568,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutReviewedVendorApplicationsInput = {
@@ -99833,6 +104604,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutReviewedVendorApplicationsInput = {
@@ -100031,6 +104803,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVendorApplicationInput = {
@@ -100066,6 +104839,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUpsertWithoutReviewedVendorApplicationsInput = {
@@ -100112,6 +104886,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewedVendorApplicationsInput = {
@@ -100147,6 +104922,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type VendorProfileUpsertWithoutApplicationInput = {
@@ -100370,6 +105146,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationCreateNestedManyWithoutReviewerInput
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutUploadedVendorDocumentsInput = {
@@ -100405,6 +105182,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationUncheckedCreateNestedManyWithoutReviewerInput
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutUploadedVendorDocumentsInput = {
@@ -100445,6 +105223,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationCreateNestedManyWithoutReviewerInput
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutReviewedVendorDocumentsInput = {
@@ -100480,6 +105259,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationUncheckedCreateNestedManyWithoutReviewerInput
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutReviewedVendorDocumentsInput = {
@@ -100618,6 +105398,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationUpdateManyWithoutReviewerNestedInput
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUploadedVendorDocumentsInput = {
@@ -100653,6 +105434,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationUncheckedUpdateManyWithoutReviewerNestedInput
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUpsertWithoutReviewedVendorDocumentsInput = {
@@ -100699,6 +105481,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationUpdateManyWithoutReviewerNestedInput
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewedVendorDocumentsInput = {
@@ -100734,6 +105517,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationUncheckedUpdateManyWithoutReviewerNestedInput
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type VendorApplicationCreateWithoutEventsInput = {
@@ -100850,6 +105634,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationCreateNestedManyWithoutReviewerInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutVendorApplicationEventsInput = {
@@ -100885,6 +105670,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationUncheckedCreateNestedManyWithoutReviewerInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutVendorApplicationEventsInput = {
@@ -101023,6 +105809,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationUpdateManyWithoutReviewerNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVendorApplicationEventsInput = {
@@ -101058,6 +105845,7 @@ export namespace Prisma {
     reviewedVendorApplications?: VendorApplicationUncheckedUpdateManyWithoutReviewerNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type VendorProfileCreateWithoutCapabilitiesInput = {
@@ -101158,6 +105946,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -101169,6 +105958,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutProductInput
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVendorCapabilitiesInput = {
@@ -101200,6 +105990,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -101211,6 +106002,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutProductInput
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVendorCapabilitiesInput = {
@@ -101333,6 +106125,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -101344,6 +106137,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutProductNestedInput
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVendorCapabilitiesInput = {
@@ -101375,6 +106169,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -101386,6 +106181,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutProductNestedInput
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type OrderCreateWithoutAssignmentInput = {
@@ -102612,6 +107408,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -102623,6 +107420,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutOrderItemsInput = {
@@ -102654,6 +107452,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -102665,6 +107464,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutOrderItemsInput = {
@@ -102816,6 +107616,58 @@ export namespace Prisma {
     create: XOR<ReviewCreateWithoutOrderItemInput, ReviewUncheckedCreateWithoutOrderItemInput>
   }
 
+  export type ArtworkAssetCreateWithoutOrderItemInput = {
+    id?: string
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutArtworkAssetsInput
+    owner?: UserCreateNestedOneWithoutUploadedArtworkAssetsInput
+  }
+
+  export type ArtworkAssetUncheckedCreateWithoutOrderItemInput = {
+    id?: string
+    productId: string
+    ownerUserId?: string | null
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArtworkAssetCreateOrConnectWithoutOrderItemInput = {
+    where: ArtworkAssetWhereUniqueInput
+    create: XOR<ArtworkAssetCreateWithoutOrderItemInput, ArtworkAssetUncheckedCreateWithoutOrderItemInput>
+  }
+
+  export type ArtworkAssetCreateManyOrderItemInputEnvelope = {
+    data: ArtworkAssetCreateManyOrderItemInput | ArtworkAssetCreateManyOrderItemInput[]
+    skipDuplicates?: boolean
+  }
+
   export type OrderUpsertWithoutItemsInput = {
     update: XOR<OrderUpdateWithoutItemsInput, OrderUncheckedUpdateWithoutItemsInput>
     create: XOR<OrderCreateWithoutItemsInput, OrderUncheckedCreateWithoutItemsInput>
@@ -102933,6 +107785,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -102944,6 +107797,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutOrderItemsInput = {
@@ -102975,6 +107829,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -102986,6 +107841,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductVariantUpsertWithoutOrderItemsInput = {
@@ -103156,6 +108012,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ArtworkAssetUpsertWithWhereUniqueWithoutOrderItemInput = {
+    where: ArtworkAssetWhereUniqueInput
+    update: XOR<ArtworkAssetUpdateWithoutOrderItemInput, ArtworkAssetUncheckedUpdateWithoutOrderItemInput>
+    create: XOR<ArtworkAssetCreateWithoutOrderItemInput, ArtworkAssetUncheckedCreateWithoutOrderItemInput>
+  }
+
+  export type ArtworkAssetUpdateWithWhereUniqueWithoutOrderItemInput = {
+    where: ArtworkAssetWhereUniqueInput
+    data: XOR<ArtworkAssetUpdateWithoutOrderItemInput, ArtworkAssetUncheckedUpdateWithoutOrderItemInput>
+  }
+
+  export type ArtworkAssetUpdateManyWithWhereWithoutOrderItemInput = {
+    where: ArtworkAssetScalarWhereInput
+    data: XOR<ArtworkAssetUpdateManyMutationInput, ArtworkAssetUncheckedUpdateManyWithoutOrderItemInput>
+  }
+
   export type OrderItemCreateWithoutPersonalizationInput = {
     id?: string
     productNameSnapshot: string
@@ -103174,6 +108046,7 @@ export namespace Prisma {
     variant?: ProductVariantCreateNestedOneWithoutOrderItemsInput
     productionJob?: ProductionJobCreateNestedOneWithoutOrderItemInput
     review?: ReviewCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutPersonalizationInput = {
@@ -103194,6 +108067,7 @@ export namespace Prisma {
     createdAt?: Date | string
     productionJob?: ProductionJobUncheckedCreateNestedOneWithoutOrderItemInput
     review?: ReviewUncheckedCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemCreateOrConnectWithoutPersonalizationInput = {
@@ -103279,6 +108153,7 @@ export namespace Prisma {
     variant?: ProductVariantUpdateOneWithoutOrderItemsNestedInput
     productionJob?: ProductionJobUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutPersonalizationInput = {
@@ -103299,6 +108174,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     productionJob?: ProductionJobUncheckedUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUncheckedUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type PersonalizationTemplateUpsertWithoutOrderPersonalizationsInput = {
@@ -103374,6 +108250,7 @@ export namespace Prisma {
     variant?: ProductVariantCreateNestedOneWithoutOrderItemsInput
     personalization?: OrderPersonalizationCreateNestedOneWithoutOrderItemInput
     review?: ReviewCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutProductionJobInput = {
@@ -103394,6 +108271,7 @@ export namespace Prisma {
     createdAt?: Date | string
     personalization?: OrderPersonalizationUncheckedCreateNestedOneWithoutOrderItemInput
     review?: ReviewUncheckedCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemCreateOrConnectWithoutProductionJobInput = {
@@ -103430,6 +108308,7 @@ export namespace Prisma {
     variant?: ProductVariantUpdateOneWithoutOrderItemsNestedInput
     personalization?: OrderPersonalizationUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutProductionJobInput = {
@@ -103450,6 +108329,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     personalization?: OrderPersonalizationUncheckedUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUncheckedUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderCreateWithoutPaymentsInput = {
@@ -104258,6 +109138,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -104269,6 +109150,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCouponLinksInput = {
@@ -104300,6 +109182,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -104311,6 +109194,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCouponLinksInput = {
@@ -104409,6 +109293,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -104420,6 +109305,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCouponLinksInput = {
@@ -104451,6 +109337,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -104462,6 +109349,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type CouponCreateWithoutCategoryLinksInput = {
@@ -104524,6 +109412,7 @@ export namespace Prisma {
     parent?: CategoryCreateNestedOneWithoutChildrenInput
     children?: CategoryCreateNestedManyWithoutParentInput
     products?: ProductCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateCreateNestedManyWithoutCategoryInput
   }
 
@@ -104542,6 +109431,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     children?: CategoryUncheckedCreateNestedManyWithoutParentInput
     products?: ProductUncheckedCreateNestedManyWithoutCategoryInput
+    productLinks?: ProductCategoryUncheckedCreateNestedManyWithoutCategoryInput
     templates?: PersonalizationTemplateUncheckedCreateNestedManyWithoutCategoryInput
   }
 
@@ -104627,6 +109517,7 @@ export namespace Prisma {
     parent?: CategoryUpdateOneWithoutChildrenNestedInput
     children?: CategoryUpdateManyWithoutParentNestedInput
     products?: ProductUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUpdateManyWithoutCategoryNestedInput
   }
 
@@ -104645,6 +109536,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     children?: CategoryUncheckedUpdateManyWithoutParentNestedInput
     products?: ProductUncheckedUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
@@ -104726,6 +109618,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutCouponRedemptionsInput = {
@@ -104761,6 +109654,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutCouponRedemptionsInput = {
@@ -104934,6 +109828,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCouponRedemptionsInput = {
@@ -104969,6 +109864,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type OrderUpsertWithoutCouponRedemptionsInput = {
@@ -105077,6 +109973,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -105088,6 +109985,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutReviewsInput = {
@@ -105119,6 +110017,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -105130,6 +110029,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutReviewsInput = {
@@ -105170,6 +110070,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutReviewsInput = {
@@ -105205,6 +110106,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutReviewsInput = {
@@ -105230,6 +110132,7 @@ export namespace Prisma {
     variant?: ProductVariantCreateNestedOneWithoutOrderItemsInput
     personalization?: OrderPersonalizationCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemUncheckedCreateWithoutReviewInput = {
@@ -105250,6 +110153,7 @@ export namespace Prisma {
     createdAt?: Date | string
     personalization?: OrderPersonalizationUncheckedCreateNestedOneWithoutOrderItemInput
     productionJob?: ProductionJobUncheckedCreateNestedOneWithoutOrderItemInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOrderItemInput
   }
 
   export type OrderItemCreateOrConnectWithoutReviewInput = {
@@ -105297,6 +110201,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -105308,6 +110213,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutReviewsInput = {
@@ -105339,6 +110245,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -105350,6 +110257,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserUpsertWithoutReviewsInput = {
@@ -105396,6 +110304,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -105431,6 +110340,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type OrderItemUpsertWithoutReviewInput = {
@@ -105462,6 +110372,7 @@ export namespace Prisma {
     variant?: ProductVariantUpdateOneWithoutOrderItemsNestedInput
     personalization?: OrderPersonalizationUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutReviewInput = {
@@ -105482,6 +110393,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     personalization?: OrderPersonalizationUncheckedUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUncheckedUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type UserCreateWithoutWishlistsInput = {
@@ -105517,6 +110429,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutWishlistsInput = {
@@ -105552,6 +110465,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutWishlistsInput = {
@@ -105623,6 +110537,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWishlistsInput = {
@@ -105658,6 +110573,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type WishlistItemUpsertWithWhereUniqueWithoutWishlistInput = {
@@ -105726,6 +110642,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -105737,6 +110654,7 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutWishlistItemsInput = {
@@ -105768,6 +110686,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -105779,6 +110698,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutWishlistItemsInput = {
@@ -105853,6 +110773,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -105864,6 +110785,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutWishlistItemsInput = {
@@ -105895,6 +110817,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -105906,6 +110829,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutBulkRequestsInput = {
@@ -105941,6 +110865,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutBulkRequestsInput = {
@@ -105976,6 +110901,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutBulkRequestsInput = {
@@ -106012,6 +110938,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
     variants?: ProductVariantCreateNestedManyWithoutProductInput
     images?: ProductImageCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
@@ -106023,6 +110950,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemCreateNestedManyWithoutProductInput
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutBulkRequestsInput = {
@@ -106054,6 +110982,7 @@ export namespace Prisma {
     archivedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
     variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
     personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
@@ -106065,6 +110994,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutProductInput
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutBulkRequestsInput = {
@@ -106146,6 +111076,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBulkRequestsInput = {
@@ -106181,6 +111112,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type ProductUpsertWithoutBulkRequestsInput = {
@@ -106223,6 +111155,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -106234,6 +111167,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUpdateManyWithoutProductNestedInput
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutBulkRequestsInput = {
@@ -106265,6 +111199,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -106276,6 +111211,7 @@ export namespace Prisma {
     wishlistItems?: WishlistItemUncheckedUpdateManyWithoutProductNestedInput
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type BulkOrderRowUpsertWithWhereUniqueWithoutBulkRequestInput = {
@@ -106437,6 +111373,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutSupportTicketsInput = {
@@ -106472,6 +111409,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutSupportTicketsInput = {
@@ -106622,6 +111560,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportTicketsInput = {
@@ -106657,6 +111596,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type OrderUpsertWithoutSupportTicketsInput = {
@@ -106818,6 +111758,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutSupportMessagesInput = {
@@ -106853,6 +111794,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutSupportMessagesInput = {
@@ -106943,6 +111885,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportMessagesInput = {
@@ -106978,6 +111921,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -107013,6 +111957,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -107048,6 +111993,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -107099,6 +112045,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -107134,6 +112081,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -107169,6 +112117,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -107204,6 +112153,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -107255,6 +112205,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -107290,6 +112241,7 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type AddressCreateManyUserInput = {
@@ -107551,6 +112503,27 @@ export namespace Prisma {
     content: Bytes
     reviewNotes?: string | null
     reviewedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArtworkAssetCreateManyOwnerInput = {
+    id?: string
+    productId: string
+    orderItemId?: string | null
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -108376,6 +113349,69 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ArtworkAssetUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutArtworkAssetsNestedInput
+    orderItem?: OrderItemUpdateOneWithoutArtworkAssetsNestedInput
+  }
+
+  export type ArtworkAssetUncheckedUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArtworkAssetUncheckedUpdateManyWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserRoleCreateManyRoleInput = {
     userId: string
     assignedAt?: Date | string
@@ -108472,6 +113508,11 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ProductCategoryCreateManyCategoryInput = {
+    productId: string
+    createdAt?: Date | string
+  }
+
   export type PersonalizationTemplateCreateManyCategoryInput = {
     id?: string
     name: string
@@ -108509,6 +113550,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     children?: CategoryUpdateManyWithoutParentNestedInput
     products?: ProductUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUpdateManyWithoutCategoryNestedInput
   }
@@ -108527,6 +113569,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     children?: CategoryUncheckedUpdateManyWithoutParentNestedInput
     products?: ProductUncheckedUpdateManyWithoutCategoryNestedInput
+    productLinks?: ProductCategoryUncheckedUpdateManyWithoutCategoryNestedInput
     templates?: PersonalizationTemplateUncheckedUpdateManyWithoutCategoryNestedInput
     couponLinks?: CouponCategoryUncheckedUpdateManyWithoutCategoryNestedInput
   }
@@ -108573,6 +113616,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUpdateManyWithoutProductNestedInput
     images?: ProductImageUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
@@ -108585,6 +113629,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCategoryInput = {
@@ -108615,6 +113660,7 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
     variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
     personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
@@ -108627,6 +113673,7 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutCategoryInput = {
@@ -108657,6 +113704,21 @@ export namespace Prisma {
     archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductCategoryUpdateWithoutCategoryInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutCategoryLinksNestedInput
+  }
+
+  export type ProductCategoryUncheckedUpdateWithoutCategoryInput = {
+    productId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductCategoryUncheckedUpdateManyWithoutCategoryInput = {
+    productId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PersonalizationTemplateUpdateWithoutCategoryInput = {
@@ -108732,6 +113794,11 @@ export namespace Prisma {
 
   export type CouponCategoryUncheckedUpdateManyWithoutCategoryInput = {
     couponId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProductCategoryCreateManyProductInput = {
+    categoryId: string
+    createdAt?: Date | string
   }
 
   export type ProductVariantCreateManyProductInput = {
@@ -108877,6 +113944,42 @@ export namespace Prisma {
     productionDays?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type ArtworkAssetCreateManyProductInput = {
+    id?: string
+    orderItemId?: string | null
+    ownerUserId?: string | null
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProductCategoryUpdateWithoutProductInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductLinksNestedInput
+  }
+
+  export type ProductCategoryUncheckedUpdateWithoutProductInput = {
+    categoryId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductCategoryUncheckedUpdateManyWithoutProductInput = {
+    categoryId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProductVariantUpdateWithoutProductInput = {
@@ -109129,6 +114232,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutProductInput = {
@@ -109149,6 +114253,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUncheckedUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUncheckedUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUncheckedUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateManyWithoutProductInput = {
@@ -109332,6 +114437,69 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ArtworkAssetUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItem?: OrderItemUpdateOneWithoutArtworkAssetsNestedInput
+    owner?: UserUpdateOneWithoutUploadedArtworkAssetsNestedInput
+  }
+
+  export type ArtworkAssetUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArtworkAssetUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderItemId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InventoryMovementCreateManyVariantInput = {
     id?: string
     type: $Enums.InventoryMovementType
@@ -109451,6 +114619,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutVariantInput = {
@@ -109471,6 +114640,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUncheckedUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUncheckedUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUncheckedUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateManyWithoutVariantInput = {
@@ -109830,6 +115000,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateWithoutOrderInput = {
@@ -109850,6 +115021,7 @@ export namespace Prisma {
     personalization?: OrderPersonalizationUncheckedUpdateOneWithoutOrderItemNestedInput
     productionJob?: ProductionJobUncheckedUpdateOneWithoutOrderItemNestedInput
     review?: ReviewUncheckedUpdateOneWithoutOrderItemNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOrderItemNestedInput
   }
 
   export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
@@ -110462,6 +115634,90 @@ export namespace Prisma {
     type?: EnumAssignmentEventTypeFieldUpdateOperationsInput | $Enums.AssignmentEventType
     metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArtworkAssetCreateManyOrderItemInput = {
+    id?: string
+    productId: string
+    ownerUserId?: string | null
+    surfaceId: string
+    claimTokenHash: string
+    originalName: string
+    mimeType: string
+    sizeBytes: number
+    width: number
+    height: number
+    hasTransparency?: boolean
+    sha256: string
+    content: Bytes
+    status?: $Enums.ArtworkAssetStatus
+    expiresAt: Date | string
+    attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ArtworkAssetUpdateWithoutOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutArtworkAssetsNestedInput
+    owner?: UserUpdateOneWithoutUploadedArtworkAssetsNestedInput
+  }
+
+  export type ArtworkAssetUncheckedUpdateWithoutOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    ownerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ArtworkAssetUncheckedUpdateManyWithoutOrderItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    ownerUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    surfaceId?: StringFieldUpdateOperationsInput | string
+    claimTokenHash?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: IntFieldUpdateOperationsInput | number
+    height?: IntFieldUpdateOperationsInput | number
+    hasTransparency?: BoolFieldUpdateOperationsInput | boolean
+    sha256?: StringFieldUpdateOperationsInput | string
+    content?: BytesFieldUpdateOperationsInput | Bytes
+    status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PaymentEventCreateManyPaymentInput = {

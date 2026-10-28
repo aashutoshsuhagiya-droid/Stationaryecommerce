@@ -14,6 +14,7 @@ import {
   resolveMaxVendorsPerOrder,
 } from "./marketplace-settings-domain";
 import { getPrisma } from "./prisma";
+import { capturedCustomOrderStatus } from "./artwork-review";
 
 function positiveIntegerSetting(name: string, fallback: number, minimum: number, maximum: number) {
   const raw = process.env[name];
@@ -41,6 +42,10 @@ const assignmentSelect = {
   },
 } as const;
 
+function fulfillmentCategoryIds(product: { categoryId: string }) {
+  return [product.categoryId];
+}
+
 export async function dispatchCapturedOrderToVendors(orderId: string) {
   const prisma = getPrisma();
   const offerWindowSeconds = positiveIntegerSetting("VENDOR_OFFER_WINDOW_SECONDS", 60, 15, 900);
@@ -67,7 +72,12 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
           select: {
             productId: true,
             quantity: true,
-            product: { select: { categoryId: true } },
+            personalization: { select: { artworkStatus: true } },
+            product: {
+              select: {
+                categoryId: true,
+              },
+            },
           },
         },
       },
@@ -110,6 +120,13 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
       throw new AssignmentError(409, "SHIPPING_ADDRESS_REQUIRED", "A shipping address is required before vendor assignment.");
     }
 
+    const personalizationStatuses = order.items.flatMap((item) =>
+      item.personalization ? [item.personalization.artworkStatus] : []);
+    const reviewAwareOrderStatus = capturedCustomOrderStatus(order.paymentStatus, personalizationStatuses);
+    if (reviewAwareOrderStatus && reviewAwareOrderStatus !== order.status) {
+      await tx.order.update({ where: { id: order.id }, data: { status: reviewAwareOrderStatus } });
+    }
+
     const storedOfferPolicy = await tx.storeSetting.findUnique({
       where: { key: MARKETPLACE_MAX_VENDORS_SETTING_KEY },
       select: { value: true },
@@ -143,7 +160,9 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
     }
 
     const demandHasUnknownProduct = order.items.some((item) => item.productId === null || item.product === null);
-    const orderCategoryIds = [...new Set(order.items.flatMap((item) => item.product ? [item.product.categoryId] : []))];
+    const orderCategoryIds = [...new Set(order.items.flatMap((item) => item.product
+      ? fulfillmentCategoryIds(item.product)
+      : []))];
     const vendors = demandHasUnknownProduct ? [] : await tx.vendorProfile.findMany({
       where: {
         verificationStatus: "APPROVED",
@@ -190,7 +209,11 @@ export async function dispatchCapturedOrderToVendors(orderId: string) {
         city: shipping.city,
         postalCode: shipping.postalCode,
         lines: order.items.flatMap((item) => item.productId && item.product
-          ? [{ productId: item.productId, categoryId: item.product.categoryId, quantity: item.quantity }]
+          ? [{
+              productId: item.productId,
+              categoryIds: fulfillmentCategoryIds(item.product),
+              quantity: item.quantity,
+            }]
           : []),
       },
       vendors: snapshots,

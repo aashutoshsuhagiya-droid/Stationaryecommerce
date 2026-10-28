@@ -31,17 +31,24 @@ import { downloadArtworkDesign } from "@/components/configurator/design-export";
 import {
   createArtworkDocument,
   keepArtworkLayerInForeground,
+  normalizeArtworkDocumentToPolicy,
+  removePreviewImageLayers,
   type ArtworkDocument,
   type PrintableSurfaceDefinition,
 } from "@/components/configurator/artwork-types";
+import { resolveArtworkTextTypography } from "@/lib/artwork-text-policy";
 import configuratorStyles from "@/components/configurator/configurator.module.css";
 import { useStore } from "@/components/store/StoreProvider";
 import { PreviewSkeleton } from "@/components/ui/StorefrontSkeletons";
 import { useScrollReveal } from "@/components/ui/use-scroll-reveal";
 import { buildCustomSizeQuotePath } from "@/lib/bulk-quote-prefill";
+import {
+  initialConfigurationFieldValue,
+  visibleConfigurationFields,
+} from "@/lib/configuration-field-visibility";
 import { formatPrice, neutralPresentationPalette } from "@/lib/data";
 import type { ProductConfigurationSchema } from "@/lib/product-configuration";
-import type { PersonalizationTemplate, Product } from "@/lib/types";
+import type { Product } from "@/lib/types";
 import { artworkDocumentSchema } from "@/lib/validation";
 
 const Product3DPreview = dynamic(
@@ -56,7 +63,7 @@ type QuoteLine = {
   quantity: number;
   unitPricePaise: number;
   lineTotalPaise: number;
-  adjustments: Array<{ label: string; amountPaise: number }>;
+  adjustments: Array<{ label: string; amountPaise: number; scope?: "unit" | "line" }>;
 };
 
 type QuoteSummary = {
@@ -98,7 +105,7 @@ function initialFields(configuration: ProductConfigurationSchema) {
   return Object.fromEntries(
     configuration.personalization.fields
       .filter((field) => field.type !== "template")
-      .map((field) => [field.id, field.options?.[0]?.value ?? ""]),
+      .map((field) => [field.id, initialConfigurationFieldValue(field)]),
   );
 }
 
@@ -125,7 +132,7 @@ function normalizedPersonalizationFields(
         field.id,
         typeof candidates[field.id] === "string"
           ? candidates[field.id]
-          : field.options?.[0]?.value ?? "",
+          : initialConfigurationFieldValue(field),
       ]),
   ) as Record<string, string>;
 }
@@ -163,8 +170,6 @@ function surfaceDefinitions(
   configuration: ProductConfigurationSchema,
   preset = configuration.dimensions.presets[0],
 ): PrintableSurfaceDefinition[] {
-  const physicalWidthMm = preset?.dimensionsMm?.width;
-  const physicalHeightMm = preset?.dimensionsMm?.height;
   const designKey = configuration.product.structuralDesign.toLowerCase();
   const fallbackRatio = designKey.includes("pencil")
     ? 6
@@ -173,28 +178,52 @@ function surfaceDefinitions(
       : designKey.includes("geometry-box")
         ? 2.5
         : 5 / 3;
-  const ratio = physicalWidthMm && physicalHeightMm ? physicalWidthMm / physicalHeightMm : fallbackRatio;
-  const width = ratio >= 1 ? 600 : Math.max(240, Math.round(600 * ratio));
-  const height = ratio >= 1 ? Math.max(180, Math.round(600 / ratio)) : 600;
-  return configuration.artwork.surfaces.map((surface) => ({
-    id: surface.id,
-    label: surface.label,
-    width,
-    height,
-    safeInset: Math.max(18, Math.round(Math.min(width, height) * 0.09)),
-    physicalWidthMm,
-    physicalHeightMm,
-    targetDpi: 300,
-  }));
+  if (configuration.artwork.policy.surfaces.length) {
+    return configuration.artwork.policy.surfaces.map((surfacePolicy) => {
+      const surface = configuration.artwork.surfaces.find((candidate) => candidate.id === surfacePolicy.id);
+      const physicalWidthMm = surface?.widthMm ?? preset?.dimensionsMm?.width;
+      const physicalHeightMm = surface?.heightMm ?? preset?.dimensionsMm?.height;
+      const bounds = surfacePolicy.printableBounds;
+      const safeInset = Math.max(0, Math.min(
+        bounds.x,
+        bounds.y,
+        surfacePolicy.coordinateSpace.width - bounds.x - bounds.width,
+        surfacePolicy.coordinateSpace.height - bounds.y - bounds.height,
+      ));
+      return {
+        id: surfacePolicy.id,
+        label: surfacePolicy.label,
+        width: surfacePolicy.coordinateSpace.width,
+        height: surfacePolicy.coordinateSpace.height,
+        safeInset,
+        physicalWidthMm,
+        physicalHeightMm,
+        targetDpi: 300,
+      };
+    });
+  }
+  return configuration.artwork.surfaces.map((surface) => {
+    const physicalWidthMm = surface.widthMm ?? preset?.dimensionsMm?.width;
+    const physicalHeightMm = surface.heightMm ?? preset?.dimensionsMm?.height;
+    const ratio = physicalWidthMm && physicalHeightMm ? physicalWidthMm / physicalHeightMm : fallbackRatio;
+    const width = ratio >= 1 ? 600 : Math.max(240, Math.round(600 * ratio));
+    const height = ratio >= 1 ? Math.max(180, Math.round(600 / ratio)) : 600;
+    const safeInset = surface.safeInsetMm && physicalWidthMm && physicalHeightMm
+      ? Math.max(8, Math.round(Math.min(width * (surface.safeInsetMm / physicalWidthMm), height * (surface.safeInsetMm / physicalHeightMm))))
+      : Math.max(18, Math.round(Math.min(width, height) * 0.09));
+    return { id: surface.id, label: surface.label, width, height, safeInset, physicalWidthMm, physicalHeightMm, targetDpi: 300 };
+  });
 }
 
 function createInitialArtwork(configuration: ProductConfigurationSchema) {
   const definitions = surfaceDefinitions(configuration);
   const document = createArtworkDocument(definitions);
   if (!configuration.personalization.fields.some((field) => field.id === "name")) return document;
-  const primary = definitions[0] ?? { width: 600, height: 360 };
-  const nameColor = configuration.personalization.templates[0]?.preview.foreground ?? neutralPresentationPalette.ink;
-  return {
+  const primaryPolicy = configuration.artwork.policy.surfaces[0];
+  if (!primaryPolicy?.text.enabled) return document;
+  const geometry = primaryPolicy.text.geometry.default;
+  const typography = resolveArtworkTextTypography(primaryPolicy.text);
+  const initial = {
     ...document,
     surfaces: document.surfaces.map((surface, index) =>
       index === 0
@@ -205,30 +234,29 @@ function createInitialArtwork(configuration: ProductConfigurationSchema) {
                 id: "personalization-name",
                 type: "text" as const,
                 name: "Personalized name",
-                x: primary.width * 0.2,
-                y: primary.height * 0.4,
-                width: primary.width * 0.6,
-                height: Math.min(70, primary.height * 0.2),
-                rotation: 0,
+                ...geometry,
                 opacity: 1,
                 text: "Your name",
-                color: nameColor,
-                fontSize: Math.max(14, Math.min(40, primary.height * 0.22)),
-                fontFamily: "rounded" as const,
+                color: primaryPolicy.text.defaultColor,
+                fontSize: typography.defaultFontSize,
+                fontFamily: primaryPolicy.text.defaultFontFamily,
+                textAlign: typography.defaultTextAlign,
               },
             ],
           }
         : surface,
     ),
   };
+  return normalizeArtworkDocumentToPolicy(initial, configuration.artwork.policy);
 }
 
 function synchronizePersonalizationArtwork(
+  configuration: ProductConfigurationSchema,
   document: ArtworkDocument,
   fields: Record<string, string>,
 ) {
   const fontFamily = artworkFontFamily(fields.font) ?? "rounded";
-  return keepArtworkLayerInForeground({
+  return normalizeArtworkDocumentToPolicy(keepArtworkLayerInForeground({
     ...document,
     surfaces: document.surfaces.map((surface) => ({
       ...surface,
@@ -238,7 +266,7 @@ function synchronizePersonalizationArtwork(
         fontFamily,
       } : layer),
     })),
-  }, "personalization-name");
+  }, "personalization-name"), configuration.artwork.policy);
 }
 
 function readSavedDesigns(): SavedDesign[] {
@@ -289,7 +317,7 @@ function customizationModeLabel(mode: ProductConfigurationSchema["modes"][number
 
 function validateFields(configuration: ProductConfigurationSchema, fields: Record<string, string>, templateId: string) {
   const errors: Record<string, string> = {};
-  for (const field of configuration.personalization.fields) {
+  for (const field of visibleConfigurationFields(configuration.personalization.fields, fields)) {
     if (field.type === "template") {
       if (field.required && !templateId) errors[field.id] = "Choose a design.";
       continue;
@@ -300,6 +328,14 @@ function validateFields(configuration: ProductConfigurationSchema, fields: Recor
       continue;
     }
     if (!value) continue;
+    if (field.type === "number") {
+      const numericValue = Number(value);
+      if (!Number.isFinite(numericValue)) errors[field.id] = "Enter a valid number.";
+      else if (field.minValue !== undefined && numericValue < field.minValue) errors[field.id] = `Use ${field.minValue} or more.`;
+      else if (field.maxValue !== undefined && numericValue > field.maxValue) errors[field.id] = `Use ${field.maxValue} or less.`;
+      else if (field.step && field.minValue !== undefined && Math.abs((numericValue - field.minValue) / field.step - Math.round((numericValue - field.minValue) / field.step)) > 1e-8) errors[field.id] = `Use increments of ${field.step}.`;
+      continue;
+    }
     if (field.minLength && value.length < field.minLength) errors[field.id] = `Use at least ${field.minLength} characters.`;
     if (field.maxLength && value.length > field.maxLength) errors[field.id] = `Use no more than ${field.maxLength} characters.`;
     if (field.allowedPattern) {
@@ -318,11 +354,9 @@ function validateFields(configuration: ProductConfigurationSchema, fields: Recor
 
 export function CustomizationStudio({
   product,
-  templates,
   configuration,
 }: {
   product: Product;
-  templates: PersonalizationTemplate[];
   configuration: ProductConfigurationSchema;
 }) {
   const { cart, isHydrated, addItem, removeItem, toggleWishlist, isWishlisted } = useStore();
@@ -331,7 +365,7 @@ export function CustomizationStudio({
   const defaultPreset = configuration.dimensions.presets.find(
     (preset) => preset.id === configuration.dimensions.defaultPresetId,
   ) ?? configuration.dimensions.presets[0];
-  const [previewMode, setPreviewMode] = useState<"3d" | "2d">(configuration.preview.defaultMode);
+  const [previewMode, setPreviewMode] = useState<"3d" | "2d" | null>(configuration.preview.defaultMode);
   const [configurationId, setConfigurationId] = useState(uniqueId);
   const [variantId, setVariantId] = useState(firstVariant?.id ?? "");
   const [templateId, setTemplateId] = useState(firstTemplate?.id ?? "");
@@ -355,8 +389,41 @@ export function CustomizationStudio({
     setPreviewReady(ready);
   }, []);
 
+  const primaryTextPolicy = configuration.artwork.policy.surfaces[0]?.text;
+  const artworkUploadsEnabled = configuration.artwork.uploads.supported;
+  const visiblePersonalizationFields = useMemo(
+    () => visibleConfigurationFields(configuration.personalization.fields, fields),
+    [configuration.personalization.fields, fields],
+  );
+  const visibleCustomerFields = useMemo(() => visiblePersonalizationFields
+    .filter((field) => field.type !== "template" && (field.id !== "font" || primaryTextPolicy?.permissions.font !== false))
+    .map((field) => field.id === "font" && primaryTextPolicy?.allowedFontFamilies.length
+      ? {
+          ...field,
+          options: field.options?.filter((option) => {
+            const family = artworkFontFamily(option.value);
+            return Boolean(family && primaryTextPolicy.allowedFontFamilies.includes(family));
+          }),
+        }
+      : field), [primaryTextPolicy, visiblePersonalizationFields]);
+  const customerFieldValues = useMemo(
+    () => Object.fromEntries(visibleCustomerFields.map((field) => [field.id, fields[field.id] ?? ""])),
+    [fields, visibleCustomerFields],
+  );
+  const persistedArtwork = useMemo(() => removePreviewImageLayers(artwork), [artwork]);
   const selectedVariant = configuration.variants.find((variant) => variant.id === variantId) ?? firstVariant;
   const selectedTemplate = configuration.personalization.templates.find((template) => template.id === templateId) ?? firstTemplate;
+  const templateBaseImages = useMemo<Record<string, string>>(() => {
+    const production = selectedTemplate?.production;
+    if (!production) return {};
+    const defaultSurface = production.surfaces.find((surface) => surface.id === production.defaultSurfaceId)
+      ?? production.surfaces[0];
+    return Object.fromEntries(configuration.artwork.surfaces.flatMap((surface, index) => {
+      const templateSurface = production.surfaces.find((candidate) => candidate.id === surface.id)
+        ?? (index === 0 ? defaultSurface : undefined);
+      return templateSurface?.baseImageUrl ? [[surface.id, templateSurface.baseImageUrl]] : [];
+    }));
+  }, [configuration.artwork.surfaces, selectedTemplate]);
   const selectedPreset = configuration.dimensions.presets.find((preset) => preset.id === dimensionPresetId) ?? defaultPreset;
   const productIsWishlisted = isWishlisted(product.id);
   const errors = useMemo(() => validateFields(configuration, fields, templateId), [configuration, fields, templateId]);
@@ -367,7 +434,7 @@ export function CustomizationStudio({
   const templateBackground = selectedTemplate?.preview.background ?? neutralPresentationPalette.surfaceSubtle;
   const templateForeground = selectedTemplate?.preview.foreground ?? neutralPresentationPalette.ink;
   const templateAccent = selectedTemplate?.preview.accent ?? neutralPresentationPalette.graphite;
-  const personalizationFontOptions = configuration.personalization.fields
+  const personalizationFontOptions = visiblePersonalizationFields
     .find((field) => field.id === "font")
     ?.options?.reduce<Array<{ value: "rounded" | "sans" | "serif"; label: string }>>((options, option) => {
       const value = artworkFontFamily(option.value);
@@ -376,7 +443,7 @@ export function CustomizationStudio({
       }
       return options;
     }, []) ?? [];
-  const nameField = configuration.personalization.fields.find((field) => field.id === "name");
+  const nameField = visiblePersonalizationFields.find((field) => field.id === "name");
   const nameValue = nameField ? (fields[nameField.id] ?? "").trim() : "";
   const hasSizeRequirement = configuration.dimensions.presets.length > 0 || configuration.variants.length > 0;
   const designCompletion = calculateDesignCompletion({
@@ -430,6 +497,7 @@ export function CustomizationStudio({
         setDisplayUnit(custom.displayUnit ?? "mm");
         setFields(restoredFields);
         setArtwork(synchronizePersonalizationArtwork(
+          configuration,
           custom.artwork ?? createInitialArtwork(configuration),
           restoredFields,
         ));
@@ -444,13 +512,18 @@ export function CustomizationStudio({
   }, [cart, configuration, defaultPreset?.id, firstTemplate?.id, firstVariant?.id, isHydrated, product.id]);
 
   useEffect(() => {
-    const normalized = keepArtworkLayerInForeground(artwork, "personalization-name");
-    if (normalized !== artwork) setArtwork(normalized);
-  }, [artwork]);
+    const foreground = keepArtworkLayerInForeground(artwork, "personalization-name");
+    if (foreground !== artwork) {
+      setArtwork(normalizeArtworkDocumentToPolicy(foreground, configuration.artwork.policy));
+    }
+  }, [artwork, configuration.artwork.policy]);
 
   useEffect(() => {
-    setArtwork((current) => setPersonalizedNameColor(current, templateForeground));
-  }, [templateForeground]);
+    setArtwork((current) => normalizeArtworkDocumentToPolicy(
+      setPersonalizedNameColor(current, templateForeground),
+      configuration.artwork.policy,
+    ));
+  }, [configuration.artwork.policy, templateForeground]);
 
   useEffect(() => {
     if (Object.keys(errors).length || !selectedVariant) {
@@ -471,7 +544,7 @@ export function CustomizationStudio({
               variantId: selectedVariant.id,
               quantity,
               ...(configuration.personalization.supported ? {
-                customization: { ...(templateId ? { templateId } : {}), fields, previewVersion: 1 },
+                customization: { ...(templateId ? { templateId } : {}), fields: customerFieldValues, previewVersion: 1, artwork: persistedArtwork },
               } : {}),
             }],
           }),
@@ -487,13 +560,17 @@ export function CustomizationStudio({
       window.clearTimeout(timer);
       controller.abort();
     };
-  }, [configuration.personalization.supported, configuration.pricing.endpoint, errors, fields, product.id, quantity, selectedVariant, templateId]);
+  }, [configuration.personalization.supported, configuration.pricing.endpoint, customerFieldValues, errors, persistedArtwork, product.id, quantity, selectedVariant, templateId]);
 
   function changeField(fieldId: string, value: string) {
+    if (fieldId === "font" && primaryTextPolicy) {
+      const family = artworkFontFamily(value);
+      if (!primaryTextPolicy.permissions.font || !family || (primaryTextPolicy.allowedFontFamilies.length && !primaryTextPolicy.allowedFontFamilies.includes(family))) return;
+    }
     setFields((current) => ({ ...current, [fieldId]: value }));
     setFieldErrors((current) => ({ ...current, [fieldId]: "" }));
     if (fieldId === "name" || fieldId === "font") {
-      setArtwork((current) => ({
+      setArtwork((current) => normalizeArtworkDocumentToPolicy({
         ...current,
         updatedAt: new Date().toISOString(),
         surfaces: current.surfaces.map((surface) => ({
@@ -504,12 +581,15 @@ export function CustomizationStudio({
             ...(fieldId === "font" ? { fontFamily: value === "serif" ? "serif" as const : value === "clean" ? "sans" as const : "rounded" as const } : {}),
           } : layer),
         })),
-      }));
+      }, configuration.artwork.policy));
     }
   }
 
   function updateArtwork(next: ArtworkDocument) {
-    const normalized = keepArtworkLayerInForeground(next, "personalization-name");
+    const normalized = normalizeArtworkDocumentToPolicy(
+      keepArtworkLayerInForeground(next, "personalization-name"),
+      configuration.artwork.policy,
+    );
     setArtwork(normalized);
     const nameLayer = normalized.surfaces.flatMap((surface) => surface.layers).find((layer) => layer.id === "personalization-name");
     if (nameLayer?.type === "text") {
@@ -546,7 +626,7 @@ export function CustomizationStudio({
     setDisplayUnit(configuration.dimensions.supportedDisplayUnits.includes(design.displayUnit) ? design.displayUnit : configuration.dimensions.supportedDisplayUnits[0] ?? "mm");
     setQuantity(normalizedQuantity(configuration, design.quantity));
     setFields(restoredFields);
-    setArtwork(synchronizePersonalizationArtwork(design.artwork, restoredFields));
+    setArtwork(synchronizePersonalizationArtwork(configuration, design.artwork, restoredFields));
     setFieldErrors({});
     setSaveMessage(`Loaded ${design.title}.`);
   }
@@ -634,8 +714,8 @@ export function CustomizationStudio({
       return;
     }
     if (editingKey) removeItem(editingKey);
-    const fontValue = fields.font || "rounded";
-    const fontLabel = configuration.personalization.fields.find((field) => field.id === "font")?.options?.find((option) => option.value === fontValue)?.label ?? fontValue;
+    const fontValue = customerFieldValues.font || "rounded";
+    const fontLabel = visiblePersonalizationFields.find((field) => field.id === "font")?.options?.find((option) => option.value === fontValue)?.label ?? fontValue;
     const personalizationNameLayer = artwork.surfaces
       .flatMap((surface) => surface.layers)
       .find((layer) => layer.id === "personalization-name" && layer.type === "text");
@@ -645,13 +725,14 @@ export function CustomizationStudio({
       slug: product.slug,
       name: product.name,
       price: quotedLine.unitPricePaise / 100,
+      ...(quotedLine.lineTotalPaise !== quotedLine.unitPricePaise * quantity ? { lineAdjustment: (quotedLine.lineTotalPaise - quotedLine.unitPricePaise * quantity) / 100 } : {}),
       quantity,
       visual: product.artwork,
       customization: configuration.personalization.supported ? {
         configurationId,
-        name: fields.name || product.name,
-        detail: fields["class-details"] || fields.subtitle || "",
-        fields,
+        name: customerFieldValues.name || product.name,
+        detail: customerFieldValues["class-details"] || customerFieldValues.subtitle || "",
+        fields: customerFieldValues,
         templateId: selectedTemplate?.id,
         template: selectedTemplate?.label ?? "Product default",
         font: fontLabel,
@@ -689,7 +770,7 @@ export function CustomizationStudio({
         <small>{formatPrice(displayUnitPrice / 100)} each x {quantity}</small>
       </div>
       {quotedLine?.adjustments.map((adjustment) => (
-        <p className={configuratorStyles.adjustment} key={adjustment.label}><span>{adjustment.label}</span><strong>+{formatPrice(adjustment.amountPaise / 100)}</strong></p>
+        <p className={configuratorStyles.adjustment} key={`${adjustment.label}-${adjustment.amountPaise}`}><span>{adjustment.label}{adjustment.scope === "line" ? " (per line)" : ""}</span><strong>{adjustment.amountPaise >= 0 ? "+" : "−"}{formatPrice(Math.abs(adjustment.amountPaise) / 100)}</strong></p>
       ))}
       <div className={configuratorStyles.purchaseActions}>
         <div className={configuratorStyles.designFileActions}>
@@ -788,19 +869,19 @@ export function CustomizationStudio({
               <Link className={configuratorStyles.blockedOption} href={buildCustomSizeQuotePath({ productId: product.id, quantity, dimensions: selectedPreset?.label })}><LockKeyhole /><span><strong>Custom size - request a quote</strong><small>{configuration.dimensions.custom.reason}</small></span></Link>
             </fieldset>
 
-            {configuration.personalization.supported && (
+            {configuration.personalization.supported && visibleCustomerFields.length > 0 && (
               <fieldset className={configuratorStyles.optionSection}>
                 <legend><span>3</span><div><strong>Personal details</strong><small>These values are validated for this product</small></div></legend>
                 <div className={configuratorStyles.fieldList}>
-                  {configuration.personalization.fields.filter((field) => field.type !== "template").map((field) => (
+                  {visibleCustomerFields.map((field) => (
                     <label key={field.id}>
-                      <span>{field.label}{field.required && <em>*</em>}{field.maxLength && <small>{(fields[field.id] ?? "").length}/{field.maxLength}</small>}</span>
+                      <span>{field.label}{field.unit && <small>({field.unit})</small>}{field.required && <em>*</em>}{field.maxLength && <small>{(fields[field.id] ?? "").length}/{field.maxLength}</small>}</span>
                       {field.type === "select" ? (
                         <select value={fields[field.id] ?? ""} onChange={(event) => changeField(field.id, event.target.value)}>{field.options?.map((option) => <option key={option.id} value={option.value}>{option.label}</option>)}</select>
                       ) : field.type === "color" ? (
                         <input type="color" value={fields[field.id] || neutralPresentationPalette.ink} onChange={(event) => changeField(field.id, event.target.value)} />
                       ) : (
-                        <input value={fields[field.id] ?? ""} placeholder={field.placeholder} maxLength={field.maxLength} aria-invalid={Boolean(fieldErrors[field.id])} onBlur={() => setFieldErrors(validateFields(configuration, fields, templateId))} onChange={(event) => changeField(field.id, event.target.value)} />
+                        <input type={field.type === "number" ? "number" : "text"} value={fields[field.id] ?? ""} placeholder={field.placeholder} min={field.type === "number" ? field.minValue : undefined} max={field.type === "number" ? field.maxValue : undefined} step={field.type === "number" ? field.step : undefined} maxLength={field.maxLength} aria-invalid={Boolean(fieldErrors[field.id])} onBlur={() => setFieldErrors(validateFields(configuration, fields, templateId))} onChange={(event) => changeField(field.id, event.target.value)} />
                       )}
                       {field.helpText && <small>{field.helpText}</small>}
                       {fieldErrors[field.id] && <b role="alert">{fieldErrors[field.id]}</b>}
@@ -831,6 +912,7 @@ export function CustomizationStudio({
                 <input aria-label="Quantity" type="number" min={configuration.quantity.minimum} max={configuration.quantity.maximum} step={configuration.quantity.increment} value={quantity} onChange={(event) => setQuantity(Math.max(configuration.quantity.minimum, Math.min(configuration.quantity.maximum, Number(event.target.value) || configuration.quantity.minimum)))} />
                 <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((value) => Math.min(configuration.quantity.maximum, value + configuration.quantity.increment))} disabled={quantity >= configuration.quantity.maximum}><Plus /></button>
               </div>
+              {configuration.quantity.tiers.length > 0 && <small>Quantity price breaks: {configuration.quantity.tiers.map((tier) => `${tier.label} ${tier.priceDeltaPaise >= 0 ? "+" : "−"}${formatPrice(Math.abs(tier.priceDeltaPaise) / 100)} each`).join(" · ")}</small>}
             </fieldset>
 
             <div className={configuratorStyles.productionFacts}>
@@ -841,8 +923,8 @@ export function CustomizationStudio({
           </aside>
 
           <main className={configuratorStyles.designArea}>
-            <div className={configuratorStyles.designHeading}>
-              <div><Sparkles /><span><strong>{previewMode === "3d" ? "Interactive 3D preview" : "Live 2D artwork studio"}</strong><small>{previewMode === "3d" ? "Rotate and inspect your customized product in 3D." : "Drag elements on the print area. Dashed guides mark the safe zone."}</small></span></div>
+              <div className={configuratorStyles.designHeading}>
+               <div><Sparkles /><span><strong>{previewMode === "3d" ? "Interactive 3D preview" : previewMode === "2d" ? "Live 2D artwork studio" : "Product preview"}</strong><small>{previewMode === "3d" ? "Rotate and inspect your customized product in 3D." : previewMode === "2d" ? "Drag elements on the print area. Dashed guides mark the safe zone." : "This product is configured without a customer design preview."}</small></span></div>
               <div className={configuratorStyles.viewModeToggle} role="group" aria-label="Preview mode">
                 {configuration.preview.supportedModes.includes("3d") && <button
                   type="button"
@@ -864,7 +946,7 @@ export function CustomizationStudio({
                 </button>}
               </div>
             </div>
-            {configuration.personalization.supported ? (
+             {configuration.personalization.supported && previewMode ? (
               previewMode === "3d" ? (
                 <div className={configuratorStyles.preview3dContainer}>
                   <DesignCompletionMeter completion={designCompletion} />
@@ -873,7 +955,7 @@ export function CustomizationStudio({
                     surfaces={surfaceDefinitions(configuration, selectedPreset)}
                     background={templateBackground}
                     accent={templateAccent}
-                    structuralDesign={product.artwork}
+                     structuralDesign={configuration.preview.model ?? product.artwork}
                     productType={product.categorySlug}
                     dimensionsMm={selectedPreset?.dimensionsMm}
                     materialName={selectedVariant?.material || product.material}
@@ -883,27 +965,34 @@ export function CustomizationStudio({
                   {purchasePanel}
                 </div>
               ) : (
-                <ArtworkEditor
+                   <ArtworkEditor
+                  productId={product.id}
                   document={artwork}
                   surfaces={surfaceDefinitions(configuration, selectedPreset)}
+                  policy={configuration.artwork.policy}
+                  uploads={configuration.artwork.uploads}
                   background={templateBackground}
                   foreground={templateForeground}
                   accent={templateAccent}
+                  baseImages={templateBaseImages}
                   personalizationFontOptions={personalizationFontOptions}
                   designCompletion={designCompletion}
                   onChange={updateArtwork}
                   footer={purchasePanel}
                 />
               )
-            ) : (
+             ) : (
               <div className={configuratorStyles.standardPreview}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={product.image} alt={product.name} />
                 {purchasePanel}
               </div>
             )}
-            {!configuration.artwork.uploads.supported && (
-              <div className={configuratorStyles.capabilityNotice}><CircleAlert /><span><strong>Uploaded images are preview-only in this demo.</strong>{configuration.artwork.uploads.reason} They stay on this device and are removed from the order payload.</span></div>
+             {configuration.preview.template && <div className={configuratorStyles.capabilityNotice}><CircleAlert /><span><strong>Preview template: {configuration.preview.template}</strong>This reference is saved with the product configuration. Production artwork still requires review.</span></div>}
+             {artworkUploadsEnabled ? (
+              <div className={configuratorStyles.capabilityNotice}><ShieldCheck /><span><strong>Uploads are validated and stored privately.</strong>Only claimed asset references continue to checkout; local preview data is removed from the order payload.</span></div>
+             ) : !configuration.artwork.uploads.supported && (
+              <div className={configuratorStyles.capabilityNotice}><CircleAlert /><span><strong>Image upload is unavailable for this product.</strong>{configuration.artwork.uploads.reason}</span></div>
             )}
             <div className={configuratorStyles.readinessGrid}>
               <div><PackageCheck /><span><strong>Manufacturing review</strong><small>Custom dimensions remain unavailable until approved limits and rates are configured.</small></span></div>

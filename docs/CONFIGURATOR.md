@@ -17,14 +17,15 @@ compatible templates, quantity controls, saved local drafts and independent conf
 The 2D artwork workspace supports:
 
 - multiple printable surfaces when the product schema supplies them;
-- editable text and validated PNG/JPG preview uploads up to 2 MB;
+- editable text and validated JPG/PNG/WEBP uploads with per-product size limits;
 - drag positioning, numeric sizing and rotation, opacity, font and colour controls;
 - duplicate, delete, front/back layer order and horizontal/vertical alignment;
 - undo, redo, zoom, reset, safe-area guides and boundary/resolution warnings;
 - local save and reopen through the product URL's `design` query parameter.
 
-Uploaded images are deliberately preview-only. They are stored in browser-local draft/cart data and
-are not sent to the order API or represented as production assets.
+Uploaded images are validated from their decoded raster contents, stored privately as artwork assets,
+and referenced by opaque claims in carts and orders. Order creation revalidates each claim and attaches
+the asset to the resulting order item; raw image bytes are not embedded in public order snapshots.
 
 ## Configuration contract
 
@@ -69,21 +70,23 @@ trusted-proxy configuration so limits apply consistently across instances.
 
 ## Production dependencies
 
-No database migration is required for the current demonstration layer. The optional bulk quantity
-environment variables are documented in `.env.example`.
+Additive Prisma migrations provide catalog cross-listing and private artwork-asset persistence. Apply
+them through the normal deployment migration process; do not run the general development seed against
+a populated production catalog. The optional bulk quantity environment variables are documented in
+`.env.example`.
 Before enabling production capabilities, the merchant must supply and connect:
 
 1. Approved dimension limits, increments, material/thickness matrices, setup fees and quantity tiers.
-2. Private object storage, authorization, MIME sniffing, malware scanning, metadata removal and
-   retention rules for artwork.
+2. An object-storage adapter when database byte storage is no longer appropriate, plus malware
+   scanning, metadata removal and production retention rules for artwork.
 3. Dedicated 3D product geometry and physical shader presets: Three.js powers the client-side
    interactive 3D preview (`Product3DPreview.tsx`), with real-time canvas texture projection mapping
    the customer's 2D artwork onto parametric geometries (hardcover notebooks, cylindrical bottles,
    personalized pencils, luggage tags, and card stacks).
 4. Product dielines, bleed/safe-area specifications, target DPI, colour profiles and a production
    renderer before any export may be called print-ready.
-5. Durable repositories, authentication/authorization, rate limiting and an operational notification
-   or CRM adapter for bulk requests and saved designs.
+5. An operational notification or CRM adapter for bulk requests and durable shared rate limiting for
+   multi-instance deployments.
 
 ## Verification
 

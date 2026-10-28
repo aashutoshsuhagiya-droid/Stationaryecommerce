@@ -101,6 +101,11 @@ test("resolves every current product through its stable category slug", () => {
   }
 });
 
+test("uses an explicit validated product model ahead of the category default", () => {
+  const profile = resolveProduct3DProfile("notebook", "customized-name-slips");
+  assert.equal(profile.kind, "notebook");
+});
+
 test("provides bounded, category-differentiated physical themes", () => {
   const themeSignatures = new Set<string>();
 

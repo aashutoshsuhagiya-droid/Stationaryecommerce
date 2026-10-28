@@ -15,6 +15,7 @@ if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Set BO
 if (password.length < 16 || !/[A-Za-z]/.test(password) || !/\d/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
   throw new Error("BOOTSTRAP_ADMIN_PASSWORD must have at least 16 characters, including a letter, number and symbol.");
 }
+const adminEmail = email;
 
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
 
@@ -24,7 +25,7 @@ async function main() {
   const passwordHash = await hashPassword(password);
   const role = await prisma.role.findUnique({ where: { key: "admin" }, select: { id: true } });
   if (!role) throw new Error("The admin role is not seeded. Run npm run db:seed first.");
-  const existing = await prisma.user.findUnique({ where: { email }, select: { id: true } });
+  const existing = await prisma.user.findUnique({ where: { email: adminEmail }, select: { id: true } });
   if (existing) throw new Error("A user already exists for BOOTSTRAP_ADMIN_EMAIL; refusing to overwrite its credentials.");
 
   const userId = randomUUID();
@@ -32,7 +33,7 @@ async function main() {
     await prisma.user.create({
       data: {
         id: userId,
-        email,
+        email: adminEmail,
         passwordHash,
         firstName: process.env.BOOTSTRAP_ADMIN_FIRST_NAME?.trim() || "Super",
         lastName: process.env.BOOTSTRAP_ADMIN_LAST_NAME?.trim() || "Admin",
@@ -41,7 +42,7 @@ async function main() {
       select: { id: true },
     });
     await prisma.userRole.create({ data: { userId, roleId: role.id } });
-    console.info(`Created administrator ${email}. Remove the bootstrap credentials from the environment now.`);
+    console.info(`Created administrator ${adminEmail}. Remove the bootstrap credentials from the environment now.`);
   } catch (error) {
     await prisma.user.delete({ where: { id: userId } }).catch(() => undefined);
     throw error;

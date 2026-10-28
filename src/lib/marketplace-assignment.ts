@@ -1,3 +1,5 @@
+import { vendorCoversProductCategories } from "./product-category-links";
+
 export type MarketplacePaymentStatus =
   | "CREATED"
   | "PENDING"
@@ -8,7 +10,8 @@ export type MarketplacePaymentStatus =
 
 export interface AssignmentOrderLine {
   productId: string;
-  categoryId: string;
+  /** Product.categoryId first; later cross-listed category IDs are discovery-only. */
+  categoryIds: string[];
   quantity: number;
 }
 
@@ -128,7 +131,7 @@ export function isVendorEligibleForOrder(
   const postalCodeMatches = vendor.servicePostalCodes.includes(order.postalCode);
   if (!postalCodeMatches) return false;
 
-  if (order.lines.some((line) => !vendor.serviceCategoryIds.includes(line.categoryId))) return false;
+  if (order.lines.some((line) => !vendorCoversProductCategories(vendor.serviceCategoryIds, line.categoryIds))) return false;
 
   const quantities = aggregateOrderQuantities(order.lines);
   for (const [productId, quantity] of quantities) {

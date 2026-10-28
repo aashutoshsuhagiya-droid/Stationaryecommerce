@@ -47,6 +47,13 @@ enum ArtworkStatus {
   FAILED
 }
 
+enum ArtworkAssetStatus {
+  UPLOADED
+  ATTACHED
+  APPROVED
+  REJECTED
+}
+
 enum CartStatus {
   ACTIVE
   CONVERTED
@@ -273,6 +280,7 @@ model User {
   vendorApplicationEvents    VendorApplicationEvent[]     @relation("VendorApplicationActor")
   uploadedVendorDocuments    VendorDocument[]             @relation("VendorDocumentUploader")
   reviewedVendorDocuments    VendorDocument[]             @relation("VendorDocumentReviewer")
+  uploadedArtworkAssets      ArtworkAsset[]               @relation("ArtworkAssetOwner")
 
   @@index([status, createdAt])
 }
@@ -384,6 +392,7 @@ model Category {
   parent         Category?                 @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
   children       Category[]                @relation("CategoryTree")
   products       Product[]
+  productLinks   ProductCategory[]
   templates      PersonalizationTemplate[]
   couponLinks    CouponCategory[]
 
@@ -421,6 +430,7 @@ model Product {
   createdAt             DateTime                      @default(now())
   updatedAt             DateTime                      @updatedAt
   category              Category                      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  categoryLinks         ProductCategory[]
   variants              ProductVariant[]
   images                ProductImage[]
   personalizationFields ProductPersonalizationField[]
@@ -433,10 +443,53 @@ model Product {
   couponLinks           CouponProduct[]
   bulkRequests          BulkOrderRequest[]
   vendorCapabilities    VendorCapability[]
+  artworkAssets         ArtworkAsset[]
 
   @@index([categoryId, status])
   @@index([status, publishedAt])
   @@index([basePricePaise])
+}
+
+model ProductCategory {
+  productId  String
+  categoryId String
+  createdAt  DateTime @default(now())
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@id([productId, categoryId])
+  @@index([categoryId, productId])
+}
+
+model ArtworkAsset {
+  id              String             @id @default(cuid())
+  productId       String
+  orderItemId     String?
+  ownerUserId     String?
+  surfaceId       String             @db.VarChar(80)
+  claimTokenHash  String             @unique @db.Char(64)
+  originalName    String             @db.VarChar(200)
+  mimeType        String             @db.VarChar(100)
+  sizeBytes       Int
+  width           Int
+  height          Int
+  hasTransparency Boolean            @default(false)
+  sha256          String             @db.Char(64)
+  content         Bytes
+  status          ArtworkAssetStatus @default(UPLOADED)
+  expiresAt       DateTime
+  attachedAt      DateTime?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  product         Product            @relation(fields: [productId], references: [id], onDelete: Restrict)
+  orderItem       OrderItem?         @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  owner           User?              @relation("ArtworkAssetOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+
+  @@index([productId, surfaceId, status])
+  @@index([orderItemId])
+  @@index([ownerUserId, createdAt])
+  @@index([status, expiresAt])
+  @@index([sha256])
 }
 
 model ProductVariant {
@@ -909,6 +962,7 @@ model OrderItem {
   personalization     OrderPersonalization?
   productionJob       ProductionJob?
   review              Review?
+  artworkAssets       ArtworkAsset[]
 
   @@index([orderId])
   @@index([productId])

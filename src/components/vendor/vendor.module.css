@@ -1581,6 +1581,26 @@
   overflow-wrap: anywhere;
 }
 
+.assignedOrderBody li span small,
+.assignedOrderBody li span a {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 8px;
+}
+
+.assignedOrderBody li span a {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-heading);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.assignedOrderBody li span a svg { flex: 0 0 auto; }
+.assignedOrderBody li span .artworkReviewStatus { color: var(--text-heading); font-weight: 800; }
+
 .offerCard li strong,
 .assignedOrderBody li strong {
   flex: 0 0 auto;

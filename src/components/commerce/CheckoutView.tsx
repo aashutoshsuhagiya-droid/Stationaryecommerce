@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Check, ChevronRight, CreditCard, LockKeyhole, MapPin, PackageCheck, ShieldCheck, Truck } from "lucide-react";
-import { useStore } from "@/components/store/StoreProvider";
+import { cartLineTotal, useStore } from "@/components/store/StoreProvider";
 import { removePreviewImageLayers } from "@/components/configurator/artwork-types";
 import { designTemplates, formatPrice, getProductById } from "@/lib/data";
 import type { Order } from "@/lib/types";
@@ -111,19 +111,32 @@ export function CheckoutView() {
       const order = payload.data;
       const record = {
         orderNumber: order.orderNumber,
-        items: order.items.map((item) => ({
-          key: item.id,
-          name: item.productName,
-          price: item.unitPricePaise / 100,
-          quantity: item.quantity,
-          ...(item.customization?.presentation ? {
-            customization: {
-              name: item.customization.presentation.name,
-              template: item.customization.presentation.templateLabel,
-              pack: item.customization.presentation.packLabel,
-            },
-          } : {}),
-        })),
+        items: order.items.map((item, itemIndex) => {
+          const privateArtworkAssets = cart[itemIndex]?.customization?.artwork?.surfaces.flatMap((surface) =>
+            surface.layers.flatMap((layer) => layer.type === "image" && layer.asset?.claimToken
+              ? [{ id: layer.asset.id, claimToken: layer.asset.claimToken, mimeType: layer.asset.mimeType }]
+              : [])) ?? [];
+          return {
+            key: item.id,
+            name: item.productName,
+            price: item.unitPricePaise / 100,
+            quantity: item.quantity,
+            lineTotal: item.lineTotalPaise / 100,
+            ...(item.customization?.presentation ? {
+              customization: {
+                name: item.customization.presentation.name,
+                template: item.customization.presentation.templateLabel,
+                pack: item.customization.presentation.packLabel,
+                fields: item.customization.fields,
+                artworkImageCount: item.customization.artwork?.surfaces.reduce(
+                  (total, surface) => total + surface.layers.filter((layer) => layer.type === "image" && Boolean(layer.asset)).length,
+                  0,
+                ) ?? 0,
+                privateArtworkAssets,
+              },
+            } : {}),
+          };
+        }),
         total: order.totalPaise / 100,
         payment: "Payment setup required",
         placedAt: order.createdAt,
@@ -167,7 +180,7 @@ export function CheckoutView() {
         {formError && <div className="checkout-error" role="alert">{formError}</div>}
       </div>
 
-      <aside className="checkout-summary card-panel"><h2>Review your order</h2><div className="checkout-items">{cart.map((item) => <div key={item.key}><div className="checkout-item-image"><ProductVisual artwork={item.visual} name={item.name} personalisedName={item.customization?.name || "Your Name"} background={item.customization?.backgroundColor} accent={item.customization?.textColor} /><span>{item.quantity}</span></div><p><strong>{item.name}</strong>{item.customization && <small>{item.customization.name} · {item.customization.template}</small>}</p><b>{formatPrice(item.price * item.quantity)}</b></div>)}</div><dl><div><dt>Subtotal</dt><dd>{formatPrice(subtotal)}</dd></div><div><dt>Shipping</dt><dd>{formatPrice(SHIPPING)}</dd></div><div><dt>Taxes</dt><dd>Calculated by configuration</dd></div></dl><div className="checkout-total"><span>Total</span><strong>{formatPrice(subtotal + SHIPPING)}</strong></div><button className="button button-primary button-block" type="submit" disabled={processing}>{processing ? "Saving your demo order…" : payment === "online" ? "Save demo order" : "Place demo order"} <ChevronRight /></button><small className="checkout-consent">Demo mode does not capture payment or create a production order. Live checkout also requires agreement to the store terms and personalised-product return conditions.</small></aside>
+      <aside className="checkout-summary card-panel"><h2>Review your order</h2><div className="checkout-items">{cart.map((item) => <div key={item.key}><div className="checkout-item-image"><ProductVisual artwork={item.visual} name={item.name} personalisedName={item.customization?.name || "Your Name"} background={item.customization?.backgroundColor} accent={item.customization?.textColor} /><span>{item.quantity}</span></div><p><strong>{item.name}</strong>{item.customization && <small>{item.customization.name} · {item.customization.template}</small>}</p><b>{formatPrice(cartLineTotal(item))}</b></div>)}</div><dl><div><dt>Subtotal</dt><dd>{formatPrice(subtotal)}</dd></div><div><dt>Shipping</dt><dd>{formatPrice(SHIPPING)}</dd></div><div><dt>Taxes</dt><dd>Calculated by configuration</dd></div></dl><div className="checkout-total"><span>Total</span><strong>{formatPrice(subtotal + SHIPPING)}</strong></div><button className="button button-primary button-block" type="submit" disabled={processing}>{processing ? "Saving your demo order…" : payment === "online" ? "Save demo order" : "Place demo order"} <ChevronRight /></button><small className="checkout-consent">Demo mode does not capture payment or create a production order. Live checkout also requires agreement to the store terms and personalised-product return conditions.</small></aside>
     </div>
   </form>;
 }

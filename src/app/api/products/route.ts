@@ -5,6 +5,8 @@ import { getStorefrontCatalog } from "@/lib/runtime-catalog";
 import { validationError } from "@/lib/http";
 import { productQuerySchema } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const parsed = productQuerySchema.safeParse(Object.fromEntries(url.searchParams.entries()));
@@ -26,7 +28,7 @@ export async function GET(request: Request) {
     },
     {
       headers: {
-        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+        "Cache-Control": "no-store",
       },
     },
   );

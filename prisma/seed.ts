@@ -4,6 +4,7 @@ import { Prisma, PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 import { categories, designTemplates, products } from "../src/lib/data";
+import { listEzpacPackagingCategories } from "../src/lib/ezpac-packaging-presets";
 import { APPROVED_VENDOR_PERMISSIONS, VENDOR_APPLICANT_PERMISSIONS } from "../src/lib/vendor-permissions";
 
 const connectionString = process.env.DATABASE_URL?.trim();
@@ -189,6 +190,50 @@ async function seedCatalog() {
     categoryIds.set(category.id, seededCategory.id);
   }
 
+  // Additive only: preserve every existing category record and relationship,
+  // and create just the missing packaging/category starter records. Rerunning
+  // the seed cannot rename, move, reactivate, or duplicate a live category.
+  const maximumCategorySortOrder = await prisma.category.aggregate({ _max: { sortOrder: true } });
+  let nextCategorySortOrder = (maximumCategorySortOrder._max.sortOrder ?? -1) + 1;
+  for (const category of listEzpacPackagingCategories()) {
+    let root = await prisma.category.findUnique({
+      where: { slug: category.slug },
+      select: { id: true, parentId: true },
+    });
+    if (!root) {
+      root = await prisma.category.create({
+        data: {
+          name: category.name,
+          slug: category.slug,
+          isActive: true,
+          sortOrder: nextCategorySortOrder++,
+        },
+        select: { id: true, parentId: true },
+      });
+    }
+    // A matching slug already used as a subcategory is a live-data conflict;
+    // leave it untouched and let the admin category manager resolve it.
+    if (root.parentId) continue;
+
+    for (const subcategory of category.subcategories) {
+      const existing = await prisma.category.findUnique({
+        where: { slug: subcategory.slug },
+        select: { id: true },
+      });
+      if (existing) continue;
+      await prisma.category.create({
+        data: {
+          name: subcategory.name,
+          slug: subcategory.slug,
+          parentId: root.id,
+          isActive: true,
+          sortOrder: nextCategorySortOrder++,
+        },
+        select: { id: true },
+      });
+    }
+  }
+
   for (const product of products) {
     const category = categories.find((candidate) => candidate.slug === product.categorySlug);
     if (!category) throw new Error(`Missing category for ${product.slug}`);
@@ -263,6 +308,14 @@ async function seedCatalog() {
       },
     });
     productIds.set(product.id, seededProduct.id);
+
+    await prisma.productCategory.upsert({
+      where: {
+        productId_categoryId: { productId: seededProduct.id, categoryId },
+      },
+      update: {},
+      create: { productId: seededProduct.id, categoryId },
+    });
 
     for (const [index, image] of product.images.entries()) {
       await prisma.productImage.upsert({

@@ -98,3 +98,39 @@ test("draws centered text lines without using the fillText maxWidth argument", (
   assert.ok(fillCalls.every((args) => args.length === 3));
   assert.deepEqual(fillCalls.map(([line]) => line), ["Alpha beta", "gamma"]);
 });
+
+test("renders configured left alignment from the text box edge", () => {
+  const fillCalls: unknown[][] = [];
+  const context = {
+    save() {},
+    restore() {},
+    translate() {},
+    rotate() {},
+    measureText: (value: string) => ({ width: measureByCharacter(value) }),
+    fillText: (...args: unknown[]) => fillCalls.push(args),
+    globalAlpha: 1,
+    font: "",
+    fillStyle: "",
+    textAlign: "center",
+    textBaseline: "alphabetic",
+  } as unknown as CanvasRenderingContext2D;
+  const layer: ArtworkLayer = {
+    id: "left-text",
+    type: "text",
+    name: "Left text",
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 40,
+    rotation: 0,
+    opacity: 1,
+    text: "Alpha",
+    fontSize: 20,
+    textAlign: "left",
+  };
+
+  renderLayerToContext(context, layer);
+
+  assert.equal(context.textAlign, "left");
+  assert.equal(fillCalls[0][1], -50);
+});

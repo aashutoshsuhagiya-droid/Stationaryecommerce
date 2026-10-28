@@ -386,6 +386,10 @@ export function resolveProduct3DProfile(
   productType = "",
   options: Product3DProfileOptions = {},
 ): Product3DProfile {
+  const structuralKey = structuralDesign.trim().toLowerCase();
+  const explicitModel = Object.values(CATEGORY_3D_PROFILES).find((profile) => profile.kind === structuralKey);
+  if (explicitModel) return materializeProfile(explicitModel, options);
+
   const normalizedCategory = productType.trim().toLowerCase();
   if (normalizedCategory in CATEGORY_3D_PROFILES) {
     return materializeProfile(
@@ -394,7 +398,6 @@ export function resolveProduct3DProfile(
     );
   }
 
-  const structuralKey = structuralDesign.trim().toLowerCase();
   for (const fallback of STRUCTURAL_FALLBACKS) {
     if (fallback.pattern.test(structuralKey)) {
       return materializeProfile(CATEGORY_3D_PROFILES[fallback.categorySlug], options);

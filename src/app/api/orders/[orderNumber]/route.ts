@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { apiError, validationError } from "@/lib/http";
 import { getDemoOrder, toOrderTrackingSummary } from "@/lib/order-service";
 import { consumeRateLimit, requestIdentifier } from "@/lib/rate-limit";
+import { getPersistentOrderTracking } from "@/lib/runtime-order-service";
 import { orderLookupSchema } from "@/lib/validation";
 
 type OrderRouteContext = {
@@ -32,6 +33,13 @@ export async function GET(request: Request, context: OrderRouteContext) {
   });
   if (!parsed.success) return validationError(parsed.error);
 
+  const persisted = await getPersistentOrderTracking(parsed.data.orderNumber, parsed.data.email);
+  if (persisted) {
+    return NextResponse.json(
+      { data: persisted, meta: { persistence: "database" } },
+      { headers: { "Cache-Control": "no-store" } },
+    );
+  }
   const order = getDemoOrder(parsed.data.orderNumber, parsed.data.email);
   if (!order) {
     return apiError(

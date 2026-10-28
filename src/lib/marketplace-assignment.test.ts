@@ -18,7 +18,7 @@ const order: AssignmentOrderDemand = {
   paymentStatus: "CAPTURED",
   city: "Ahmedabad",
   postalCode: "380015",
-  lines: [{ productId: "labels", categoryId: "labels-category", quantity: 50 }],
+  lines: [{ productId: "labels", categoryIds: ["labels-category"], quantity: 50 }],
 };
 
 function vendor(overrides: Partial<VendorEligibilitySnapshot> = {}): VendorEligibilitySnapshot {
@@ -71,6 +71,32 @@ test("requires both normalized city and every registered product category", () =
   });
 
   assert.deepEqual(plan, { status: "UNASSIGNED", orderId: "order-1", reason: "NO_ELIGIBLE_VENDOR" });
+});
+
+test("uses the primary product category and ignores discovery cross-links", () => {
+  const crossListedOrder: AssignmentOrderDemand = {
+    ...order,
+    lines: [{
+      productId: "labels",
+      categoryIds: ["labels-category", "school-supplies-category"],
+      quantity: 50,
+    }],
+  };
+  const primaryOnly = vendor({ id: "vendor-primary-only" });
+  const discoveryOnly = vendor({
+    id: "vendor-discovery-only",
+    serviceCategoryIds: ["school-supplies-category"],
+  });
+
+  const plan = planAssignmentOffers({
+    order: crossListedOrder,
+    vendors: [primaryOnly, discoveryOnly],
+    now: new Date("2026-10-23T00:00:00.000Z"),
+    offerWindowSeconds: 60,
+  });
+
+  assert.equal(plan.status, "OFFERED");
+  if (plan.status === "OFFERED") assert.deepEqual(plan.vendorIds, ["vendor-primary-only"]);
 });
 
 test("requires every product capability and respects quantity and capacity", () => {

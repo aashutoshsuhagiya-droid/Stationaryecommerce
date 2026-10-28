@@ -1,12 +1,16 @@
 import { createHash, randomUUID } from "node:crypto";
 
 import { CommerceError } from "./commerce-error";
-import { designTemplates, getProductById, products } from "./data";
+import { resolveProductArtworkPolicy, validateArtworkDocumentPolicy } from "./artwork-policy";
+import { isConfigurationFieldVisible } from "./configuration-field-visibility";
+import { getProductById, products } from "./data";
+import { resolveProductTemplate, resolveProductTemplateLinks } from "./product-template-resolution";
 import type { CurrencyCode, Product } from "./types";
 import type { CatalogQuoteInput, OrderItemInput } from "./validation";
 
 export interface CatalogPriceAdjustment {
-  type: "template_premium";
+  type: "template_premium" | "field_price_delta" | "option_price_delta" | "artwork_image" | "quantity_tier" | "setup_charge";
+  scope: "unit" | "line";
   referenceId: string;
   label: string;
   amountPaise: number;
@@ -54,19 +58,27 @@ export function getCatalogPricingVersion() {
     products: products.map((product) => ({
       id: product.id,
       variants: product.variants.map((variant) => ({ id: variant.id, price: variant.price })),
+      fields: product.customizationFields.map((field) => ({
+        id: field.id,
+        priceDelta: field.priceDelta ?? 0,
+        defaultValue: field.defaultValue,
+        enabled: field.enabled !== false,
+        customerVisible: field.customerVisible !== false,
+        visibleWhen: field.visibleWhen,
+        options: field.options?.map((option) => ({ value: option.value, priceDelta: option.priceDelta ?? 0 })) ?? [],
+      })),
+      quantityTiers: product.configurator?.quantityTiers ?? [],
+      setupCharge: product.configurator?.setupCharge ?? 0,
+      artworkPolicy: product.configurator?.artworkPolicy,
     })),
-    templates: designTemplates.map((template) => ({
-      id: template.id,
-      active: template.active,
-      premiumPrice: template.premiumPrice,
-      compatibleProductIds: template.compatibleProductIds,
-    })),
+    templates: products.flatMap((product) => resolveProductTemplateLinks(product).map(({ template, isDefault, sortOrder }) => ({ productId: product.id, id: template.id, active: template.active, premiumPrice: template.premiumPrice, isDefault, sortOrder }))),
   };
   return `catalog-${createHash("sha256").update(JSON.stringify(rateSource)).digest("hex").slice(0, 16)}`;
 }
 
 function validateCustomization(product: Product, input: OrderItemInput) {
   const customization = input.customization;
+  const artworkPolicy = resolveProductArtworkPolicy(product);
   if (!product.customizable && customization) {
     throw new CommerceError(
       422,
@@ -76,17 +88,27 @@ function validateCustomization(product: Product, input: OrderItemInput) {
     );
   }
 
-  const previewImageCount = customization?.artwork?.surfaces.reduce(
-    (total, surface) => total + surface.layers.filter((layer) => layer.type === "image").length,
-    0,
-  ) ?? 0;
-  if (previewImageCount > 0) {
-    throw new CommerceError(
-      422,
-      "ARTWORK_UPLOAD_NOT_SUPPORTED",
-      "Uploaded preview images cannot be attached to an order until secure artwork storage is configured.",
-      { productId: product.id, imageCount: previewImageCount },
+  if (customization?.artwork) {
+    const artworkIssues = validateArtworkDocumentPolicy(
+      customization.artwork,
+      artworkPolicy,
     );
+    const firstIssue = artworkIssues[0];
+    if (firstIssue) {
+      const isSurfaceIssue = firstIssue.code === "SURFACE_NOT_ALLOWED" || firstIssue.code === "ACTIVE_SURFACE_NOT_ALLOWED";
+      const isBlockedUpload = firstIssue.code === "LAYER_TYPE_NOT_ALLOWED" && customization.artwork.surfaces
+        .some((surface) => surface.layers.some((layer) => layer.id === firstIssue.layerId && layer.type === "image"));
+      throw new CommerceError(
+        422,
+        isSurfaceIssue
+          ? "ARTWORK_SURFACE_INVALID"
+          : isBlockedUpload
+            ? "ARTWORK_UPLOAD_NOT_SUPPORTED"
+            : `ARTWORK_${firstIssue.code}`,
+        firstIssue.message,
+        { productId: product.id, issues: artworkIssues },
+      );
+    }
   }
 
   const personalizedName = customization?.fields.name?.trim();
@@ -135,9 +157,19 @@ function validateCustomization(product: Product, input: OrderItemInput) {
     );
   }
 
+  const configurationFields = product.customizationFields.filter(
+    (field) => field.type !== "template",
+  );
+  const submittedFieldValues = customization?.fields ?? {};
+  const fieldValues = Object.fromEntries(
+    configurationFields.map((field) => [
+      field.id,
+      submittedFieldValues[field.id] ?? field.defaultValue ?? "",
+    ]),
+  );
   const supportedFieldIds = new Set(
-    product.customizationFields
-      .filter((field) => field.type !== "template")
+    configurationFields
+      .filter((field) => isConfigurationFieldVisible(field, fieldValues))
       .map((field) => field.id),
   );
   const unsupportedFieldIds = Object.keys(customization?.fields ?? {}).filter(
@@ -152,8 +184,8 @@ function validateCustomization(product: Product, input: OrderItemInput) {
     );
   }
 
-  const requiredFields = product.customizationFields.filter(
-    (field) => field.required && field.type !== "template",
+  const requiredFields = configurationFields.filter(
+    (field) => field.required && isConfigurationFieldVisible(field, fieldValues),
   );
   if (requiredFields.length > 0 && !customization) {
     throw new CommerceError(
@@ -177,14 +209,32 @@ function validateCustomization(product: Product, input: OrderItemInput) {
   }
 
   const adjustments: CatalogPriceAdjustment[] = [];
+  if (customization?.artwork) {
+    const surfacePolicies = new Map(artworkPolicy.surfaces.map((surface) => [surface.id, surface]));
+    for (const surface of customization.artwork.surfaces) {
+      const surfacePolicy = surfacePolicies.get(surface.id);
+      const imageCount = surface.layers.filter((layer) => layer.type === "image").length;
+      const chargePerImagePaise = surfacePolicy?.image.chargePerImagePaise ?? 0;
+      if (!Number.isSafeInteger(chargePerImagePaise) || chargePerImagePaise < 0) {
+        throw new CommerceError(500, "CATALOG_CONFIGURATION_INVALID", "This product has an invalid artwork image charge.", {
+          productId: product.id,
+          surfaceId: surface.id,
+        });
+      }
+      if (imageCount > 0 && chargePerImagePaise > 0) {
+        adjustments.push({
+          type: "artwork_image",
+          scope: "line",
+          referenceId: `artwork-image:${surface.id}`,
+          label: `${surfacePolicy?.label ?? surface.label} artwork image${imageCount === 1 ? "" : "s"}`,
+          amountPaise: chargePerImagePaise * imageCount,
+        });
+      }
+    }
+  }
   if (customization?.templateId) {
-    const template = designTemplates.find((candidate) => candidate.id === customization.templateId);
-    if (
-      !template ||
-      !template.active ||
-      !product.templateIds.includes(template.id) ||
-      !template.compatibleProductIds.includes(product.id)
-    ) {
+    const template = resolveProductTemplate(product, customization.templateId);
+    if (!template) {
       throw new CommerceError(
         422,
         "INVALID_TEMPLATE",
@@ -196,6 +246,7 @@ function validateCustomization(product: Product, input: OrderItemInput) {
     if (amountPaise > 0) {
       adjustments.push({
         type: "template_premium",
+        scope: "unit",
         referenceId: template.id,
         label: template.name,
         amountPaise,
@@ -203,9 +254,9 @@ function validateCustomization(product: Product, input: OrderItemInput) {
     }
   }
 
-  for (const field of product.customizationFields) {
-    if (field.type === "template") continue;
-    const rawValue = customization?.fields[field.id] ?? "";
+  for (const field of configurationFields) {
+    if (!isConfigurationFieldVisible(field, fieldValues)) continue;
+    const rawValue = fieldValues[field.id] ?? "";
     const value = rawValue.trim();
 
     if (field.required && !value) {
@@ -218,6 +269,39 @@ function validateCustomization(product: Product, input: OrderItemInput) {
     }
     if (!value) continue;
 
+    if (field.type === "number") {
+      const numericValue = Number(value);
+      if (!Number.isFinite(numericValue)) {
+        throw new CommerceError(422, "CUSTOMIZATION_NUMBER_INVALID", `${field.label} must be a valid number.`, {
+          productId: product.id,
+          fieldId: field.id,
+        });
+      }
+      if (field.minValue !== undefined && numericValue < field.minValue) {
+        throw new CommerceError(422, "CUSTOMIZATION_NUMBER_TOO_SMALL", `${field.label} must be at least ${field.minValue}.`, {
+          productId: product.id,
+          fieldId: field.id,
+          minValue: field.minValue,
+        });
+      }
+      if (field.maxValue !== undefined && numericValue > field.maxValue) {
+        throw new CommerceError(422, "CUSTOMIZATION_NUMBER_TOO_LARGE", `${field.label} must be at most ${field.maxValue}.`, {
+          productId: product.id,
+          fieldId: field.id,
+          maxValue: field.maxValue,
+        });
+      }
+      if (field.step && field.minValue !== undefined) {
+        const increments = (numericValue - field.minValue) / field.step;
+        if (Math.abs(increments - Math.round(increments)) > 1e-8) {
+          throw new CommerceError(422, "CUSTOMIZATION_NUMBER_STEP_INVALID", `${field.label} must use increments of ${field.step}.`, {
+            productId: product.id,
+            fieldId: field.id,
+            step: field.step,
+          });
+        }
+      }
+    }
     if (field.minLength && value.length < field.minLength) {
       throw new CommerceError(422, "CUSTOMIZATION_TOO_SHORT", `${field.label} is too short.`, {
         productId: product.id,
@@ -240,7 +324,8 @@ function validateCustomization(product: Product, input: OrderItemInput) {
         { productId: product.id, fieldId: field.id },
       );
     }
-    if (field.options?.length && !field.options.some((option) => option.value === value)) {
+    const selectedOption = field.options?.find((option) => option.value === value);
+    if (field.options?.length && !selectedOption) {
       throw new CommerceError(
         422,
         "CUSTOMIZATION_OPTION_INVALID",
@@ -248,19 +333,47 @@ function validateCustomization(product: Product, input: OrderItemInput) {
         { productId: product.id, fieldId: field.id },
       );
     }
+    const fieldAdjustmentPaise = toPaise(field.priceDelta ?? 0);
+    if (fieldAdjustmentPaise !== 0) {
+      adjustments.push({
+        type: "field_price_delta",
+        scope: "unit",
+        referenceId: field.id,
+        label: field.label,
+        amountPaise: fieldAdjustmentPaise,
+      });
+    }
+    const optionAdjustmentPaise = toPaise(selectedOption?.priceDelta ?? 0);
+    if (selectedOption && optionAdjustmentPaise !== 0) {
+      adjustments.push({
+        type: "option_price_delta",
+        scope: "unit",
+        referenceId: `${field.id}:${selectedOption.value}`,
+        label: `${field.label}: ${selectedOption.label}`,
+        amountPaise: optionAdjustmentPaise,
+      });
+    }
   }
 
   return adjustments;
 }
 
-export function priceCatalogItem(input: OrderItemInput): AuthoritativePriceLine {
-  const product = getProductById(input.productId);
-  if (!product) {
-    throw new CommerceError(404, "PRODUCT_NOT_FOUND", "One of the selected products no longer exists.", {
+export function priceProductItem(product: Product, input: OrderItemInput): AuthoritativePriceLine {
+  if (product.id !== input.productId) {
+    throw new CommerceError(422, "PRODUCT_MISMATCH", "The selected product does not match the pricing request.", {
       productId: input.productId,
     });
   }
-
+  const minimumQuantity = product.configurator?.quantityMin ?? 1;
+  const maximumQuantity = Math.max(minimumQuantity, product.configurator?.quantityMax ?? 100);
+  if (input.quantity < minimumQuantity || input.quantity > maximumQuantity) {
+    throw new CommerceError(
+      422,
+      "QUANTITY_OUT_OF_RANGE",
+      `${product.name} must be ordered in quantities from ${minimumQuantity} to ${maximumQuantity}.`,
+      { productId: product.id, minimumQuantity, maximumQuantity, quantity: input.quantity },
+    );
+  }
   const variant = product.variants.find((candidate) => candidate.id === input.variantId);
   if (!variant) {
     throw new CommerceError(422, "VARIANT_NOT_FOUND", "The selected product option is unavailable.", {
@@ -276,11 +389,46 @@ export function priceCatalogItem(input: OrderItemInput): AuthoritativePriceLine 
   }
 
   const adjustments = validateCustomization(product, input);
+  const quantityTier = product.configurator?.quantityTiers
+    ?.filter((tier) => input.quantity >= tier.minimum)
+    .sort((left, right) => right.minimum - left.minimum)[0];
+  if (quantityTier) {
+    const amountPaise = toPaise(quantityTier.priceDelta);
+    if (amountPaise !== 0) {
+      adjustments.push({
+        type: "quantity_tier",
+        scope: "unit",
+        referenceId: `quantity-${quantityTier.minimum}`,
+        label: quantityTier.label || `${quantityTier.minimum}+ units`,
+        amountPaise,
+      });
+    }
+  }
+  const setupCharge = product.configurator?.setupCharge ?? 0;
+  if (!Number.isFinite(setupCharge) || setupCharge < 0) {
+    throw new CommerceError(500, "CATALOG_CONFIGURATION_INVALID", "This product has an invalid setup charge.", { productId: product.id });
+  }
+  const setupChargePaise = toPaise(setupCharge);
+  if (setupChargePaise > 0) {
+    adjustments.push({
+      type: "setup_charge",
+      scope: "line",
+      referenceId: "setup-charge",
+      label: "Setup charge",
+      amountPaise: setupChargePaise,
+    });
+  }
   const baseUnitPricePaise = toPaise(variant.price);
-  const unitPricePaise = adjustments.reduce(
+  const unitPricePaise = adjustments.filter((adjustment) => adjustment.scope === "unit").reduce(
     (total, adjustment) => total + adjustment.amountPaise,
     baseUnitPricePaise,
   );
+  if (unitPricePaise < 0) {
+    throw new CommerceError(422, "CONFIGURATION_PRICE_INVALID", "Configured option pricing cannot make this product price negative.", {
+      productId: product.id,
+      variantId: variant.id,
+    });
+  }
 
   return {
     productId: product.id,
@@ -293,7 +441,7 @@ export function priceCatalogItem(input: OrderItemInput): AuthoritativePriceLine 
     baseUnitPricePaise,
     adjustments,
     unitPricePaise,
-    lineTotalPaise: unitPricePaise * input.quantity,
+    lineTotalPaise: unitPricePaise * input.quantity + adjustments.filter((adjustment) => adjustment.scope === "line").reduce((total, adjustment) => total + adjustment.amountPaise, 0),
     productSnapshot: {
       name: product.name,
       sku: variant.sku,
@@ -304,11 +452,20 @@ export function priceCatalogItem(input: OrderItemInput): AuthoritativePriceLine 
   };
 }
 
-export function createCatalogQuote(input: CatalogQuoteInput): CatalogQuote {
-  const items = input.items.map(priceCatalogItem);
+export function priceCatalogItem(input: OrderItemInput): AuthoritativePriceLine {
+  const product = getProductById(input.productId);
+  if (!product) {
+    throw new CommerceError(404, "PRODUCT_NOT_FOUND", "One of the selected products no longer exists.", {
+      productId: input.productId,
+    });
+  }
+  return priceProductItem(product, input);
+}
+
+export function createQuoteFromPricedItems(items: AuthoritativePriceLine[], pricingVersion: string): CatalogQuote {
   return {
     quoteId: randomUUID(),
-    pricingVersion: getCatalogPricingVersion(),
+    pricingVersion,
     currency: "INR",
     items,
     subtotalPaise: items.reduce((total, item) => total + item.lineTotalPaise, 0),
@@ -319,4 +476,8 @@ export function createCatalogQuote(input: CatalogQuoteInput): CatalogQuote {
     calculatedAt: new Date().toISOString(),
     requiresCheckoutRevalidation: true,
   };
+}
+
+export function createCatalogQuote(input: CatalogQuoteInput): CatalogQuote {
+  return createQuoteFromPricedItems(input.items.map(priceCatalogItem), getCatalogPricingVersion());
 }

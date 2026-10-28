@@ -26,18 +26,35 @@ import type {
   ArtworkLayer,
   PrintableSurfaceDefinition,
 } from "./artwork-types";
-import { getArtworkLayersInRenderOrder, insertArtworkBelowText } from "./artwork-types";
+import {
+  canAddArtworkLayer,
+  constrainArtworkLayerToPolicy,
+  getArtworkLayersInRenderOrder,
+  insertArtworkBelowText,
+  normalizeArtworkDocumentToPolicy,
+  sniffArtworkImageMime,
+} from "./artwork-types";
 import { resizeArtworkGeometry, type ResizeDirection } from "./artwork-resize";
+import type { ArtworkImageAssetReference, ArtworkSurfacePolicy, ProductArtworkPolicy } from "@/lib/types";
+import { resolveArtworkTextTypography } from "@/lib/artwork-text-policy";
 import styles from "./configurator.module.css";
 
-const MAX_FILE_BYTES = 2 * 1024 * 1024;
-
 interface ArtworkEditorProps {
+  productId: string;
   document: ArtworkDocument;
   surfaces: PrintableSurfaceDefinition[];
+  policy: ProductArtworkPolicy;
+  uploads: {
+    supported: boolean;
+    acceptedMimeTypes: ArtworkImageAssetReference["mimeType"][];
+    maximumBytes: number;
+    endpoint: string;
+  };
   background: string;
   foreground: string;
   accent: string;
+  /** Product/template imagery stays locked beneath all editable artwork layers. */
+  baseImages?: Record<string, string>;
   personalizationFontOptions?: Array<{
     value: "rounded" | "sans" | "serif";
     label: string;
@@ -105,13 +122,6 @@ function replaceLayers(
   };
 }
 
-function fileSignature(bytes: Uint8Array) {
-  const png = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
-  if (png.every((value, index) => bytes[index] === value)) return "image/png";
-  if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return "image/jpeg";
-  return undefined;
-}
-
 function readAsDataUrl(file: File) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
@@ -130,12 +140,74 @@ function getImageSize(src: string) {
   });
 }
 
+function imagePolicyError(
+  file: File,
+  detectedType: string | undefined,
+  width: number,
+  height: number,
+  surface: ArtworkSurfacePolicy,
+  uploads: ArtworkEditorProps["uploads"],
+  asset?: ArtworkImageAssetReference,
+) {
+  const image = surface.image;
+  const allowedMimeTypes = image.allowedMimeTypes.filter((mimeType) => uploads.acceptedMimeTypes.includes(mimeType));
+  const maximumBytes = Math.min(image.maximumBytes, uploads.maximumBytes);
+  if (!detectedType || detectedType !== file.type || !allowedMimeTypes.includes(detectedType as ArtworkImageAssetReference["mimeType"])) {
+    return `Use one of the allowed image types: ${allowedMimeTypes.map((type) => type.replace("image/", "").toUpperCase()).join(", ")}.`;
+  }
+  if ((asset?.sizeBytes ?? file.size) > maximumBytes) return `Use an image no larger than ${Math.max(1, Math.floor(maximumBytes / 1024 / 1024))} MB.`;
+  if (width < image.minimumSourceWidth || width > image.maximumSourceWidth || height < image.minimumSourceHeight || height > image.maximumSourceHeight) {
+    return `Use an image between ${image.minimumSourceWidth} x ${image.minimumSourceHeight} and ${image.maximumSourceWidth} x ${image.maximumSourceHeight} px.`;
+  }
+  const ratio = width / height;
+  if (image.allowedAspectRatios.length && !image.allowedAspectRatios.some((allowed) => Math.abs(allowed - ratio) <= image.aspectRatioTolerance)) {
+    return `This image aspect ratio is not available for ${surface.label}.`;
+  }
+  if (!image.allowTransparency && asset?.hasTransparency === true) return `Transparent images are not available for ${surface.label}.`;
+  return undefined;
+}
+
+async function uploadArtworkAsset(endpoint: string, productId: string, surfaceId: string, file: File) {
+  const body = new FormData();
+  body.set("productId", productId);
+  body.set("surfaceId", surfaceId);
+  body.set("file", file);
+  const response = await fetch(endpoint, { method: "POST", body });
+  const payload = await response.json() as {
+    data?: ArtworkImageAssetReference & { expiresAt?: string };
+    error?: { message?: string };
+  };
+  if (!response.ok || !payload.data) throw new Error(payload.error?.message ?? "The image could not be stored securely.");
+  const asset = payload.data;
+  if (
+    !asset.id || !asset.claimToken ||
+    !["image/jpeg", "image/png", "image/webp"].includes(asset.mimeType) ||
+    !Number.isSafeInteger(asset.sizeBytes) || asset.sizeBytes < 1 ||
+    !Number.isSafeInteger(asset.width) || asset.width < 1 ||
+    !Number.isSafeInteger(asset.height) || asset.height < 1
+  ) throw new Error("The image storage response was incomplete.");
+  return {
+    id: asset.id,
+    claimToken: asset.claimToken,
+    mimeType: asset.mimeType,
+    sizeBytes: asset.sizeBytes,
+    width: asset.width,
+    height: asset.height,
+    ...(typeof asset.hasTransparency === "boolean" ? { hasTransparency: asset.hasTransparency } : {}),
+    ...(asset.sha256 ? { sha256: asset.sha256 } : {}),
+  } satisfies ArtworkImageAssetReference;
+}
+
 export function ArtworkEditor({
+  productId,
   document,
   surfaces,
+  policy,
+  uploads,
   background,
   foreground,
   accent,
+  baseImages,
   personalizationFontOptions,
   designCompletion,
   onChange,
@@ -148,6 +220,7 @@ export function ArtworkEditor({
   const [undoStack, setUndoStack] = useState<ArtworkDocument[]>([]);
   const [redoStack, setRedoStack] = useState<ArtworkDocument[]>([]);
   const fileInput = useRef<HTMLInputElement>(null);
+  const replacementImageId = useRef<string | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<DragState | null>(null);
@@ -159,10 +232,18 @@ export function ArtworkEditor({
     document.surfaces[0];
   const surfaceDefinition =
     surfaces.find((surface) => surface.id === activeSurface?.id) ?? surfaces[0];
+  const activePolicy = policy.surfaces.find((surface) => surface.id === activeSurface?.id) ?? policy.surfaces[0];
+  const activeTextTypography = activePolicy ? resolveArtworkTextTypography(activePolicy.text) : undefined;
   const selectedLayer = activeSurface?.layers.find((layer) => layer.id === selectedId);
-  const canvasWidth = surfaceDefinition?.width ?? 600;
-  const canvasHeight = surfaceDefinition?.height ?? 360;
-  const safeInset = surfaceDefinition?.safeInset ?? 32;
+  const canvasWidth = activePolicy?.coordinateSpace.width ?? surfaceDefinition?.width ?? 600;
+  const canvasHeight = activePolicy?.coordinateSpace.height ?? surfaceDefinition?.height ?? 360;
+  const baseImage = activeSurface ? baseImages?.[activeSurface.id] : undefined;
+  const printableBounds = activePolicy?.printableBounds ?? {
+    x: surfaceDefinition?.safeInset ?? 32,
+    y: surfaceDefinition?.safeInset ?? 32,
+    width: canvasWidth - (surfaceDefinition?.safeInset ?? 32) * 2,
+    height: canvasHeight - (surfaceDefinition?.safeInset ?? 32) * 2,
+  };
   const physicalWidthMm = surfaceDefinition?.physicalWidthMm;
   const physicalHeightMm = surfaceDefinition?.physicalHeightMm;
   const targetDpi = surfaceDefinition?.targetDpi ?? 300;
@@ -173,16 +254,24 @@ export function ArtworkEditor({
         { value: "sans" as const, label: "Sans" },
         { value: "serif" as const, label: "Serif" },
       ];
+  const selectedPolicy = selectedLayer && activePolicy
+    ? selectedLayer.type === "text" ? activePolicy.text : activePolicy.image
+    : undefined;
+  const availableFontOptions = selectedLayer?.type === "text" && activePolicy?.text.allowedFontFamilies.length
+    ? selectedFontOptions.filter((option) => activePolicy.text.allowedFontFamilies.includes(option.value))
+    : selectedFontOptions;
+  const canAddText = Boolean(activeSurface && canAddArtworkLayer(document, activeSurface.id, "text", policy));
+  const canAddImage = Boolean(uploads.supported && activeSurface && canAddArtworkLayer(document, activeSurface.id, "image", policy));
 
   const warnings = useMemo(() => {
     if (!activeSurface) return [];
     return activeSurface.layers.flatMap((layer) => {
       const issues: string[] = [];
       if (
-        layer.x < safeInset ||
-        layer.y < safeInset ||
-        layer.x + layer.width > canvasWidth - safeInset ||
-        layer.y + layer.height > canvasHeight - safeInset
+        layer.x < printableBounds.x ||
+        layer.y < printableBounds.y ||
+        layer.x + layer.width > printableBounds.x + printableBounds.width ||
+        layer.y + layer.height > printableBounds.y + printableBounds.height
       ) {
         issues.push(`${layer.name} crosses the safe area.`);
       }
@@ -199,20 +288,23 @@ export function ArtworkEditor({
       }
       return issues;
     });
-  }, [activeSurface, canvasHeight, canvasWidth, physicalHeightMm, physicalWidthMm, safeInset, targetDpi]);
+  }, [activeSurface, canvasHeight, canvasWidth, physicalHeightMm, physicalWidthMm, printableBounds, targetDpi]);
 
   function apply(next: ArtworkDocument, recordHistory = true) {
     if (recordHistory) {
       setUndoStack((stack) => [...stack.slice(-39), cloneDocument(document)]);
       setRedoStack([]);
     }
-    onChange(next);
+    onChange(normalizeArtworkDocumentToPolicy(next, policy));
   }
 
   function updateLayer(layerId: string, patch: Partial<ArtworkLayer>, recordHistory = true) {
+    if (!activePolicy) return;
     apply(
       replaceLayers(document, activeSurface.id, (layers) =>
-        layers.map((layer) => (layer.id === layerId ? { ...layer, ...patch } : layer)),
+        layers.map((layer) => layer.id === layerId
+          ? constrainArtworkLayerToPolicy({ ...layer, ...patch }, activePolicy)
+          : layer),
       ),
       recordHistory,
     );
@@ -229,13 +321,14 @@ export function ArtworkEditor({
   }
 
   function fitImageToPrintArea(layer: ArtworkLayer, fill: boolean) {
-    if (layer.type !== "image") return;
-    const availableWidth = canvasWidth - safeInset * 2;
-    const availableHeight = canvasHeight - safeInset * 2;
+    if (layer.type !== "image" || !activePolicy?.image.permissions.move || !activePolicy.image.permissions.resize) return;
+    const availableWidth = printableBounds.width;
+    const availableHeight = printableBounds.height;
     if (fill) {
+      if (!activePolicy.image.allowCrop) return;
       updateLayer(layer.id, {
-        x: safeInset,
-        y: safeInset,
+        x: printableBounds.x,
+        y: printableBounds.y,
         width: availableWidth,
         height: availableHeight,
         imageFit: "cover",
@@ -246,8 +339,8 @@ export function ArtworkEditor({
     const width = Math.min(availableWidth, availableHeight * aspect);
     const height = width / aspect;
     updateLayer(layer.id, {
-      x: (canvasWidth - width) / 2,
-      y: (canvasHeight - height) / 2,
+      x: printableBounds.x + (printableBounds.width - width) / 2,
+      y: printableBounds.y + (printableBounds.height - height) / 2,
       width,
       height,
       aspectLocked: true,
@@ -256,20 +349,32 @@ export function ArtworkEditor({
   }
 
   function fitTextToBox(layer: ArtworkLayer) {
+    if (!activeTextTypography || (!activePolicy?.text.permissions.font && activeTextTypography.fontSizeConfigured)) return;
     const characterCount = Math.max(1, layer.text?.trim().length ?? 1);
     const widthLimitedSize = layer.width / (characterCount * 0.62);
     const heightLimitedSize = layer.height * 0.78;
     updateLayer(layer.id, {
-      fontSize: Math.max(8, Math.min(180, Math.floor(Math.min(widthLimitedSize, heightLimitedSize)))),
+      fontSize: Math.max(
+        activeTextTypography.minimumFontSize,
+        Math.min(activeTextTypography.maximumFontSize, Math.floor(Math.min(widthLimitedSize, heightLimitedSize))),
+      ),
     });
   }
 
   function setLayerRotation(layer: ArtworkLayer, rotation: number) {
-    updateLayer(layer.id, { rotation: Math.max(-180, Math.min(180, rotation)) });
+    if (!activePolicy) return;
+    const layerPolicy = layer.type === "text" ? activePolicy.text : activePolicy.image;
+    updateLayer(layer.id, { rotation: Math.max(layerPolicy.geometry.minimumRotation, Math.min(layerPolicy.geometry.maximumRotation, rotation)) });
   }
 
   function addText() {
+    if (!activePolicy || !canAddText) {
+      setMessage("This surface has reached its text element limit.");
+      return;
+    }
     const id = newId();
+    const geometry = activePolicy.text.geometry.default;
+    const typography = resolveArtworkTextTypography(activePolicy.text);
     apply(
       replaceLayers(document, activeSurface.id, (layers) => [
         ...layers,
@@ -277,16 +382,15 @@ export function ArtworkEditor({
           id,
           type: "text",
           name: `Text ${layers.filter((layer) => layer.type === "text").length + 1}`,
-          x: canvasWidth * 0.25,
-          y: canvasHeight * 0.4,
-          width: canvasWidth * 0.5,
-          height: 58,
-          rotation: 0,
+          ...geometry,
           opacity: 1,
           text: "Your text",
-          color: getReadableTextColor(background, foreground),
-          fontSize: 34,
-          fontFamily: "rounded",
+          color: activePolicy.text.allowedColors.length
+            ? activePolicy.text.defaultColor
+            : getReadableTextColor(background, foreground),
+          fontSize: typography.defaultFontSize,
+          fontFamily: activePolicy.text.defaultFontFamily,
+          textAlign: typography.defaultTextAlign,
         },
       ]),
     );
@@ -296,48 +400,71 @@ export function ArtworkEditor({
   async function addImage(file: File | undefined) {
     if (!file) return;
     setMessage("");
-    if (file.size > MAX_FILE_BYTES) {
-      setMessage("Use a PNG or JPG no larger than 2 MB.");
+    const replaceId = replacementImageId.current;
+    const replacement = replaceId
+      ? activeSurface?.layers.find((layer) => layer.id === replaceId && layer.type === "image")
+      : undefined;
+    if (replaceId && !replacement) {
+      setMessage("Select the image again before replacing it.");
+      replacementImageId.current = null;
+      return;
+    }
+    if (!activePolicy || (!replacement && !canAddImage)) {
+      setMessage("This surface has reached its image limit.");
       return;
     }
     const bytes = new Uint8Array(await file.slice(0, 12).arrayBuffer());
-    const detectedType = fileSignature(bytes);
-    if (!detectedType || !["image/png", "image/jpeg"].includes(file.type) || detectedType !== file.type) {
-      setMessage("Only genuine PNG and JPG image files are supported in this editor.");
-      return;
-    }
+    const detectedType = sniffArtworkImageMime(bytes);
     try {
       const src = await readAsDataUrl(file);
       const imageSize = await getImageSize(src);
-      const id = newId();
-      const aspect = imageSize.width / imageSize.height;
-      const width = Math.min(canvasWidth * 0.42, imageSize.width);
-      const height = width / aspect;
+      const localError = imagePolicyError(file, detectedType, imageSize.width, imageSize.height, activePolicy, uploads);
+      if (localError) {
+        setMessage(localError);
+        return;
+      }
+      setMessage("Uploading and validating image...");
+      const asset = await uploadArtworkAsset(uploads.endpoint, productId, activeSurface.id, file);
+      const serverError = imagePolicyError(file, asset.mimeType, asset.width, asset.height, activePolicy, uploads, asset);
+      if (serverError) {
+        setMessage(serverError);
+        return;
+      }
+      const id = replacement?.id ?? newId();
+      const geometry = activePolicy.image.geometry.default;
       apply(
         replaceLayers(document, activeSurface.id, (layers) => {
-          const imageLayer: ArtworkLayer = {
+          const imageLayer: ArtworkLayer = replacement ? {
+            ...replacement,
+            name: file.name.slice(0, 80),
+            src,
+            asset,
+            sourceWidth: asset.width,
+            sourceHeight: asset.height,
+          } : {
             id,
             type: "image",
             name: file.name.slice(0, 80),
-            x: (canvasWidth - width) / 2,
-            y: (canvasHeight - height) / 2,
-            width,
-            height,
-            rotation: 0,
+            ...geometry,
             opacity: 1,
             src,
-            sourceWidth: imageSize.width,
-            sourceHeight: imageSize.height,
+            asset,
+            sourceWidth: asset.width,
+            sourceHeight: asset.height,
             imageFit: "contain",
             aspectLocked: true,
           };
-          return insertArtworkBelowText(layers, imageLayer);
+          return replacement
+            ? layers.map((layer) => layer.id === replacement.id ? imageLayer : layer)
+            : insertArtworkBelowText(layers, imageLayer);
         }),
       );
       setSelectedId(id);
+      setMessage(activePolicy.image.approvalRequired ? "Image uploaded. It will require artwork approval." : "Image uploaded securely.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The image could not be loaded.");
     } finally {
+      replacementImageId.current = null;
       if (fileInput.current) fileInput.current.value = "";
     }
   }
@@ -359,16 +486,23 @@ export function ArtworkEditor({
   }
 
   function duplicateSelected() {
-    if (!selectedLayer) return;
+    if (!selectedLayer || !activePolicy) return;
     if (selectedLayer.id === "personalization-name") {
       setMessage("The required personalized name cannot be duplicated.");
+      return;
+    }
+    if (!canAddArtworkLayer(document, activeSurface.id, selectedLayer.type, policy)) {
+      setMessage(`This surface has reached its ${selectedLayer.type} element limit.`);
       return;
     }
     const id = newId();
     apply(
       replaceLayers(document, activeSurface.id, (layers) => [
         ...layers,
-        { ...selectedLayer, id, name: `${selectedLayer.name} copy`, x: selectedLayer.x + 18, y: selectedLayer.y + 18 },
+        constrainArtworkLayerToPolicy(
+          { ...selectedLayer, id, name: `${selectedLayer.name} copy`, x: selectedLayer.x + 18, y: selectedLayer.y + 18 },
+          activePolicy,
+        ),
       ]),
     );
     setSelectedId(id);
@@ -407,15 +541,11 @@ export function ArtworkEditor({
     const hasRequiredName = activeSurface.layers.some((layer) => layer.id === "personalization-name");
     apply(replaceLayers(document, activeSurface.id, (layers) => {
       const requiredName = layers.find((layer) => layer.id === "personalization-name");
-      return requiredName ? [{
+      return requiredName && activePolicy?.text.enabled ? [constrainArtworkLayerToPolicy({
         ...requiredName,
-        x: canvasWidth * 0.2,
-        y: canvasHeight * 0.4,
-        width: canvasWidth * 0.6,
-        height: Math.min(70, canvasHeight * 0.2),
-        rotation: 0,
+        ...activePolicy.text.geometry.default,
         opacity: 1,
-      }] : [];
+      }, activePolicy)] : [];
     }));
     setSelectedId(hasRequiredName ? "personalization-name" : null);
   }
@@ -434,6 +564,11 @@ export function ArtworkEditor({
   function beginDrag(event: React.PointerEvent<SVGGElement>, layer: ArtworkLayer) {
     event.stopPropagation();
     const svg = svgRef.current;
+    const layerPolicy = activePolicy && (layer.type === "text" ? activePolicy.text : activePolicy.image);
+    if (!layerPolicy?.permissions.move) {
+      setSelectedId(layer.id);
+      return;
+    }
     if (!svg) return;
     const point = svg.createSVGPoint();
     point.x = event.clientX;
@@ -472,6 +607,8 @@ export function ArtworkEditor({
     event.preventDefault();
     event.stopPropagation();
     const svg = svgRef.current;
+    const layerPolicy = activePolicy && (layer.type === "text" ? activePolicy.text : activePolicy.image);
+    if (!layerPolicy?.permissions.resize) return;
     if (!svg) return;
     const point = pointerPosition(event);
     setSelectedId(layer.id);
@@ -564,7 +701,7 @@ export function ArtworkEditor({
       ArrowUp: { y: selectedLayer.y - step },
       ArrowDown: { y: selectedLayer.y + step },
     }[event.key];
-    if (movement) {
+    if (movement && selectedPolicy?.permissions.move) {
       event.preventDefault();
       updateLayer(selectedLayer.id, movement);
     } else if (event.key === "Delete" || event.key === "Backspace") {
@@ -576,15 +713,17 @@ export function ArtworkEditor({
   return (
     <section className={styles.editor} aria-label="Artwork editor">
       <div className={styles.editorToolbar}>
-        <button type="button" onClick={addText} title="Add text"><Type /> <span>Add text</span></button>
-        <button type="button" onClick={() => fileInput.current?.click()} title="Upload PNG or JPG"><ImagePlus /> <span>Upload</span></button>
-        <input
-          ref={fileInput}
-          className={styles.visuallyHidden}
-          type="file"
-          accept="image/png,image/jpeg"
-          onChange={(event) => void addImage(event.target.files?.[0])}
-        />
+        {activePolicy?.text.enabled && <button type="button" onClick={addText} disabled={!canAddText} title="Add text"><Type /> <span>Add text</span></button>}
+        {activePolicy?.image.enabled && uploads.supported && <>
+          <button type="button" onClick={() => { replacementImageId.current = null; fileInput.current?.click(); }} disabled={!canAddImage} title="Upload an allowed image"><ImagePlus /> <span>Upload</span></button>
+          <input
+            ref={fileInput}
+            className={styles.visuallyHidden}
+            type="file"
+            accept={activePolicy.image.allowedMimeTypes.filter((mimeType) => uploads.acceptedMimeTypes.includes(mimeType)).join(",")}
+            onChange={(event) => void addImage(event.target.files?.[0])}
+          />
+        </>}
         <i />
         <button type="button" onClick={undo} disabled={!undoStack.length} title="Undo"><Undo2 /></button>
         <button type="button" onClick={redo} disabled={!redoStack.length} title="Redo"><Redo2 /></button>
@@ -639,13 +778,20 @@ export function ArtworkEditor({
             onPointerCancel={endDrag}
           >
             <rect width={canvasWidth} height={canvasHeight} fill={background} />
+            {baseImage && <image
+              href={baseImage}
+              width={canvasWidth}
+              height={canvasHeight}
+              preserveAspectRatio="xMidYMid meet"
+              pointerEvents="none"
+            />}
             <rect x="0" y="0" width={canvasWidth} height={canvasHeight} fill="none" stroke={accent} strokeWidth="3" />
             <rect
               className={styles.safeArea}
-              x={safeInset}
-              y={safeInset}
-              width={canvasWidth - safeInset * 2}
-              height={canvasHeight - safeInset * 2}
+              x={printableBounds.x}
+              y={printableBounds.y}
+              width={printableBounds.width}
+              height={printableBounds.height}
               rx="6"
             />
             {getArtworkLayersInRenderOrder(activeSurface?.layers ?? []).map((layer) => (
@@ -656,19 +802,17 @@ export function ArtworkEditor({
                 opacity={layer.opacity}
                 onPointerDown={(event) => beginDrag(event, layer)}
               >
-                {layer.type === "image" && layer.src ? (
-                  <image
-                    href={layer.src}
-                    width={layer.width}
-                    height={layer.height}
-                    preserveAspectRatio={layer.imageFit === "stretch" ? "none" : layer.imageFit === "cover" ? "xMidYMid slice" : "xMidYMid meet"}
-                  />
-                ) : (
+                {layer.type === "image" ? (layer.src ? <image
+                  href={layer.src}
+                  width={layer.width}
+                  height={layer.height}
+                  preserveAspectRatio={layer.imageFit === "stretch" ? "none" : layer.imageFit === "cover" ? "xMidYMid slice" : "xMidYMid meet"}
+                /> : <rect width={layer.width} height={layer.height} fill="#e5e7eb" stroke="#94a3b8" strokeDasharray="8 6" />) : (
                   <text
-                    x={layer.width / 2}
+                    x={(layer.textAlign ?? "center") === "left" ? 0 : (layer.textAlign ?? "center") === "right" ? layer.width : layer.width / 2}
                     y={layer.height / 2}
                     dominantBaseline="middle"
-                    textAnchor="middle"
+                    textAnchor={(layer.textAlign ?? "center") === "left" ? "start" : (layer.textAlign ?? "center") === "right" ? "end" : "middle"}
                     fill={layer.color}
                     fontSize={layer.fontSize}
                     fontFamily={layer.fontFamily === "serif" ? "Georgia, serif" : layer.fontFamily === "sans" ? "Arial, sans-serif" : "Manrope, Arial, sans-serif"}
@@ -680,14 +824,16 @@ export function ArtworkEditor({
                 {selectedId === layer.id && (
                   <>
                     <rect className={styles.selection} width={layer.width} height={layer.height} />
-                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalDown}`} x="-6" y="-6" width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "northwest")} />
-                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleVertical}`} x={layer.width / 2 - 6} y="-6" width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "north")} />
-                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalUp}`} x={layer.width - 6} y="-6" width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "northeast")} />
-                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleHorizontal}`} x={layer.width - 6} y={layer.height / 2 - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "east")} />
-                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalDown}`} x={layer.width - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "southeast")} />
-                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleVertical}`} x={layer.width / 2 - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "south")} />
-                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalUp}`} x="-6" y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "southwest")} />
-                    <rect className={`${styles.resizeHandle} ${styles.resizeHandleHorizontal}`} x="-6" y={layer.height / 2 - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "west")} />
+                    {(layer.type === "text" ? activePolicy?.text.permissions.resize : activePolicy?.image.permissions.resize) && <>
+                      <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalDown}`} x="-6" y="-6" width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "northwest")} />
+                      <rect className={`${styles.resizeHandle} ${styles.resizeHandleVertical}`} x={layer.width / 2 - 6} y="-6" width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "north")} />
+                      <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalUp}`} x={layer.width - 6} y="-6" width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "northeast")} />
+                      <rect className={`${styles.resizeHandle} ${styles.resizeHandleHorizontal}`} x={layer.width - 6} y={layer.height / 2 - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "east")} />
+                      <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalDown}`} x={layer.width - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "southeast")} />
+                      <rect className={`${styles.resizeHandle} ${styles.resizeHandleVertical}`} x={layer.width / 2 - 6} y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "south")} />
+                      <rect className={`${styles.resizeHandle} ${styles.resizeHandleDiagonalUp}`} x="-6" y={layer.height - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "southwest")} />
+                      <rect className={`${styles.resizeHandle} ${styles.resizeHandleHorizontal}`} x="-6" y={layer.height / 2 - 6} width="12" height="12" onPointerDown={(event) => beginResize(event, layer, "west")} />
+                    </>}
                   </>
                 )}
               </g>
@@ -718,7 +864,7 @@ export function ArtworkEditor({
               <span>{layer.name}</span>
             </button>
           ))}
-          {!activeSurface?.layers.length && <p className={styles.emptyLayers}>Add text or upload a logo to begin.</p>}
+          {!activeSurface?.layers.length && <p className={styles.emptyLayers}>Add an element allowed for this print area to begin.</p>}
         </div>
 
         {selectedLayer && (
@@ -735,16 +881,17 @@ export function ArtworkEditor({
               </label>
             )}
             <div className={styles.propertyGrid}>
-              <label><span>Position X</span><input type="number" min={-canvasWidth} max={canvasWidth} value={Math.round(selectedLayer.x)} onChange={(event) => updateLayer(selectedLayer.id, { x: Number(event.target.value) || 0 })} /></label>
-              <label><span>Position Y</span><input type="number" min={-canvasHeight} max={canvasHeight} value={Math.round(selectedLayer.y)} onChange={(event) => updateLayer(selectedLayer.id, { y: Number(event.target.value) || 0 })} /></label>
-              <label><span>Width</span><input type="number" min="20" max={canvasWidth} value={Math.round(selectedLayer.width)} onChange={(event) => resizeLayer(selectedLayer, "width", Number(event.target.value))} /></label>
-              <label><span>Height</span><input type="number" min="20" max={canvasHeight} value={Math.round(selectedLayer.height)} onChange={(event) => resizeLayer(selectedLayer, "height", Number(event.target.value))} /></label>
-              <label><span>Rotation (degrees)</span><input type="number" min="-180" max="180" value={selectedLayer.rotation} onChange={(event) => setLayerRotation(selectedLayer, Number(event.target.value) || 0)} /></label>
-              <label><span>Opacity</span><input type="number" min="10" max="100" value={Math.round(selectedLayer.opacity * 100)} onChange={(event) => updateLayer(selectedLayer.id, { opacity: Math.max(0.1, Math.min(1, Number(event.target.value) / 100)) })} /></label>
+              <label><span>Position X</span><input type="number" min={printableBounds.x} max={printableBounds.x + printableBounds.width} value={Math.round(selectedLayer.x)} disabled={!selectedPolicy?.permissions.move} onChange={(event) => updateLayer(selectedLayer.id, { x: Number(event.target.value) || 0 })} /></label>
+              <label><span>Position Y</span><input type="number" min={printableBounds.y} max={printableBounds.y + printableBounds.height} value={Math.round(selectedLayer.y)} disabled={!selectedPolicy?.permissions.move} onChange={(event) => updateLayer(selectedLayer.id, { y: Number(event.target.value) || 0 })} /></label>
+              <label><span>Width</span><input type="number" min={selectedPolicy?.geometry.minimumWidth} max={selectedPolicy?.geometry.maximumWidth} value={Math.round(selectedLayer.width)} disabled={!selectedPolicy?.permissions.resize} onChange={(event) => resizeLayer(selectedLayer, "width", Number(event.target.value))} /></label>
+              <label><span>Height</span><input type="number" min={selectedPolicy?.geometry.minimumHeight} max={selectedPolicy?.geometry.maximumHeight} value={Math.round(selectedLayer.height)} disabled={!selectedPolicy?.permissions.resize} onChange={(event) => resizeLayer(selectedLayer, "height", Number(event.target.value))} /></label>
+              <label><span>Rotation (degrees)</span><input type="number" min={selectedPolicy?.geometry.minimumRotation} max={selectedPolicy?.geometry.maximumRotation} value={selectedLayer.rotation} disabled={!selectedPolicy?.permissions.rotate} onChange={(event) => setLayerRotation(selectedLayer, Number(event.target.value) || 0)} /></label>
+              <label><span>Opacity</span><input type="number" min="10" max="100" value={Math.round(selectedLayer.opacity * 100)} disabled={selectedLayer.type === "image" && !activePolicy?.image.allowTransparency} onChange={(event) => updateLayer(selectedLayer.id, { opacity: Math.max(0.1, Math.min(1, Number(event.target.value) / 100)) })} /></label>
             </div>
+            {selectedPolicy?.permissions.rotate && <>
             <label className={styles.rotationControl}>
               <span>Rotate freely: {Math.round(selectedLayer.rotation)}°</span>
-              <input type="range" min="-180" max="180" step="1" value={selectedLayer.rotation} onChange={(event) => setLayerRotation(selectedLayer, Number(event.target.value))} />
+              <input type="range" min={selectedPolicy.geometry.minimumRotation} max={selectedPolicy.geometry.maximumRotation} step="1" value={selectedLayer.rotation} onChange={(event) => setLayerRotation(selectedLayer, Number(event.target.value))} />
             </label>
             <div className={styles.rotationPresets} aria-label="Rotation presets">
               <button type="button" onClick={() => setLayerRotation(selectedLayer, selectedLayer.rotation - 15)}>−15°</button>
@@ -753,34 +900,37 @@ export function ArtworkEditor({
               <button type="button" onClick={() => setLayerRotation(selectedLayer, 90)}>90°</button>
               <button type="button" onClick={() => setLayerRotation(selectedLayer, selectedLayer.rotation + 15)}>+15°</button>
             </div>
+            </>}
             {selectedLayer.type === "text" && (
               <>
                 <div className={styles.propertyGrid}>
-                  <label><span>Font</span><select value={selectedLayer.fontFamily} onChange={(event) => updateLayer(selectedLayer.id, { fontFamily: event.target.value as ArtworkLayer["fontFamily"] })}>{selectedFontOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
-                  <label><span>Colour</span><input type="color" value={selectedLayer.color} onChange={(event) => updateLayer(selectedLayer.id, { color: event.target.value })} /></label>
-                  <label><span>Font size</span><input type="number" min="8" max="180" value={selectedLayer.fontSize ?? 34} onChange={(event) => updateLayer(selectedLayer.id, { fontSize: Math.max(8, Number(event.target.value) || 8) })} /></label>
+                  {activePolicy?.text.permissions.font && <label><span>Font</span><select value={selectedLayer.fontFamily} onChange={(event) => updateLayer(selectedLayer.id, { fontFamily: event.target.value as ArtworkLayer["fontFamily"] })}>{availableFontOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>}
+                  {activePolicy?.text.permissions.color && <label><span>Colour</span>{activePolicy.text.allowedColors.length ? <select value={selectedLayer.color} onChange={(event) => updateLayer(selectedLayer.id, { color: event.target.value })}>{activePolicy.text.allowedColors.map((color) => <option key={color} value={color}>{color.toUpperCase()}</option>)}</select> : <input type="color" value={selectedLayer.color} onChange={(event) => updateLayer(selectedLayer.id, { color: event.target.value })} />}</label>}
+                  <label><span>Font size</span><input type="number" min={activeTextTypography?.minimumFontSize ?? 8} max={activeTextTypography?.maximumFontSize ?? 180} value={selectedLayer.fontSize ?? activeTextTypography?.defaultFontSize ?? 34} disabled={!activePolicy?.text.permissions.font && activeTextTypography?.fontSizeConfigured} onChange={(event) => updateLayer(selectedLayer.id, { fontSize: Number(event.target.value) || (activeTextTypography?.minimumFontSize ?? 8) })} /></label>
+                  <label><span>Alignment</span><select value={selectedLayer.textAlign ?? activeTextTypography?.defaultTextAlign ?? "center"} disabled={!activePolicy?.text.permissions.font && activeTextTypography?.alignmentConfigured} onChange={(event) => updateLayer(selectedLayer.id, { textAlign: event.target.value as ArtworkLayer["textAlign"] })}>{activeTextTypography?.allowedTextAlignments.map((alignment) => <option key={alignment} value={alignment}>{alignment[0].toUpperCase() + alignment.slice(1)}</option>)}</select></label>
                 </div>
-                <button type="button" className={styles.fitTextButton} onClick={() => fitTextToBox(selectedLayer)}>Fit text inside selected area</button>
+                <button type="button" className={styles.fitTextButton} disabled={!activePolicy?.text.permissions.font && activeTextTypography?.fontSizeConfigured} onClick={() => fitTextToBox(selectedLayer)}>Fit text inside selected area</button>
               </>
             )}
             {selectedLayer.type === "image" && (
               <div className={styles.imageControls}>
-                <label><span>Image fit</span><select value={selectedLayer.imageFit ?? "contain"} onChange={(event) => updateLayer(selectedLayer.id, { imageFit: event.target.value as ArtworkLayer["imageFit"] })}><option value="contain">Contain (no crop)</option><option value="cover">Cover (fill area)</option><option value="stretch">Stretch to size</option></select></label>
-                <label className={styles.aspectToggle}><input type="checkbox" checked={selectedLayer.aspectLocked !== false} onChange={(event) => updateLayer(selectedLayer.id, { aspectLocked: event.target.checked })} /><span>Keep image proportions while resizing</span></label>
-                <div className={styles.imageActions}><button type="button" onClick={() => fitImageToPrintArea(selectedLayer, false)}>Fit print area</button><button type="button" onClick={() => fitImageToPrintArea(selectedLayer, true)}>Fill print area</button></div>
+                <label><span>Image fit</span><select value={selectedLayer.imageFit ?? "contain"} disabled={!activePolicy?.image.permissions.resize} onChange={(event) => updateLayer(selectedLayer.id, { imageFit: event.target.value as ArtworkLayer["imageFit"] })}><option value="contain">Contain (no crop)</option>{activePolicy?.image.allowCrop && <option value="cover">Cover (fill area)</option>}<option value="stretch">Stretch to size</option></select></label>
+                <label className={styles.aspectToggle}><input type="checkbox" checked={selectedLayer.aspectLocked !== false} disabled={!activePolicy?.image.permissions.resize} onChange={(event) => updateLayer(selectedLayer.id, { aspectLocked: event.target.checked })} /><span>Keep image proportions while resizing</span></label>
+                {activePolicy?.image.permissions.move && activePolicy.image.permissions.resize && <div className={styles.imageActions}><button type="button" onClick={() => fitImageToPrintArea(selectedLayer, false)}>Fit print area</button>{activePolicy.image.allowCrop && <button type="button" onClick={() => fitImageToPrintArea(selectedLayer, true)}>Fill print area</button>}</div>}
+                <button type="button" disabled={!uploads.supported} onClick={() => { replacementImageId.current = selectedLayer.id; fileInput.current?.click(); }}>Replace image</button>
               </div>
             )}
             <div className={styles.iconActions}>
-              <button type="button" onClick={() => updateLayer(selectedLayer.id, { x: (canvasWidth - selectedLayer.width) / 2 })} title="Centre horizontally"><AlignCenterHorizontal /></button>
-              <button type="button" onClick={() => updateLayer(selectedLayer.id, { y: (canvasHeight - selectedLayer.height) / 2 })} title="Centre vertically"><AlignCenterVertical /></button>
+              <button type="button" disabled={!selectedPolicy?.permissions.move} onClick={() => updateLayer(selectedLayer.id, { x: printableBounds.x + (printableBounds.width - selectedLayer.width) / 2 })} title="Centre horizontally"><AlignCenterHorizontal /></button>
+              <button type="button" disabled={!selectedPolicy?.permissions.move} onClick={() => updateLayer(selectedLayer.id, { y: printableBounds.y + (printableBounds.height - selectedLayer.height) / 2 })} title="Centre vertically"><AlignCenterVertical /></button>
               <button type="button" onClick={() => reorder(true)} title="Bring to front"><BringToFront /></button>
               <button type="button" onClick={() => reorder(false)} disabled={selectedLayer.type === "text"} title={selectedLayer.type === "text" ? "Text stays on the front of the poster" : "Send to back"}><SendToBack /></button>
-              <button type="button" onClick={duplicateSelected} disabled={selectedLayer.id === "personalization-name"} title={selectedLayer.id === "personalization-name" ? "Required name cannot be duplicated" : "Duplicate"}><Copy /></button>
+              <button type="button" onClick={duplicateSelected} disabled={selectedLayer.id === "personalization-name" || !canAddArtworkLayer(document, activeSurface.id, selectedLayer.type, policy)} title={selectedLayer.id === "personalization-name" ? "Required name cannot be duplicated" : "Duplicate"}><Copy /></button>
               <button type="button" onClick={deleteSelected} disabled={selectedLayer.id === "personalization-name"} title={selectedLayer.id === "personalization-name" ? "Required name cannot be deleted" : "Delete"}><Trash2 /></button>
             </div>
           </div>
         )}
-        <p className={styles.productionNote}>{physicalWidthMm && physicalHeightMm ? `Resolution checks use ${physicalWidthMm} x ${physicalHeightMm} mm at ${targetDpi} DPI. ` : "Physical output dimensions are not configured. "}PNG and JPG previews are stored with this draft; production files still require bleed, colour and rights review.</p>
+        <p className={styles.productionNote}>{physicalWidthMm && physicalHeightMm ? `Resolution checks use ${physicalWidthMm} x ${physicalHeightMm} mm at ${targetDpi} DPI. ` : "Physical output dimensions are not configured. "}Allowed images are stored privately and remain subject to production, rights and artwork review.</p>
         {footer}
       </aside>
     </section>

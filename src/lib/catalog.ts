@@ -52,6 +52,7 @@ const searchableProductText = (product: Product) =>
       product.sku,
       product.category,
       product.categorySlug,
+      ...(product.categorySlugs ?? []),
       product.shortDescription,
       product.material,
       ...product.tags,
@@ -69,7 +70,7 @@ export function queryProducts(query: ProductQuery = {}, catalog: Product[] = pro
   const theme = query.theme ? normalize(query.theme) : "";
 
   let filtered = catalog.filter((product) => {
-    if (query.category && product.categorySlug !== query.category) return false;
+    if (query.category && !(product.categorySlugs ?? [product.categorySlug]).includes(query.category)) return false;
     if (q && !searchableProductText(product).includes(q)) return false;
     if (typeof query.minPrice === "number" && product.price < query.minPrice) return false;
     if (typeof query.maxPrice === "number" && product.price > query.maxPrice) return false;

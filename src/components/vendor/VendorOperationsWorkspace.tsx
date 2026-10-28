@@ -6,6 +6,7 @@ import {
   Check,
   CircleDollarSign,
   Clock3,
+  Download,
   LoaderCircle,
   PackageCheck,
   PauseCircle,
@@ -38,6 +39,15 @@ type OrderSummary = {
     productNameSnapshot: string;
     quantity: number;
     lineTotalPaise: number;
+    personalization?: { values: unknown; artworkStatus: string } | null;
+    artworkAssets?: Array<{
+      id: string;
+      originalName: string;
+      mimeType: string;
+      sizeBytes: number;
+      width: number;
+      height: number;
+    }>;
   }>;
   addresses: Array<{
     fullName: string;
@@ -136,6 +146,55 @@ function shippingAddress(order: OrderSummary) {
   return [address.addressLine1, address.addressLine2, address.landmark, address.city, address.state, address.postalCode]
     .filter(Boolean)
     .join(", ");
+}
+
+function recordValue(value: unknown): Record<string, unknown> {
+  return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
+}
+
+function humanizeKey(value: string) {
+  return value.replaceAll(/[-_]+/g, " ").replace(/^./, (character) => character.toUpperCase());
+}
+
+function personalizationSummary(value: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return "";
+  const record = value as Record<string, unknown>;
+  const presentation = recordValue(record.presentation);
+  const fields = recordValue(record.fields);
+  const parts = [
+    typeof presentation.templateLabel === "string" ? presentation.templateLabel : undefined,
+    typeof presentation.packLabel === "string" ? presentation.packLabel : undefined,
+    typeof presentation.materialLabel === "string" ? presentation.materialLabel : undefined,
+    typeof record.dimensionLabel === "string" ? record.dimensionLabel : undefined,
+    typeof presentation.name === "string" ? presentation.name : undefined,
+    typeof presentation.detail === "string" ? presentation.detail : undefined,
+    ...Object.entries(fields)
+      .filter(([key, item]) => key !== "name" && typeof item === "string" && item.trim())
+      .map(([key, item]) => `${humanizeKey(key)}: ${item}`),
+  ].filter((item): item is string => Boolean(item));
+  return [...new Set(parts)].join(" · ");
+}
+
+function personalizationArtworkSummary(value: unknown) {
+  const artwork = recordValue(recordValue(value).artwork);
+  const surfaces = Array.isArray(artwork.surfaces) ? artwork.surfaces : [];
+  let textCount = 0;
+  let imageCount = 0;
+  for (const surface of surfaces) {
+    const layers = recordValue(surface).layers;
+    if (!Array.isArray(layers)) continue;
+    for (const layer of layers) {
+      if (recordValue(layer).type === "text") textCount += 1;
+      if (recordValue(layer).type === "image") imageCount += 1;
+    }
+  }
+  return surfaces.length
+    ? `${surfaces.length} surface${surfaces.length === 1 ? "" : "s"} · ${textCount} text layer${textCount === 1 ? "" : "s"} · ${imageCount} image layer${imageCount === 1 ? "" : "s"}`
+    : "";
+}
+
+function formatAssetSize(bytes: number) {
+  return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.ceil(bytes / 1024))} KB`;
 }
 
 export function VendorOperationsWorkspace({ initialSuspended }: { initialSuspended: boolean }) {
@@ -409,8 +468,29 @@ export function VendorOperationsWorkspace({ initialSuspended }: { initialSuspend
                       </div>
                       <div className={styles.assignedOrderBody}>
                         <div>
-                          <p>Items</p>
-                          <ul>{order.items.map((item) => <li key={item.id}><span>{item.productNameSnapshot} × {item.quantity}</span><strong>{money(item.lineTotalPaise)}</strong></li>)}</ul>
+                          <p>Items & personalisation</p>
+                          <ul>{order.items.map((item) => {
+                            const summary = personalizationSummary(item.personalization?.values);
+                            const artworkSummary = personalizationArtworkSummary(item.personalization?.values);
+                            const assets = item.artworkAssets ?? [];
+                            return (
+                              <li key={item.id}>
+                                <span>
+                                  {item.productNameSnapshot} × {item.quantity}
+                                  {item.personalization && <small>{summary || "Product defaults submitted"}</small>}
+                                  {artworkSummary && <small>{artworkSummary}</small>}
+                                  {item.personalization && <small className={styles.artworkReviewStatus}>Artwork review: {readableStatus(item.personalization.artworkStatus)}</small>}
+                                  {assets.map((asset) => (
+                                    <a aria-label={`Download private artwork ${asset.originalName}`} href={`/api/artwork-assets/${encodeURIComponent(asset.id)}`} key={asset.id}>
+                                      <Download aria-hidden="true" size={11} /> {asset.originalName} · {asset.mimeType.replace("image/", "").toUpperCase()} · {asset.width}×{asset.height}px · {formatAssetSize(asset.sizeBytes)}
+                                    </a>
+                                  ))}
+                                  {item.personalization && assets.length === 0 && <small>No customer image file attached.</small>}
+                                </span>
+                                <strong>{money(item.lineTotalPaise)}</strong>
+                              </li>
+                            );
+                          })}</ul>
                         </div>
                         <div>
                           <p>Ship to</p>

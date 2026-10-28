@@ -50,11 +50,16 @@ export function CategoryMegaMenu() {
     function onPointerDown(event: MouseEvent) {
       if (rootRef.current && !rootRef.current.contains(event.target as Node)) setOpen(false);
     }
+    function onScroll() {
+      setOpen(false);
+    }
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("mousedown", onPointerDown);
+    window.addEventListener("scroll", onScroll, { passive: true, capture: true });
     return () => {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("mousedown", onPointerDown);
+      window.removeEventListener("scroll", onScroll, true);
     };
   }, [open]);
 
@@ -92,7 +97,7 @@ export function CategoryMegaMenu() {
   const quickLinks: QuickLink[] = [
     { label: "New arrivals", href: "/products?sort=newest", icon: Sparkles },
     { label: "Custom size — request a quote", href: "/bulk-orders", icon: Ruler },
-    { label: "Bulk & institutional orders", href: "/bulk-orders", icon: FileSpreadsheet },
+    { label: "Bulk Buy", href: "/bulk-orders", icon: FileSpreadsheet },
     { label: "Sell with us", href: "/vendor/register", icon: BadgePercent },
   ];
 

@@ -1193,6 +1193,20 @@
 .personalizationCard span { color: var(--teal-dark); font-size: 9px; font-weight: 800; text-transform: uppercase; }
 .personalizationCard strong { display: block; margin: 8px 0 3px; color: var(--navy); font-size: 18px; }
 .personalizationCard p { margin: 0; color: var(--text-secondary); font-size: 9px; }
+.personalizationCard a { display: block; position: relative; z-index: 1; margin-top: 8px; color: var(--teal-dark); font-size: 9px; font-weight: 750; text-decoration: underline; text-underline-offset: 2px; }
+.personalizationCard + .personalizationCard { margin-top: 10px; }
+.personalizationCard .personalizationArtworkMeta { position: relative; z-index: 1; margin-top: 6px; color: var(--text-muted); }
+.personalizationAssets { position: relative; z-index: 1; display: grid; gap: 7px; margin: 12px 0 0; padding: 0; list-style: none; }
+.personalizationAssets li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px; border: 1px solid var(--border-default); border-radius: var(--admin-control-radius); background: var(--surface-main); }
+.personalizationAssets li > div { display: grid; min-width: 0; gap: 2px; }
+.personalizationAssets b { overflow: hidden; color: var(--text-body); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.personalizationAssets small { color: var(--text-muted); font-size: 8px; }
+.personalizationAssets em { color: var(--teal-dark); font-size: 8px; font-style: normal; font-weight: 750; }
+.personalizationAssets li a { display: inline-flex; min-height: 28px; flex: 0 0 auto; align-items: center; gap: 4px; margin-top: 0; padding: 0 7px; border: 1px solid var(--border-default); border-radius: var(--admin-control-radius); text-decoration: none; }
+.artworkReviewActions { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.artworkReviewActions button { min-height: 32px; }
+.artworkReviewMessage { margin: 0 0 10px; padding: 9px 11px; border: 1px solid var(--teal); border-radius: var(--admin-control-radius); background: var(--surface-hover); color: var(--teal-dark); font-size: 9px; font-weight: 700; }
+.artworkReviewMessageError { border-color: var(--danger-border); background: var(--danger-bg); color: var(--danger); }
 
 .drawerFooter {
   display: flex;
@@ -1201,6 +1215,57 @@
 }
 
 .drawerFooter > * { flex: 1; }
+
+.configSection {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-default);
+}
+
+.configSectionHead,
+.configCardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.configSectionHead strong,
+.configCardHead strong { color: var(--navy); font-size: 11px; }
+.configSectionHead small { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; line-height: 1.45; }
+
+.configList { display: grid; gap: 10px; }
+
+.configCard {
+  display: grid;
+  gap: 9px;
+  padding: 11px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-quiet);
+}
+
+.configHint { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.55; }
+
+.compactCheck {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.compactCheck input { inline-size: 14px; block-size: 14px; accent-color: var(--teal); }
+
+.mimeChoices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 13px;
+  padding: 0 2px;
+}
 
 .catalogSummary {
   display: flex;
@@ -1395,6 +1460,124 @@
 .fieldLabel { display: flex; align-items: center; justify-content: space-between; color: var(--text-body); font-size: 10px; font-weight: 700; }
 .fieldHint { color: var(--text-muted); font-size: 8px; font-weight: 500; }
 .fieldGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.checkboxGrid { display: flex; flex-wrap: wrap; gap: 9px 14px; margin: 10px 0; }
+.checkboxGrid label,
+.configCardHead label { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 10px; }
+.policyPreview { position: relative; width: min(100%, 420px); max-height: 230px; overflow: hidden; border: 1px solid var(--border); border-radius: 12px; background: #f8fafc; }
+.policyPrintableBounds { position: absolute; border: 1px dashed var(--teal-dark); background: rgb(20 184 166 / 5%); }
+.policyTextPlacement,
+.policyImagePlacement { position: absolute; display: grid; place-items: center; transform-origin: center; overflow: hidden; border-radius: 5px; font-size: 9px; font-weight: 800; }
+.policyTextPlacement { border: 1px solid currentColor; background: rgb(255 255 255 / 78%); }
+.policyImagePlacement { border: 1px solid #64748b; background: repeating-linear-gradient(135deg, #e2e8f0 0 5px, #f8fafc 5px 10px); color: #475569; }
+
+.templatePanelMessage {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-focus);
+  border-radius: var(--admin-control-radius);
+  background: var(--admin-surface-quiet);
+  color: var(--teal-dark);
+  font-size: 11px;
+}
+
+.templatePanelError {
+  border-color: var(--danger-border);
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.templateEmpty {
+  display: grid;
+  min-height: 180px;
+  place-items: center;
+  padding: 24px;
+  color: var(--text-muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.designPreview {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.templateSafeArea {
+  position: absolute;
+  z-index: 1;
+  border: 1px dashed;
+  border-radius: 5px;
+  pointer-events: none;
+}
+
+.editorPreview .mockLabel { z-index: 2; }
+
+.templateSurfaceTabs {
+  display: flex;
+  gap: 6px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.templateSurfaceTabs button {
+  display: inline-flex;
+  min-height: 31px;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--admin-control-radius);
+  background: var(--surface-main);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.templateSurfaceTabs .templateSurfaceTabActive {
+  border-color: var(--border-focus);
+  background: var(--admin-surface-quiet);
+  color: var(--teal-dark);
+}
+
+.templateSectionHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 2px;
+  color: var(--text-body);
+  font-size: 10px;
+}
+
+.templateSectionHeading span { color: var(--text-muted); font-size: 8px; font-weight: 500; }
+
+.templateColorGrid,
+.templateNumberGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.templateColorInput {
+  width: 100%;
+  height: 36px;
+  padding: 3px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--admin-control-radius);
+  background: var(--surface-main);
+  cursor: pointer;
+}
+
+.templateEditorActions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+
+.buttonPrimary:disabled,
+.buttonSecondary:disabled,
+.iconButton:disabled {
+  cursor: wait;
+  opacity: .58;
+}
 
 .toggleRow {
   display: flex;

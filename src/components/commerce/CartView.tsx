@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { ArrowRight, ChevronRight, LoaderCircle, Minus, PackageOpen, Plus, ShieldCheck, ShoppingBag, Tag, Trash2 } from "lucide-react";
 import { ProductVisual } from "./ProductVisual";
-import { MAX_CART_ITEM_QUANTITY, useStore } from "@/components/store/StoreProvider";
+import { cartLineTotal, MAX_CART_ITEM_QUANTITY, useStore } from "@/components/store/StoreProvider";
 import { formatPrice } from "@/lib/data";
 
 const SHIPPING_ESTIMATE = 79;
@@ -68,7 +68,7 @@ export function CartView() {
           <Link href={`/products/${item.slug}`} className="cart-item-visual"><ProductVisual artwork={item.visual} name={item.name} personalisedName={item.customization?.name || "Your Name"} accent={item.customization?.textColor} background={item.customization?.backgroundColor} /></Link>
           <div className="cart-item-info"><div className="cart-item-top"><div><span className="status-pill">Made to order</span><h2><Link href={`/products/${item.slug}`}>{item.name}</Link></h2></div><button onClick={() => removeItem(item.key)} aria-label={`Remove ${item.name}`}><Trash2 /></button></div>
             {item.customization && <div className="cart-customization"><div><span>Name</span><strong>{item.customization.name}</strong></div>{item.customization.detail && <div><span>Details</span><strong>{item.customization.detail}</strong></div>}<div><span>Design</span><strong>{item.customization.template}</strong></div><div><span>Pack</span><strong>{item.customization.pack}</strong></div>{item.customization.dimensionLabel && <div><span>Size</span><strong>{item.customization.dimensionLabel}</strong></div>}<div><span>Material</span><strong>{item.customization.material}</strong></div></div>}
-            <div className="cart-item-bottom"><Link href={`/products/${item.slug}?edit=${encodeURIComponent(item.key)}`}>Edit {item.customization ? "design" : "product"}</Link><div className="quantity-control"><button onClick={() => updateQuantity(item.key, item.quantity - 1)} disabled={item.quantity <= 1} aria-label={`Decrease quantity of ${item.name}`}><Minus /></button><span aria-label={`Quantity ${item.quantity}`}>{item.quantity}</span><button onClick={() => updateQuantity(item.key, item.quantity + 1)} disabled={item.quantity >= MAX_CART_ITEM_QUANTITY} aria-label={`Increase quantity of ${item.name}`}><Plus /></button></div><strong>{formatPrice(item.price * item.quantity)}</strong></div>
+            <div className="cart-item-bottom"><Link href={`/products/${item.slug}?edit=${encodeURIComponent(item.key)}`}>Edit {item.customization ? "design" : "product"}</Link><div className="quantity-control"><button onClick={() => updateQuantity(item.key, item.quantity - 1)} disabled={item.quantity <= 1 || Boolean(item.customization?.quote)} aria-label={`Decrease quantity of ${item.name}`} title={item.customization?.quote ? "Edit this configuration to recalculate quantity pricing." : undefined}><Minus /></button><span aria-label={`Quantity ${item.quantity}`}>{item.quantity}</span><button onClick={() => updateQuantity(item.key, item.quantity + 1)} disabled={item.quantity >= MAX_CART_ITEM_QUANTITY || Boolean(item.customization?.quote)} aria-label={`Increase quantity of ${item.name}`} title={item.customization?.quote ? "Edit this configuration to recalculate quantity pricing." : undefined}><Plus /></button></div><strong>{formatPrice(cartLineTotal(item))}</strong></div>
           </div>
         </article>)}
         <Link className="continue-shopping" href="/products">← Continue shopping</Link>

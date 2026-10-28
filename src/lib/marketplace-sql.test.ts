@@ -14,6 +14,10 @@ const originalMigrationPath = resolve(
   "prisma/migrations/20261023073000_add_vendor_assignment_marketplace/migration.sql",
 );
 const runtimeInstallerPath = resolve(process.cwd(), "prisma/install-marketplace-runtime.ts");
+const multiCategoryMigrationPath = resolve(
+  process.cwd(),
+  "prisma/migrations/20261027130000_require_full_product_category_coverage/migration.sql",
+);
 
 test("forward migration backfills approved category scope without rewriting the original migration", async () => {
   const [sql, originalSql, installer] = await Promise.all([
@@ -59,6 +63,19 @@ test("offer acceptance SQL uses server time, order-first locking and all operati
   assert.match(sql, /address\."city"/);
   assert.match(sql, /product\."categoryId" = ANY \(selected_offer\.service_category_ids\)/);
   assert.match(sql, /SUM\(item\."quantity"\)/);
+});
+
+test("forward marketplace replacement uses the primary manufacturing category and ignores discovery cross-links", async () => {
+  const [sql, historicalSql, installer] = await Promise.all([
+    readFile(multiCategoryMigrationPath, "utf8"),
+    readFile(migrationPath, "utf8"),
+    readFile(runtimeInstallerPath, "utf8"),
+  ]);
+  assert.match(historicalSql, /product\."categoryId" = ANY \(selected_offer\.service_category_ids\)/);
+  assert.match(sql, /CREATE OR REPLACE FUNCTION "acceptVendorOrderOffer"/);
+  assert.match(sql, /NOT \(product\."categoryId" = ANY \(selected_offer\.service_category_ids\)\)/);
+  assert.doesNotMatch(sql, /FROM "ProductCategory" category_link/);
+  assert.match(installer, /20261027130000_require_full_product_category_coverage/);
 });
 
 test("terminal order SQL releases vendor capacity idempotently", async () => {

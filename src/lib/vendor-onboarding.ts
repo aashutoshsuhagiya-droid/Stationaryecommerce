@@ -6,6 +6,7 @@ import { prepareAuthSession } from "./auth-session";
 import { normalizeServiceCity } from "./marketplace-assignment";
 import { hashPassword } from "./password";
 import { getPrisma } from "./prisma";
+import { vendorProductCategoryScope } from "./product-category-links";
 import {
   canApplyVendorApplicationAction,
   vendorApplicationTransitionTargets,
@@ -678,7 +679,10 @@ export async function decideVendorApplication(input: {
         },
       });
       const products = await tx.product.findMany({
-        where: { categoryId: { in: application.serviceCategoryIds }, status: "ACTIVE" },
+        where: {
+          ...vendorProductCategoryScope(application.serviceCategoryIds),
+          status: "ACTIVE",
+        },
         select: { id: true },
       });
       if (products.length) {

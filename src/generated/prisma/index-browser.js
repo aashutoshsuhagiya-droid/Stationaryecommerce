@@ -249,6 +249,34 @@ exports.Prisma.ProductScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProductCategoryScalarFieldEnum = {
+  productId: 'productId',
+  categoryId: 'categoryId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ArtworkAssetScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  orderItemId: 'orderItemId',
+  ownerUserId: 'ownerUserId',
+  surfaceId: 'surfaceId',
+  claimTokenHash: 'claimTokenHash',
+  originalName: 'originalName',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  width: 'width',
+  height: 'height',
+  hasTransparency: 'hasTransparency',
+  sha256: 'sha256',
+  content: 'content',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  attachedAt: 'attachedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProductVariantScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
@@ -909,6 +937,13 @@ exports.ProductStatus = exports.$Enums.ProductStatus = {
   ARCHIVED: 'ARCHIVED'
 };
 
+exports.ArtworkAssetStatus = exports.$Enums.ArtworkAssetStatus = {
+  UPLOADED: 'UPLOADED',
+  ATTACHED: 'ATTACHED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
 exports.InventoryPolicy = exports.$Enums.InventoryPolicy = {
   DENY: 'DENY',
   CONTINUE: 'CONTINUE',
@@ -1133,6 +1168,8 @@ exports.Prisma.ModelName = {
   Address: 'Address',
   Category: 'Category',
   Product: 'Product',
+  ProductCategory: 'ProductCategory',
+  ArtworkAsset: 'ArtworkAsset',
   ProductVariant: 'ProductVariant',
   ProductImage: 'ProductImage',
   ProductPersonalizationField: 'ProductPersonalizationField',

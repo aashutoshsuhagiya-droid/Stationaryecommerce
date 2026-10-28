@@ -2,6 +2,7 @@ node_modules
 .next
 .next-codex
 .next-stale-*
+.next-build-backup-*
 .qa-test-build-*
 .scroll-reveal-test-build-*
 out

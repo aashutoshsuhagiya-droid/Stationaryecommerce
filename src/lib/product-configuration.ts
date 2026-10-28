@@ -1,9 +1,14 @@
-import { designTemplates, getProductBySlug } from "./data";
+import { getProductBySlug } from "./data";
+import { resolveProductArtworkPolicy } from "./artwork-policy";
 import { buildCustomSizeQuotePath } from "./bulk-quote-prefill";
+import { resolveProductTemplateLinks } from "./product-template-resolution";
 import type {
   CustomizationField,
   CurrencyCode,
+  ArtworkImageMimeType,
+  PersonalizationTemplate,
   Product,
+  ProductArtworkPolicy,
   StockStatus,
 } from "./types";
 
@@ -43,6 +48,7 @@ export interface ConfiguratorTemplate {
     textAlign: "left" | "center" | "right";
     safeArea: { x: number; y: number; width: number; height: number };
   };
+  production?: PersonalizationTemplate["production"];
 }
 
 export interface ProductConfigurationSchema {
@@ -78,23 +84,30 @@ export interface ProductConfigurationSchema {
     fields: CustomizationField[];
     templates: ConfiguratorTemplate[];
   };
-  quantity: { minimum: number; maximum: number; increment: number; default: number };
+  quantity: { minimum: number; maximum: number; increment: number; default: number; tiers: Array<{ minimum: number; label: string; priceDeltaPaise: number }> };
   artwork: {
     mode: "template_fields" | "none";
-    surfaces: Array<{ id: string; label: string }>;
-    uploads: { supported: false; acceptedMimeTypes: never[]; reason: string };
+    surfaces: Array<{ id: string; label: string; widthMm?: number; heightMm?: number; safeInsetMm?: number }>;
+    uploads: {
+      supported: boolean;
+      acceptedMimeTypes: ArtworkImageMimeType[];
+      maximumBytes: number;
+      endpoint: "/api/artwork-assets";
+      reason: string;
+    };
+    policy: ProductArtworkPolicy;
   };
-  preview: { mode: "catalog_2d"; artworkKey: string; supportedModes: Array<"2d" | "3d">; defaultMode: "2d" | "3d" };
+  preview: { mode: "catalog_2d"; artworkKey: string; template?: string; model?: string; supportedModes: Array<"2d" | "3d">; defaultMode: "2d" | "3d" | null };
   pricing: {
     mode: "server_quote";
     currency: CurrencyCode;
     endpoint: "/api/quotes";
-    rules: Array<"variant_catalog_price" | "template_catalog_premium">;
-    quantityTiers: never[];
+    rules: Array<"variant_catalog_price" | "template_catalog_premium" | "field_price_delta" | "option_price_delta" | "artwork_image" | "quantity_tier" | "setup_charge">;
+    quantityTiers: Array<{ minimum: number; label: string; priceDeltaPaise: number }>;
   };
   productionReadiness: {
     customDimensions: "blocked_missing_limits_and_rates";
-    artworkUploads: "blocked_missing_private_storage_and_preflight";
+    artworkUploads: "ready_private_raster_storage" | "disabled_by_product";
     threeDimensionalPreview: "blocked_missing_validated_geometry";
     productionExport: "blocked_missing_dielines_and_color_profiles";
   };
@@ -121,19 +134,13 @@ function parseExactDimensions(label: string): Record<string, number> | null {
 }
 
 function activeTemplates(product: Product): ConfiguratorTemplate[] {
-  return designTemplates
-    .filter(
-      (template) =>
-        template.active &&
-        product.templateIds.includes(template.id) &&
-        template.compatibleProductIds.includes(product.id),
-    )
-    .map((template) => ({
-      id: template.id,
-      label: template.name,
-      premiumPricePaise: toPaise(template.premiumPrice),
-      preview: template.preview,
-    }));
+  return resolveProductTemplateLinks(product).map(({ template }) => ({
+    id: template.id,
+    label: template.name,
+    premiumPricePaise: toPaise(template.premiumPrice),
+    preview: template.preview,
+    ...(template.production ? { production: template.production } : {}),
+  }));
 }
 
 export function productSupportsMultipleNames(product: Product) {
@@ -153,10 +160,31 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
   const hasNumericDimensions = presets.some((preset) => preset.dimensionsMm !== null);
   const defaultPreset = presets[0];
   const defaultQuantity = product.configurator?.quantityMin ?? 1;
-  const previewModes = ([product.configurator?.allow2D !== false && "2d", product.configurator?.allow3D !== false && "3d"].filter(Boolean) as Array<"2d" | "3d">);
+  const previewModes = ([product.configurator?.allow2D !== false && "2d", product.configurator?.allow3D === true && "3d"].filter(Boolean) as Array<"2d" | "3d">);
   const modes: ProductCustomizationMode[] = ["standard", "specification_based"];
   if (product.customizable) modes.push("personalized", "design_studio");
   if (productSupportsMultipleNames(product)) modes.push("bulk_order");
+  const artworkPolicy: ProductArtworkPolicy = product.customizable
+    ? resolveProductArtworkPolicy(product)
+    : { maximumElements: 0, surfaces: [] };
+  const configuredArtworkMimeTypes = product.configurator?.artworkUpload?.acceptedMimeTypes.filter(
+    (mimeType): mimeType is ArtworkImageMimeType =>
+      mimeType === "image/jpeg" || mimeType === "image/png" || mimeType === "image/webp",
+  ) ?? [];
+  const policyArtworkMimeTypes = [...new Set(artworkPolicy.surfaces.flatMap((surface) => surface.image.allowedMimeTypes))];
+  const acceptedArtworkMimeTypes = configuredArtworkMimeTypes.filter((mimeType) => policyArtworkMimeTypes.includes(mimeType));
+  const artworkUploadSupported = Boolean(
+    product.customizable &&
+    product.configurator?.artworkUpload?.enabled &&
+    acceptedArtworkMimeTypes.length &&
+    artworkPolicy.surfaces.some((surface) => surface.image.enabled),
+  );
+  const maximumArtworkBytes = artworkUploadSupported
+    ? Math.min(
+        product.configurator?.artworkUpload?.maximumBytes ?? 0,
+        ...artworkPolicy.surfaces.filter((surface) => surface.image.enabled).map((surface) => surface.image.maximumBytes),
+      )
+    : 0;
 
   return {
     schemaVersion: "1.0",
@@ -164,7 +192,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
       id: product.id,
       slug: product.slug,
       name: product.name,
-      productType: product.categorySlug,
+      productType: product.productType ?? product.categorySlug,
       structuralDesign: product.artwork,
       currency: "INR",
     },
@@ -204,28 +232,32 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
       fields: product.customizationFields,
       templates: activeTemplates(product),
     },
-    quantity: { minimum: defaultQuantity, maximum: Math.max(defaultQuantity, product.configurator?.quantityMax ?? 100), increment: 1, default: defaultQuantity },
+    quantity: { minimum: defaultQuantity, maximum: Math.max(defaultQuantity, product.configurator?.quantityMax ?? 100), increment: 1, default: defaultQuantity, tiers: (product.configurator?.quantityTiers ?? []).map((tier) => ({ minimum: tier.minimum, label: tier.label || `${tier.minimum}+ units`, priceDeltaPaise: toPaise(tier.priceDelta) })).sort((left, right) => left.minimum - right.minimum) },
     artwork: {
       mode: product.customizable ? "template_fields" : "none",
       surfaces: product.customizable ? (product.configurator?.printAreas ?? [{ id: "primary", label: "Primary print area" }]) : [],
       uploads: {
-        supported: false,
-        acceptedMimeTypes: [],
-        reason:
-          "Private asset storage, MIME sniffing, malware scanning and production preflight are not configured.",
+        supported: artworkUploadSupported,
+        acceptedMimeTypes: acceptedArtworkMimeTypes,
+        maximumBytes: maximumArtworkBytes,
+        endpoint: "/api/artwork-assets",
+        reason: artworkUploadSupported
+          ? "Uploads are signature-checked, preflighted and stored privately until attached to an order."
+          : "Artwork upload is not enabled with a safe raster policy for this product.",
       },
+      policy: artworkPolicy,
     },
-    preview: { mode: "catalog_2d", artworkKey: product.artwork, supportedModes: previewModes.length ? previewModes : ["2d"], defaultMode: previewModes.includes("3d") ? "3d" : "2d" },
+    preview: { mode: "catalog_2d", artworkKey: product.artwork, template: product.configurator?.previewTemplate, model: product.configurator?.productModel, supportedModes: previewModes, defaultMode: previewModes.includes("3d") ? "3d" : previewModes.includes("2d") ? "2d" : null },
     pricing: {
       mode: "server_quote",
       currency: "INR",
       endpoint: "/api/quotes",
-      rules: ["variant_catalog_price", "template_catalog_premium"],
-      quantityTiers: [],
+      rules: ["variant_catalog_price", "template_catalog_premium", "field_price_delta", "option_price_delta", "artwork_image", "quantity_tier", "setup_charge"],
+      quantityTiers: (product.configurator?.quantityTiers ?? []).map((tier) => ({ minimum: tier.minimum, label: tier.label || `${tier.minimum}+ units`, priceDeltaPaise: toPaise(tier.priceDelta) })).sort((left, right) => left.minimum - right.minimum),
     },
     productionReadiness: {
       customDimensions: "blocked_missing_limits_and_rates",
-      artworkUploads: "blocked_missing_private_storage_and_preflight",
+      artworkUploads: artworkUploadSupported ? "ready_private_raster_storage" : "disabled_by_product",
       threeDimensionalPreview: "blocked_missing_validated_geometry",
       productionExport: "blocked_missing_dielines_and_color_profiles",
     },

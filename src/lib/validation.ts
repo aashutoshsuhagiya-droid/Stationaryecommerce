@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { inspectArtworkImageDataUrl } from "./artwork-policy";
 
 const optionalBoolean = z.preprocess((value) => {
   if (value === "true" || value === true) return true;
@@ -65,11 +66,20 @@ const imageDataUrlSchema = z
   .string()
   .max(2_800_000, "Artwork images must be no larger than 2 MB before encoding")
   .refine(
-    (value) =>
-      /^data:image\/png;base64,iVBORw0KGgo[A-Za-z0-9+/]*={0,2}$/.test(value) ||
-      /^data:image\/jpeg;base64,\/9j\/[A-Za-z0-9+/]*={0,2}$/.test(value),
-    "Expected a genuine PNG or JPEG data URL",
+    (value) => Boolean(inspectArtworkImageDataUrl(value)),
+    "Expected a genuine PNG, JPEG or WEBP data URL",
   );
+
+const artworkImageAssetSchema = z.object({
+  id: identifierSchema,
+  claimToken: z.string().min(20).max(512),
+  mimeType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+  sizeBytes: z.number().int().min(1).max(100_000_000),
+  width: z.number().int().min(1).max(50_000),
+  height: z.number().int().min(1).max(50_000),
+  hasTransparency: z.boolean().optional(),
+  sha256: z.string().regex(/^[a-f0-9]{64}$/i).optional(),
+}).strict();
 
 const artworkLayerBase = {
   id: identifierSchema,
@@ -90,16 +100,26 @@ export const artworkLayerSchema = z.discriminatedUnion("type", [
     color: colorSchema,
     fontSize: z.number().finite().min(1).max(1_000),
     fontFamily: z.enum(["sans", "serif", "rounded"]),
+    textAlign: z.enum(["left", "center", "right"]).optional(),
   }).strict(),
   z.object({
     ...artworkLayerBase,
     type: z.literal("image"),
-    src: imageDataUrlSchema,
+    src: imageDataUrlSchema.optional(),
+    asset: artworkImageAssetSchema.optional(),
     sourceWidth: z.number().int().min(1).max(50_000),
     sourceHeight: z.number().int().min(1).max(50_000),
     imageFit: z.enum(["contain", "cover", "stretch"]).optional(),
     aspectLocked: z.boolean().optional(),
-  }).strict(),
+  }).strict().superRefine((layer, context) => {
+    if (!layer.src && !layer.asset) {
+      context.addIssue({
+        code: "custom",
+        path: ["src"],
+        message: "Artwork images need a preview or persisted asset reference",
+      });
+    }
+  }),
 ]);
 
 const artworkSurfaceSchema = z.object({
@@ -189,7 +209,7 @@ export const addressSchema = z.object({
 export const orderItemInputSchema = z.object({
   productId: z.string().trim().min(1).max(100),
   variantId: z.string().trim().min(1).max(100),
-  quantity: z.number().int().min(1).max(100),
+  quantity: z.number().int().min(1).max(1000),
   customization: z
     .object({
       templateId: z.string().trim().min(1).max(100).optional(),

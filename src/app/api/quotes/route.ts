@@ -8,7 +8,7 @@ import {
   RequestTooLargeError,
   validationError,
 } from "@/lib/http";
-import { createCatalogQuote } from "@/lib/pricing-service";
+import { createRuntimeCatalogQuote } from "@/lib/runtime-pricing-service";
 import { consumeRateLimit, requestIdentifier } from "@/lib/rate-limit";
 import { catalogQuoteSchema } from "@/lib/validation";
 
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     if (!parsed.success) return validationError(parsed.error);
 
     return NextResponse.json(
-      { data: createCatalogQuote(parsed.data) },
+      { data: await createRuntimeCatalogQuote(parsed.data) },
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (error) {

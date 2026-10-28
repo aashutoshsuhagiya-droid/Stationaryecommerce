@@ -160,7 +160,8 @@ export function renderLayerToContext(
     const fontStr = `${fontSize}px ${getFontFamilyString(layer.fontFamily)}`;
     ctx.font = `600 ${fontStr}`;
     ctx.fillStyle = layer.color || neutralPresentationPalette.ink;
-    ctx.textAlign = "center";
+    const textAlign = layer.textAlign ?? "center";
+    ctx.textAlign = textAlign;
     ctx.textBaseline = "middle";
     const lineHeight = fontSize * 1.2;
     const maxLines = Math.max(1, Math.floor(renderH / lineHeight));
@@ -171,8 +172,9 @@ export function renderLayerToContext(
       (value) => ctx.measureText(value).width,
     );
     const firstLineY = -((lines.length - 1) * lineHeight) / 2;
+    const textX = textAlign === "left" ? drawX : textAlign === "right" ? drawX + renderW : 0;
     lines.forEach((line, index) => {
-      ctx.fillText(line, 0, firstLineY + index * lineHeight);
+      ctx.fillText(line, textX, firstLineY + index * lineHeight);
     });
   }
 
