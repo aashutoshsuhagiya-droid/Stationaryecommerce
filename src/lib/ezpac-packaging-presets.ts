@@ -20,6 +20,7 @@ export type PackagingFieldPresetId =
   | "generic-packaging"
   | "soap-box"
   | "business-card"
+  | "flat-print"
   | "paper-bag"
   | "ziplock-pouch"
   | "brochure"
@@ -157,7 +158,7 @@ const dimension = (
   label,
   inputType: "number",
   required,
-  minValue: 0,
+  minValue: 0.1,
   step: 0.1,
   helpText: "Enter the approved finished dimension.",
 });
@@ -385,6 +386,21 @@ export const EZPAC_PACKAGING_FIELD_PRESETS = [
     ],
   },
   {
+    id: "flat-print",
+    label: "Flat print",
+    fields: [
+      dimension("flat-width", "Flat width"),
+      dimension("flat-height", "Flat height"),
+      dimensionUnit,
+      adminSelect("paper-material", "Paper / material", true),
+      gsm("GSM / material thickness"),
+      printingType(),
+      printingSides,
+      printColours(),
+      finishing(),
+    ],
+  },
+  {
     id: "paper-bag",
     label: "Paper Bag",
     fields: [
@@ -529,7 +545,7 @@ export const EZPAC_PACKAGING_PRODUCT_TYPE_PRESETS = [
     primaryCategoryId: "boxes",
     primarySubcategoryId: "perfume-cosmetic-boxes",
     collectionIds: ["perfume-cosmetics-packaging", "product-packaging"],
-    fieldPresetId: "generic-packaging",
+    fieldPresetId: "soap-box",
   },
   {
     id: "window-box",
@@ -538,7 +554,7 @@ export const EZPAC_PACKAGING_PRODUCT_TYPE_PRESETS = [
     primaryCategoryId: "boxes",
     primarySubcategoryId: "specialty-boxes",
     collectionIds: ["display-products", "product-packaging"],
-    fieldPresetId: "generic-packaging",
+    fieldPresetId: "soap-box",
   },
   {
     id: "hanging-box",
@@ -673,7 +689,7 @@ export const EZPAC_PACKAGING_PRODUCT_TYPE_PRESETS = [
     primaryCategoryId: "boxes",
     primarySubcategoryId: "gift-event-boxes",
     collectionIds: ["gift-packaging"],
-    fieldPresetId: "generic-packaging",
+    fieldPresetId: "soap-box",
   },
   {
     id: "pooja-box",
@@ -781,7 +797,7 @@ export const EZPAC_PACKAGING_PRODUCT_TYPE_PRESETS = [
     primaryCategoryId: "marketing-printing",
     primarySubcategoryId: "flyers-brochures",
     collectionIds: ["personal"],
-    fieldPresetId: "brochure",
+    fieldPresetId: "flat-print",
   },
   {
     id: "z-fold-brochure",
@@ -844,7 +860,7 @@ export const EZPAC_PACKAGING_PRODUCT_TYPE_PRESETS = [
     primaryCategoryId: "marketing-printing",
     primarySubcategoryId: "thank-you-hang-tags",
     collectionIds: ["e-commerce-packaging", "personal"],
-    fieldPresetId: "generic-packaging",
+    fieldPresetId: "flat-print",
   },
   {
     id: "stickers",
@@ -853,7 +869,7 @@ export const EZPAC_PACKAGING_PRODUCT_TYPE_PRESETS = [
     primaryCategoryId: "marketing-printing",
     primarySubcategoryId: "stickers",
     collectionIds: ["e-commerce-packaging", "personal"],
-    fieldPresetId: "generic-packaging",
+    fieldPresetId: "flat-print",
   },
   {
     id: "rectangle-stickers",
@@ -862,7 +878,7 @@ export const EZPAC_PACKAGING_PRODUCT_TYPE_PRESETS = [
     primaryCategoryId: "marketing-printing",
     primarySubcategoryId: "stickers",
     collectionIds: ["e-commerce-packaging", "personal"],
-    fieldPresetId: "generic-packaging",
+    fieldPresetId: "flat-print",
   },
   {
     id: "square-stickers",
@@ -871,7 +887,7 @@ export const EZPAC_PACKAGING_PRODUCT_TYPE_PRESETS = [
     primaryCategoryId: "marketing-printing",
     primarySubcategoryId: "stickers",
     collectionIds: ["e-commerce-packaging", "personal"],
-    fieldPresetId: "generic-packaging",
+    fieldPresetId: "flat-print",
   },
   {
     id: "food-tray",
@@ -1035,6 +1051,18 @@ export function getEzpacPackagingProductType(
 ): EzpacPackagingProductTypePreset | undefined {
   return listEzpacPackagingProductTypes().find(
     (productType) => productType.id === productTypeId,
+  );
+}
+
+/** Identifies registered packaging starters that do not yet have validated 3D geometry. */
+export function isEzpacPackagingProductType(
+  productTypeId: string | undefined,
+): productTypeId is EzpacPackagingProductTypeId {
+  return Boolean(
+    productTypeId
+      && EZPAC_PACKAGING_PRODUCT_TYPE_PRESETS.some(
+        (productType) => productType.id === productTypeId,
+      ),
   );
 }
 

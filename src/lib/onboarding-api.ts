@@ -1,5 +1,6 @@
-import { apiError } from "./http";
+import { apiError, RequestTooLargeError } from "./http";
 import { AuthenticationError } from "./auth-session";
+import { CommerceError } from "./commerce-error";
 import { DatabaseConfigurationError } from "./prisma";
 import { VendorDocumentError } from "./vendor-documents";
 import { VendorOnboardingError } from "./vendor-onboarding";
@@ -8,6 +9,12 @@ import { AssignmentError } from "./marketplace-assignment";
 import { VendorOperationsError } from "./vendor-operations";
 
 export function onboardingApiError(error: unknown) {
+  if (error instanceof RequestTooLargeError) {
+    return apiError(413, "REQUEST_TOO_LARGE", error.message);
+  }
+  if (error instanceof CommerceError) {
+    return apiError(error.status, error.code, error.message, error.details);
+  }
   if (error instanceof AuthenticationError) return apiError(error.status, error.code, error.message);
   if (error instanceof VendorOnboardingError) return apiError(error.status, error.code, error.message);
   if (error instanceof OtpError) return apiError(error.status, error.code, error.message);

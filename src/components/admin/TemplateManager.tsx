@@ -5,7 +5,7 @@ import { Copy, Plus, Search, Sparkles, Trash2 } from "lucide-react";
 import { Card, CardHeader, PageHeader, StatusBadge, statusTone } from "./AdminUI";
 import styles from "./admin.module.css";
 
-type SurfaceId = "front" | "back";
+type SurfaceId = string;
 
 type TemplateSurface = {
   id: SurfaceId;
@@ -39,9 +39,9 @@ type ManagedTemplate = {
 
 type TemplateDraft = Pick<ManagedTemplate, "name" | "theme" | "description" | "thumbnailUrl" | "premiumPrice" | "rightsReference" | "surfaces">;
 
-const newSurface = (id: SurfaceId): TemplateSurface => ({
+const newSurface = (id: SurfaceId, label = id === "front" ? "Front" : "Back"): TemplateSurface => ({
   id,
-  label: id === "front" ? "Front" : "Back",
+  label,
   baseImageUrl: "",
   sampleText: "Your name",
   background: "#ffffff",
@@ -89,6 +89,7 @@ export function TemplateManager() {
   const [selectedId, setSelectedId] = useState("");
   const [draft, setDraft] = useState<TemplateDraft | null>(null);
   const [surfaceId, setSurfaceId] = useState<SurfaceId>("front");
+  const [newSurfaceLabel, setNewSurfaceLabel] = useState("");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [loading, setLoading] = useState(true);
@@ -195,16 +196,30 @@ export function TemplateManager() {
     updateSurface({ safeArea: { ...activeSurface.safeArea, [key]: value } });
   }
 
-  function addBackSurface() {
-    if (!draft || draft.surfaces.some((surface) => surface.id === "back")) return;
-    updateDraft("surfaces", [...draft.surfaces, newSurface("back")]);
-    setSurfaceId("back");
+  function addSurface() {
+    if (!draft || draft.surfaces.length >= 8) return;
+    const label = newSurfaceLabel.trim();
+    const slug = label.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const id = (slug && /^[a-z]/.test(slug) ? slug : `surface-${slug}`).slice(0, 80);
+    if (!label || !slug) {
+      setError("Enter a surface name such as Back, Left side, Gusset or Inside.");
+      return;
+    }
+    if (draft.surfaces.some((surface) => surface.id === id)) {
+      setError("That surface is already configured on this template.");
+      return;
+    }
+    updateDraft("surfaces", [...draft.surfaces, newSurface(id, label)]);
+    setSurfaceId(id);
+    setNewSurfaceLabel("");
+    setError("");
   }
 
-  function removeBackSurface() {
-    if (!draft) return;
-    updateDraft("surfaces", draft.surfaces.filter((surface) => surface.id !== "back"));
-    setSurfaceId("front");
+  function removeSurface() {
+    if (!draft || surfaceId === "front") return;
+    const remaining = draft.surfaces.filter((surface) => surface.id !== surfaceId);
+    updateDraft("surfaces", remaining);
+    setSurfaceId(remaining.find((surface) => surface.id === "front")?.id ?? remaining[0]?.id ?? "front");
   }
 
   return (
@@ -281,8 +296,11 @@ export function TemplateManager() {
               <div className={styles.editorFields}>
                 <div className={styles.templateSurfaceTabs}>
                   {draft.surfaces.map((surface) => <button className={surface.id === surfaceId ? styles.templateSurfaceTabActive : ""} key={surface.id} onClick={() => setSurfaceId(surface.id)} type="button">{surface.label}</button>)}
-                  {!draft.surfaces.some((surface) => surface.id === "back") && <button onClick={addBackSurface} type="button"><Plus size={12} /> Back</button>}
                 </div>
+                {draft.surfaces.length < 8 && <div className={styles.fieldGrid}>
+                  <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Add print surface</span><input className={styles.input} maxLength={60} onChange={(event) => setNewSurfaceLabel(event.target.value)} placeholder="Back, side, gusset, sleeve or inside" value={newSurfaceLabel} /></label>
+                  <div className={styles.fieldGroup}><span className={styles.fieldLabel}>Surface limit</span><button className={styles.buttonSecondary} disabled={!newSurfaceLabel.trim()} onClick={addSurface} type="button"><Plus size={12} /> Add surface</button><small>{draft.surfaces.length}/8 surfaces configured</small></div>
+                </div>}
 
                 <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Template name</span><input className={styles.input} maxLength={140} onChange={(event) => updateDraft("name", event.target.value)} value={draft.name} /></label>
                 <div className={styles.fieldGrid}>
@@ -292,7 +310,8 @@ export function TemplateManager() {
                 <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Description</span><textarea className={styles.textarea} maxLength={2000} onChange={(event) => updateDraft("description", event.target.value)} value={draft.description} /></label>
                 <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Thumbnail URL</span><input className={styles.input} onChange={(event) => updateDraft("thumbnailUrl", event.target.value)} placeholder="Optional; defaults to the front base image" value={draft.thumbnailUrl} /></label>
 
-                <div className={styles.templateSectionHeading}><strong>{activeSurface.label} surface</strong>{activeSurface.id === "back" && <button className={styles.buttonGhost} onClick={removeBackSurface} type="button"><Trash2 size={12} /> Remove</button>}</div>
+                <div className={styles.templateSectionHeading}><strong>{activeSurface.label} surface</strong>{activeSurface.id !== "front" && <button className={styles.buttonGhost} onClick={removeSurface} type="button"><Trash2 size={12} /> Remove</button>}</div>
+                <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Surface label</span><input className={styles.input} maxLength={60} onChange={(event) => updateSurface({ label: event.target.value })} value={activeSurface.label} /></label>
                 <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Sample text <span className={styles.fieldHint}>{activeSurface.sampleText.length}/120</span></span><input className={styles.input} maxLength={120} onChange={(event) => updateSurface({ sampleText: event.target.value })} value={activeSurface.sampleText} /></label>
                 <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Base image URL</span><input className={styles.input} onChange={(event) => updateSurface({ baseImageUrl: event.target.value })} placeholder="https://…" value={activeSurface.baseImageUrl} /></label>
                 <div className={styles.templateColorGrid}>

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { capturedCustomOrderStatus } from "@/lib/artwork-review";
 import { assertSameOrigin, AuthenticationError, requireRequestActor } from "@/lib/auth-session";
 import { CommerceError } from "@/lib/commerce-error";
-import { apiError, readJson, validationError } from "@/lib/http";
+import { apiError, readJson, RequestTooLargeError, validationError } from "@/lib/http";
 import { DatabaseConfigurationError, getPrisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
@@ -135,6 +135,7 @@ export async function PATCH(request: Request) {
 
     return NextResponse.json({ data: result }, { headers: { "Cache-Control": "private, no-store" } });
   } catch (error) {
+    if (error instanceof RequestTooLargeError) return apiError(413, "REQUEST_TOO_LARGE", error.message);
     if (error instanceof AuthenticationError) return apiError(error.status, error.code, error.message);
     if (error instanceof CommerceError) return apiError(error.status, error.code, error.message, error.details);
     if (error instanceof DatabaseConfigurationError) return apiError(503, "DATABASE_UNAVAILABLE", "Order storage is not configured.");

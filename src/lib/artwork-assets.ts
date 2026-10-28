@@ -11,6 +11,7 @@ import {
 } from "./artwork-upload";
 import { getPrisma } from "./prisma";
 import { getStorefrontProductById } from "./runtime-catalog";
+import { canVendorAccessApprovedArtwork } from "./vendor-operations-domain";
 import type { AuthActor } from "./auth-session";
 import type { ArtworkDocumentSnapshot } from "./types";
 
@@ -153,7 +154,14 @@ export async function getPrivateArtworkAsset(input: {
         select: {
           order: {
             select: {
-              assignment: { select: { assignedVendor: { select: { userId: true } } } },
+              assignment: {
+                select: {
+                  status: true,
+                  assignedVendor: {
+                    select: { userId: true, verificationStatus: true, operationalStatus: true },
+                  },
+                },
+              },
             },
           },
         },
@@ -161,9 +169,13 @@ export async function getPrivateArtworkAsset(input: {
     },
   });
   if (!asset) throw new CommerceError(404, "ARTWORK_ASSET_NOT_FOUND", "Artwork asset not found.");
+  const assignment = asset.orderItem?.order.assignment;
+  const assignedVendor = assignment?.assignedVendor;
   const vendorAllowed = Boolean(
     input.actor?.permissions.includes("vendor.orders.manage") &&
-    asset.orderItem?.order.assignment?.assignedVendor?.userId === input.actor.userId,
+    assignedVendor?.userId === input.actor.userId &&
+    assignment &&
+    canVendorAccessApprovedArtwork(assignedVendor, assignment.status, asset.status),
   );
   const actorAllowed = Boolean(
     input.actor && (

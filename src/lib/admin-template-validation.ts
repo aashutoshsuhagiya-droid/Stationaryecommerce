@@ -14,7 +14,7 @@ const imageReferenceSchema = z.string().trim().max(2_000).refine((value) => {
 const colorSchema = z.string().trim().regex(/^#[0-9a-f]{6}$/i, "Use a six-digit hex colour.");
 
 export const templateSurfaceSchema = z.object({
-  id: z.enum(["front", "back"]),
+  id: z.string().trim().regex(/^[a-z][a-z0-9-]{0,79}$/, "Use a lowercase surface identifier such as front, side-left or inside."),
   label: z.string().trim().min(1).max(60),
   baseImageUrl: imageReferenceSchema.default(""),
   sampleText: z.string().trim().max(120).default("Your name"),
@@ -39,7 +39,7 @@ export const adminTemplateDraftSchema = z.object({
   thumbnailUrl: imageReferenceSchema.default(""),
   premiumPrice: z.number().finite().min(0).max(100_000).default(0),
   rightsReference: z.string().trim().max(300).default(""),
-  surfaces: z.array(templateSurfaceSchema).min(1).max(2),
+  surfaces: z.array(templateSurfaceSchema).min(1).max(8),
 }).strict().superRefine((template, context) => {
   const ids = new Set<string>();
   template.surfaces.forEach((surface, index) => {

@@ -23,6 +23,8 @@ import {
   ezpacIndustryCollectionCategorySlug,
   getEzpacPackagingFieldsForProductType,
   getEzpacPackagingProductType,
+  isEzpacPackagingProductType,
+  listEzpacIndustryCollections,
   listEzpacPackagingCategories,
   listEzpacPackagingProductTypes,
 } from "@/lib/ezpac-packaging-presets";
@@ -181,12 +183,14 @@ export function ProductsPanel() {
   const [error, setError] = useState("");
   const [categoryImportMessage, setCategoryImportMessage] = useState("");
   const packagingCategoryStarters = useMemo(() => listEzpacPackagingCategories(), []);
+  const packagingIndustryCollections = useMemo(() => listEzpacIndustryCollections(), []);
   const ranBazaarCategoryStarters = useMemo(() => listRanBazaarCategoryGroups(), []);
   const ranBazaarCustomizationStarters = useMemo(
     () => listRanBazaarCustomizationStarters(),
     [],
   );
   const packagingProductTypeStarters = useMemo(() => listEzpacPackagingProductTypes(), []);
+  const packaging3DUnavailable = isEzpacPackagingProductType(productType);
 
   async function loadCatalog() {
     const response = await fetch("/api/admin/catalog", { cache: "no-store" });
@@ -258,11 +262,17 @@ export function ProductsPanel() {
       customerVisible: field.optionSource !== "admin_configured",
     })));
     const matchingCategory = categoryRecords.find((category) => category.slug === starter.primarySubcategoryId);
+    const missingCollectionNames: string[] = [];
     const matchingCollectionCategoryIds = starter.collectionIds.flatMap((collectionId) => {
       const category = categoryRecords.find(
         (record) => record.slug === ezpacIndustryCollectionCategorySlug(collectionId),
       );
-      return category ? [category.id] : [];
+      if (category) return [category.id];
+      missingCollectionNames.push(
+        packagingIndustryCollections.find((collection) => collection.id === collectionId)?.name
+          ?? collectionId,
+      );
+      return [];
     });
     if (matchingCategory) {
       setProductCategoryId(matchingCategory.id);
@@ -272,9 +282,14 @@ export function ProductsPanel() {
           ...matchingCollectionCategoryIds,
         ]),
       ]);
-      setError("");
+      setError(missingCollectionNames.length
+        ? `Starter fields and the primary category were applied. Add the Industry Collections packaging starter to also list this product in: ${missingCollectionNames.join(", ")}.`
+        : "");
     } else {
-      setError(`Add the ${starter.primaryCategoryId} packaging starter first, then this product type will map to its suggested subcategory.`);
+      const missingCollections = missingCollectionNames.length
+        ? " and the Industry Collections packaging starter"
+        : "";
+      setError(`Starter fields were applied. Add the ${starter.primaryCategoryId} packaging starter${missingCollections} first, then this product type will map to all of its suggested categories.`);
     }
   }
 
@@ -347,20 +362,19 @@ export function ProductsPanel() {
     setTemplateLinks((current) => current.map((item) => ({ ...item, isDefault: item.templateId === templateId })));
   }
 
-  async function importPackagingCategoryStarter(presetId: string) {
-    const starter = packagingCategoryStarters.find((item) => item.id === presetId);
-    if (!starter) return;
-    if (!window.confirm(`Add any missing ${starter.name} categories and subcategories? Existing categories, products, prices, and orders will not be changed.`)) return;
+  async function importPackagingCategoryStarters(presetIds: string[], label: string) {
+    if (!presetIds.length) return;
+    if (!window.confirm(`Add any missing ${label} categories and subcategories? Existing categories, products, prices, and orders will not be changed.`)) return;
     setSaving(true);
     setError("");
     setCategoryImportMessage("");
     try {
-      const response = await fetch("/api/admin/catalog", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "category-preset-import", presetIds: [presetId] }) });
+      const response = await fetch("/api/admin/catalog", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "category-preset-import", source: "ezpac-packaging", presetIds }) });
       const payload = await response.json() as { data?: { created: string[]; reused: string[]; conflicts: string[] }; error?: { message?: string } };
       if (!response.ok || !payload.data) throw new Error(payload.error?.message || "Could not add the packaging categories.");
       const details = [`${payload.data.created.length} added`, `${payload.data.reused.length} already present`];
       if (payload.data.conflicts.length) details.push(`${payload.data.conflicts.length} need review`);
-      setCategoryImportMessage(`${starter.name}: ${details.join(" · ")}.`);
+      setCategoryImportMessage(`${label}: ${details.join(" · ")}.`);
       await loadCatalog();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Could not add the packaging categories.");
@@ -556,8 +570,16 @@ export function ProductsPanel() {
               <div className={styles.detailSection}>
                 <p className={styles.sectionCaption}>Packaging category starters</p>
                 <p className={styles.configHint}>Add only the missing two-level packaging groups. This explicit action never creates products, changes existing records, or assigns prices.</p>
+                <button
+                  className={styles.buttonSecondary}
+                  disabled={saving}
+                  onClick={() => void importPackagingCategoryStarters(packagingCategoryStarters.map((starter) => starter.id), "all packaging groups")}
+                  type="button"
+                >
+                  Add all missing
+                </button>
                 <div className={styles.configList}>
-                  {packagingCategoryStarters.map((starter) => <div className={styles.configCard} key={starter.id}><div className={styles.configCardHead}><span><strong>{starter.name}</strong><small>{starter.subcategories.map((subcategory) => subcategory.name).join(" · ")}</small></span><button className={styles.buttonSecondary} disabled={saving} onClick={() => void importPackagingCategoryStarter(starter.id)} type="button">Add missing</button></div></div>)}
+                  {packagingCategoryStarters.map((starter) => <div className={styles.configCard} key={starter.id}><div className={styles.configCardHead}><span><strong>{starter.name}</strong><small>{starter.subcategories.map((subcategory) => subcategory.name).join(" · ")}</small></span><button className={styles.buttonSecondary} disabled={saving} onClick={() => void importPackagingCategoryStarters([starter.id], starter.name)} type="button">Add missing</button></div></div>)}
                 </div>
                 {categoryImportMessage && <p className={styles.configHint} role="status">{categoryImportMessage}</p>}
               </div>
@@ -654,9 +676,9 @@ export function ProductsPanel() {
                       </div>
                     </div>
                     <label className={styles.toggleRow}><span className={styles.toggleCopy}><strong>Enable 2D layout editor</strong><span>Customers can position content within the configured print surfaces.</span></span><input defaultChecked={editingProduct?.allow2D ?? true} name="allow2D" type="checkbox" /></label>
-                    <label className={styles.toggleRow}><span className={styles.toggleCopy}><strong>Enable validated 3D preview</strong><span>Only enable this after choosing an available product model below.</span></span><input defaultChecked={editingProduct?.allow3D} name="allow3D" type="checkbox" /></label>
+                    <label className={styles.toggleRow}><span className={styles.toggleCopy}><strong>Enable validated 3D preview</strong><span>{packaging3DUnavailable ? "EZPAC packaging starters use the 2D editor until packaging-specific 3D geometry is validated." : "Only enable this after choosing an available product model below."}</span></span><input defaultChecked={packaging3DUnavailable ? false : editingProduct?.allow3D} disabled={packaging3DUnavailable} key={`allow3D-${packaging3DUnavailable ? "packaging" : "available"}`} name="allow3D" type="checkbox" /></label>
                     <div className={styles.fieldGrid}>
-                      <label className={styles.fieldGroup}><span className={styles.fieldLabel}>3D product model</span><select className={styles.select} defaultValue={editingProduct?.productModel ?? ""} name="productModel"><option value="">No 3D model</option><option value="label-pack">Label pack</option><option value="waterproof-sheet">Waterproof sheet</option><option value="school-kit">School kit</option><option value="notebook">Notebook</option><option value="bottle-label">Bottle label</option><option value="pencil-set">Pencil set</option><option value="tag">Tag</option><option value="geometry-box">Geometry box</option><option value="gift-ribbon">Gift box with ribbon</option><option value="keychain-duo">Keychain pair</option><option value="bulk-grid">Bulk grid</option></select></label>
+                      <label className={styles.fieldGroup}><span className={styles.fieldLabel}>3D product model</span><select className={styles.select} defaultValue={packaging3DUnavailable ? "" : editingProduct?.productModel ?? ""} disabled={packaging3DUnavailable} key={`productModel-${packaging3DUnavailable ? "packaging" : "available"}`} name="productModel"><option value="">No 3D model</option><option value="label-pack">Label pack</option><option value="waterproof-sheet">Waterproof sheet</option><option value="school-kit">School kit</option><option value="notebook">Notebook</option><option value="bottle-label">Bottle label</option><option value="pencil-set">Pencil set</option><option value="tag">Tag</option><option value="geometry-box">Geometry box</option><option value="gift-ribbon">Gift box with ribbon</option><option value="keychain-duo">Keychain pair</option><option value="bulk-grid">Bulk grid</option></select></label>
                       <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Preview template / reference</span><input className={styles.input} defaultValue={editingProduct?.previewTemplate} name="previewTemplate" placeholder="e.g. soap-box-v2" /></label>
                     </div>
                     <div className={styles.configSection}>

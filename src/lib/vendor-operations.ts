@@ -2,7 +2,12 @@ import "server-only";
 
 import { dispatchCapturedOrderToVendors } from "./marketplace-dispatch";
 import { getPrisma } from "./prisma";
-import { canApplyVendorOrderAction, isVendorOperational, vendorOrderTransitions } from "./vendor-operations-domain";
+import {
+  canApplyVendorOrderAction,
+  canVendorAccessCustomerData,
+  isVendorOperational,
+  vendorOrderTransitions,
+} from "./vendor-operations-domain";
 import type { VendorAvailabilityInput, VendorOrderActionInput } from "./vendor-operations-validation";
 
 export class VendorOperationsError extends Error {
@@ -83,8 +88,21 @@ const offerOrderSummarySelect = {
 } as const;
 
 export async function getVendorOperations(userId: string) {
-  const profile = await getPrisma().vendorProfile.findUnique({
+  const accessProfile = await getPrisma().vendorProfile.findUnique({
     where: { userId },
+    select: { verificationStatus: true, operationalStatus: true },
+  });
+  if (!accessProfile) throw new VendorOperationsError(404, "VENDOR_PROFILE_NOT_FOUND", "Vendor profile not found.");
+  if (!canVendorAccessCustomerData(accessProfile)) {
+    throw new VendorOperationsError(403, "VENDOR_NOT_OPERATIONAL", "Only an approved, active vendor can access the operations workspace.");
+  }
+
+  const profile = await getPrisma().vendorProfile.findUnique({
+    where: {
+      userId,
+      verificationStatus: "APPROVED",
+      operationalStatus: "ACTIVE",
+    },
     select: {
       id: true,
       verificationStatus: true,
@@ -119,6 +137,7 @@ export async function getVendorOperations(userId: string) {
         },
       },
       assignments: {
+        where: { status: "ASSIGNED" },
         orderBy: { assignedAt: "desc" },
         take: 100,
         select: {
@@ -130,7 +149,9 @@ export async function getVendorOperations(userId: string) {
       },
     },
   });
-  if (!profile) throw new VendorOperationsError(404, "VENDOR_PROFILE_NOT_FOUND", "Vendor profile not found.");
+  if (!profile) {
+    throw new VendorOperationsError(403, "VENDOR_NOT_OPERATIONAL", "Only an approved, active vendor can access the operations workspace.");
+  }
 
   const deliveredOrders = profile.assignments.filter(({ order }) => order.status === "DELIVERED");
   return {

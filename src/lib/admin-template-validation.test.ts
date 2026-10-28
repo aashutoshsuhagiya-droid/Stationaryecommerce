@@ -35,6 +35,19 @@ test("complete front and back surfaces can be published", () => {
   assert.equal(result.success, true);
 });
 
+test("packaging templates support additional named production surfaces", () => {
+  const result = validateAdminTemplate({
+    ...validTemplate,
+    surfaces: [
+      validSurface,
+      { ...validSurface, id: "side-left", label: "Left side" },
+      { ...validSurface, id: "gusset-right", label: "Right gusset" },
+      { ...validSurface, id: "inside", label: "Inside" },
+    ],
+  }, true);
+  assert.equal(result.success, true);
+});
+
 test("an incomplete template may be saved as a draft", () => {
   const result = validateAdminTemplate({
     ...validTemplate,
@@ -69,4 +82,20 @@ test("publishing requires a front surface", () => {
 test("duplicate surface identifiers are rejected", () => {
   const result = validateAdminTemplate({ ...validTemplate, surfaces: [validSurface, { ...validSurface }] }, false);
   assert.equal(result.success, false);
+});
+
+test("surface identifiers and the eight-surface limit are enforced", () => {
+  assert.equal(validateAdminTemplate({
+    ...validTemplate,
+    surfaces: [{ ...validSurface, id: "Side Left" }],
+  }, false).success, false);
+
+  assert.equal(validateAdminTemplate({
+    ...validTemplate,
+    surfaces: Array.from({ length: 9 }, (_, index) => ({
+      ...validSurface,
+      id: index === 0 ? "front" : `surface-${index}`,
+      label: `Surface ${index + 1}`,
+    })),
+  }, false).success, false);
 });

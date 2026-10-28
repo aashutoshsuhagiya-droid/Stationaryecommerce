@@ -339,7 +339,7 @@ export function VendorDashboard({
           </div>
 
           {application.status === "APPROVED" && profile && (
-            <section className={styles.operationsPanel} aria-labelledby="operations-title">
+            <section className={styles.operationsPanel} id="operations" aria-labelledby="operations-title">
               <div className={styles.panelHeading}>
                 <div>
                   <p>Approved operations</p>
@@ -386,12 +386,12 @@ export function VendorDashboard({
                     : "No new marketplace orders will be offered while this state remains unchanged."}</span>
                 </div>
               </div>
-              <p className={styles.readOnlyNote}><CircleDot aria-hidden="true" size={14} />{profile.operationalStatus === "SUSPENDED" ? "Operations are read-only while this partner account is suspended." : "This approval snapshot is updated when you use the live operations workspace below."}</p>
+              <p className={styles.readOnlyNote}><CircleDot aria-hidden="true" size={14} />{profile.operationalStatus === "ACTIVE" ? "This approval snapshot is updated when you use the live operations workspace below." : "Live operations and assigned customer records are unavailable while this partner profile is not active."}</p>
             </section>
           )}
 
-          {application.status === "APPROVED" && (
-            <VendorOperationsWorkspace initialSuspended={profile?.operationalStatus === "SUSPENDED"} />
+          {application.status === "APPROVED" && profile?.operationalStatus === "ACTIVE" && (
+            <VendorOperationsWorkspace initialSuspended={false} />
           )}
 
           <section className={styles.panel} id="documents">

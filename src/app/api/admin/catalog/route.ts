@@ -9,12 +9,17 @@ import {
   customizationPatternIssue,
   normalizeCustomizationPattern,
 } from "@/lib/customization-pattern";
-import { getEzpacPackagingCategory } from "@/lib/ezpac-packaging-presets";
+import {
+  EZPAC_PACKAGING_CATEGORY_PRESETS,
+  getEzpacPackagingCategory,
+  isEzpacPackagingProductType,
+} from "@/lib/ezpac-packaging-presets";
 import { readJson, validationError } from "@/lib/http";
 import { onboardingApiError } from "@/lib/onboarding-api";
 import { getPrisma } from "@/lib/prisma";
 import { normalizeProductCategoryIds } from "@/lib/product-category-links";
 import {
+  RANBAZAAR_CATEGORY_PRESETS,
   findRanBazaarCategoryMatch,
   getRanBazaarCategoryGroup,
   type CatalogCategoryIdentity,
@@ -36,7 +41,11 @@ const printAreaSchema = z.object({ id: z.string().trim().regex(/^[a-z][a-z0-9-]{
 const productSchema = z.object({ type: z.literal("product"), name: z.string().trim().min(2).max(180), sku: z.string().trim().min(2).max(80), categoryId: z.string().min(1), categoryIds: z.array(z.string().trim().min(1).max(100)).max(30).optional(), productType: z.string().trim().max(120).optional(), price: z.number().nonnegative(), description: z.string().trim().max(10_000).optional(), shortDescription: z.string().trim().max(400).optional(), imageUrl: z.string().url().max(2000), material: z.string().trim().max(160).optional(), sizes: z.array(z.string().trim().min(1).max(80)).max(30).default([]), sizeDescription: z.string().trim().max(240).optional(), features: z.array(z.string().trim().min(1).max(200)).max(30).default([]), configurationFields: z.array(configurationFieldSchema).max(20).default([]), templateLinks: z.array(templateLinkSchema).max(20).optional(), printAreas: z.array(printAreaSchema).min(1).max(8).default([{ id: "primary", label: "Primary print area" }]), previewTemplate: z.string().trim().max(120).optional(), productModel: productModelSchema.optional(), artworkUpload: z.boolean().default(false), acceptedArtworkTypes: z.array(z.enum(["image/png", "image/jpeg", "image/webp"])).max(3).default(["image/png", "image/jpeg"]), artworkPolicy: productArtworkPolicySchema.optional(), customizable: z.boolean().default(false), published: z.boolean().default(false), allow2D: z.boolean().default(true), allow3D: z.boolean().default(false), quantityMin: z.number().int().min(1).max(1000).default(1), quantityMax: z.number().int().min(1).max(1000).default(100), quantityTiers: z.array(quantityTierSchema).max(20).default([]), setupCharge: z.number().finite().min(0).max(100_000).default(0), productionDaysMin: z.number().int().min(0).max(365).default(0), productionDaysMax: z.number().int().min(0).max(365).default(0) }).refine((value) => value.productionDaysMax >= value.productionDaysMin && value.quantityMax >= value.quantityMin, { message: "Maximum values must be at least the corresponding minimum." }).superRefine((value, context) => { const keys = new Set<string>(); const printAreas = new Set<string>(); const tierMinimums = new Set<number>(); const templateIds = new Set<string>(); let defaultTemplateCount = 0; value.templateLinks?.forEach((link, index) => { if (templateIds.has(link.templateId)) context.addIssue({ code: "custom", path: ["templateLinks", index, "templateId"], message: "A design template can only be linked once." }); templateIds.add(link.templateId); if (link.isDefault) defaultTemplateCount += 1; }); if (defaultTemplateCount > 1) context.addIssue({ code: "custom", path: ["templateLinks"], message: "Choose at most one default design template." }); value.configurationFields.forEach((field, index) => { if (keys.has(field.key)) context.addIssue({ code: "custom", path: ["configurationFields", index, "key"], message: "Field keys must be unique." }); keys.add(field.key); if (field.visibleWhen) { if (field.visibleWhen.fieldId === field.key) context.addIssue({ code: "custom", path: ["configurationFields", index, "visibleWhen"], message: "A field cannot control its own visibility." }); const controller = value.configurationFields.find((candidate) => candidate.key === field.visibleWhen?.fieldId); if (!controller) context.addIssue({ code: "custom", path: ["configurationFields", index, "visibleWhen", "fieldId"], message: "Choose an existing controlling field." }); else if (controller.inputType === "select" && controller.options.length && !controller.options.some((option) => option.value === field.visibleWhen?.equals)) context.addIssue({ code: "custom", path: ["configurationFields", index, "visibleWhen", "equals"], message: "The visibility value must match a controlling dropdown choice." }); } }); value.printAreas.forEach((area, index) => { if (printAreas.has(area.id)) context.addIssue({ code: "custom", path: ["printAreas", index, "id"], message: "Print area IDs must be unique." }); printAreas.add(area.id); }); value.quantityTiers.forEach((tier, index) => { if (tierMinimums.has(tier.minimum)) context.addIssue({ code: "custom", path: ["quantityTiers", index, "minimum"], message: "Each quantity break needs a unique minimum." }); if (tier.minimum < value.quantityMin || tier.minimum > value.quantityMax) context.addIssue({ code: "custom", path: ["quantityTiers", index, "minimum"], message: "Quantity breaks must fall within the product's order range." }); tierMinimums.add(tier.minimum); }); if (value.allow3D && !value.productModel) context.addIssue({ code: "custom", path: ["productModel"], message: "Choose a validated product model before enabling 3D preview." }); if (value.artworkPolicy) { const surfaceIds = new Set(value.printAreas.map((area) => area.id)); value.artworkPolicy.surfaces.forEach((surface, index) => { if (!surfaceIds.has(surface.id)) context.addIssue({ code: "custom", path: ["artworkPolicy", "surfaces", index, "id"], message: "Artwork policy surfaces must match a configured print area." }); }); if (value.artworkUpload && !value.artworkPolicy.surfaces.some((surface) => surface.image.enabled)) context.addIssue({ code: "custom", path: ["artworkPolicy"], message: "Enable image controls on at least one surface before enabling uploads." }); } });
 const schema = z.discriminatedUnion("type", [categorySchema, productSchema]);
 const productIdSchema = z.object({ id: z.string().trim().min(1).max(100) });
-const categoryPresetImportSchema = z.object({ type: z.literal("category-preset-import"), source: z.enum(["ezpac-packaging", "ranbazaar"]).default("ezpac-packaging"), presetIds: z.array(z.string().trim().min(1).max(80)).min(1).max(6) }).strict();
+const maximumCategoryPresetImports = Math.max(
+  EZPAC_PACKAGING_CATEGORY_PRESETS.length,
+  RANBAZAAR_CATEGORY_PRESETS.length,
+);
+const categoryPresetImportSchema = z.object({ type: z.literal("category-preset-import"), source: z.enum(["ezpac-packaging", "ranbazaar"]).default("ezpac-packaging"), presetIds: z.array(z.string().trim().min(1).max(80)).min(1).max(maximumCategoryPresetImports) }).strict();
 const objectRecord = (value: unknown): Record<string, unknown> => value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
 const strings = (value: unknown) => Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
 const nextConfigurationVersion = (value: Record<string, unknown>) => {
@@ -160,6 +169,15 @@ function productMetadata(input: z.infer<typeof productSchema>, existing?: unknow
 }
 
 const safeArtworkMimeTypes = new Set(["image/png", "image/jpeg", "image/webp"]);
+
+function assertProductPreviewAllowed(input: z.infer<typeof productSchema>) {
+  if (!input.allow3D || !isEzpacPackagingProductType(input.productType)) return;
+  throw new CommerceError(
+    422,
+    "PACKAGING_3D_UNAVAILABLE",
+    "EZPAC packaging starters support the 2D editor only until validated packaging-specific 3D geometry is available.",
+  );
+}
 
 function assertArtworkUploadPublishable(input: z.infer<typeof productSchema>) {
   if (!input.published || !input.artworkUpload) return;
@@ -396,6 +414,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ data: category }, { status: 201 });
     }
     const input = parsed.data;
+    assertProductPreviewAllowed(input);
     assertArtworkUploadPublishable(input);
     const slug = `${slugify(input.name)}-${Date.now().toString(36)}`;
     const status = input.published ? "ACTIVE" : "DRAFT";
@@ -445,6 +464,7 @@ export async function PATCH(request: Request) {
     const productInput = productSchema.safeParse(body);
     if (!productInput.success) return validationError(productInput.error);
     const input = productInput.data;
+    assertProductPreviewAllowed(input);
     assertArtworkUploadPublishable(input);
     const prisma = getPrisma();
     const existing = await prisma.product.findUnique({

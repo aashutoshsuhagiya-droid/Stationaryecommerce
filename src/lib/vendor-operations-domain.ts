@@ -16,3 +16,32 @@ export function isVendorOperational(profile: {
 }) {
   return profile.verificationStatus === "APPROVED" && profile.operationalStatus === "ACTIVE";
 }
+
+export function canVendorAccessCustomerData(profile: {
+  verificationStatus: string;
+  operationalStatus: string;
+}) {
+  return isVendorOperational(profile);
+}
+
+export function canVendorAccessAssignedCustomerData(
+  profile: {
+    verificationStatus: string;
+    operationalStatus: string;
+  },
+  assignmentStatus: string,
+) {
+  return canVendorAccessCustomerData(profile) && assignmentStatus === "ASSIGNED";
+}
+
+export function canVendorAccessApprovedArtwork(
+  profile: {
+    verificationStatus: string;
+    operationalStatus: string;
+  },
+  assignmentStatus: string,
+  artworkStatus: string,
+) {
+  return canVendorAccessAssignedCustomerData(profile, assignmentStatus)
+    && artworkStatus === "APPROVED";
+}

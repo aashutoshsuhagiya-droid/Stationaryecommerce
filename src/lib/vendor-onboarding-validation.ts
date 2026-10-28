@@ -96,6 +96,12 @@ export const vendorApplicationUpdateSchema = vendorApplicationFieldsBaseSchema
   })
   .strict()
   .superRefine((value, context) => {
+    if (value.city !== undefined || value.state !== undefined) {
+      const expectedState = value.city ? cityStateByCity.get(value.city) : undefined;
+      if (!expectedState || value.state !== expectedState) {
+        context.addIssue({ code: "custom", path: ["city"], message: "Choose a city from the registration list." });
+      }
+    }
     if (value.postalCode && value.servicePostalCodes && !value.servicePostalCodes.includes(value.postalCode)) {
       context.addIssue({ code: "custom", path: ["servicePostalCodes"], message: "Include the shop PIN code in the service area" });
     }

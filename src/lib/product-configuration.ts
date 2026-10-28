@@ -1,6 +1,7 @@
 import { getProductBySlug } from "./data";
 import { resolveProductArtworkPolicy } from "./artwork-policy";
 import { buildCustomSizeQuotePath } from "./bulk-quote-prefill";
+import { isEzpacPackagingProductType } from "./ezpac-packaging-presets";
 import { resolveProductTemplateLinks } from "./product-template-resolution";
 import type {
   CustomizationField,
@@ -160,7 +161,13 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
   const hasNumericDimensions = presets.some((preset) => preset.dimensionsMm !== null);
   const defaultPreset = presets[0];
   const defaultQuantity = product.configurator?.quantityMin ?? 1;
-  const previewModes = ([product.configurator?.allow2D !== false && "2d", product.configurator?.allow3D === true && "3d"].filter(Boolean) as Array<"2d" | "3d">);
+  const previewModes = ([
+    product.configurator?.allow2D !== false && "2d",
+    product.configurator?.allow3D === true &&
+      !isEzpacPackagingProductType(product.productType) &&
+      product.configurator.productModel &&
+      "3d",
+  ].filter(Boolean) as Array<"2d" | "3d">);
   const modes: ProductCustomizationMode[] = ["standard", "specification_based"];
   if (product.customizable) modes.push("personalized", "design_studio");
   if (productSupportsMultipleNames(product)) modes.push("bulk_order");

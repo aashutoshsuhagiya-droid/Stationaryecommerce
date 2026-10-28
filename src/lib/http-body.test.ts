@@ -25,7 +25,15 @@ import {
   maximumQuoteJsonBytes,
   POST as postQuote,
 } from "../app/api/quotes/route";
-import { hasJsonContentType, readLimitedJson } from "./http";
+import {
+  hasJsonContentType,
+  maximumDefaultJsonBytes,
+  readJson,
+  readLimitedJson,
+  RequestTooLargeError,
+} from "./http";
+import { CommerceError } from "./commerce-error";
+import { onboardingApiError } from "./onboarding-api";
 
 type PostHandler = (request: Request) => Promise<Response>;
 
@@ -67,6 +75,39 @@ test("limited JSON parsing accepts streamed UTF-8 JSON and media type parameters
   assert.equal(hasJsonContentType(request), true);
   assert.equal(request.headers.has("content-length"), false);
   assert.deepEqual(await readLimitedJson(request, 128), { message: "Namaste \u2713" });
+});
+
+test("shared JSON parsing applies a bounded default to protected mutation routes", async () => {
+  const request = streamingRequest(
+    "https://example.test/api/admin/catalog",
+    JSON.stringify({ padding: "x".repeat(maximumDefaultJsonBytes) }),
+  );
+
+  await assert.rejects(
+    () => readJson(request),
+    (error: unknown) =>
+      error instanceof RequestTooLargeError &&
+      error.maximumBytes === maximumDefaultJsonBytes,
+  );
+});
+
+test("shared API errors preserve domain status, code, message, and details", async () => {
+  const response = onboardingApiError(new CommerceError(
+    422,
+    "PACKAGING_3D_UNAVAILABLE",
+    "Validated packaging geometry is unavailable.",
+    { productType: "soap-box" },
+  ));
+  const payload = await response.json();
+
+  assert.equal(response.status, 422);
+  assert.deepEqual(payload, {
+    error: {
+      code: "PACKAGING_3D_UNAVAILABLE",
+      message: "Validated packaging geometry is unavailable.",
+      details: { productType: "soap-box" },
+    },
+  });
 });
 
 const limitedRoutes: Array<{

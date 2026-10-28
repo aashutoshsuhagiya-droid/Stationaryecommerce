@@ -103,3 +103,28 @@ test("every catalog product has valid dimension and quantity defaults", () => {
     );
   }
 });
+
+test("EZPAC packaging products stay 2D-only until a packaging model is validated", () => {
+  const source = getProductById("prod-everyday-name-slips");
+  assert.ok(source);
+
+  const packagingProduct = {
+    ...source,
+    productType: "soap-box",
+    configurator: {
+      allow2D: true,
+      allow3D: true,
+      quantityMin: 1,
+      quantityMax: 100,
+      printAreas: [{ id: "front", label: "Front" }],
+      productModel: "gift-ribbon",
+    },
+  };
+  const stationeryProduct = {
+    ...packagingProduct,
+    productType: "personalized-notebooks",
+  };
+
+  assert.deepEqual(buildProductConfiguration(packagingProduct).preview.supportedModes, ["2d"]);
+  assert.deepEqual(buildProductConfiguration(stationeryProduct).preview.supportedModes, ["2d", "3d"]);
+});

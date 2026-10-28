@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { assertSameOrigin, AuthenticationError, requireRequestActor } from "@/lib/auth-session";
-import { apiError, readJson, validationError } from "@/lib/http";
+import { apiError, readJson, RequestTooLargeError, validationError } from "@/lib/http";
 import { DatabaseConfigurationError, getPrisma } from "@/lib/prisma";
 import { type AdminTemplateInput, type AdminTemplateSurface, validateAdminTemplate } from "@/lib/admin-template-validation";
 import { Prisma } from "@/generated/prisma/client";
@@ -68,7 +68,9 @@ function storedSurfaces(template: {
   }
 
   return previewSurfaces.flatMap((surface, index) => {
-    const id = surface.id === "back" ? "back" : surface.id === "front" ? "front" : null;
+    const id = typeof surface.id === "string" && /^[a-z][a-z0-9-]{0,79}$/.test(surface.id)
+      ? surface.id
+      : null;
     if (!id) return [];
     const output = productionSurfaces.find((candidate) => candidate.id === id) ?? productionSurfaces[index] ?? {};
     return [{
@@ -184,6 +186,7 @@ async function requireTemplateAdmin(request: Request) {
 }
 
 function templateApiError(error: unknown) {
+  if (error instanceof RequestTooLargeError) return apiError(413, "REQUEST_TOO_LARGE", error.message);
   if (error instanceof AuthenticationError) return apiError(error.status, error.code, error.message);
   if (error instanceof DatabaseConfigurationError) return apiError(503, "DATABASE_NOT_CONFIGURED", "Template management is unavailable until the database is configured.");
   if (error instanceof SyntaxError) return apiError(400, "INVALID_JSON", error.message);

@@ -16,6 +16,8 @@ export class RequestTooLargeError extends Error {
   }
 }
 
+export const maximumDefaultJsonBytes = 256 * 1024;
+
 export function apiError(
   status: number,
   code: string,
@@ -98,10 +100,9 @@ export async function readLimitedJson(
   }
 }
 
-export async function readJson(request: Request): Promise<unknown> {
-  try {
-    return await request.json();
-  } catch {
-    throw new SyntaxError("The request body must be valid JSON.");
-  }
+export async function readJson(
+  request: Request,
+  maximumBytes = maximumDefaultJsonBytes,
+): Promise<unknown> {
+  return readLimitedJson(request, maximumBytes);
 }
