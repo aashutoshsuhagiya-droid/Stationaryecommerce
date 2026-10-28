@@ -54,6 +54,41 @@ enum ArtworkAssetStatus {
   REJECTED
 }
 
+enum VisualizationTemplateStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum VisualizationJobStatus {
+  QUEUED
+  PROCESSING
+  NEEDS_CONFIRMATION
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum VisualizationAnalysisMode {
+  MANUAL
+  EXTERNAL
+}
+
+enum VisualizationAssetKind {
+  SOURCE_IMAGE
+  PROCESSED_IMAGE
+  PREVIEW_IMAGE
+  TEXTURE
+  MODEL_GLTF
+  MODEL_GLB
+  OTHER_GENERATED
+}
+
+enum VisualizationAssetStorage {
+  DATABASE
+  PRIVATE_REFERENCE
+}
+
 enum CartStatus {
   ACTIVE
   CONVERTED
@@ -280,7 +315,10 @@ model User {
   vendorApplicationEvents    VendorApplicationEvent[]     @relation("VendorApplicationActor")
   uploadedVendorDocuments    VendorDocument[]             @relation("VendorDocumentUploader")
   reviewedVendorDocuments    VendorDocument[]             @relation("VendorDocumentReviewer")
-  uploadedArtworkAssets      ArtworkAsset[]                @relation("ArtworkAssetOwner")
+  uploadedArtworkAssets      ArtworkAsset[]               @relation("ArtworkAssetOwner")
+  visualizationTemplates     VisualizationTemplate[]      @relation("VisualizationTemplateCreator")
+  visualizationJobs          VisualizationProcessingJob[] @relation("VisualizationJobRequester")
+  visualizationAssets        VisualizationAsset[]         @relation("VisualizationAssetOwner")
 
   @@index([status, createdAt])
 }
@@ -401,49 +439,52 @@ model Category {
 }
 
 model Product {
-  id                    String                        @id @default(cuid())
-  categoryId            String
-  name                  String                        @db.VarChar(180)
-  slug                  String                        @unique @db.VarChar(200)
-  baseSku               String                        @unique @db.VarChar(80)
-  status                ProductStatus                 @default(DRAFT)
-  shortDescription      String?                       @db.VarChar(400)
-  description           String?
-  basePricePaise        Int
-  compareAtPricePaise   Int?
-  currency              String                        @default("INR") @db.Char(3)
-  customizable          Boolean                       @default(false)
-  material              String?                       @db.VarChar(160)
-  dimensions            Json?
-  weightGrams           Int?
-  packSize              Int                           @default(1)
-  taxCode               String?                       @db.VarChar(30)
-  taxRateBasisPoints    Int                           @default(0)
-  productionDaysMin     Int                           @default(0)
-  productionDaysMax     Int                           @default(0)
-  seoTitle              String?                       @db.VarChar(160)
-  seoDescription        String?                       @db.VarChar(320)
-  tags                  String[]
-  metadata              Json?
-  publishedAt           DateTime?
-  archivedAt            DateTime?
-  createdAt             DateTime                      @default(now())
-  updatedAt             DateTime                      @updatedAt
-  category              Category                      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-  categoryLinks         ProductCategory[]
-  variants              ProductVariant[]
-  images                ProductImage[]
-  personalizationFields ProductPersonalizationField[]
-  templateLinks         ProductTemplate[]
-  customizations        CustomizationConfiguration[]
-  cartItems             CartItem[]
-  orderItems            OrderItem[]
-  reviews               Review[]
-  wishlistItems         WishlistItem[]
-  couponLinks           CouponProduct[]
-  bulkRequests          BulkOrderRequest[]
-  vendorCapabilities    VendorCapability[]
-  artworkAssets         ArtworkAsset[]
+  id                     String                        @id @default(cuid())
+  categoryId             String
+  name                   String                        @db.VarChar(180)
+  slug                   String                        @unique @db.VarChar(200)
+  baseSku                String                        @unique @db.VarChar(80)
+  status                 ProductStatus                 @default(DRAFT)
+  shortDescription       String?                       @db.VarChar(400)
+  description            String?
+  basePricePaise         Int
+  compareAtPricePaise    Int?
+  currency               String                        @default("INR") @db.Char(3)
+  customizable           Boolean                       @default(false)
+  material               String?                       @db.VarChar(160)
+  dimensions             Json?
+  weightGrams            Int?
+  packSize               Int                           @default(1)
+  taxCode                String?                       @db.VarChar(30)
+  taxRateBasisPoints     Int                           @default(0)
+  productionDaysMin      Int                           @default(0)
+  productionDaysMax      Int                           @default(0)
+  seoTitle               String?                       @db.VarChar(160)
+  seoDescription         String?                       @db.VarChar(320)
+  tags                   String[]
+  metadata               Json?
+  publishedAt            DateTime?
+  archivedAt             DateTime?
+  createdAt              DateTime                      @default(now())
+  updatedAt              DateTime                      @updatedAt
+  category               Category                      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  categoryLinks          ProductCategory[]
+  variants               ProductVariant[]
+  images                 ProductImage[]
+  personalizationFields  ProductPersonalizationField[]
+  templateLinks          ProductTemplate[]
+  customizations         CustomizationConfiguration[]
+  cartItems              CartItem[]
+  orderItems             OrderItem[]
+  reviews                Review[]
+  wishlistItems          WishlistItem[]
+  couponLinks            CouponProduct[]
+  bulkRequests           BulkOrderRequest[]
+  vendorCapabilities     VendorCapability[]
+  artworkAssets          ArtworkAsset[]
+  visualizationTemplates VisualizationTemplate[]
+  visualizationJobs      VisualizationProcessingJob[]
+  visualizationAssets    VisualizationAsset[]
 
   @@index([categoryId, status])
   @@index([status, publishedAt])
@@ -489,6 +530,109 @@ model ArtworkAsset {
   @@index([orderItemId])
   @@index([ownerUserId, createdAt])
   @@index([status, expiresAt])
+  @@index([sha256])
+}
+
+model VisualizationTemplate {
+  id                    String                       @id @default(cuid())
+  familyKey             String                       @db.VarChar(120)
+  version               Int
+  productId             String?
+  sourceJobId           String?
+  createdById           String
+  name                  String                       @db.VarChar(160)
+  slug                  String                       @db.VarChar(180)
+  description           String?
+  productType           String                       @db.VarChar(120)
+  status                VisualizationTemplateStatus  @default(DRAFT)
+  geometry              Json
+  dimensions            Json
+  surfaceMappings       Json
+  materialSettings      Json?
+  previewCapabilities   Json?
+  manufacturingMetadata Json?
+  publishedAt           DateTime?
+  archivedAt            DateTime?
+  createdAt             DateTime                     @default(now())
+  updatedAt             DateTime                     @updatedAt
+  product               Product?                     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  sourceJob             VisualizationProcessingJob?  @relation("VisualizationTemplateSourceJob", fields: [sourceJobId], references: [id], onDelete: SetNull)
+  createdBy             User                         @relation("VisualizationTemplateCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  jobs                  VisualizationProcessingJob[] @relation("VisualizationJobTemplate")
+  assets                VisualizationAsset[]
+
+  @@unique([familyKey, version])
+  @@index([productId, status, updatedAt])
+  @@index([status, updatedAt])
+  @@index([sourceJobId])
+  @@index([createdById, createdAt])
+}
+
+model VisualizationProcessingJob {
+  id                String                    @id @default(cuid())
+  productId         String
+  sourceAssetId     String
+  templateId        String?
+  requestedById     String
+  status            VisualizationJobStatus    @default(QUEUED)
+  analysisMode      VisualizationAnalysisMode @default(MANUAL)
+  attempt           Int                       @default(0)
+  maxAttempts       Int                       @default(3)
+  providerName      String?                   @db.VarChar(120)
+  providerRequestId String?                   @db.VarChar(160)
+  analysisResult    Json?
+  confirmation      Json?
+  errorCode         String?                   @db.VarChar(100)
+  errorMessage      String?                   @db.VarChar(500)
+  nextAttemptAt     DateTime?
+  lastAttemptAt     DateTime?
+  startedAt         DateTime?
+  completedAt       DateTime?
+  createdAt         DateTime                  @default(now())
+  updatedAt         DateTime                  @updatedAt
+  product           Product                   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  sourceAsset       VisualizationAsset        @relation("VisualizationJobSourceAsset", fields: [sourceAssetId], references: [id], onDelete: Restrict)
+  template          VisualizationTemplate?    @relation("VisualizationJobTemplate", fields: [templateId], references: [id], onDelete: SetNull)
+  requestedBy       User                      @relation("VisualizationJobRequester", fields: [requestedById], references: [id], onDelete: Restrict)
+  assets            VisualizationAsset[]      @relation("VisualizationJobAssets")
+  templatesCreated  VisualizationTemplate[]   @relation("VisualizationTemplateSourceJob")
+
+  @@index([status, nextAttemptAt, createdAt])
+  @@index([productId, createdAt])
+  @@index([requestedById, createdAt])
+  @@index([sourceAssetId])
+  @@index([templateId])
+}
+
+model VisualizationAsset {
+  id            String                       @id @default(cuid())
+  productId     String?
+  jobId         String?
+  templateId    String?
+  ownerUserId   String
+  kind          VisualizationAssetKind
+  storage       VisualizationAssetStorage    @default(DATABASE)
+  originalName  String?                      @db.VarChar(200)
+  mimeType      String                       @db.VarChar(120)
+  sizeBytes     Int
+  width         Int?
+  height        Int?
+  sha256        String?                      @db.Char(64)
+  content       Bytes?
+  privateRef    String?                      @db.VarChar(2000)
+  metadata      Json?
+  createdAt     DateTime                     @default(now())
+  updatedAt     DateTime                     @updatedAt
+  product       Product?                     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  job           VisualizationProcessingJob?  @relation("VisualizationJobAssets", fields: [jobId], references: [id], onDelete: SetNull)
+  template      VisualizationTemplate?       @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  owner         User                         @relation("VisualizationAssetOwner", fields: [ownerUserId], references: [id], onDelete: Restrict)
+  sourceForJobs VisualizationProcessingJob[] @relation("VisualizationJobSourceAsset")
+
+  @@index([productId, kind, createdAt])
+  @@index([jobId, kind])
+  @@index([templateId, kind])
+  @@index([ownerUserId, createdAt])
   @@index([sha256])
 }
 

@@ -175,6 +175,25 @@ export const artworkDocumentSchema = z.object({
   }
 });
 
+export const savedDesignInputSchema = z.object({
+  id: identifierSchema,
+  productId: identifierSchema,
+  title: z.string().trim().min(1).max(180),
+  variantId: identifierSchema,
+  templateId: identifierSchema.optional(),
+  dimensionPresetId: identifierSchema,
+  displayUnit: z.enum(["mm", "cm", "in"]),
+  quantity: z.number().int().min(1).max(1_000),
+  fields: z
+    .record(z.string().max(80), z.string().trim().max(500))
+    .refine((fields) => Object.keys(fields).length <= 20, {
+      message: "A saved design can contain at most 20 fields",
+    }),
+  artwork: artworkDocumentSchema,
+}).strict();
+
+export type SavedDesignInput = z.infer<typeof savedDesignInputSchema>;
+
 const presentationSchema = z.object({
   name: z.string().trim().min(1).max(180),
   detail: z.string().trim().max(180).optional(),

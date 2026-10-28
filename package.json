@@ -18,6 +18,8 @@
     "db:bootstrap-admin": "tsx prisma/bootstrap-admin.ts"
   },
   "dependencies": {
+    "@neon/config": "^1.9.5",
+    "@neon/env": "^1.6.6",
     "@prisma/adapter-pg": "7.10.1",
     "@prisma/client": "7.10.1",
     "@types/pg": "8.15.5",

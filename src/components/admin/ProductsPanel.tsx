@@ -18,6 +18,7 @@ import {
 import { products as initialProducts, inr, type AdminProduct } from "./admin-data";
 import { Card, PageHeader, StatusBadge, statusTone } from "./AdminUI";
 import { ProductArtworkPolicyEditor } from "./ProductArtworkPolicyEditor";
+import { ProductVisualizationStudio } from "./ProductVisualizationStudio";
 import { buildDefaultAdminArtworkPolicy, reconcileAdminArtworkPolicy } from "@/lib/admin-artwork-policy";
 import {
   ezpacIndustryCollectionCategorySlug,
@@ -107,6 +108,16 @@ const artworkMimeTypes = [
 
 const defaultPrintAreas: PrintAreaInput[] = [{ id: "primary", label: "Primary print area", widthMm: "", heightMm: "", safeInsetMm: "" }];
 
+const packagingProductModels = [
+  ['rectangular-box', 'Rectangular box'],
+  ['square-box', 'Square box'],
+  ['folding-carton', 'Folding carton'],
+  ['mailer-box', 'Mailer box'],
+  ['paper-bag', 'Paper bag'],
+  ['stand-up-pouch', 'Stand-up pouch'],
+  ['product-sleeve', 'Product sleeve'],
+] as const;
+
 function policyPrintAreas(areas: PrintAreaInput[]) {
   return areas.map((area, index) => ({
     id: safeKey(area.id, `surface-${index + 1}`),
@@ -190,7 +201,9 @@ export function ProductsPanel() {
     [],
   );
   const packagingProductTypeStarters = useMemo(() => listEzpacPackagingProductTypes(), []);
-  const packaging3DUnavailable = isEzpacPackagingProductType(productType);
+  const packagingProductSelected = isEzpacPackagingProductType(productType);
+  const packaging3DActivated = packagingProductSelected && editingProduct?.allow3D === true;
+  const packaging3DUnavailable = packagingProductSelected && !packaging3DActivated;
 
   async function loadCatalog() {
     const response = await fetch("/api/admin/catalog", { cache: "no-store" });
@@ -199,6 +212,22 @@ export function ProductsPanel() {
     setCatalog(payload.data.products);
     setCategoryRecords(payload.data.categories.map((item: CategoryRecord) => ({ id: item.id, slug: item.slug, name: item.name, parentId: item.parentId ?? null, description: item.description, imageUrl: item.imageUrl, isActive: item.isActive, sortOrder: item.sortOrder })));
     setTemplateOptions(Array.isArray(payload.data.templates) ? payload.data.templates : []);
+  }
+
+  async function refreshEditingProductPreviewState() {
+    const productId = editingProduct?.id;
+    if (!productId) return;
+    const response = await fetch(`/api/admin/catalog?productId=${encodeURIComponent(productId)}`, { cache: 'no-store' });
+    const payload = await response.json() as { data?: { product?: EditingProduct }; error?: { message?: string } };
+    const product = payload.data?.product;
+    if (!response.ok || !product) throw new Error(payload.error?.message || 'Could not refresh this product preview state.');
+    setEditingProduct((current) => current?.id === productId ? {
+      ...current,
+      allow3D: product.allow3D,
+      productModel: product.productModel,
+      previewTemplate: product.previewTemplate,
+    } : current);
+    await loadCatalog();
   }
 
   useEffect(() => { loadCatalog().catch(() => undefined); }, []);
@@ -676,9 +705,43 @@ export function ProductsPanel() {
                       </div>
                     </div>
                     <label className={styles.toggleRow}><span className={styles.toggleCopy}><strong>Enable 2D layout editor</strong><span>Customers can position content within the configured print surfaces.</span></span><input defaultChecked={editingProduct?.allow2D ?? true} name="allow2D" type="checkbox" /></label>
-                    <label className={styles.toggleRow}><span className={styles.toggleCopy}><strong>Enable validated 3D preview</strong><span>{packaging3DUnavailable ? "EZPAC packaging starters use the 2D editor until packaging-specific 3D geometry is validated." : "Only enable this after choosing an available product model below."}</span></span><input defaultChecked={packaging3DUnavailable ? false : editingProduct?.allow3D} disabled={packaging3DUnavailable} key={`allow3D-${packaging3DUnavailable ? "packaging" : "available"}`} name="allow3D" type="checkbox" /></label>
+                    <label className={styles.toggleRow}>
+                      <span className={styles.toggleCopy}>
+                        <strong>Enable validated 3D preview</strong>
+                        <span>{packaging3DUnavailable
+                          ? "Publish a confirmed visualization template below to activate packaging 3D. A draft template does not enable storefront previews."
+                          : packaging3DActivated
+                            ? "A published visualization template activated this packaging preview. You can disable it or choose another validated packaging model."
+                            : "Only enable this after choosing an available product model below."}</span>
+                      </span>
+                      <input
+                        defaultChecked={!packaging3DUnavailable && Boolean(editingProduct?.allow3D)}
+                        disabled={packaging3DUnavailable}
+                        key={`allow3D-${packaging3DUnavailable ? "locked" : editingProduct?.allow3D ? "enabled" : "available"}`}
+                        name="allow3D"
+                        type="checkbox"
+                      />
+                    </label>
                     <div className={styles.fieldGrid}>
-                      <label className={styles.fieldGroup}><span className={styles.fieldLabel}>3D product model</span><select className={styles.select} defaultValue={packaging3DUnavailable ? "" : editingProduct?.productModel ?? ""} disabled={packaging3DUnavailable} key={`productModel-${packaging3DUnavailable ? "packaging" : "available"}`} name="productModel"><option value="">No 3D model</option><option value="label-pack">Label pack</option><option value="waterproof-sheet">Waterproof sheet</option><option value="school-kit">School kit</option><option value="notebook">Notebook</option><option value="bottle-label">Bottle label</option><option value="pencil-set">Pencil set</option><option value="tag">Tag</option><option value="geometry-box">Geometry box</option><option value="gift-ribbon">Gift box with ribbon</option><option value="keychain-duo">Keychain pair</option><option value="bulk-grid">Bulk grid</option></select></label>
+                      <label className={styles.fieldGroup}>
+                        <span className={styles.fieldLabel}>3D product model</span>
+                        <select className={styles.select} defaultValue={packaging3DUnavailable ? "" : editingProduct?.productModel ?? ""} disabled={packaging3DUnavailable} key={`productModel-${packaging3DUnavailable ? "locked" : editingProduct?.productModel || "available"}`} name="productModel">
+                          <option value="">No 3D model</option>
+                          <option value="label-pack">Label pack</option>
+                          <option value="waterproof-sheet">Waterproof sheet</option>
+                          <option value="school-kit">School kit</option>
+                          <option value="notebook">Notebook</option>
+                          <option value="bottle-label">Bottle label</option>
+                          <option value="pencil-set">Pencil set</option>
+                          <option value="tag">Tag</option>
+                          <option value="geometry-box">Geometry box</option>
+                          <option value="gift-ribbon">Gift box with ribbon</option>
+                          <option value="keychain-duo">Keychain pair</option>
+                          <option value="bulk-grid">Bulk grid</option>
+                          {packagingProductModels.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                        </select>
+                        {packaging3DUnavailable && <small>Packaging models unlock only after a confirmed template is published.</small>}
+                      </label>
                       <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Preview template / reference</span><input className={styles.input} defaultValue={editingProduct?.previewTemplate} name="previewTemplate" placeholder="e.g. soap-box-v2" /></label>
                     </div>
                     <div className={styles.configSection}>
@@ -762,6 +825,21 @@ export function ProductsPanel() {
                 <button className={styles.buttonPrimary} disabled={saving || !categoryRecords.length} type="submit"><Archive size={13} /> {saving ? "Saving…" : editingProduct ? "Save changes" : "Save product"}</button>
               </div>
             </form>
+            {editingProduct && (
+              <div className={styles.visualizationDrawerSlot}>
+                <ProductVisualizationStudio
+                  key={editingProduct.id}
+                  productId={editingProduct.id}
+                  productName={editingProduct.name}
+                  productType={productType || editingProduct.productType}
+                  surfaces={printAreas.map((area, index) => ({
+                    id: area.id || `surface-${index + 1}`,
+                    label: area.label.trim() || `Surface ${index + 1}`,
+                  }))}
+                  onTemplateStatusChange={refreshEditingProductPreviewState}
+                />
+              </div>
+            )}
           </aside>
         </>
       )}

@@ -10,6 +10,7 @@ import type {
   PersonalizationTemplate,
   Product,
   ProductArtworkPolicy,
+  ProductVisualizationTemplate,
   StockStatus,
 } from "./types";
 
@@ -98,7 +99,15 @@ export interface ProductConfigurationSchema {
     };
     policy: ProductArtworkPolicy;
   };
-  preview: { mode: "catalog_2d"; artworkKey: string; template?: string; model?: string; supportedModes: Array<"2d" | "3d">; defaultMode: "2d" | "3d" | null };
+  preview: {
+    mode: "catalog_2d";
+    artworkKey: string;
+    template?: string;
+    model?: string;
+    visualization?: ProductVisualizationTemplate;
+    supportedModes: Array<"2d" | "3d">;
+    defaultMode: "2d" | "3d" | null;
+  };
   pricing: {
     mode: "server_quote";
     currency: CurrencyCode;
@@ -109,8 +118,8 @@ export interface ProductConfigurationSchema {
   productionReadiness: {
     customDimensions: "blocked_missing_limits_and_rates";
     artworkUploads: "ready_private_raster_storage" | "disabled_by_product";
-    threeDimensionalPreview: "blocked_missing_validated_geometry";
-    productionExport: "blocked_missing_dielines_and_color_profiles";
+    threeDimensionalPreview: "ready_versioned_visualization_template" | "blocked_missing_validated_geometry";
+    productionExport: "ready_manufacturing_validated" | "blocked_missing_dielines_and_color_profiles";
   };
 }
 
@@ -123,7 +132,7 @@ const presetId = (label: string, index: number) =>
     .replace(/^-|-$/g, "")
     .toLowerCase()}`;
 
-function parseExactDimensions(label: string): Record<string, number> | null {
+function parseLegacyDimensions(label: string): Record<string, number> | null {
   if (/\b(?:approx|mixed|standard|three|two)\b/i.test(label)) return null;
   const match = label.match(/(?:^|\D)(\d+(?:\.\d+)?)\s*[x×]\s*(\d+(?:\.\d+)?)\s*(mm|cm)\b/i);
   if (!match) return null;
@@ -132,6 +141,22 @@ function parseExactDimensions(label: string): Record<string, number> | null {
     width: Number(match[1]) * multiplier,
     height: Number(match[2]) * multiplier,
   };
+}
+
+function parseExactDimensions(label: string): Record<string, number> | null {
+  if (/\b(?:approx|mixed|standard|three|two)\b/i.test(label)) return null;
+  const match = label.match(
+    /(?:^|\D)(\d+(?:\.\d+)?)\s*(?:x|\u00d7)\s*(\d+(?:\.\d+)?)(?:\s*(?:x|\u00d7)\s*(\d+(?:\.\d+)?))?\s*(mm|cm|in)\b/i,
+  );
+  if (!match) return parseLegacyDimensions(label);
+  const unit = match[4].toLowerCase();
+  const multiplier = unit === "cm" ? 10 : unit === "in" ? 25.4 : 1;
+  const dimensions: Record<string, number> = {
+    width: Number(match[1]) * multiplier,
+    height: Number(match[2]) * multiplier,
+  };
+  if (match[3]) dimensions.depth = Number(match[3]) * multiplier;
+  return dimensions;
 }
 
 function activeTemplates(product: Product): ConfiguratorTemplate[] {
@@ -150,12 +175,15 @@ export function productSupportsMultipleNames(product: Product) {
 
 export function buildProductConfiguration(product: Product): ProductConfigurationSchema {
   const sizeLabels = product.sizes?.length ? product.sizes : [product.dimensions];
+  const publishedVisualization = product.configurator?.visualizationTemplate;
   const presets = sizeLabels.map((label, index) => ({
       id: presetId(label, index),
       label,
       dimensionsMm:
         parseExactDimensions(label) ??
-        (sizeLabels.length === 1 ? parseExactDimensions(product.dimensions) : null),
+        (sizeLabels.length === 1
+          ? parseExactDimensions(product.dimensions) ?? publishedVisualization?.dimensionsMm ?? null
+          : null),
     }),
   );
   const hasNumericDimensions = presets.some((preset) => preset.dimensionsMm !== null);
@@ -164,7 +192,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
   const previewModes = ([
     product.configurator?.allow2D !== false && "2d",
     product.configurator?.allow3D === true &&
-      !isEzpacPackagingProductType(product.productType) &&
+      (!isEzpacPackagingProductType(product.productType) || Boolean(publishedVisualization)) &&
       product.configurator.productModel &&
       "3d",
   ].filter(Boolean) as Array<"2d" | "3d">);
@@ -254,7 +282,15 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
       },
       policy: artworkPolicy,
     },
-    preview: { mode: "catalog_2d", artworkKey: product.artwork, template: product.configurator?.previewTemplate, model: product.configurator?.productModel, supportedModes: previewModes, defaultMode: previewModes.includes("3d") ? "3d" : previewModes.includes("2d") ? "2d" : null },
+    preview: {
+      mode: "catalog_2d",
+      artworkKey: product.artwork,
+      template: product.configurator?.previewTemplate,
+      model: product.configurator?.productModel,
+      ...(publishedVisualization ? { visualization: publishedVisualization } : {}),
+      supportedModes: previewModes,
+      defaultMode: previewModes.includes("3d") ? "3d" : previewModes.includes("2d") ? "2d" : null,
+    },
     pricing: {
       mode: "server_quote",
       currency: "INR",
@@ -265,8 +301,12 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
     productionReadiness: {
       customDimensions: "blocked_missing_limits_and_rates",
       artworkUploads: artworkUploadSupported ? "ready_private_raster_storage" : "disabled_by_product",
-      threeDimensionalPreview: "blocked_missing_validated_geometry",
-      productionExport: "blocked_missing_dielines_and_color_profiles",
+      threeDimensionalPreview: publishedVisualization && previewModes.includes("3d")
+        ? "ready_versioned_visualization_template"
+        : "blocked_missing_validated_geometry",
+      productionExport: publishedVisualization?.manufacturingValidated
+        ? "ready_manufacturing_validated"
+        : "blocked_missing_dielines_and_color_profiles",
     },
   };
 }

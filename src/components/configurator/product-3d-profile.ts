@@ -9,7 +9,23 @@ export type Product3DKind =
   | "geometry-box"
   | "gift-ribbon"
   | "keychain-duo"
-  | "bulk-grid";
+  | "bulk-grid"
+  | "rectangular-box"
+  | "square-box"
+  | "folding-carton"
+  | "mailer-box"
+  | "paper-bag"
+  | "stand-up-pouch"
+  | "product-sleeve";
+
+export type PackagingProduct3DKind =
+  | "rectangular-box"
+  | "square-box"
+  | "folding-carton"
+  | "mailer-box"
+  | "paper-bag"
+  | "stand-up-pouch"
+  | "product-sleeve";
 
 export type Product3DFinish =
   | "matte"
@@ -238,6 +254,128 @@ export const CATEGORY_3D_PROFILES = {
   },
 } as const satisfies Record<string, Product3DProfile>;
 
+export const PACKAGING_3D_PROFILES = {
+  "rectangular-box": {
+    kind: "rectangular-box",
+    label: "Rectangular packaging box",
+    cameraDistance: 4,
+    categoryTheme: {
+      baseColor: "#d6b98c",
+      tintColor: "#f3e8d2",
+      accentColor: "#7c5a35",
+      roughness: 0.76,
+      metalness: 0,
+      clearcoat: 0.08,
+      clearcoatRoughness: 0.68,
+      iridescence: 0,
+      finish: "matte",
+      flags: ["paper"],
+    },
+  },
+  "square-box": {
+    kind: "square-box",
+    label: "Square packaging box",
+    cameraDistance: 4,
+    categoryTheme: {
+      baseColor: "#f1e7d6",
+      tintColor: "#fffaf0",
+      accentColor: "#8b5e34",
+      roughness: 0.7,
+      metalness: 0,
+      clearcoat: 0.12,
+      clearcoatRoughness: 0.58,
+      iridescence: 0,
+      finish: "matte",
+      flags: ["paper", "gift-box"],
+    },
+  },
+  "folding-carton": {
+    kind: "folding-carton",
+    label: "Folding carton",
+    cameraDistance: 4,
+    categoryTheme: {
+      baseColor: "#f5f1e8",
+      tintColor: "#fffdf8",
+      accentColor: "#6b7280",
+      roughness: 0.66,
+      metalness: 0,
+      clearcoat: 0.14,
+      clearcoatRoughness: 0.5,
+      iridescence: 0,
+      finish: "matte",
+      flags: ["paper", "hinged"],
+    },
+  },
+  "mailer-box": {
+    kind: "mailer-box",
+    label: "Mailer box",
+    cameraDistance: 4.2,
+    categoryTheme: {
+      baseColor: "#cda875",
+      tintColor: "#ead7b8",
+      accentColor: "#765337",
+      roughness: 0.82,
+      metalness: 0,
+      clearcoat: 0.04,
+      clearcoatRoughness: 0.74,
+      iridescence: 0,
+      finish: "matte",
+      flags: ["paper", "hinged"],
+    },
+  },
+  "paper-bag": {
+    kind: "paper-bag",
+    label: "Paper shopping bag",
+    cameraDistance: 4.2,
+    categoryTheme: {
+      baseColor: "#d7b784",
+      tintColor: "#f2e2c5",
+      accentColor: "#725237",
+      roughness: 0.84,
+      metalness: 0,
+      clearcoat: 0.03,
+      clearcoatRoughness: 0.78,
+      iridescence: 0,
+      finish: "matte",
+      flags: ["paper"],
+    },
+  },
+  "stand-up-pouch": {
+    kind: "stand-up-pouch",
+    label: "Stand-up pouch",
+    cameraDistance: 4,
+    categoryTheme: {
+      baseColor: "#ece8df",
+      tintColor: "#fffdf8",
+      accentColor: "#475569",
+      roughness: 0.32,
+      metalness: 0.04,
+      clearcoat: 0.62,
+      clearcoatRoughness: 0.22,
+      iridescence: 0.03,
+      finish: "glossy",
+      flags: ["wrapped"],
+    },
+  },
+  "product-sleeve": {
+    kind: "product-sleeve",
+    label: "Printed product sleeve",
+    cameraDistance: 4,
+    categoryTheme: {
+      baseColor: "#f3efe7",
+      tintColor: "#fffdf8",
+      accentColor: "#475569",
+      roughness: 0.68,
+      metalness: 0,
+      clearcoat: 0.16,
+      clearcoatRoughness: 0.5,
+      iridescence: 0,
+      finish: "matte",
+      flags: ["paper", "wrapped"],
+    },
+  },
+} as const satisfies Record<PackagingProduct3DKind, Product3DProfile>;
+
 export type Product3DCategorySlug = keyof typeof CATEGORY_3D_PROFILES;
 
 const NAMED_COLORS: Readonly<Record<string, string>> = {
@@ -325,7 +463,7 @@ function applyMaterialAndColors(
       finish: "wood",
       flags: addFlags(theme.flags, "wood"),
     };
-  } else if (/matte|paper|card|vinyl/u.test(material)) {
+  } else if (/matte|paper|card|carton|corrugated|kraft|vinyl|pouch/u.test(material)) {
     theme = {
       ...theme,
       roughness: Math.max(theme.roughness, 0.68),
@@ -381,13 +519,41 @@ const LEGACY_TAG_PROFILE: Product3DProfile = {
   },
 };
 
+export const PRODUCT_3D_MODEL_PROFILES = {
+  "label-pack": CATEGORY_3D_PROFILES["customized-name-slips"],
+  "waterproof-sheet": CATEGORY_3D_PROFILES["waterproof-stickers"],
+  "school-kit": CATEGORY_3D_PROFILES["school-labels"],
+  notebook: CATEGORY_3D_PROFILES["personalized-notebooks"],
+  "bottle-label": CATEGORY_3D_PROFILES["bottle-tiffin-labels"],
+  "pencil-set": CATEGORY_3D_PROFILES["personalized-pencils-pens"],
+  tag: LEGACY_TAG_PROFILE,
+  "geometry-box": CATEGORY_3D_PROFILES["school-accessories"],
+  "gift-ribbon": CATEGORY_3D_PROFILES["personalized-gifts"],
+  "keychain-duo": CATEGORY_3D_PROFILES["name-plates-keychains"],
+  "bulk-grid": CATEGORY_3D_PROFILES["bulk-orders"],
+  ...PACKAGING_3D_PROFILES,
+} as const satisfies Record<Product3DKind, Product3DProfile>;
+
+const PACKAGING_FALLBACKS: ReadonlyArray<{
+  pattern: RegExp;
+  kind: PackagingProduct3DKind;
+}> = [
+  { pattern: /(?:^|[-_\s])square[-_\s]+(?:gift[-_\s]+)?box(?:$|[-_\s])/u, kind: "square-box" },
+  { pattern: /(?:^|[-_\s])(?:mailer|mailing|shipping)[-_\s]+box(?:$|[-_\s])/u, kind: "mailer-box" },
+  { pattern: /(?:^|[-_\s])(?:paper|shopping|carry)[-_\s]+bag(?:$|[-_\s])/u, kind: "paper-bag" },
+  { pattern: /(?:^|[-_\s])(?:stand[-_\s]*up[-_\s]+)?(?:ziplock[-_\s]+)?pouch(?:$|[-_\s])/u, kind: "stand-up-pouch" },
+  { pattern: /(?:^|[-_\s])(?:product[-_\s]+)?sleeve(?:$|[-_\s])/u, kind: "product-sleeve" },
+  { pattern: /(?:^|[-_\s])(?:folding[-_\s]+carton|carton|soap[-_\s]+box|perfume[-_\s]+box|cosmetic[-_\s]+box)(?:$|[-_\s])/u, kind: "folding-carton" },
+  { pattern: /(?:^|[-_\s])(?:rectangular[-_\s]+)?(?:cake[-_\s]+|gift[-_\s]+)?box(?:$|[-_\s])/u, kind: "rectangular-box" },
+];
+
 export function resolveProduct3DProfile(
   structuralDesign = "",
   productType = "",
   options: Product3DProfileOptions = {},
 ): Product3DProfile {
   const structuralKey = structuralDesign.trim().toLowerCase();
-  const explicitModel = Object.values(CATEGORY_3D_PROFILES).find((profile) => profile.kind === structuralKey);
+  const explicitModel = PRODUCT_3D_MODEL_PROFILES[structuralKey as Product3DKind];
   if (explicitModel) return materializeProfile(explicitModel, options);
 
   const normalizedCategory = productType.trim().toLowerCase();
@@ -398,6 +564,9 @@ export function resolveProduct3DProfile(
     );
   }
 
+  const categoryModel = PRODUCT_3D_MODEL_PROFILES[normalizedCategory as Product3DKind];
+  if (categoryModel) return materializeProfile(categoryModel, options);
+
   for (const fallback of STRUCTURAL_FALLBACKS) {
     if (fallback.pattern.test(structuralKey)) {
       return materializeProfile(CATEGORY_3D_PROFILES[fallback.categorySlug], options);
@@ -405,6 +574,13 @@ export function resolveProduct3DProfile(
   }
   if (/(?:^|[-_\s])(?:backpack|tags?)(?:$|[-_\s])/u.test(structuralKey)) {
     return materializeProfile(LEGACY_TAG_PROFILE, options);
+  }
+
+  const packagingKey = `${structuralKey} ${normalizedCategory}`;
+  for (const fallback of PACKAGING_FALLBACKS) {
+    if (fallback.pattern.test(packagingKey)) {
+      return materializeProfile(PRODUCT_3D_MODEL_PROFILES[fallback.kind], options);
+    }
   }
 
   return materializeProfile(CATEGORY_3D_PROFILES["customized-name-slips"], options);

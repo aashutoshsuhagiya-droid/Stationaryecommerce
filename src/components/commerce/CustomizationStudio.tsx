@@ -25,6 +25,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArtworkEditor } from "@/components/configurator/ArtworkEditor";
 import { DesignCompletionMeter } from "@/components/configurator/DesignCompletionMeter";
+import { buildVisualization3DPreview } from "@/components/configurator/visualization-preview";
 import { setPersonalizedNameColor } from "@/components/configurator/artwork-color";
 import { calculateDesignCompletion } from "@/components/configurator/design-completion";
 import { downloadArtworkDesign } from "@/components/configurator/design-export";
@@ -48,6 +49,7 @@ import {
 } from "@/lib/configuration-field-visibility";
 import { formatPrice, neutralPresentationPalette } from "@/lib/data";
 import type { ProductConfigurationSchema } from "@/lib/product-configuration";
+import { newestSavedDesign } from "@/lib/saved-design";
 import type { Product } from "@/lib/types";
 import { artworkDocumentSchema } from "@/lib/validation";
 
@@ -273,30 +275,162 @@ function readSavedDesigns(): SavedDesign[] {
   try {
     const value: unknown = JSON.parse(localStorage.getItem(SAVED_DESIGNS_KEY) || "[]");
     if (!Array.isArray(value)) return [];
-    return value.filter((item): item is SavedDesign => {
-      if (!item || typeof item !== "object") return false;
-      const candidate = item as Partial<SavedDesign>;
-      return (
-        typeof candidate.id === "string" &&
-        typeof candidate.productId === "string" &&
-        typeof candidate.title === "string" &&
-        typeof candidate.variantId === "string" &&
-        typeof candidate.templateId === "string" &&
-        typeof candidate.dimensionPresetId === "string" &&
-        (candidate.displayUnit === "mm" || candidate.displayUnit === "cm" || candidate.displayUnit === "in") &&
-        typeof candidate.quantity === "number" &&
-        Number.isInteger(candidate.quantity) &&
-        candidate.quantity > 0 &&
-        !!candidate.fields &&
-        typeof candidate.fields === "object" &&
-        Object.values(candidate.fields).every((field) => typeof field === "string") &&
-        artworkDocumentSchema.safeParse(candidate.artwork).success &&
-        typeof candidate.savedAt === "string"
-      );
-    });
+    return value.filter(isSavedDesign);
   } catch {
     return [];
   }
+}
+
+function isSavedDesign(item: unknown): item is SavedDesign {
+  if (!item || typeof item !== "object") return false;
+  const candidate = item as Partial<SavedDesign>;
+  return (
+    typeof candidate.id === "string" &&
+    typeof candidate.productId === "string" &&
+    typeof candidate.title === "string" &&
+    typeof candidate.variantId === "string" &&
+    typeof candidate.templateId === "string" &&
+    typeof candidate.dimensionPresetId === "string" &&
+    (candidate.displayUnit === "mm" || candidate.displayUnit === "cm" || candidate.displayUnit === "in") &&
+    typeof candidate.quantity === "number" &&
+    Number.isInteger(candidate.quantity) &&
+    candidate.quantity > 0 &&
+    !!candidate.fields &&
+    typeof candidate.fields === "object" &&
+    Object.values(candidate.fields).every((field) => typeof field === "string") &&
+    artworkDocumentSchema.safeParse(candidate.artwork).success &&
+    typeof candidate.savedAt === "string"
+  );
+}
+
+function mergeSavedDesigns(local: SavedDesign[], remote: SavedDesign[]) {
+  const merged = new Map(local.map((design) => [design.id, design]));
+  for (const design of remote) {
+    const localDesign = merged.get(design.id);
+    if (!localDesign) {
+      merged.set(design.id, design);
+      continue;
+    }
+    const newest = newestSavedDesign(localDesign, design);
+    if (newest === localDesign) continue;
+    const previewByAssetId = new Map(localDesign.artwork.surfaces.flatMap((surface) =>
+      surface.layers.flatMap((layer) =>
+        layer.type === "image" && layer.asset?.id && layer.src
+          ? [[layer.asset.id, layer.src] as const]
+          : [])));
+    merged.set(design.id, {
+      ...design,
+      artwork: {
+        ...design.artwork,
+        surfaces: design.artwork.surfaces.map((surface) => ({
+          ...surface,
+          layers: surface.layers.map((layer) => {
+            if (layer.type !== "image" || layer.src || !layer.asset?.id) return layer;
+            const src = previewByAssetId.get(layer.asset.id);
+            return src ? { ...layer, src } : layer;
+          }),
+        })),
+      },
+    });
+  }
+  return [...merged.values()]
+    .sort((left, right) => right.savedAt.localeCompare(left.savedAt))
+    .slice(0, 50);
+}
+
+async function blobDataUrl(blob: Blob) {
+  return await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error ?? new Error("Could not read artwork preview."));
+    reader.onload = () => typeof reader.result === "string"
+      ? resolve(reader.result)
+      : reject(new Error("Could not read artwork preview."));
+    reader.readAsDataURL(blob);
+  });
+}
+
+function mergeRefreshedArtworkClaims(
+  local: ArtworkDocument,
+  refreshed: ArtworkDocument,
+): ArtworkDocument {
+  const refreshedAssets = new Map(refreshed.surfaces.flatMap((surface) =>
+    surface.layers.flatMap((layer) =>
+      layer.type === "image" && layer.asset
+        ? [[`${surface.id}:${layer.id}`, layer.asset] as const]
+        : [])));
+  if (!refreshedAssets.size) return local;
+  return {
+    ...local,
+    surfaces: local.surfaces.map((surface) => ({
+      ...surface,
+      layers: surface.layers.map((layer) => {
+        if (layer.type !== "image") return layer;
+        const asset = refreshedAssets.get(`${surface.id}:${layer.id}`);
+        return asset ? { ...layer, asset } : layer;
+      }),
+    })),
+  };
+}
+
+async function refreshSavedDesignArtworkClaims(design: SavedDesign): Promise<SavedDesign> {
+  const hasPrivateArtwork = design.artwork.surfaces.some((surface) =>
+    surface.layers.some((layer) => layer.type === "image" && Boolean(layer.asset?.id)));
+  if (!hasPrivateArtwork) return design;
+  try {
+    const response = await fetch("/api/customizations", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: design.id, productId: design.productId }),
+    });
+    if (!response.ok) return design;
+    const payload = await response.json() as { data?: unknown };
+    if (!isSavedDesign(payload.data)) return design;
+    if (newestSavedDesign(design, payload.data) === design) {
+      return {
+        ...design,
+        artwork: mergeRefreshedArtworkClaims(design.artwork, payload.data.artwork),
+      };
+    }
+    return payload.data;
+  } catch {
+    return design;
+  }
+}
+
+async function hydrateSavedDesignArtwork(design: SavedDesign): Promise<SavedDesign> {
+  const reusableDesign = await refreshSavedDesignArtworkClaims(design);
+  const pending = reusableDesign.artwork.surfaces.flatMap((surface) =>
+    surface.layers.flatMap((layer) =>
+      layer.type === "image" && !layer.src && layer.asset?.id
+        ? [{ id: layer.asset.id, claimToken: layer.asset.claimToken }]
+        : []));
+  if (!pending.length) return reusableDesign;
+  const previews = new Map<string, string>();
+  await Promise.all([...new Map(pending.map((asset) => [asset.id, asset])).values()].map(async (asset) => {
+    try {
+      const response = await fetch(`/api/artwork-assets/${encodeURIComponent(asset.id)}`, {
+        headers: asset.claimToken ? { "X-Artwork-Claim-Token": asset.claimToken } : undefined,
+      });
+      if (response.ok) previews.set(asset.id, await blobDataUrl(await response.blob()));
+    } catch {
+      // A missing or expired preview does not invalidate the rest of the saved design.
+    }
+  }));
+  if (!previews.size) return reusableDesign;
+  return {
+    ...reusableDesign,
+    artwork: {
+      ...reusableDesign.artwork,
+      surfaces: reusableDesign.artwork.surfaces.map((surface) => ({
+        ...surface,
+        layers: surface.layers.map((layer) => {
+          if (layer.type !== "image" || layer.src || !layer.asset?.id) return layer;
+          const src = previews.get(layer.asset.id);
+          return src ? { ...layer, src } : layer;
+        }),
+      })),
+    },
+  };
 }
 
 function displayMeasurement(valueMm: number, unit: "mm" | "cm" | "in") {
@@ -382,7 +516,7 @@ export function CustomizationStudio({
   const [added, setAdded] = useState(false);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [previewReady, setPreviewReady] = useState(false);
-  const initializedFromStorage = useRef(false);
+  const initializedProductId = useRef<string | null>(null);
   const productHeroReveal = useScrollReveal<HTMLElement>();
   const practicalDetailsReveal = useScrollReveal<HTMLDivElement>();
   const handlePreviewReadyChange = useCallback((ready: boolean) => {
@@ -414,17 +548,34 @@ export function CustomizationStudio({
   const selectedVariant = configuration.variants.find((variant) => variant.id === variantId) ?? firstVariant;
   const selectedTemplate = configuration.personalization.templates.find((template) => template.id === templateId) ?? firstTemplate;
   const templateBaseImages = useMemo<Record<string, string>>(() => {
+    const images: Record<string, string> = Object.fromEntries(
+      configuration.preview.visualization?.surfaces.flatMap((surface) =>
+        surface.textureUrl ? [[surface.surfaceId, surface.textureUrl]] : []) ?? [],
+    );
     const production = selectedTemplate?.production;
-    if (!production) return {};
+    if (!production) return images;
     const defaultSurface = production.surfaces.find((surface) => surface.id === production.defaultSurfaceId)
       ?? production.surfaces[0];
-    return Object.fromEntries(configuration.artwork.surfaces.flatMap((surface, index) => {
+    for (const [surfaceId, baseImageUrl] of configuration.artwork.surfaces.flatMap((surface, index) => {
       const templateSurface = production.surfaces.find((candidate) => candidate.id === surface.id)
         ?? (index === 0 ? defaultSurface : undefined);
       return templateSurface?.baseImageUrl ? [[surface.id, templateSurface.baseImageUrl]] : [];
-    }));
-  }, [configuration.artwork.surfaces, selectedTemplate]);
+    })) images[surfaceId] = baseImageUrl;
+    return images;
+  }, [configuration.artwork.surfaces, configuration.preview.visualization, selectedTemplate]);
   const selectedPreset = configuration.dimensions.presets.find((preset) => preset.id === dimensionPresetId) ?? defaultPreset;
+  const activeSurfaceDefinitions = useMemo(
+    () => surfaceDefinitions(configuration, selectedPreset),
+    [configuration, selectedPreset],
+  );
+  const visualization3DPreview = useMemo(
+    () => buildVisualization3DPreview(
+      artwork,
+      activeSurfaceDefinitions,
+      configuration.preview.visualization,
+    ),
+    [activeSurfaceDefinitions, artwork, configuration.preview.visualization],
+  );
   const productIsWishlisted = isWishlisted(product.id);
   const errors = useMemo(() => validateFields(configuration, fields, templateId), [configuration, fields, templateId]);
   const estimatedUnitPaise = (selectedVariant?.unitPricePaise ?? 0) + (selectedTemplate?.premiumPricePaise ?? 0);
@@ -463,10 +614,15 @@ export function CustomizationStudio({
   });
 
   useEffect(() => {
-    if (!isHydrated || initializedFromStorage.current || typeof window === "undefined") return;
-    initializedFromStorage.current = true;
+    if (
+      !isHydrated
+      || initializedProductId.current === product.id
+      || typeof window === "undefined"
+    ) return;
+    initializedProductId.current = product.id;
     const stored = readSavedDesigns();
-    setSavedDesigns(stored.filter((design) => design.productId === product.id));
+    const localDesigns = stored.filter((design) => design.productId === product.id);
+    setSavedDesigns(localDesigns);
 
     const search = new URLSearchParams(window.location.search);
     const editKey = search.get("edit");
@@ -503,13 +659,59 @@ export function CustomizationStudio({
         ));
       }
     } else if (saved) {
-      loadDesign(saved);
+      void loadDesign(saved);
     } else if (editKey) {
       setSaveMessage("This cart item could not be restored. It may have been removed or belongs to another product.");
     } else if (designId) {
-      setSaveMessage("This saved design could not be restored on this device.");
+      setSaveMessage("Looking for this saved design in your account...");
     }
   }, [cart, configuration, defaultPreset?.id, firstTemplate?.id, firstVariant?.id, isHydrated, product.id]);
+
+  useEffect(() => {
+    if (!isHydrated || typeof window === "undefined") return;
+    const stored = readSavedDesigns();
+    const localDesigns = stored.filter((design) => design.productId === product.id);
+    const designId = new URLSearchParams(window.location.search).get("design");
+    const saved = designId
+      ? localDesigns.find((design) => design.id === designId)
+      : undefined;
+    const controller = new AbortController();
+    void (async () => {
+      try {
+        const response = await fetch(`/api/customizations?productId=${encodeURIComponent(product.id)}`, {
+          signal: controller.signal,
+        });
+        if (!response.ok) {
+          if (designId && !saved && (response.status === 401 || response.status === 403)) {
+            setSaveMessage("This saved design could not be restored on this device. Sign in to access account designs.");
+          }
+          return;
+        }
+        const payload = await response.json() as { data?: unknown };
+        const remoteDesigns = Array.isArray(payload.data)
+          ? payload.data.filter(isSavedDesign)
+          : [];
+        setSavedDesigns((current) => mergeSavedDesigns(
+          current.length ? current : localDesigns,
+          remoteDesigns,
+        ));
+        if (designId) {
+          const remote = remoteDesigns.find((design) =>
+            design.id === designId && design.productId === product.id);
+          if (remote && (!saved || newestSavedDesign(saved, remote) === remote)) {
+            void loadDesign(remote);
+          } else if (!remote && !saved) {
+            setSaveMessage("This saved design could not be found in your account.");
+          }
+        }
+      } catch (error) {
+        if (designId && !saved && error instanceof Error && error.name !== "AbortError") {
+          setSaveMessage("Account designs are temporarily unavailable. Your device drafts are still available.");
+        }
+      }
+    })();
+    return () => controller.abort();
+  }, [configuration, isHydrated, product.id]);
 
   useEffect(() => {
     const foreground = keepArtworkLayerInForeground(artwork, "personalization-name");
@@ -613,7 +815,9 @@ export function CustomizationStudio({
     }
   }
 
-  function loadDesign(design: SavedDesign) {
+  async function loadDesign(savedDesign: SavedDesign) {
+    setSaveMessage(`Loading ${savedDesign.title}...`);
+    const design = await hydrateSavedDesignArtwork(savedDesign);
     const restoredFields = preserveSupportedArtworkFont(
       configuration,
       normalizedPersonalizationFields(configuration, design.fields),
@@ -627,11 +831,15 @@ export function CustomizationStudio({
     setQuantity(normalizedQuantity(configuration, design.quantity));
     setFields(restoredFields);
     setArtwork(synchronizePersonalizationArtwork(configuration, design.artwork, restoredFields));
+    setSavedDesigns((current) => mergeSavedDesigns(
+      current.filter((candidate) => candidate.id !== design.id),
+      [design],
+    ));
     setFieldErrors({});
     setSaveMessage(`Loaded ${design.title}.`);
   }
 
-  function saveDesign() {
+  async function saveDesign() {
     const currentErrors = validateFields(configuration, fields, templateId);
     setFieldErrors(currentErrors);
     if (Object.keys(currentErrors).length) {
@@ -653,19 +861,65 @@ export function CustomizationStudio({
       artwork,
       savedAt: new Date().toISOString(),
     };
+    let savedOnDevice = false;
     try {
       const all = readSavedDesigns();
       const next = [...all.filter((design) => design.id !== id), saved].slice(-20);
       localStorage.setItem(SAVED_DESIGNS_KEY, JSON.stringify(next));
       setSavedDesigns(next.filter((design) => design.productId === product.id));
+      savedOnDevice = true;
+      setSaveMessage("Design saved on this device.");
+    } catch {
+      setSaveMessage("Local draft storage is full. Trying your account instead...");
+    }
+    const rememberSavedDesignLocation = () => {
       setConfigurationId(id);
       const url = new URL(window.location.href);
       url.searchParams.set("design", id);
       if (!editingKey) url.searchParams.delete("edit");
       window.history.replaceState(null, "", url);
-      setSaveMessage("Design saved on this device.");
+    };
+    if (savedOnDevice) rememberSavedDesignLocation();
+
+    try {
+      const response = await fetch("/api/customizations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...saved,
+          templateId: saved.templateId || undefined,
+          artwork: persistedArtwork,
+          savedAt: undefined,
+        }),
+      });
+      const payload = await response.json() as {
+        data?: unknown;
+        error?: { message?: string };
+      };
+      if (response.ok && isSavedDesign(payload.data)) {
+        if (!savedOnDevice) rememberSavedDesignLocation();
+        const merged = mergeSavedDesigns(
+          savedDesigns.filter((design) => design.id !== id),
+          [{ ...payload.data, artwork: saved.artwork }],
+        );
+        setSavedDesigns(merged);
+        setSaveMessage(savedOnDevice
+          ? "Design saved to your account and this device."
+          : "Design saved to your account. Local draft storage remains unavailable.");
+      } else if (response.status === 401 || response.status === 403) {
+        setSaveMessage(savedOnDevice
+          ? "Design saved on this device. Sign in to sync it across devices."
+          : "Sign in to save this design to your account; local draft storage is unavailable.");
+      } else {
+        const message = payload.error?.message ?? "Account sync is unavailable.";
+        setSaveMessage(savedOnDevice
+          ? `Design saved on this device. ${message}`
+          : `The design could not be saved locally or to your account. ${message}`);
+      }
     } catch {
-      setSaveMessage("This design is too large for local draft storage. Remove large images and try again.");
+      setSaveMessage(savedOnDevice
+        ? "Design saved on this device. Account sync is temporarily unavailable."
+        : "The design could not be saved locally, and account sync is temporarily unavailable.");
     }
   }
 
@@ -744,6 +998,29 @@ export function CustomizationStudio({
         dimensionLabel: selectedPreset?.label ?? configuration.dimensions.catalogDescription,
         displayUnit,
         artwork,
+        ...(configuration.preview.model && configuration.preview.supportedModes.includes("3d") ? {
+          visualization: {
+            schemaVersion: 1 as const,
+            previewMode: "3d" as const,
+            model: configuration.preview.model,
+            configurationVersion: product.configurator?.configurationVersion || `catalog-${configuration.schemaVersion}`,
+            dimensionPresetId: selectedPreset?.id ?? configuration.dimensions.defaultPresetId,
+            dimensionsMm: selectedPreset?.dimensionsMm ? { ...selectedPreset.dimensionsMm } : null,
+            material: selectedVariant.material,
+            surfaceIds: configuration.artwork.surfaces.map((surface) => surface.id),
+            ...(configuration.preview.visualization ? {
+                templateId: configuration.preview.visualization.id,
+                templateVersion: configuration.preview.visualization.version,
+                ...(configuration.preview.visualization.sourceAsset ? {
+                  sourceAssetId: configuration.preview.visualization.sourceAsset.id,
+                } : {}),
+                surfaceMappings: configuration.preview.visualization.surfaces.map((surface) => ({
+                surfaceId: surface.surfaceId,
+                role: surface.role,
+              })),
+            } : {}),
+          },
+        } : {}),
         quote: {
           id: quote.data.quoteId,
           pricingVersion: quote.data.pricingVersion,
@@ -924,7 +1201,7 @@ export function CustomizationStudio({
 
           <main className={configuratorStyles.designArea}>
               <div className={configuratorStyles.designHeading}>
-               <div><Sparkles /><span><strong>{previewMode === "3d" ? "Interactive 3D preview" : previewMode === "2d" ? "Live 2D artwork studio" : "Product preview"}</strong><small>{previewMode === "3d" ? "Rotate and inspect your customized product in 3D." : previewMode === "2d" ? "Drag elements on the print area. Dashed guides mark the safe zone." : "This product is configured without a customer design preview."}</small></span></div>
+               <div><Sparkles /><span><strong>{previewMode === "3d" ? "Interactive 3D preview" : previewMode === "2d" && configuration.personalization.supported ? "Live 2D artwork studio" : "Product preview"}</strong><small>{previewMode === "3d" ? "Rotate and inspect your customized product in 3D." : previewMode === "2d" && configuration.personalization.supported ? "Drag elements on the print area. Dashed guides mark the safe zone." : "This product is configured without a customer design preview."}</small></span></div>
               <div className={configuratorStyles.viewModeToggle} role="group" aria-label="Preview mode">
                 {configuration.preview.supportedModes.includes("3d") && <button
                   type="button"
@@ -940,19 +1217,18 @@ export function CustomizationStudio({
                   aria-pressed={previewMode === "2d"}
                   className={previewMode === "2d" ? configuratorStyles.viewModeActive : ""}
                   onClick={() => setPreviewMode("2d")}
-                  title="2D design editor"
+                  title={configuration.personalization.supported ? "2D design editor" : "2D product preview"}
                 >
-                  <Layers3 className="w-3.5 h-3.5" /> 2D Studio
+                  <Layers3 className="w-3.5 h-3.5" /> {configuration.personalization.supported ? "2D Studio" : "2D View"}
                 </button>}
               </div>
             </div>
-             {configuration.personalization.supported && previewMode ? (
-              previewMode === "3d" ? (
+             {previewMode === "3d" ? (
                 <div className={configuratorStyles.preview3dContainer}>
                   <DesignCompletionMeter completion={designCompletion} />
                   <Product3DPreview
-                    document={artwork}
-                    surfaces={surfaceDefinitions(configuration, selectedPreset)}
+                    document={visualization3DPreview.document}
+                    surfaces={visualization3DPreview.surfaces}
                     background={templateBackground}
                     accent={templateAccent}
                      structuralDesign={configuration.preview.model ?? product.artwork}
@@ -964,7 +1240,7 @@ export function CustomizationStudio({
                   />
                   {purchasePanel}
                 </div>
-              ) : (
+              ) : configuration.personalization.supported && previewMode === "2d" ? (
                    <ArtworkEditor
                   productId={product.id}
                   document={artwork}
@@ -980,14 +1256,13 @@ export function CustomizationStudio({
                   onChange={updateArtwork}
                   footer={purchasePanel}
                 />
-              )
-             ) : (
+              ) : (
               <div className={configuratorStyles.standardPreview}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={product.image} alt={product.name} />
                 {purchasePanel}
               </div>
-            )}
+             )}
              {configuration.preview.template && <div className={configuratorStyles.capabilityNotice}><CircleAlert /><span><strong>Preview template: {configuration.preview.template}</strong>This reference is saved with the product configuration. Production artwork still requires review.</span></div>}
              {artworkUploadsEnabled ? (
               <div className={configuratorStyles.capabilityNotice}><ShieldCheck /><span><strong>Uploads are validated and stored privately.</strong>Only claimed asset references continue to checkout; local preview data is removed from the order payload.</span></div>

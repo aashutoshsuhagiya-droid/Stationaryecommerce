@@ -24,6 +24,7 @@ import {
   getRanBazaarCategoryGroup,
   type CatalogCategoryIdentity,
 } from "@/lib/ranbazaar-category-presets";
+import { resolveVisualizationProductModel } from "@/lib/visualization-studio-service-policy";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,7 +33,11 @@ const slugify = (value: string) => value.toLowerCase().normalize("NFKD").replace
 const categorySchema = z.object({ type: z.literal("category"), name: z.string().trim().min(2).max(120), parentId: z.string().min(1).nullable().optional(), description: z.string().trim().max(1000).nullable().optional(), imageUrl: z.string().url().max(2000).nullable().optional(), isActive: z.boolean().default(true), sortOrder: z.number().int().min(0).max(1_000_000).optional() });
 const optionSchema = z.object({ label: z.string().trim().min(1).max(120), value: z.string().trim().min(1).max(120), priceDelta: z.number().finite().min(-100_000).max(100_000).default(0) }).strict();
 const quantityTierSchema = z.object({ minimum: z.number().int().min(1).max(1000), priceDelta: z.number().finite().min(-100_000).max(100_000), label: z.string().trim().max(80).optional() }).strict();
-const productModelSchema = z.enum(["label-pack", "waterproof-sheet", "school-kit", "notebook", "bottle-label", "pencil-set", "tag", "geometry-box", "gift-ribbon", "keychain-duo", "bulk-grid"]);
+const productModelSchema = z.enum(["label-pack", "waterproof-sheet", "school-kit", "notebook", "bottle-label", "pencil-set", "tag", "geometry-box", "gift-ribbon", "keychain-duo", "bulk-grid", "rectangular-box", "square-box", "folding-carton", "mailer-box", "paper-bag", "stand-up-pouch", "product-sleeve"]);
+const packagingProductModels = new Set([
+  "rectangular-box", "square-box", "folding-carton", "mailer-box",
+  "paper-bag", "stand-up-pouch", "product-sleeve",
+]);
 const fieldVisibilitySchema = z.object({ fieldId: z.string().trim().regex(/^[a-z][a-z0-9-]{0,79}$/), equals: z.string().max(120) }).strict();
 const templateLinkSchema = z.object({ templateId: z.string().trim().min(1).max(100), isDefault: z.boolean().default(false) }).strict();
 const allowedPatternSchema = z.string().trim().max(MAX_CUSTOMIZATION_PATTERN_LENGTH).nullable().optional();
@@ -170,12 +175,47 @@ function productMetadata(input: z.infer<typeof productSchema>, existing?: unknow
 
 const safeArtworkMimeTypes = new Set(["image/png", "image/jpeg", "image/webp"]);
 
-function assertProductPreviewAllowed(input: z.infer<typeof productSchema>) {
-  if (!input.allow3D || !isEzpacPackagingProductType(input.productType)) return;
+async function assertProductPreviewAllowed(
+  prisma: ReturnType<typeof getPrisma>,
+  input: z.infer<typeof productSchema>,
+  productId?: string,
+) {
+  if (!input.allow3D) return;
+  if (!productId && isEzpacPackagingProductType(input.productType)) {
+    throw new CommerceError(
+      422,
+      "PACKAGING_3D_TEMPLATE_REQUIRED",
+      "Save the product first, then publish a confirmed visualization template before enabling 3D.",
+    );
+  }
+  const publishedTemplates = productId ? await prisma.visualizationTemplate.findMany({
+    where: { productId, status: "PUBLISHED" },
+    select: { id: true, productType: true, geometry: true, dimensions: true },
+    orderBy: [{ publishedAt: "desc" }, { version: "desc" }],
+    take: 10,
+  }) : [];
+  if (publishedTemplates.length) {
+    const linkedTemplate = publishedTemplates.find(
+      (template) => input.previewTemplate === `visualization:${template.id}`,
+    );
+    const expectedModel = linkedTemplate ? resolveVisualizationProductModel(linkedTemplate) : null;
+    if (!linkedTemplate || !expectedModel || input.productModel !== expectedModel) {
+      throw new CommerceError(
+        422,
+        "VISUALIZATION_3D_LINK_INVALID",
+        "Use the active published visualization template and its validated 3D model.",
+      );
+    }
+    return;
+  }
+  if (!isEzpacPackagingProductType(input.productType)) return;
+  if (!input.productModel || !packagingProductModels.has(input.productModel)) {
+    throw new CommerceError(422, "PACKAGING_3D_MODEL_INVALID", "Choose a supported packaging model for this product.");
+  }
   throw new CommerceError(
     422,
-    "PACKAGING_3D_UNAVAILABLE",
-    "EZPAC packaging starters support the 2D editor only until validated packaging-specific 3D geometry is available.",
+    "PACKAGING_3D_TEMPLATE_REQUIRED",
+    "Publish a confirmed visualization template before enabling packaging 3D.",
   );
 }
 
@@ -414,7 +454,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ data: category }, { status: 201 });
     }
     const input = parsed.data;
-    assertProductPreviewAllowed(input);
+    await assertProductPreviewAllowed(prisma, input);
     assertArtworkUploadPublishable(input);
     const slug = `${slugify(input.name)}-${Date.now().toString(36)}`;
     const status = input.published ? "ACTIVE" : "DRAFT";
@@ -464,9 +504,9 @@ export async function PATCH(request: Request) {
     const productInput = productSchema.safeParse(body);
     if (!productInput.success) return validationError(productInput.error);
     const input = productInput.data;
-    assertProductPreviewAllowed(input);
-    assertArtworkUploadPublishable(input);
     const prisma = getPrisma();
+    await assertProductPreviewAllowed(prisma, input, id.data.id);
+    assertArtworkUploadPublishable(input);
     const existing = await prisma.product.findUnique({
       where: { id: id.data.id },
       include: { categoryLinks: { select: { categoryId: true } }, variants: { orderBy: { sortOrder: "asc" } }, templateLinks: { select: { templateId: true } } },

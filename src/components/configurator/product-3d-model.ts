@@ -2,17 +2,24 @@ import * as THREE from "three";
 
 import { neutralPresentationPalette } from "../../lib/data";
 import type { PrintableSurfaceDefinition } from "./artwork-types";
-import type {
-  Product3DKind,
-  Product3DTheme,
-} from "./product-3d-profile";
+import {
+  normalizeProduct3DDimensions,
+  type Product3DNormalizedDimensions,
+} from "./product-3d-dimensions";
+import type { Product3DKind, Product3DTheme } from "./product-3d-profile";
+import {
+  resolveProduct3DSurfaceId,
+  type Product3DSurfaceSlot,
+} from "./product-3d-surfaces";
 
 interface ProductGeometryContext {
   group: THREE.Group;
   primaryDef: PrintableSurfaceDefinition;
-  texture: THREE.Texture;
-  printMaterial: THREE.MeshPhysicalMaterial;
+  surfaces: readonly PrintableSurfaceDefinition[];
+  textures: ReadonlyMap<string, THREE.Texture>;
+  fallbackTexture: THREE.Texture;
   theme: Product3DTheme;
+  dimensions: Product3DNormalizedDimensions;
   textureVariants: THREE.Texture[];
 }
 
@@ -39,468 +46,462 @@ function markProductMesh(mesh: THREE.Mesh, receiveShadow = false): void {
   mesh.receiveShadow = receiveShadow;
 }
 
-function printedBoxMaterials(
-  edgeMaterial: THREE.Material,
-  printMaterial: THREE.Material,
-  backMaterial: THREE.Material,
+function textureForSurface(
+  context: ProductGeometryContext,
+  slot: Product3DSurfaceSlot,
+): THREE.Texture {
+  const surfaceId = resolveProduct3DSurfaceId(context.surfaces, slot);
+  return (surfaceId ? context.textures.get(surfaceId) : undefined) ?? context.fallbackTexture;
+}
+
+function printedMaterial(
+  context: ProductGeometryContext,
+  slot: Product3DSurfaceSlot,
+  parameters: THREE.MeshPhysicalMaterialParameters = {},
+): THREE.MeshPhysicalMaterial {
+  return createThemedMaterial(context.theme, {
+    color: neutralPresentationPalette.surface,
+    map: textureForSurface(context, slot),
+    transparent: false,
+    opacity: 1,
+    depthWrite: true,
+    ...parameters,
+  });
+}
+
+function boxFaceMaterials(
+  context: ProductGeometryContext,
+  {
+    right = "right",
+    left = "left",
+    top = "top",
+    bottom = "bottom",
+    front = "front",
+    back = "back",
+  }: Partial<Record<"right" | "left" | "top" | "bottom" | "front" | "back", Product3DSurfaceSlot>> = {},
 ): THREE.Material[] {
-  // BoxGeometry order: right, left, top, bottom, front (+z), back (-z).
+  // BoxGeometry group order: right, left, top, bottom, front (+z), back (-z).
   return [
-    edgeMaterial,
-    edgeMaterial,
-    edgeMaterial,
-    edgeMaterial,
-    printMaterial,
-    backMaterial,
+    printedMaterial(context, right),
+    printedMaterial(context, left),
+    printedMaterial(context, top),
+    printedMaterial(context, bottom),
+    printedMaterial(context, front),
+    printedMaterial(context, back),
   ];
 }
 
-function buildLabelPack({
-  group,
-  primaryDef,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const ratio = primaryDef.width / Math.max(1, primaryDef.height);
-  const cardW = ratio >= 1 ? 2.2 : 2.2 * ratio;
-  const cardH = ratio >= 1 ? 2.2 / ratio : 2.2;
-  const cardD = 0.08;
-  const edgeMaterial = createThemedMaterial(theme, {
-    color: theme.tintColor,
-    roughness: Math.max(theme.roughness, 0.82),
+function addBox(
+  context: ProductGeometryContext,
+  width: number,
+  height: number,
+  depth: number,
+  materials: THREE.Material | THREE.Material[],
+  position: [number, number, number] = [0, 0, 0],
+): THREE.Mesh {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), materials);
+  mesh.position.set(...position);
+  markProductMesh(mesh, true);
+  context.group.add(mesh);
+  return mesh;
+}
+
+function buildLabelPack(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  addBox(context, width, height, depth, boxFaceMaterials(context));
+  const backing = createThemedMaterial(context.theme, {
+    color: context.theme.tintColor,
+    roughness: Math.max(context.theme.roughness, 0.82),
     metalness: 0,
   });
-  const backMaterial = createThemedMaterial(theme, { color: theme.baseColor });
-  const card = new THREE.Mesh(
-    new THREE.BoxGeometry(cardW, cardH, cardD),
-    printedBoxMaterials(edgeMaterial, printMaterial, backMaterial),
-  );
-  markProductMesh(card, true);
-  group.add(card);
-
-  const underGeometry = new THREE.BoxGeometry(cardW, cardH, 0.02);
   for (let index = 1; index <= 2; index += 1) {
-    const underCard = new THREE.Mesh(underGeometry, edgeMaterial);
-    underCard.position.set(0.02 * index, -0.02 * index, -cardD / 2 - 0.015 * index);
-    markProductMesh(underCard);
-    group.add(underCard);
+    addBox(
+      context,
+      width,
+      height,
+      Math.max(0.025, depth * 0.34),
+      backing,
+      [0.02 * index, -0.02 * index, -depth / 2 - 0.018 * index],
+    );
   }
 }
 
-function buildWaterproofSheet({
-  group,
-  primaryDef,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const ratio = Math.max(0.8, Math.min(2.6, primaryDef.width / Math.max(1, primaryDef.height)));
-  const sheetW = ratio >= 1 ? 2.45 : 1.85;
-  const sheetH = ratio >= 1 ? 1.75 : 2.35;
-  const translucent = theme.flags.includes("translucent");
-  const backingMaterial = createThemedMaterial(theme, {
-    color: theme.baseColor,
+function buildWaterproofSheet(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  const translucent = context.theme.flags.includes("translucent");
+  const backing = createThemedMaterial(context.theme, {
     transparent: translucent,
     opacity: translucent ? 0.82 : 0.96,
     depthWrite: !translucent,
     side: THREE.DoubleSide,
   });
-  const edgeMaterial = createThemedMaterial(theme, {
-    color: theme.tintColor,
-    roughness: 0.2,
-    metalness: 0.02,
-  });
-  const backing = new THREE.Mesh(
-    new THREE.BoxGeometry(sheetW, sheetH, 0.055),
-    backingMaterial,
-  );
-  markProductMesh(backing, true);
-  group.add(backing);
+  addBox(context, width, height, Math.max(0.045, depth), backing);
 
-  const stickerW = sheetW * 0.72;
-  const stickerH = sheetH * 0.22;
-  const stickerGeometry = new THREE.BoxGeometry(stickerW, stickerH, 0.035);
-  const stickerMaterials = printedBoxMaterials(edgeMaterial, printMaterial, backingMaterial);
-  for (const [index, y] of [-0.52, 0, 0.52].entries()) {
+  const stickerGeometry = new THREE.BoxGeometry(width * 0.72, height * 0.21, 0.035);
+  const stickerMaterials = boxFaceMaterials(context);
+  for (const [index, y] of [-0.28, 0, 0.28].entries()) {
     const sticker = new THREE.Mesh(stickerGeometry, stickerMaterials);
-    sticker.position.set(index === 1 ? 0.08 : -0.06, y, 0.055);
+    sticker.position.set(index === 1 ? width * 0.035 : -width * 0.025, y * height, depth / 2 + 0.025);
     sticker.rotation.z = index === 1 ? -0.035 : 0.025;
     markProductMesh(sticker);
-    group.add(sticker);
-  }
-
-  const dropletMaterial = createThemedMaterial(theme, {
-    color: theme.accentColor,
-    roughness: 0.08,
-    metalness: 0,
-    transmission: 0.35,
-    transparent: true,
-    opacity: 0.62,
-    depthWrite: false,
-  });
-  const dropletGeometry = new THREE.SphereGeometry(0.075, 18, 12);
-  for (const [x, y] of [[-0.95, 0.62], [0.94, 0.34], [0.88, -0.66]] as const) {
-    const droplet = new THREE.Mesh(dropletGeometry, dropletMaterial);
-    droplet.scale.set(0.75, 1.15, 0.35);
-    droplet.position.set(x, y, 0.11);
-    group.add(droplet);
+    context.group.add(sticker);
   }
 }
 
-function buildSchoolKit({
-  group,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const edgeMaterial = createThemedMaterial(theme, {
-    color: theme.tintColor,
-    roughness: 0.76,
-    metalness: 0,
-  });
-  const backMaterial = createThemedMaterial(theme, { color: theme.baseColor });
-  const trayMaterial = createThemedMaterial(theme, {
-    color: theme.tintColor,
+function buildSchoolKit(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  const tray = createThemedMaterial(context.theme, {
+    color: context.theme.tintColor,
     roughness: 0.84,
     metalness: 0,
   });
-  const tray = new THREE.Mesh(new THREE.BoxGeometry(2.75, 2.05, 0.08), trayMaterial);
-  tray.position.z = -0.08;
-  markProductMesh(tray, true);
-  group.add(tray);
-
+  addBox(context, width, height, Math.max(0.06, depth), tray, [0, 0, -depth * 0.55]);
   const formats = [
-    { width: 1.82, height: 0.48, x: 0, y: 0.56, rotation: -0.025 },
-    { width: 1.25, height: 0.72, x: -0.48, y: -0.34, rotation: 0.035 },
-    { width: 0.92, height: 0.92, x: 0.72, y: -0.38, rotation: -0.045 },
+    { width: 0.65, height: 0.23, x: 0, y: 0.28, rotation: -0.025 },
+    { width: 0.44, height: 0.34, x: -0.18, y: -0.2, rotation: 0.035 },
+    { width: 0.32, height: 0.42, x: 0.26, y: -0.2, rotation: -0.045 },
   ];
+  const labelMaterials = boxFaceMaterials(context);
   for (const format of formats) {
     const label = new THREE.Mesh(
-      new THREE.BoxGeometry(format.width, format.height, 0.055),
-      printedBoxMaterials(edgeMaterial, printMaterial, backMaterial),
+      new THREE.BoxGeometry(width * format.width, height * format.height, 0.045),
+      labelMaterials,
     );
-    label.position.set(format.x, format.y, 0.015);
+    label.position.set(width * format.x, height * format.y, 0.02);
     label.rotation.z = format.rotation;
     markProductMesh(label);
-    group.add(label);
+    context.group.add(label);
   }
 }
 
-function buildNotebook({
-  group,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const bookW = 1.5;
-  const bookH = 2.1;
-  const bookD = 0.16;
-  const paperMaterial = createThemedMaterial(theme, {
-    color: theme.tintColor,
-    roughness: Math.max(theme.roughness, 0.86),
-    metalness: 0,
-  });
-  const spineMaterial = createThemedMaterial(theme, {
-    color: theme.baseColor,
-    roughness: 0.42,
-    metalness: 0.02,
-  });
-  const backMaterial = createThemedMaterial(theme, { color: theme.baseColor });
-  const book = new THREE.Mesh(
-    new THREE.BoxGeometry(bookW, bookH, bookD),
-    [paperMaterial, spineMaterial, paperMaterial, paperMaterial, printMaterial, backMaterial],
+function buildNotebook(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  addBox(context, width, height, depth, boxFaceMaterials(context));
+  const band = addBox(
+    context,
+    width * 0.075,
+    height + 0.02,
+    depth + 0.018,
+    createThemedMaterial(context.theme, { color: context.theme.accentColor, roughness: 0.4 }),
   );
-  markProductMesh(book, true);
-  group.add(book);
-
-  const band = new THREE.Mesh(
-    new THREE.BoxGeometry(bookW * 0.08, bookH + 0.02, bookD + 0.005),
-    createThemedMaterial(theme, { color: theme.accentColor, roughness: 0.4 }),
-  );
-  band.position.set(-bookW * 0.35, 0, 0);
-  group.add(band);
+  band.position.x = -width * 0.35;
 }
 
-function buildBottleLabel({
-  group,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const bottleHeight = 2.4;
-  const bottleRadius = 0.55;
+function buildBottleLabel(context: ProductGeometryContext): void {
+  const { diameter, height, labelHeight, labelWidth } = context.dimensions;
+  const radius = diameter / 2;
+  const segments = 48;
   const bottle = new THREE.Mesh(
-    new THREE.CylinderGeometry(bottleRadius, bottleRadius, bottleHeight, 48),
-    createThemedMaterial(theme, {
-      color: theme.baseColor,
-      roughness: Math.min(theme.roughness, 0.28),
-      metalness: Math.max(theme.metalness, 0.62),
+    new THREE.CylinderGeometry(radius, radius, height, segments),
+    createThemedMaterial(context.theme, {
+      roughness: Math.min(context.theme.roughness, 0.28),
+      metalness: Math.max(context.theme.metalness, 0.18),
     }),
   );
   markProductMesh(bottle, true);
-  group.add(bottle);
+  context.group.add(bottle);
 
   const cap = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.35, 0.4, 0.45, 32),
-    createThemedMaterial(theme, {
-      color: theme.accentColor,
+    new THREE.CylinderGeometry(radius * 0.62, radius * 0.68, height * 0.16, 32),
+    createThemedMaterial(context.theme, {
+      color: context.theme.accentColor,
       roughness: 0.4,
       metalness: 0.2,
     }),
   );
-  cap.position.y = bottleHeight / 2 + 0.22;
-  group.add(cap);
+  cap.position.y = height * 0.58;
+  markProductMesh(cap);
+  context.group.add(cap);
 
+  const arc = Math.min(Math.PI * 2, Math.max(Math.PI * 0.45, labelWidth / radius));
   const label = new THREE.Mesh(
-    new THREE.CylinderGeometry(
-      bottleRadius + 0.006,
-      bottleRadius + 0.006,
-      1,
-      48,
-      1,
-      true,
-      -Math.PI * 0.5,
-      Math.PI,
-    ),
-    printMaterial,
+    new THREE.CylinderGeometry(radius + 0.008, radius + 0.008, labelHeight, segments, 1, true, -arc / 2, arc),
+    printedMaterial(context, "label", { side: THREE.DoubleSide }),
   );
-  label.position.y = -0.1;
-  group.add(label);
+  label.position.y = -height * 0.04;
+  markProductMesh(label);
+  context.group.add(label);
 }
 
-function buildPencilSet({
-  group,
-  texture,
-  theme,
-  textureVariants,
-}: ProductGeometryContext): void {
-  const pencilLength = 2.8;
-  const pencilRadius = 0.14;
-  const pencilTexture = texture.clone();
+function buildPencilSet(context: ProductGeometryContext): void {
+  const pencilLength = context.dimensions.height;
+  const pencilRadius = Math.max(0.07, context.dimensions.width / 9);
+  const pencilTexture = textureForSurface(context, "front").clone();
   pencilTexture.center.set(0.5, 0.5);
   pencilTexture.rotation = Math.PI / 2;
   pencilTexture.needsUpdate = true;
-  textureVariants.push(pencilTexture);
+  context.textureVariants.push(pencilTexture);
 
-  const pencilMaterial = createThemedMaterial(theme, {
-    color: theme.baseColor,
-    roughness: theme.roughness,
-    metalness: 0,
-  });
-  const pencilPrintMaterial = createThemedMaterial(theme, {
+  const pencilMaterial = createThemedMaterial(context.theme, { metalness: 0 });
+  const pencilPrintMaterial = createThemedMaterial(context.theme, {
     color: neutralPresentationPalette.surface,
     map: pencilTexture,
   });
-  const ferruleMaterial = createThemedMaterial(theme, {
-    color: theme.accentColor,
+  const ferruleMaterial = createThemedMaterial(context.theme, {
+    color: context.theme.accentColor,
     metalness: 0.8,
     roughness: 0.3,
   });
-  const eraserMaterial = createThemedMaterial(theme, {
-    color: theme.tintColor,
+  const eraserMaterial = createThemedMaterial(context.theme, {
+    color: context.theme.tintColor,
     roughness: 0.9,
     metalness: 0,
   });
   const pencilGeometry = new THREE.CylinderGeometry(pencilRadius, pencilRadius, pencilLength, 6);
-  const ferruleGeometry = new THREE.CylinderGeometry(pencilRadius * 1.02, pencilRadius * 1.02, 0.2, 16);
-  const eraserGeometry = new THREE.CylinderGeometry(pencilRadius * 0.98, pencilRadius * 0.98, 0.22, 16);
-
   for (let index = -1; index <= 1; index += 1) {
     const pencil = new THREE.Mesh(pencilGeometry, pencilMaterial);
-    pencil.position.x = index * 0.38;
+    pencil.position.x = index * pencilRadius * 2.7;
     pencil.rotation.z = index * 0.04;
     markProductMesh(pencil);
-    group.add(pencil);
-
-    const ferrule = new THREE.Mesh(ferruleGeometry, ferruleMaterial);
-    ferrule.position.y = pencilLength / 2 + 0.1;
+    context.group.add(pencil);
+    const ferrule = new THREE.Mesh(
+      new THREE.CylinderGeometry(pencilRadius * 1.02, pencilRadius * 1.02, pencilLength * 0.075, 16),
+      ferruleMaterial,
+    );
+    ferrule.position.y = pencilLength * 0.54;
     pencil.add(ferrule);
-
-    const eraser = new THREE.Mesh(eraserGeometry, eraserMaterial);
-    eraser.position.y = pencilLength / 2 + 0.31;
+    const eraser = new THREE.Mesh(
+      new THREE.CylinderGeometry(pencilRadius * 0.98, pencilRadius * 0.98, pencilLength * 0.08, 16),
+      eraserMaterial,
+    );
+    eraser.position.y = pencilLength * 0.615;
     pencil.add(eraser);
-
     if (index === 0) {
-      const printStrip = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.28, 1.8),
+      const strip = new THREE.Mesh(
+        new THREE.PlaneGeometry(pencilRadius * 2, pencilLength * 0.64),
         pencilPrintMaterial,
       );
-      printStrip.position.set(0, -0.1, pencilRadius + 0.006);
-      pencil.add(printStrip);
+      strip.position.set(0, -pencilLength * 0.04, pencilRadius + 0.006);
+      pencil.add(strip);
     }
   }
 }
 
-function buildGeometryBox({
-  group,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const boxW = 2.7;
-  const boxH = 1.05;
-  const boxD = 0.34;
-  const metal = createThemedMaterial(theme, {
-    color: theme.baseColor,
-    roughness: theme.roughness,
-    metalness: Math.max(theme.metalness, 0.72),
-  });
-  const box = new THREE.Mesh(
-    new THREE.BoxGeometry(boxW, boxH, boxD),
-    [metal, metal, metal, metal, printMaterial, metal],
-  );
-  markProductMesh(box, true);
-  group.add(box);
-
-  const seam = new THREE.Mesh(
-    new THREE.BoxGeometry(boxW * 1.01, 0.025, boxD * 1.02),
-    createThemedMaterial(theme, {
-      color: theme.accentColor,
+function buildGeometryBox(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  addBox(context, width, height, depth, boxFaceMaterials(context));
+  const seam = addBox(
+    context,
+    width * 1.01,
+    Math.max(0.02, height * 0.025),
+    depth * 1.02,
+    createThemedMaterial(context.theme, {
+      color: context.theme.accentColor,
       metalness: 0.7,
       roughness: 0.35,
     }),
   );
-  seam.position.y = -boxH * 0.38;
-  group.add(seam);
+  seam.position.y = -height * 0.38;
 }
 
-function buildGiftRibbon({
-  group,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const boxW = 1.85;
-  const boxH = 1.45;
-  const boxD = 0.92;
-  const bodyMaterial = createThemedMaterial(theme, { color: theme.baseColor });
-  const edgeMaterial = createThemedMaterial(theme, { color: theme.tintColor });
-  const ribbonMaterial = createThemedMaterial(theme, {
-    color: theme.accentColor,
+function buildGiftRibbon(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  addBox(context, width, height, depth, boxFaceMaterials(context));
+  const ribbon = createThemedMaterial(context.theme, {
+    color: context.theme.accentColor,
     roughness: 0.3,
     metalness: 0.12,
   });
-  const gift = new THREE.Mesh(
-    new THREE.BoxGeometry(boxW, boxH, boxD),
-    [bodyMaterial, bodyMaterial, edgeMaterial, edgeMaterial, printMaterial, bodyMaterial],
-  );
-  markProductMesh(gift, true);
-  group.add(gift);
-
-  const verticalRibbon = new THREE.Mesh(
-    new THREE.BoxGeometry(boxW * 0.16, boxH + 0.015, boxD + 0.025),
-    ribbonMaterial,
-  );
-  group.add(verticalRibbon);
-  const horizontalRibbon = new THREE.Mesh(
-    new THREE.BoxGeometry(boxW + 0.015, boxH * 0.16, boxD + 0.03),
-    ribbonMaterial,
-  );
-  group.add(horizontalRibbon);
-
-  const bowGeometry = new THREE.TorusGeometry(0.23, 0.055, 10, 28);
+  addBox(context, width * 0.16, height + 0.018, depth + 0.03, ribbon);
+  addBox(context, width + 0.018, height * 0.16, depth + 0.035, ribbon);
+  const bowGeometry = new THREE.TorusGeometry(Math.min(width, depth) * 0.16, 0.045, 10, 28);
   for (const side of [-1, 1]) {
-    const loop = new THREE.Mesh(bowGeometry, ribbonMaterial);
+    const loop = new THREE.Mesh(bowGeometry, ribbon);
     loop.scale.set(1, 0.58, 1);
-    loop.position.set(side * 0.2, boxH / 2 + 0.13, 0);
+    loop.position.set(side * width * 0.11, height / 2 + 0.12, 0);
     loop.rotation.y = side * 0.38;
-    group.add(loop);
+    markProductMesh(loop);
+    context.group.add(loop);
   }
 }
 
-function buildKeychainDuo({
-  group,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const translucent = theme.flags.includes("translucent");
-  const edgeMaterial = createThemedMaterial(theme, {
-    color: theme.tintColor,
-    transparent: translucent,
-    opacity: translucent ? 0.72 : 1,
-    depthWrite: !translucent,
-  });
-  const backMaterial = createThemedMaterial(theme, {
-    color: theme.baseColor,
-    transparent: translucent,
-    opacity: translucent ? 0.78 : 1,
-    depthWrite: !translucent,
-  });
-  const hardwareMaterial = createThemedMaterial(theme, {
-    color: theme.accentColor,
+function buildKeychainDuo(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  const translucent = context.theme.flags.includes("translucent");
+  const hardware = createThemedMaterial(context.theme, {
+    color: context.theme.accentColor,
     metalness: 0.9,
     roughness: 0.2,
   });
-  const tagGeometry = new THREE.BoxGeometry(1.15, 0.78, 0.07);
-  const ringGeometry = new THREE.TorusGeometry(0.16, 0.035, 12, 30);
-  const tagMaterials = printedBoxMaterials(edgeMaterial, printMaterial, backMaterial);
-
+  const tagWidth = width * 0.44;
+  const materials = boxFaceMaterials(context);
   for (const side of [-1, 1]) {
-    const tag = new THREE.Mesh(tagGeometry, tagMaterials);
-    tag.position.set(side * 0.68, side * 0.12, 0);
+    const tag = new THREE.Mesh(new THREE.BoxGeometry(tagWidth, height, depth), materials);
+    tag.position.set(side * width * 0.29, side * height * 0.09, 0);
     tag.rotation.z = side * -0.08;
+    tag.material = Array.isArray(tag.material)
+      ? tag.material.map((material) => {
+          const physical = material as THREE.MeshPhysicalMaterial;
+          physical.transparent = translucent;
+          physical.opacity = translucent ? 0.82 : 1;
+          return physical;
+        })
+      : tag.material;
     markProductMesh(tag);
-    group.add(tag);
-
-    const ring = new THREE.Mesh(ringGeometry, hardwareMaterial);
-    ring.position.set(side * 1.28, side * 0.12, 0);
-    group.add(ring);
+    context.group.add(tag);
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(height * 0.18, Math.max(0.02, depth * 0.45), 12, 30),
+      hardware,
+    );
+    ring.position.set(side * width * 0.56, side * height * 0.09, 0);
+    markProductMesh(ring);
+    context.group.add(ring);
   }
 }
 
-function buildTag({
-  group,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const tagW = 1.2;
-  const tagH = 2;
-  const tagD = 0.06;
-  const edgeMaterial = createThemedMaterial(theme, { color: theme.tintColor });
-  const backMaterial = createThemedMaterial(theme, { color: theme.baseColor });
-  const tag = new THREE.Mesh(
-    new THREE.BoxGeometry(tagW, tagH, tagD),
-    printedBoxMaterials(edgeMaterial, printMaterial, backMaterial),
-  );
-  markProductMesh(tag, true);
-  group.add(tag);
-
+function buildTag(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  addBox(context, width, height, depth, boxFaceMaterials(context));
   const ring = new THREE.Mesh(
-    new THREE.TorusGeometry(0.12, 0.03, 16, 32),
-    createThemedMaterial(theme, {
-      color: theme.accentColor,
+    new THREE.TorusGeometry(width * 0.11, Math.max(0.02, depth * 0.55), 16, 32),
+    createThemedMaterial(context.theme, {
+      color: context.theme.accentColor,
       metalness: 0.9,
       roughness: 0.2,
     }),
   );
-  ring.position.set(0, tagH / 2 + 0.05, 0);
-  group.add(ring);
+  ring.position.set(0, height / 2 + width * 0.08, 0);
+  markProductMesh(ring);
+  context.group.add(ring);
 }
 
-function buildBulkGrid({
-  group,
-  printMaterial,
-  theme,
-}: ProductGeometryContext): void {
-  const trayMaterial = createThemedMaterial(theme, {
-    color: theme.baseColor,
-    roughness: Math.max(theme.roughness, 0.76),
-    metalness: 0,
-  });
-  const edgeMaterial = createThemedMaterial(theme, {
-    color: theme.tintColor,
-    roughness: 0.82,
-    metalness: 0,
-  });
-  const tray = new THREE.Mesh(new THREE.BoxGeometry(2.85, 2.08, 0.12), trayMaterial);
-  tray.position.z = -0.08;
-  markProductMesh(tray, true);
-  group.add(tray);
-
-  const labelGeometry = new THREE.BoxGeometry(0.58, 0.28, 0.035);
-  const labelMaterials = printedBoxMaterials(edgeMaterial, printMaterial, trayMaterial);
+function buildBulkGrid(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  addBox(
+    context,
+    width,
+    height,
+    depth,
+    createThemedMaterial(context.theme, {
+      color: context.theme.baseColor,
+      roughness: Math.max(context.theme.roughness, 0.76),
+      metalness: 0,
+    }),
+    [0, 0, -depth * 0.55],
+  );
+  const labelGeometry = new THREE.BoxGeometry(width * 0.2, height * 0.13, 0.035);
+  const labelMaterials = boxFaceMaterials(context);
   for (let row = 0; row < 4; row += 1) {
     for (let column = 0; column < 3; column += 1) {
       const label = new THREE.Mesh(labelGeometry, labelMaterials);
-      label.position.set((column - 1) * 0.83, (1.5 - row) * 0.43, 0.005);
+      label.position.set((column - 1) * width * 0.29, (1.5 - row) * height * 0.21, 0);
       markProductMesh(label);
-      group.add(label);
+      context.group.add(label);
     }
   }
+}
+
+function addCartonDetails(context: ProductGeometryContext, folding = false): void {
+  const { width, height, depth } = context.dimensions;
+  const crease = createThemedMaterial(context.theme, {
+    color: context.theme.accentColor,
+    roughness: Math.max(context.theme.roughness, 0.62),
+    metalness: 0,
+  });
+  addBox(context, width * 0.92, Math.max(0.012, height * 0.009), depth + 0.012, crease, [0, height * 0.43, 0]);
+  if (folding) {
+    const flap = addBox(
+      context,
+      width * 0.82,
+      Math.max(0.025, height * 0.018),
+      depth * 0.86,
+      printedMaterial(context, "top"),
+      [0, height / 2 + Math.max(0.015, height * 0.009), -depth * 0.04],
+    );
+    flap.rotation.x = -0.015;
+  }
+}
+
+function buildRectangularBox(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  addBox(context, width, height, depth, boxFaceMaterials(context));
+  addCartonDetails(context);
+}
+
+function buildSquareBox(context: ProductGeometryContext): void {
+  buildRectangularBox(context);
+}
+
+function buildFoldingCarton(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  addBox(context, width, height, depth, boxFaceMaterials(context));
+  addCartonDetails(context, true);
+}
+
+function buildMailerBox(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  const bodyHeight = height * 0.72;
+  addBox(context, width, bodyHeight, depth, boxFaceMaterials(context), [0, -height * 0.14, 0]);
+  addBox(
+    context,
+    width * 1.015,
+    Math.max(0.04, height * 0.14),
+    depth * 1.015,
+    boxFaceMaterials(context),
+    [0, height * 0.29, -depth * 0.015],
+  );
+  addBox(
+    context,
+    width * 0.96,
+    Math.max(0.018, height * 0.04),
+    Math.max(0.025, depth * 0.045),
+    createThemedMaterial(context.theme, { color: context.theme.accentColor, roughness: 0.72 }),
+    [0, height * 0.22, -depth * 0.51],
+  );
+}
+
+function buildPaperBag(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  const thickness = Math.max(0.018, Math.min(width, depth) * 0.018);
+  addBox(context, width, height, thickness, printedMaterial(context, "front"), [0, 0, depth / 2]);
+  addBox(context, width, height, thickness, printedMaterial(context, "back"), [0, 0, -depth / 2]);
+  addBox(context, thickness, height, depth, printedMaterial(context, "gusset-left"), [-width / 2, 0, 0]);
+  addBox(context, thickness, height, depth, printedMaterial(context, "gusset-right"), [width / 2, 0, 0]);
+  addBox(context, width, thickness, depth, printedMaterial(context, "bottom"), [0, -height / 2, 0]);
+
+  const handleMaterial = createThemedMaterial(context.theme, {
+    color: context.theme.accentColor,
+    roughness: 0.68,
+    metalness: 0,
+  });
+  const handleRadius = Math.min(width * 0.22, height * 0.12);
+  const handleGeometry = new THREE.TorusGeometry(handleRadius, Math.max(0.018, handleRadius * 0.09), 8, 32, Math.PI);
+  for (const z of [-depth / 2 - thickness, depth / 2 + thickness]) {
+    const handle = new THREE.Mesh(handleGeometry, handleMaterial);
+    handle.position.set(0, height / 2 - handleRadius * 0.08, z);
+    markProductMesh(handle);
+    context.group.add(handle);
+  }
+}
+
+function buildStandUpPouch(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  addBox(
+    context,
+    width,
+    height,
+    depth,
+    boxFaceMaterials(context, {
+      right: "gusset-right",
+      left: "gusset-left",
+    }),
+  );
+  const seam = createThemedMaterial(context.theme, {
+    color: context.theme.accentColor,
+    roughness: Math.max(0.25, context.theme.roughness),
+    metalness: Math.min(0.08, context.theme.metalness),
+  });
+  addBox(context, width * 0.94, Math.max(0.025, height * 0.018), depth * 1.03, seam, [0, height * 0.39, 0]);
+  addBox(context, width * 0.9, Math.max(0.035, height * 0.035), depth * 1.06, seam, [0, -height * 0.47, 0]);
+}
+
+function buildProductSleeve(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  const thickness = Math.max(0.018, Math.min(height, depth) * 0.018);
+  addBox(context, width, height, thickness, printedMaterial(context, "front"), [0, 0, depth / 2]);
+  addBox(context, width, height, thickness, printedMaterial(context, "back"), [0, 0, -depth / 2]);
+  addBox(context, width, thickness, depth, printedMaterial(context, "top"), [0, height / 2, 0]);
+  addBox(context, width, thickness, depth, printedMaterial(context, "bottom"), [0, -height / 2, 0]);
 }
 
 const PRODUCT_GEOMETRY_BUILDERS: Record<Product3DKind, ProductGeometryBuilder> = {
@@ -515,6 +516,13 @@ const PRODUCT_GEOMETRY_BUILDERS: Record<Product3DKind, ProductGeometryBuilder> =
   "gift-ribbon": buildGiftRibbon,
   "keychain-duo": buildKeychainDuo,
   "bulk-grid": buildBulkGrid,
+  "rectangular-box": buildRectangularBox,
+  "square-box": buildSquareBox,
+  "folding-carton": buildFoldingCarton,
+  "mailer-box": buildMailerBox,
+  "paper-bag": buildPaperBag,
+  "stand-up-pouch": buildStandUpPouch,
+  "product-sleeve": buildProductSleeve,
 };
 
 export function buildProductGeometry({
@@ -523,29 +531,35 @@ export function buildProductGeometry({
   primaryDef,
   texture,
   theme,
+  surfaces = [primaryDef],
+  textures,
+  dimensionsMm,
 }: {
   group: THREE.Group;
   kind: Product3DKind;
   primaryDef: PrintableSurfaceDefinition;
   texture: THREE.Texture;
   theme: Product3DTheme;
+  surfaces?: readonly PrintableSurfaceDefinition[];
+  textures?: ReadonlyMap<string, THREE.Texture>;
+  dimensionsMm?: Readonly<Record<string, number>> | null;
 }): THREE.Texture[] {
   const textureVariants: THREE.Texture[] = [];
-  const printMaterial = createThemedMaterial(theme, {
-    color: neutralPresentationPalette.surface,
-    map: texture,
-    transparent: false,
-    opacity: 1,
-    depthWrite: true,
-  });
-
-  PRODUCT_GEOMETRY_BUILDERS[kind]({
+  const availableTextures = textures ?? new Map([[primaryDef.id, texture]]);
+  const context: ProductGeometryContext = {
     group,
     primaryDef,
-    texture,
-    printMaterial,
+    surfaces,
+    textures: availableTextures,
+    fallbackTexture: texture,
     theme,
+    dimensions: normalizeProduct3DDimensions(
+      kind,
+      dimensionsMm,
+      primaryDef.width / Math.max(1, primaryDef.height),
+    ),
     textureVariants,
-  });
+  };
+  PRODUCT_GEOMETRY_BUILDERS[kind](context);
   return textureVariants;
 }

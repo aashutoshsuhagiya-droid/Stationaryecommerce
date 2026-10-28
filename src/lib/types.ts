@@ -151,7 +151,34 @@ export interface Product {
     previewTemplate?: string;
     productModel?: string;
     configurationVersion?: string;
+    visualizationTemplate?: ProductVisualizationTemplate;
   };
+}
+
+export interface ProductVisualizationSurface {
+  surfaceId: string;
+  label: string;
+  role: "front" | "back" | "left" | "right" | "top" | "bottom" | "wrap" | "gusset" | "inside" | "other";
+  sourceBounds?: { x: number; y: number; width: number; height: number };
+  textureUrl?: string;
+}
+
+/** A published, immutable visualization template exposed to the storefront. */
+export interface ProductVisualizationTemplate {
+  id: string;
+  version: number;
+  name: string;
+  productType: string;
+  geometryKind: "box" | "cylinder" | "plane" | "bag" | "pouch" | "label" | "custom";
+  dimensionsMm: Record<string, number>;
+  surfaces: ProductVisualizationSurface[];
+  sourceAsset?: {
+    id: string;
+    width: number;
+    height: number;
+    mimeType: ArtworkImageMimeType;
+  };
+  manufacturingValidated: boolean;
 }
 
 export interface PersonalizationTemplateSurface {
@@ -261,6 +288,24 @@ export interface PersonalizationValues {
     pricingVersion: string;
     calculatedAt: string;
     unitPricePaise: number;
+  };
+  /** Server-derived visual configuration retained with the immutable order snapshot. */
+  visualization?: {
+    schemaVersion: 1;
+    previewMode: "3d";
+    model: string;
+    configurationVersion: string;
+    dimensionPresetId: string;
+    dimensionsMm: Record<string, number> | null;
+    material: string;
+    surfaceIds: string[];
+    templateId?: string;
+    templateVersion?: number;
+    sourceAssetId?: string;
+    surfaceMappings?: Array<{
+      surfaceId: string;
+      role: ProductVisualizationSurface["role"];
+    }>;
   };
 }
 

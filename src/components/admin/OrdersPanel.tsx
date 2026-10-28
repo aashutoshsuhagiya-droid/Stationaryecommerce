@@ -120,6 +120,39 @@ function formatAssetSize(bytes: number) {
     : `${Math.max(1, Math.ceil(bytes / 1024))} KB`;
 }
 
+function personalizationVisualizationSummary(value: unknown) {
+  const visualization = recordValue(recordValue(value).visualization);
+  if (!Object.keys(visualization).length) return "";
+  const dimensions = recordValue(visualization.dimensionsMm);
+  const dimensionLabel = ["width", "height", "depth", "diameter", "gusset"]
+    .flatMap((key) => typeof dimensions[key] === "number"
+      ? [`${humanizeKey(key)} ${dimensions[key]} mm`]
+      : [])
+    .join(" x ");
+  const mappings = Array.isArray(visualization.surfaceMappings)
+    ? visualization.surfaceMappings.length
+    : Array.isArray(visualization.surfaceIds) ? visualization.surfaceIds.length : 0;
+  return [
+    typeof visualization.model === "string"
+      ? `3D model: ${humanizeKey(visualization.model)}`
+      : "Versioned 3D preview",
+    typeof visualization.templateVersion === "number"
+      ? `template v${visualization.templateVersion}`
+      : typeof visualization.configurationVersion === "string"
+        ? visualization.configurationVersion
+        : undefined,
+    dimensionLabel || undefined,
+    mappings ? `${mappings} mapped surface${mappings === 1 ? "" : "s"}` : undefined,
+  ].filter((item): item is string => Boolean(item)).join(" · ");
+}
+
+function personalizationVisualizationSourceAssetId(value: unknown) {
+  const sourceAssetId = recordValue(recordValue(value).visualization).sourceAssetId;
+  return typeof sourceAssetId === "string" && /^[a-zA-Z0-9_-]{1,120}$/.test(sourceAssetId)
+    ? sourceAssetId
+    : undefined;
+}
+
 function assetStatus(value: string) {
   return value === "ATTACHED" ? "Attached privately" : titleCase(value);
 }
@@ -335,6 +368,8 @@ export function OrdersPanel() {
                     {item.personalization && <>
                       <p>{personalizationParts(item.personalization.values, item.personalization.templateSnapshot).join(" · ") || "Saved product defaults"}</p>
                       {personalizationArtworkSummary(item.personalization.values) && <p className={styles.personalizationArtworkMeta}>{personalizationArtworkSummary(item.personalization.values)}</p>}
+                      {personalizationVisualizationSummary(item.personalization.values) && <p className={styles.personalizationArtworkMeta}>{personalizationVisualizationSummary(item.personalization.values)}</p>}
+                      {personalizationVisualizationSourceAssetId(item.personalization.values) && <a className={styles.buttonGhost} href={`/api/admin/visualization-studio/assets/${encodeURIComponent(personalizationVisualizationSourceAssetId(item.personalization.values)!)}`}><Download size={12} /> View 3D source artwork</a>}
                     </>}
                     {item.artworkAssets.length > 0 ? (
                       <ul className={styles.personalizationAssets} aria-label={`Private artwork files for ${item.productNameSnapshot}`}>

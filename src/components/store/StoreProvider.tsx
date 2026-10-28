@@ -25,6 +25,23 @@ export type Customization = {
     calculatedAt: string;
     unitPricePaise: number;
   };
+  visualization?: {
+    schemaVersion: 1;
+    previewMode: "3d";
+    model: string;
+    configurationVersion: string;
+    dimensionPresetId: string;
+    dimensionsMm: Record<string, number> | null;
+    material: string;
+    surfaceIds: string[];
+    templateId?: string;
+    templateVersion?: number;
+    sourceAssetId?: string;
+    surfaceMappings?: Array<{
+      surfaceId: string;
+      role: "front" | "back" | "left" | "right" | "top" | "bottom" | "wrap" | "gusset" | "inside" | "other";
+    }>;
+  };
 };
 
 export type CartItem = {

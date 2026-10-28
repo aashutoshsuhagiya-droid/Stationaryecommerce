@@ -74,6 +74,21 @@ export type ProductCategory = $Result.DefaultSelection<Prisma.$ProductCategoryPa
  */
 export type ArtworkAsset = $Result.DefaultSelection<Prisma.$ArtworkAssetPayload>
 /**
+ * Model VisualizationTemplate
+ * 
+ */
+export type VisualizationTemplate = $Result.DefaultSelection<Prisma.$VisualizationTemplatePayload>
+/**
+ * Model VisualizationProcessingJob
+ * 
+ */
+export type VisualizationProcessingJob = $Result.DefaultSelection<Prisma.$VisualizationProcessingJobPayload>
+/**
+ * Model VisualizationAsset
+ * 
+ */
+export type VisualizationAsset = $Result.DefaultSelection<Prisma.$VisualizationAssetPayload>
+/**
  * Model ProductVariant
  * 
  */
@@ -359,6 +374,56 @@ export const ArtworkAssetStatus: {
 };
 
 export type ArtworkAssetStatus = (typeof ArtworkAssetStatus)[keyof typeof ArtworkAssetStatus]
+
+
+export const VisualizationTemplateStatus: {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+export type VisualizationTemplateStatus = (typeof VisualizationTemplateStatus)[keyof typeof VisualizationTemplateStatus]
+
+
+export const VisualizationJobStatus: {
+  QUEUED: 'QUEUED',
+  PROCESSING: 'PROCESSING',
+  NEEDS_CONFIRMATION: 'NEEDS_CONFIRMATION',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type VisualizationJobStatus = (typeof VisualizationJobStatus)[keyof typeof VisualizationJobStatus]
+
+
+export const VisualizationAnalysisMode: {
+  MANUAL: 'MANUAL',
+  EXTERNAL: 'EXTERNAL'
+};
+
+export type VisualizationAnalysisMode = (typeof VisualizationAnalysisMode)[keyof typeof VisualizationAnalysisMode]
+
+
+export const VisualizationAssetKind: {
+  SOURCE_IMAGE: 'SOURCE_IMAGE',
+  PROCESSED_IMAGE: 'PROCESSED_IMAGE',
+  PREVIEW_IMAGE: 'PREVIEW_IMAGE',
+  TEXTURE: 'TEXTURE',
+  MODEL_GLTF: 'MODEL_GLTF',
+  MODEL_GLB: 'MODEL_GLB',
+  OTHER_GENERATED: 'OTHER_GENERATED'
+};
+
+export type VisualizationAssetKind = (typeof VisualizationAssetKind)[keyof typeof VisualizationAssetKind]
+
+
+export const VisualizationAssetStorage: {
+  DATABASE: 'DATABASE',
+  PRIVATE_REFERENCE: 'PRIVATE_REFERENCE'
+};
+
+export type VisualizationAssetStorage = (typeof VisualizationAssetStorage)[keyof typeof VisualizationAssetStorage]
 
 
 export const CartStatus: {
@@ -650,6 +715,26 @@ export const ArtworkStatus: typeof $Enums.ArtworkStatus
 export type ArtworkAssetStatus = $Enums.ArtworkAssetStatus
 
 export const ArtworkAssetStatus: typeof $Enums.ArtworkAssetStatus
+
+export type VisualizationTemplateStatus = $Enums.VisualizationTemplateStatus
+
+export const VisualizationTemplateStatus: typeof $Enums.VisualizationTemplateStatus
+
+export type VisualizationJobStatus = $Enums.VisualizationJobStatus
+
+export const VisualizationJobStatus: typeof $Enums.VisualizationJobStatus
+
+export type VisualizationAnalysisMode = $Enums.VisualizationAnalysisMode
+
+export const VisualizationAnalysisMode: typeof $Enums.VisualizationAnalysisMode
+
+export type VisualizationAssetKind = $Enums.VisualizationAssetKind
+
+export const VisualizationAssetKind: typeof $Enums.VisualizationAssetKind
+
+export type VisualizationAssetStorage = $Enums.VisualizationAssetStorage
+
+export const VisualizationAssetStorage: typeof $Enums.VisualizationAssetStorage
 
 export type CartStatus = $Enums.CartStatus
 
@@ -983,6 +1068,36 @@ export class PrismaClient<
     * ```
     */
   get artworkAsset(): Prisma.ArtworkAssetDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.visualizationTemplate`: Exposes CRUD operations for the **VisualizationTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VisualizationTemplates
+    * const visualizationTemplates = await prisma.visualizationTemplate.findMany()
+    * ```
+    */
+  get visualizationTemplate(): Prisma.VisualizationTemplateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.visualizationProcessingJob`: Exposes CRUD operations for the **VisualizationProcessingJob** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VisualizationProcessingJobs
+    * const visualizationProcessingJobs = await prisma.visualizationProcessingJob.findMany()
+    * ```
+    */
+  get visualizationProcessingJob(): Prisma.VisualizationProcessingJobDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.visualizationAsset`: Exposes CRUD operations for the **VisualizationAsset** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more VisualizationAssets
+    * const visualizationAssets = await prisma.visualizationAsset.findMany()
+    * ```
+    */
+  get visualizationAsset(): Prisma.VisualizationAssetDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.productVariant`: Exposes CRUD operations for the **ProductVariant** model.
@@ -1872,6 +1987,9 @@ export namespace Prisma {
     Product: 'Product',
     ProductCategory: 'ProductCategory',
     ArtworkAsset: 'ArtworkAsset',
+    VisualizationTemplate: 'VisualizationTemplate',
+    VisualizationProcessingJob: 'VisualizationProcessingJob',
+    VisualizationAsset: 'VisualizationAsset',
     ProductVariant: 'ProductVariant',
     ProductImage: 'ProductImage',
     ProductPersonalizationField: 'ProductPersonalizationField',
@@ -1930,7 +2048,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "authSession" | "phoneVerificationChallenge" | "role" | "permission" | "userRole" | "rolePermission" | "address" | "category" | "product" | "productCategory" | "artworkAsset" | "productVariant" | "productImage" | "productPersonalizationField" | "personalizationTemplate" | "productTemplate" | "inventory" | "inventoryMovement" | "customizationConfiguration" | "cart" | "cartItem" | "order" | "vendorProfile" | "vendorApplication" | "vendorDocument" | "vendorApplicationEvent" | "vendorCapability" | "orderAssignment" | "vendorOrderOffer" | "assignmentEvent" | "orderAddress" | "orderItem" | "orderPersonalization" | "productionJob" | "payment" | "paymentEvent" | "refund" | "shipment" | "coupon" | "couponProduct" | "couponCategory" | "couponRedemption" | "review" | "wishlist" | "wishlistItem" | "bulkOrderRequest" | "bulkOrderRow" | "supportTicket" | "supportMessage" | "notification" | "auditLog" | "storeSetting" | "announcement" | "faq"
+      modelProps: "user" | "authSession" | "phoneVerificationChallenge" | "role" | "permission" | "userRole" | "rolePermission" | "address" | "category" | "product" | "productCategory" | "artworkAsset" | "visualizationTemplate" | "visualizationProcessingJob" | "visualizationAsset" | "productVariant" | "productImage" | "productPersonalizationField" | "personalizationTemplate" | "productTemplate" | "inventory" | "inventoryMovement" | "customizationConfiguration" | "cart" | "cartItem" | "order" | "vendorProfile" | "vendorApplication" | "vendorDocument" | "vendorApplicationEvent" | "vendorCapability" | "orderAssignment" | "vendorOrderOffer" | "assignmentEvent" | "orderAddress" | "orderItem" | "orderPersonalization" | "productionJob" | "payment" | "paymentEvent" | "refund" | "shipment" | "coupon" | "couponProduct" | "couponCategory" | "couponRedemption" | "review" | "wishlist" | "wishlistItem" | "bulkOrderRequest" | "bulkOrderRow" | "supportTicket" | "supportMessage" | "notification" | "auditLog" | "storeSetting" | "announcement" | "faq"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2819,6 +2937,228 @@ export namespace Prisma {
           count: {
             args: Prisma.ArtworkAssetCountArgs<ExtArgs>
             result: $Utils.Optional<ArtworkAssetCountAggregateOutputType> | number
+          }
+        }
+      }
+      VisualizationTemplate: {
+        payload: Prisma.$VisualizationTemplatePayload<ExtArgs>
+        fields: Prisma.VisualizationTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VisualizationTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VisualizationTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.VisualizationTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VisualizationTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.VisualizationTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.VisualizationTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.VisualizationTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VisualizationTemplateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload>[]
+          }
+          delete: {
+            args: Prisma.VisualizationTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload>
+          }
+          update: {
+            args: Prisma.VisualizationTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.VisualizationTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VisualizationTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VisualizationTemplateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload>[]
+          }
+          upsert: {
+            args: Prisma.VisualizationTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.VisualizationTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVisualizationTemplate>
+          }
+          groupBy: {
+            args: Prisma.VisualizationTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VisualizationTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VisualizationTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<VisualizationTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
+      VisualizationProcessingJob: {
+        payload: Prisma.$VisualizationProcessingJobPayload<ExtArgs>
+        fields: Prisma.VisualizationProcessingJobFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VisualizationProcessingJobFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VisualizationProcessingJobFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload>
+          }
+          findFirst: {
+            args: Prisma.VisualizationProcessingJobFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VisualizationProcessingJobFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload>
+          }
+          findMany: {
+            args: Prisma.VisualizationProcessingJobFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload>[]
+          }
+          create: {
+            args: Prisma.VisualizationProcessingJobCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload>
+          }
+          createMany: {
+            args: Prisma.VisualizationProcessingJobCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VisualizationProcessingJobCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload>[]
+          }
+          delete: {
+            args: Prisma.VisualizationProcessingJobDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload>
+          }
+          update: {
+            args: Prisma.VisualizationProcessingJobUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload>
+          }
+          deleteMany: {
+            args: Prisma.VisualizationProcessingJobDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VisualizationProcessingJobUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VisualizationProcessingJobUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload>[]
+          }
+          upsert: {
+            args: Prisma.VisualizationProcessingJobUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationProcessingJobPayload>
+          }
+          aggregate: {
+            args: Prisma.VisualizationProcessingJobAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVisualizationProcessingJob>
+          }
+          groupBy: {
+            args: Prisma.VisualizationProcessingJobGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VisualizationProcessingJobGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VisualizationProcessingJobCountArgs<ExtArgs>
+            result: $Utils.Optional<VisualizationProcessingJobCountAggregateOutputType> | number
+          }
+        }
+      }
+      VisualizationAsset: {
+        payload: Prisma.$VisualizationAssetPayload<ExtArgs>
+        fields: Prisma.VisualizationAssetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VisualizationAssetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VisualizationAssetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload>
+          }
+          findFirst: {
+            args: Prisma.VisualizationAssetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VisualizationAssetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload>
+          }
+          findMany: {
+            args: Prisma.VisualizationAssetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload>[]
+          }
+          create: {
+            args: Prisma.VisualizationAssetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload>
+          }
+          createMany: {
+            args: Prisma.VisualizationAssetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VisualizationAssetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload>[]
+          }
+          delete: {
+            args: Prisma.VisualizationAssetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload>
+          }
+          update: {
+            args: Prisma.VisualizationAssetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload>
+          }
+          deleteMany: {
+            args: Prisma.VisualizationAssetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VisualizationAssetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VisualizationAssetUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload>[]
+          }
+          upsert: {
+            args: Prisma.VisualizationAssetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VisualizationAssetPayload>
+          }
+          aggregate: {
+            args: Prisma.VisualizationAssetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVisualizationAsset>
+          }
+          groupBy: {
+            args: Prisma.VisualizationAssetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VisualizationAssetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VisualizationAssetCountArgs<ExtArgs>
+            result: $Utils.Optional<VisualizationAssetCountAggregateOutputType> | number
           }
         }
       }
@@ -6139,6 +6479,9 @@ export namespace Prisma {
     product?: ProductOmit
     productCategory?: ProductCategoryOmit
     artworkAsset?: ArtworkAssetOmit
+    visualizationTemplate?: VisualizationTemplateOmit
+    visualizationProcessingJob?: VisualizationProcessingJobOmit
+    visualizationAsset?: VisualizationAssetOmit
     productVariant?: ProductVariantOmit
     productImage?: ProductImageOmit
     productPersonalizationField?: ProductPersonalizationFieldOmit
@@ -6281,6 +6624,9 @@ export namespace Prisma {
     uploadedVendorDocuments: number
     reviewedVendorDocuments: number
     uploadedArtworkAssets: number
+    visualizationTemplates: number
+    visualizationJobs: number
+    visualizationAssets: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6303,6 +6649,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: boolean | UserCountOutputTypeCountUploadedVendorDocumentsArgs
     reviewedVendorDocuments?: boolean | UserCountOutputTypeCountReviewedVendorDocumentsArgs
     uploadedArtworkAssets?: boolean | UserCountOutputTypeCountUploadedArtworkAssetsArgs
+    visualizationTemplates?: boolean | UserCountOutputTypeCountVisualizationTemplatesArgs
+    visualizationJobs?: boolean | UserCountOutputTypeCountVisualizationJobsArgs
+    visualizationAssets?: boolean | UserCountOutputTypeCountVisualizationAssetsArgs
   }
 
   // Custom InputTypes
@@ -6447,6 +6796,27 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountUploadedArtworkAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ArtworkAssetWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountVisualizationTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationTemplateWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountVisualizationJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationProcessingJobWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountVisualizationAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationAssetWhereInput
   }
 
 
@@ -6607,6 +6977,9 @@ export namespace Prisma {
     bulkRequests: number
     vendorCapabilities: number
     artworkAssets: number
+    visualizationTemplates: number
+    visualizationJobs: number
+    visualizationAssets: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6624,6 +6997,9 @@ export namespace Prisma {
     bulkRequests?: boolean | ProductCountOutputTypeCountBulkRequestsArgs
     vendorCapabilities?: boolean | ProductCountOutputTypeCountVendorCapabilitiesArgs
     artworkAssets?: boolean | ProductCountOutputTypeCountArtworkAssetsArgs
+    visualizationTemplates?: boolean | ProductCountOutputTypeCountVisualizationTemplatesArgs
+    visualizationJobs?: boolean | ProductCountOutputTypeCountVisualizationJobsArgs
+    visualizationAssets?: boolean | ProductCountOutputTypeCountVisualizationAssetsArgs
   }
 
   // Custom InputTypes
@@ -6733,6 +7109,138 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountArtworkAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ArtworkAssetWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountVisualizationTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationTemplateWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountVisualizationJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationProcessingJobWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountVisualizationAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationAssetWhereInput
+  }
+
+
+  /**
+   * Count Type VisualizationTemplateCountOutputType
+   */
+
+  export type VisualizationTemplateCountOutputType = {
+    jobs: number
+    assets: number
+  }
+
+  export type VisualizationTemplateCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    jobs?: boolean | VisualizationTemplateCountOutputTypeCountJobsArgs
+    assets?: boolean | VisualizationTemplateCountOutputTypeCountAssetsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * VisualizationTemplateCountOutputType without action
+   */
+  export type VisualizationTemplateCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplateCountOutputType
+     */
+    select?: VisualizationTemplateCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VisualizationTemplateCountOutputType without action
+   */
+  export type VisualizationTemplateCountOutputTypeCountJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationProcessingJobWhereInput
+  }
+
+  /**
+   * VisualizationTemplateCountOutputType without action
+   */
+  export type VisualizationTemplateCountOutputTypeCountAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationAssetWhereInput
+  }
+
+
+  /**
+   * Count Type VisualizationProcessingJobCountOutputType
+   */
+
+  export type VisualizationProcessingJobCountOutputType = {
+    assets: number
+    templatesCreated: number
+  }
+
+  export type VisualizationProcessingJobCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    assets?: boolean | VisualizationProcessingJobCountOutputTypeCountAssetsArgs
+    templatesCreated?: boolean | VisualizationProcessingJobCountOutputTypeCountTemplatesCreatedArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * VisualizationProcessingJobCountOutputType without action
+   */
+  export type VisualizationProcessingJobCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJobCountOutputType
+     */
+    select?: VisualizationProcessingJobCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VisualizationProcessingJobCountOutputType without action
+   */
+  export type VisualizationProcessingJobCountOutputTypeCountAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationAssetWhereInput
+  }
+
+  /**
+   * VisualizationProcessingJobCountOutputType without action
+   */
+  export type VisualizationProcessingJobCountOutputTypeCountTemplatesCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationTemplateWhereInput
+  }
+
+
+  /**
+   * Count Type VisualizationAssetCountOutputType
+   */
+
+  export type VisualizationAssetCountOutputType = {
+    sourceForJobs: number
+  }
+
+  export type VisualizationAssetCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sourceForJobs?: boolean | VisualizationAssetCountOutputTypeCountSourceForJobsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * VisualizationAssetCountOutputType without action
+   */
+  export type VisualizationAssetCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAssetCountOutputType
+     */
+    select?: VisualizationAssetCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VisualizationAssetCountOutputType without action
+   */
+  export type VisualizationAssetCountOutputTypeCountSourceForJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationProcessingJobWhereInput
   }
 
 
@@ -7554,6 +8062,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: boolean | User$uploadedVendorDocumentsArgs<ExtArgs>
     reviewedVendorDocuments?: boolean | User$reviewedVendorDocumentsArgs<ExtArgs>
     uploadedArtworkAssets?: boolean | User$uploadedArtworkAssetsArgs<ExtArgs>
+    visualizationTemplates?: boolean | User$visualizationTemplatesArgs<ExtArgs>
+    visualizationJobs?: boolean | User$visualizationJobsArgs<ExtArgs>
+    visualizationAssets?: boolean | User$visualizationAssetsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7628,6 +8139,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: boolean | User$uploadedVendorDocumentsArgs<ExtArgs>
     reviewedVendorDocuments?: boolean | User$reviewedVendorDocumentsArgs<ExtArgs>
     uploadedArtworkAssets?: boolean | User$uploadedArtworkAssetsArgs<ExtArgs>
+    visualizationTemplates?: boolean | User$visualizationTemplatesArgs<ExtArgs>
+    visualizationJobs?: boolean | User$visualizationJobsArgs<ExtArgs>
+    visualizationAssets?: boolean | User$visualizationAssetsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -7657,6 +8171,9 @@ export namespace Prisma {
       uploadedVendorDocuments: Prisma.$VendorDocumentPayload<ExtArgs>[]
       reviewedVendorDocuments: Prisma.$VendorDocumentPayload<ExtArgs>[]
       uploadedArtworkAssets: Prisma.$ArtworkAssetPayload<ExtArgs>[]
+      visualizationTemplates: Prisma.$VisualizationTemplatePayload<ExtArgs>[]
+      visualizationJobs: Prisma.$VisualizationProcessingJobPayload<ExtArgs>[]
+      visualizationAssets: Prisma.$VisualizationAssetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8087,6 +8604,9 @@ export namespace Prisma {
     uploadedVendorDocuments<T extends User$uploadedVendorDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$uploadedVendorDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VendorDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviewedVendorDocuments<T extends User$reviewedVendorDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewedVendorDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VendorDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     uploadedArtworkAssets<T extends User$uploadedArtworkAssetsArgs<ExtArgs> = {}>(args?: Subset<T, User$uploadedArtworkAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    visualizationTemplates<T extends User$visualizationTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, User$visualizationTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    visualizationJobs<T extends User$visualizationJobsArgs<ExtArgs> = {}>(args?: Subset<T, User$visualizationJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    visualizationAssets<T extends User$visualizationAssetsArgs<ExtArgs> = {}>(args?: Subset<T, User$visualizationAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9013,6 +9533,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ArtworkAssetScalarFieldEnum | ArtworkAssetScalarFieldEnum[]
+  }
+
+  /**
+   * User.visualizationTemplates
+   */
+  export type User$visualizationTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    where?: VisualizationTemplateWhereInput
+    orderBy?: VisualizationTemplateOrderByWithRelationInput | VisualizationTemplateOrderByWithRelationInput[]
+    cursor?: VisualizationTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationTemplateScalarFieldEnum | VisualizationTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * User.visualizationJobs
+   */
+  export type User$visualizationJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    where?: VisualizationProcessingJobWhereInput
+    orderBy?: VisualizationProcessingJobOrderByWithRelationInput | VisualizationProcessingJobOrderByWithRelationInput[]
+    cursor?: VisualizationProcessingJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationProcessingJobScalarFieldEnum | VisualizationProcessingJobScalarFieldEnum[]
+  }
+
+  /**
+   * User.visualizationAssets
+   */
+  export type User$visualizationAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    where?: VisualizationAssetWhereInput
+    orderBy?: VisualizationAssetOrderByWithRelationInput | VisualizationAssetOrderByWithRelationInput[]
+    cursor?: VisualizationAssetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationAssetScalarFieldEnum | VisualizationAssetScalarFieldEnum[]
   }
 
   /**
@@ -18415,6 +19007,9 @@ export namespace Prisma {
     bulkRequests?: boolean | Product$bulkRequestsArgs<ExtArgs>
     vendorCapabilities?: boolean | Product$vendorCapabilitiesArgs<ExtArgs>
     artworkAssets?: boolean | Product$artworkAssetsArgs<ExtArgs>
+    visualizationTemplates?: boolean | Product$visualizationTemplatesArgs<ExtArgs>
+    visualizationJobs?: boolean | Product$visualizationJobsArgs<ExtArgs>
+    visualizationAssets?: boolean | Product$visualizationAssetsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -18530,6 +19125,9 @@ export namespace Prisma {
     bulkRequests?: boolean | Product$bulkRequestsArgs<ExtArgs>
     vendorCapabilities?: boolean | Product$vendorCapabilitiesArgs<ExtArgs>
     artworkAssets?: boolean | Product$artworkAssetsArgs<ExtArgs>
+    visualizationTemplates?: boolean | Product$visualizationTemplatesArgs<ExtArgs>
+    visualizationJobs?: boolean | Product$visualizationJobsArgs<ExtArgs>
+    visualizationAssets?: boolean | Product$visualizationAssetsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18557,6 +19155,9 @@ export namespace Prisma {
       bulkRequests: Prisma.$BulkOrderRequestPayload<ExtArgs>[]
       vendorCapabilities: Prisma.$VendorCapabilityPayload<ExtArgs>[]
       artworkAssets: Prisma.$ArtworkAssetPayload<ExtArgs>[]
+      visualizationTemplates: Prisma.$VisualizationTemplatePayload<ExtArgs>[]
+      visualizationJobs: Prisma.$VisualizationProcessingJobPayload<ExtArgs>[]
+      visualizationAssets: Prisma.$VisualizationAssetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18996,6 +19597,9 @@ export namespace Prisma {
     bulkRequests<T extends Product$bulkRequestsArgs<ExtArgs> = {}>(args?: Subset<T, Product$bulkRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BulkOrderRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     vendorCapabilities<T extends Product$vendorCapabilitiesArgs<ExtArgs> = {}>(args?: Subset<T, Product$vendorCapabilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VendorCapabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     artworkAssets<T extends Product$artworkAssetsArgs<ExtArgs> = {}>(args?: Subset<T, Product$artworkAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtworkAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    visualizationTemplates<T extends Product$visualizationTemplatesArgs<ExtArgs> = {}>(args?: Subset<T, Product$visualizationTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    visualizationJobs<T extends Product$visualizationJobsArgs<ExtArgs> = {}>(args?: Subset<T, Product$visualizationJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    visualizationAssets<T extends Product$visualizationAssetsArgs<ExtArgs> = {}>(args?: Subset<T, Product$visualizationAssetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19787,6 +20391,78 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ArtworkAssetScalarFieldEnum | ArtworkAssetScalarFieldEnum[]
+  }
+
+  /**
+   * Product.visualizationTemplates
+   */
+  export type Product$visualizationTemplatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    where?: VisualizationTemplateWhereInput
+    orderBy?: VisualizationTemplateOrderByWithRelationInput | VisualizationTemplateOrderByWithRelationInput[]
+    cursor?: VisualizationTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationTemplateScalarFieldEnum | VisualizationTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * Product.visualizationJobs
+   */
+  export type Product$visualizationJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    where?: VisualizationProcessingJobWhereInput
+    orderBy?: VisualizationProcessingJobOrderByWithRelationInput | VisualizationProcessingJobOrderByWithRelationInput[]
+    cursor?: VisualizationProcessingJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationProcessingJobScalarFieldEnum | VisualizationProcessingJobScalarFieldEnum[]
+  }
+
+  /**
+   * Product.visualizationAssets
+   */
+  export type Product$visualizationAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    where?: VisualizationAssetWhereInput
+    orderBy?: VisualizationAssetOrderByWithRelationInput | VisualizationAssetOrderByWithRelationInput[]
+    cursor?: VisualizationAssetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationAssetScalarFieldEnum | VisualizationAssetScalarFieldEnum[]
   }
 
   /**
@@ -22191,6 +22867,4182 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ArtworkAssetInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model VisualizationTemplate
+   */
+
+  export type AggregateVisualizationTemplate = {
+    _count: VisualizationTemplateCountAggregateOutputType | null
+    _avg: VisualizationTemplateAvgAggregateOutputType | null
+    _sum: VisualizationTemplateSumAggregateOutputType | null
+    _min: VisualizationTemplateMinAggregateOutputType | null
+    _max: VisualizationTemplateMaxAggregateOutputType | null
+  }
+
+  export type VisualizationTemplateAvgAggregateOutputType = {
+    version: number | null
+  }
+
+  export type VisualizationTemplateSumAggregateOutputType = {
+    version: number | null
+  }
+
+  export type VisualizationTemplateMinAggregateOutputType = {
+    id: string | null
+    familyKey: string | null
+    version: number | null
+    productId: string | null
+    sourceJobId: string | null
+    createdById: string | null
+    name: string | null
+    slug: string | null
+    description: string | null
+    productType: string | null
+    status: $Enums.VisualizationTemplateStatus | null
+    publishedAt: Date | null
+    archivedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VisualizationTemplateMaxAggregateOutputType = {
+    id: string | null
+    familyKey: string | null
+    version: number | null
+    productId: string | null
+    sourceJobId: string | null
+    createdById: string | null
+    name: string | null
+    slug: string | null
+    description: string | null
+    productType: string | null
+    status: $Enums.VisualizationTemplateStatus | null
+    publishedAt: Date | null
+    archivedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VisualizationTemplateCountAggregateOutputType = {
+    id: number
+    familyKey: number
+    version: number
+    productId: number
+    sourceJobId: number
+    createdById: number
+    name: number
+    slug: number
+    description: number
+    productType: number
+    status: number
+    geometry: number
+    dimensions: number
+    surfaceMappings: number
+    materialSettings: number
+    previewCapabilities: number
+    manufacturingMetadata: number
+    publishedAt: number
+    archivedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type VisualizationTemplateAvgAggregateInputType = {
+    version?: true
+  }
+
+  export type VisualizationTemplateSumAggregateInputType = {
+    version?: true
+  }
+
+  export type VisualizationTemplateMinAggregateInputType = {
+    id?: true
+    familyKey?: true
+    version?: true
+    productId?: true
+    sourceJobId?: true
+    createdById?: true
+    name?: true
+    slug?: true
+    description?: true
+    productType?: true
+    status?: true
+    publishedAt?: true
+    archivedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VisualizationTemplateMaxAggregateInputType = {
+    id?: true
+    familyKey?: true
+    version?: true
+    productId?: true
+    sourceJobId?: true
+    createdById?: true
+    name?: true
+    slug?: true
+    description?: true
+    productType?: true
+    status?: true
+    publishedAt?: true
+    archivedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VisualizationTemplateCountAggregateInputType = {
+    id?: true
+    familyKey?: true
+    version?: true
+    productId?: true
+    sourceJobId?: true
+    createdById?: true
+    name?: true
+    slug?: true
+    description?: true
+    productType?: true
+    status?: true
+    geometry?: true
+    dimensions?: true
+    surfaceMappings?: true
+    materialSettings?: true
+    previewCapabilities?: true
+    manufacturingMetadata?: true
+    publishedAt?: true
+    archivedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type VisualizationTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VisualizationTemplate to aggregate.
+     */
+    where?: VisualizationTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationTemplates to fetch.
+     */
+    orderBy?: VisualizationTemplateOrderByWithRelationInput | VisualizationTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VisualizationTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VisualizationTemplates
+    **/
+    _count?: true | VisualizationTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: VisualizationTemplateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: VisualizationTemplateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VisualizationTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VisualizationTemplateMaxAggregateInputType
+  }
+
+  export type GetVisualizationTemplateAggregateType<T extends VisualizationTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateVisualizationTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVisualizationTemplate[P]>
+      : GetScalarType<T[P], AggregateVisualizationTemplate[P]>
+  }
+
+
+
+
+  export type VisualizationTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationTemplateWhereInput
+    orderBy?: VisualizationTemplateOrderByWithAggregationInput | VisualizationTemplateOrderByWithAggregationInput[]
+    by: VisualizationTemplateScalarFieldEnum[] | VisualizationTemplateScalarFieldEnum
+    having?: VisualizationTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VisualizationTemplateCountAggregateInputType | true
+    _avg?: VisualizationTemplateAvgAggregateInputType
+    _sum?: VisualizationTemplateSumAggregateInputType
+    _min?: VisualizationTemplateMinAggregateInputType
+    _max?: VisualizationTemplateMaxAggregateInputType
+  }
+
+  export type VisualizationTemplateGroupByOutputType = {
+    id: string
+    familyKey: string
+    version: number
+    productId: string | null
+    sourceJobId: string | null
+    createdById: string
+    name: string
+    slug: string
+    description: string | null
+    productType: string
+    status: $Enums.VisualizationTemplateStatus
+    geometry: JsonValue
+    dimensions: JsonValue
+    surfaceMappings: JsonValue
+    materialSettings: JsonValue | null
+    previewCapabilities: JsonValue | null
+    manufacturingMetadata: JsonValue | null
+    publishedAt: Date | null
+    archivedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: VisualizationTemplateCountAggregateOutputType | null
+    _avg: VisualizationTemplateAvgAggregateOutputType | null
+    _sum: VisualizationTemplateSumAggregateOutputType | null
+    _min: VisualizationTemplateMinAggregateOutputType | null
+    _max: VisualizationTemplateMaxAggregateOutputType | null
+  }
+
+  type GetVisualizationTemplateGroupByPayload<T extends VisualizationTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VisualizationTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VisualizationTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VisualizationTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], VisualizationTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VisualizationTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    familyKey?: boolean
+    version?: boolean
+    productId?: boolean
+    sourceJobId?: boolean
+    createdById?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    productType?: boolean
+    status?: boolean
+    geometry?: boolean
+    dimensions?: boolean
+    surfaceMappings?: boolean
+    materialSettings?: boolean
+    previewCapabilities?: boolean
+    manufacturingMetadata?: boolean
+    publishedAt?: boolean
+    archivedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | VisualizationTemplate$productArgs<ExtArgs>
+    sourceJob?: boolean | VisualizationTemplate$sourceJobArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    jobs?: boolean | VisualizationTemplate$jobsArgs<ExtArgs>
+    assets?: boolean | VisualizationTemplate$assetsArgs<ExtArgs>
+    _count?: boolean | VisualizationTemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["visualizationTemplate"]>
+
+  export type VisualizationTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    familyKey?: boolean
+    version?: boolean
+    productId?: boolean
+    sourceJobId?: boolean
+    createdById?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    productType?: boolean
+    status?: boolean
+    geometry?: boolean
+    dimensions?: boolean
+    surfaceMappings?: boolean
+    materialSettings?: boolean
+    previewCapabilities?: boolean
+    manufacturingMetadata?: boolean
+    publishedAt?: boolean
+    archivedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | VisualizationTemplate$productArgs<ExtArgs>
+    sourceJob?: boolean | VisualizationTemplate$sourceJobArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["visualizationTemplate"]>
+
+  export type VisualizationTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    familyKey?: boolean
+    version?: boolean
+    productId?: boolean
+    sourceJobId?: boolean
+    createdById?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    productType?: boolean
+    status?: boolean
+    geometry?: boolean
+    dimensions?: boolean
+    surfaceMappings?: boolean
+    materialSettings?: boolean
+    previewCapabilities?: boolean
+    manufacturingMetadata?: boolean
+    publishedAt?: boolean
+    archivedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | VisualizationTemplate$productArgs<ExtArgs>
+    sourceJob?: boolean | VisualizationTemplate$sourceJobArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["visualizationTemplate"]>
+
+  export type VisualizationTemplateSelectScalar = {
+    id?: boolean
+    familyKey?: boolean
+    version?: boolean
+    productId?: boolean
+    sourceJobId?: boolean
+    createdById?: boolean
+    name?: boolean
+    slug?: boolean
+    description?: boolean
+    productType?: boolean
+    status?: boolean
+    geometry?: boolean
+    dimensions?: boolean
+    surfaceMappings?: boolean
+    materialSettings?: boolean
+    previewCapabilities?: boolean
+    manufacturingMetadata?: boolean
+    publishedAt?: boolean
+    archivedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type VisualizationTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "familyKey" | "version" | "productId" | "sourceJobId" | "createdById" | "name" | "slug" | "description" | "productType" | "status" | "geometry" | "dimensions" | "surfaceMappings" | "materialSettings" | "previewCapabilities" | "manufacturingMetadata" | "publishedAt" | "archivedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["visualizationTemplate"]>
+  export type VisualizationTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | VisualizationTemplate$productArgs<ExtArgs>
+    sourceJob?: boolean | VisualizationTemplate$sourceJobArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+    jobs?: boolean | VisualizationTemplate$jobsArgs<ExtArgs>
+    assets?: boolean | VisualizationTemplate$assetsArgs<ExtArgs>
+    _count?: boolean | VisualizationTemplateCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type VisualizationTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | VisualizationTemplate$productArgs<ExtArgs>
+    sourceJob?: boolean | VisualizationTemplate$sourceJobArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type VisualizationTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | VisualizationTemplate$productArgs<ExtArgs>
+    sourceJob?: boolean | VisualizationTemplate$sourceJobArgs<ExtArgs>
+    createdBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $VisualizationTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VisualizationTemplate"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs> | null
+      sourceJob: Prisma.$VisualizationProcessingJobPayload<ExtArgs> | null
+      createdBy: Prisma.$UserPayload<ExtArgs>
+      jobs: Prisma.$VisualizationProcessingJobPayload<ExtArgs>[]
+      assets: Prisma.$VisualizationAssetPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      familyKey: string
+      version: number
+      productId: string | null
+      sourceJobId: string | null
+      createdById: string
+      name: string
+      slug: string
+      description: string | null
+      productType: string
+      status: $Enums.VisualizationTemplateStatus
+      geometry: Prisma.JsonValue
+      dimensions: Prisma.JsonValue
+      surfaceMappings: Prisma.JsonValue
+      materialSettings: Prisma.JsonValue | null
+      previewCapabilities: Prisma.JsonValue | null
+      manufacturingMetadata: Prisma.JsonValue | null
+      publishedAt: Date | null
+      archivedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["visualizationTemplate"]>
+    composites: {}
+  }
+
+  type VisualizationTemplateGetPayload<S extends boolean | null | undefined | VisualizationTemplateDefaultArgs> = $Result.GetResult<Prisma.$VisualizationTemplatePayload, S>
+
+  type VisualizationTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VisualizationTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VisualizationTemplateCountAggregateInputType | true
+    }
+
+  export interface VisualizationTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VisualizationTemplate'], meta: { name: 'VisualizationTemplate' } }
+    /**
+     * Find zero or one VisualizationTemplate that matches the filter.
+     * @param {VisualizationTemplateFindUniqueArgs} args - Arguments to find a VisualizationTemplate
+     * @example
+     * // Get one VisualizationTemplate
+     * const visualizationTemplate = await prisma.visualizationTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VisualizationTemplateFindUniqueArgs>(args: SelectSubset<T, VisualizationTemplateFindUniqueArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one VisualizationTemplate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VisualizationTemplateFindUniqueOrThrowArgs} args - Arguments to find a VisualizationTemplate
+     * @example
+     * // Get one VisualizationTemplate
+     * const visualizationTemplate = await prisma.visualizationTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VisualizationTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, VisualizationTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VisualizationTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationTemplateFindFirstArgs} args - Arguments to find a VisualizationTemplate
+     * @example
+     * // Get one VisualizationTemplate
+     * const visualizationTemplate = await prisma.visualizationTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VisualizationTemplateFindFirstArgs>(args?: SelectSubset<T, VisualizationTemplateFindFirstArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VisualizationTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationTemplateFindFirstOrThrowArgs} args - Arguments to find a VisualizationTemplate
+     * @example
+     * // Get one VisualizationTemplate
+     * const visualizationTemplate = await prisma.visualizationTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VisualizationTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, VisualizationTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more VisualizationTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VisualizationTemplates
+     * const visualizationTemplates = await prisma.visualizationTemplate.findMany()
+     * 
+     * // Get first 10 VisualizationTemplates
+     * const visualizationTemplates = await prisma.visualizationTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const visualizationTemplateWithIdOnly = await prisma.visualizationTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VisualizationTemplateFindManyArgs>(args?: SelectSubset<T, VisualizationTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a VisualizationTemplate.
+     * @param {VisualizationTemplateCreateArgs} args - Arguments to create a VisualizationTemplate.
+     * @example
+     * // Create one VisualizationTemplate
+     * const VisualizationTemplate = await prisma.visualizationTemplate.create({
+     *   data: {
+     *     // ... data to create a VisualizationTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends VisualizationTemplateCreateArgs>(args: SelectSubset<T, VisualizationTemplateCreateArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many VisualizationTemplates.
+     * @param {VisualizationTemplateCreateManyArgs} args - Arguments to create many VisualizationTemplates.
+     * @example
+     * // Create many VisualizationTemplates
+     * const visualizationTemplate = await prisma.visualizationTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VisualizationTemplateCreateManyArgs>(args?: SelectSubset<T, VisualizationTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VisualizationTemplates and returns the data saved in the database.
+     * @param {VisualizationTemplateCreateManyAndReturnArgs} args - Arguments to create many VisualizationTemplates.
+     * @example
+     * // Create many VisualizationTemplates
+     * const visualizationTemplate = await prisma.visualizationTemplate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VisualizationTemplates and only return the `id`
+     * const visualizationTemplateWithIdOnly = await prisma.visualizationTemplate.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VisualizationTemplateCreateManyAndReturnArgs>(args?: SelectSubset<T, VisualizationTemplateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a VisualizationTemplate.
+     * @param {VisualizationTemplateDeleteArgs} args - Arguments to delete one VisualizationTemplate.
+     * @example
+     * // Delete one VisualizationTemplate
+     * const VisualizationTemplate = await prisma.visualizationTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one VisualizationTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VisualizationTemplateDeleteArgs>(args: SelectSubset<T, VisualizationTemplateDeleteArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one VisualizationTemplate.
+     * @param {VisualizationTemplateUpdateArgs} args - Arguments to update one VisualizationTemplate.
+     * @example
+     * // Update one VisualizationTemplate
+     * const visualizationTemplate = await prisma.visualizationTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VisualizationTemplateUpdateArgs>(args: SelectSubset<T, VisualizationTemplateUpdateArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more VisualizationTemplates.
+     * @param {VisualizationTemplateDeleteManyArgs} args - Arguments to filter VisualizationTemplates to delete.
+     * @example
+     * // Delete a few VisualizationTemplates
+     * const { count } = await prisma.visualizationTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VisualizationTemplateDeleteManyArgs>(args?: SelectSubset<T, VisualizationTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VisualizationTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VisualizationTemplates
+     * const visualizationTemplate = await prisma.visualizationTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VisualizationTemplateUpdateManyArgs>(args: SelectSubset<T, VisualizationTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VisualizationTemplates and returns the data updated in the database.
+     * @param {VisualizationTemplateUpdateManyAndReturnArgs} args - Arguments to update many VisualizationTemplates.
+     * @example
+     * // Update many VisualizationTemplates
+     * const visualizationTemplate = await prisma.visualizationTemplate.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more VisualizationTemplates and only return the `id`
+     * const visualizationTemplateWithIdOnly = await prisma.visualizationTemplate.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VisualizationTemplateUpdateManyAndReturnArgs>(args: SelectSubset<T, VisualizationTemplateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one VisualizationTemplate.
+     * @param {VisualizationTemplateUpsertArgs} args - Arguments to update or create a VisualizationTemplate.
+     * @example
+     * // Update or create a VisualizationTemplate
+     * const visualizationTemplate = await prisma.visualizationTemplate.upsert({
+     *   create: {
+     *     // ... data to create a VisualizationTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VisualizationTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VisualizationTemplateUpsertArgs>(args: SelectSubset<T, VisualizationTemplateUpsertArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of VisualizationTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationTemplateCountArgs} args - Arguments to filter VisualizationTemplates to count.
+     * @example
+     * // Count the number of VisualizationTemplates
+     * const count = await prisma.visualizationTemplate.count({
+     *   where: {
+     *     // ... the filter for the VisualizationTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends VisualizationTemplateCountArgs>(
+      args?: Subset<T, VisualizationTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VisualizationTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VisualizationTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VisualizationTemplateAggregateArgs>(args: Subset<T, VisualizationTemplateAggregateArgs>): Prisma.PrismaPromise<GetVisualizationTemplateAggregateType<T>>
+
+    /**
+     * Group by VisualizationTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VisualizationTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VisualizationTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: VisualizationTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VisualizationTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVisualizationTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VisualizationTemplate model
+   */
+  readonly fields: VisualizationTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VisualizationTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VisualizationTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends VisualizationTemplate$productArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationTemplate$productArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    sourceJob<T extends VisualizationTemplate$sourceJobArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationTemplate$sourceJobArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    jobs<T extends VisualizationTemplate$jobsArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationTemplate$jobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    assets<T extends VisualizationTemplate$assetsArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationTemplate$assetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VisualizationTemplate model
+   */
+  interface VisualizationTemplateFieldRefs {
+    readonly id: FieldRef<"VisualizationTemplate", 'String'>
+    readonly familyKey: FieldRef<"VisualizationTemplate", 'String'>
+    readonly version: FieldRef<"VisualizationTemplate", 'Int'>
+    readonly productId: FieldRef<"VisualizationTemplate", 'String'>
+    readonly sourceJobId: FieldRef<"VisualizationTemplate", 'String'>
+    readonly createdById: FieldRef<"VisualizationTemplate", 'String'>
+    readonly name: FieldRef<"VisualizationTemplate", 'String'>
+    readonly slug: FieldRef<"VisualizationTemplate", 'String'>
+    readonly description: FieldRef<"VisualizationTemplate", 'String'>
+    readonly productType: FieldRef<"VisualizationTemplate", 'String'>
+    readonly status: FieldRef<"VisualizationTemplate", 'VisualizationTemplateStatus'>
+    readonly geometry: FieldRef<"VisualizationTemplate", 'Json'>
+    readonly dimensions: FieldRef<"VisualizationTemplate", 'Json'>
+    readonly surfaceMappings: FieldRef<"VisualizationTemplate", 'Json'>
+    readonly materialSettings: FieldRef<"VisualizationTemplate", 'Json'>
+    readonly previewCapabilities: FieldRef<"VisualizationTemplate", 'Json'>
+    readonly manufacturingMetadata: FieldRef<"VisualizationTemplate", 'Json'>
+    readonly publishedAt: FieldRef<"VisualizationTemplate", 'DateTime'>
+    readonly archivedAt: FieldRef<"VisualizationTemplate", 'DateTime'>
+    readonly createdAt: FieldRef<"VisualizationTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"VisualizationTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VisualizationTemplate findUnique
+   */
+  export type VisualizationTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationTemplate to fetch.
+     */
+    where: VisualizationTemplateWhereUniqueInput
+  }
+
+  /**
+   * VisualizationTemplate findUniqueOrThrow
+   */
+  export type VisualizationTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationTemplate to fetch.
+     */
+    where: VisualizationTemplateWhereUniqueInput
+  }
+
+  /**
+   * VisualizationTemplate findFirst
+   */
+  export type VisualizationTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationTemplate to fetch.
+     */
+    where?: VisualizationTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationTemplates to fetch.
+     */
+    orderBy?: VisualizationTemplateOrderByWithRelationInput | VisualizationTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VisualizationTemplates.
+     */
+    cursor?: VisualizationTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VisualizationTemplates.
+     */
+    distinct?: VisualizationTemplateScalarFieldEnum | VisualizationTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationTemplate findFirstOrThrow
+   */
+  export type VisualizationTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationTemplate to fetch.
+     */
+    where?: VisualizationTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationTemplates to fetch.
+     */
+    orderBy?: VisualizationTemplateOrderByWithRelationInput | VisualizationTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VisualizationTemplates.
+     */
+    cursor?: VisualizationTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VisualizationTemplates.
+     */
+    distinct?: VisualizationTemplateScalarFieldEnum | VisualizationTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationTemplate findMany
+   */
+  export type VisualizationTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationTemplates to fetch.
+     */
+    where?: VisualizationTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationTemplates to fetch.
+     */
+    orderBy?: VisualizationTemplateOrderByWithRelationInput | VisualizationTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VisualizationTemplates.
+     */
+    cursor?: VisualizationTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VisualizationTemplates.
+     */
+    distinct?: VisualizationTemplateScalarFieldEnum | VisualizationTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationTemplate create
+   */
+  export type VisualizationTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to create a VisualizationTemplate.
+     */
+    data: XOR<VisualizationTemplateCreateInput, VisualizationTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * VisualizationTemplate createMany
+   */
+  export type VisualizationTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VisualizationTemplates.
+     */
+    data: VisualizationTemplateCreateManyInput | VisualizationTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VisualizationTemplate createManyAndReturn
+   */
+  export type VisualizationTemplateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to create many VisualizationTemplates.
+     */
+    data: VisualizationTemplateCreateManyInput | VisualizationTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VisualizationTemplate update
+   */
+  export type VisualizationTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    /**
+     * The data needed to update a VisualizationTemplate.
+     */
+    data: XOR<VisualizationTemplateUpdateInput, VisualizationTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which VisualizationTemplate to update.
+     */
+    where: VisualizationTemplateWhereUniqueInput
+  }
+
+  /**
+   * VisualizationTemplate updateMany
+   */
+  export type VisualizationTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VisualizationTemplates.
+     */
+    data: XOR<VisualizationTemplateUpdateManyMutationInput, VisualizationTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which VisualizationTemplates to update
+     */
+    where?: VisualizationTemplateWhereInput
+    /**
+     * Limit how many VisualizationTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VisualizationTemplate updateManyAndReturn
+   */
+  export type VisualizationTemplateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * The data used to update VisualizationTemplates.
+     */
+    data: XOR<VisualizationTemplateUpdateManyMutationInput, VisualizationTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which VisualizationTemplates to update
+     */
+    where?: VisualizationTemplateWhereInput
+    /**
+     * Limit how many VisualizationTemplates to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VisualizationTemplate upsert
+   */
+  export type VisualizationTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    /**
+     * The filter to search for the VisualizationTemplate to update in case it exists.
+     */
+    where: VisualizationTemplateWhereUniqueInput
+    /**
+     * In case the VisualizationTemplate found by the `where` argument doesn't exist, create a new VisualizationTemplate with this data.
+     */
+    create: XOR<VisualizationTemplateCreateInput, VisualizationTemplateUncheckedCreateInput>
+    /**
+     * In case the VisualizationTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VisualizationTemplateUpdateInput, VisualizationTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * VisualizationTemplate delete
+   */
+  export type VisualizationTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    /**
+     * Filter which VisualizationTemplate to delete.
+     */
+    where: VisualizationTemplateWhereUniqueInput
+  }
+
+  /**
+   * VisualizationTemplate deleteMany
+   */
+  export type VisualizationTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VisualizationTemplates to delete
+     */
+    where?: VisualizationTemplateWhereInput
+    /**
+     * Limit how many VisualizationTemplates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * VisualizationTemplate.product
+   */
+  export type VisualizationTemplate$productArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
+  }
+
+  /**
+   * VisualizationTemplate.sourceJob
+   */
+  export type VisualizationTemplate$sourceJobArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    where?: VisualizationProcessingJobWhereInput
+  }
+
+  /**
+   * VisualizationTemplate.jobs
+   */
+  export type VisualizationTemplate$jobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    where?: VisualizationProcessingJobWhereInput
+    orderBy?: VisualizationProcessingJobOrderByWithRelationInput | VisualizationProcessingJobOrderByWithRelationInput[]
+    cursor?: VisualizationProcessingJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationProcessingJobScalarFieldEnum | VisualizationProcessingJobScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationTemplate.assets
+   */
+  export type VisualizationTemplate$assetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    where?: VisualizationAssetWhereInput
+    orderBy?: VisualizationAssetOrderByWithRelationInput | VisualizationAssetOrderByWithRelationInput[]
+    cursor?: VisualizationAssetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationAssetScalarFieldEnum | VisualizationAssetScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationTemplate without action
+   */
+  export type VisualizationTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model VisualizationProcessingJob
+   */
+
+  export type AggregateVisualizationProcessingJob = {
+    _count: VisualizationProcessingJobCountAggregateOutputType | null
+    _avg: VisualizationProcessingJobAvgAggregateOutputType | null
+    _sum: VisualizationProcessingJobSumAggregateOutputType | null
+    _min: VisualizationProcessingJobMinAggregateOutputType | null
+    _max: VisualizationProcessingJobMaxAggregateOutputType | null
+  }
+
+  export type VisualizationProcessingJobAvgAggregateOutputType = {
+    attempt: number | null
+    maxAttempts: number | null
+  }
+
+  export type VisualizationProcessingJobSumAggregateOutputType = {
+    attempt: number | null
+    maxAttempts: number | null
+  }
+
+  export type VisualizationProcessingJobMinAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    sourceAssetId: string | null
+    templateId: string | null
+    requestedById: string | null
+    status: $Enums.VisualizationJobStatus | null
+    analysisMode: $Enums.VisualizationAnalysisMode | null
+    attempt: number | null
+    maxAttempts: number | null
+    providerName: string | null
+    providerRequestId: string | null
+    errorCode: string | null
+    errorMessage: string | null
+    nextAttemptAt: Date | null
+    lastAttemptAt: Date | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VisualizationProcessingJobMaxAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    sourceAssetId: string | null
+    templateId: string | null
+    requestedById: string | null
+    status: $Enums.VisualizationJobStatus | null
+    analysisMode: $Enums.VisualizationAnalysisMode | null
+    attempt: number | null
+    maxAttempts: number | null
+    providerName: string | null
+    providerRequestId: string | null
+    errorCode: string | null
+    errorMessage: string | null
+    nextAttemptAt: Date | null
+    lastAttemptAt: Date | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VisualizationProcessingJobCountAggregateOutputType = {
+    id: number
+    productId: number
+    sourceAssetId: number
+    templateId: number
+    requestedById: number
+    status: number
+    analysisMode: number
+    attempt: number
+    maxAttempts: number
+    providerName: number
+    providerRequestId: number
+    analysisResult: number
+    confirmation: number
+    errorCode: number
+    errorMessage: number
+    nextAttemptAt: number
+    lastAttemptAt: number
+    startedAt: number
+    completedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type VisualizationProcessingJobAvgAggregateInputType = {
+    attempt?: true
+    maxAttempts?: true
+  }
+
+  export type VisualizationProcessingJobSumAggregateInputType = {
+    attempt?: true
+    maxAttempts?: true
+  }
+
+  export type VisualizationProcessingJobMinAggregateInputType = {
+    id?: true
+    productId?: true
+    sourceAssetId?: true
+    templateId?: true
+    requestedById?: true
+    status?: true
+    analysisMode?: true
+    attempt?: true
+    maxAttempts?: true
+    providerName?: true
+    providerRequestId?: true
+    errorCode?: true
+    errorMessage?: true
+    nextAttemptAt?: true
+    lastAttemptAt?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VisualizationProcessingJobMaxAggregateInputType = {
+    id?: true
+    productId?: true
+    sourceAssetId?: true
+    templateId?: true
+    requestedById?: true
+    status?: true
+    analysisMode?: true
+    attempt?: true
+    maxAttempts?: true
+    providerName?: true
+    providerRequestId?: true
+    errorCode?: true
+    errorMessage?: true
+    nextAttemptAt?: true
+    lastAttemptAt?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VisualizationProcessingJobCountAggregateInputType = {
+    id?: true
+    productId?: true
+    sourceAssetId?: true
+    templateId?: true
+    requestedById?: true
+    status?: true
+    analysisMode?: true
+    attempt?: true
+    maxAttempts?: true
+    providerName?: true
+    providerRequestId?: true
+    analysisResult?: true
+    confirmation?: true
+    errorCode?: true
+    errorMessage?: true
+    nextAttemptAt?: true
+    lastAttemptAt?: true
+    startedAt?: true
+    completedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type VisualizationProcessingJobAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VisualizationProcessingJob to aggregate.
+     */
+    where?: VisualizationProcessingJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationProcessingJobs to fetch.
+     */
+    orderBy?: VisualizationProcessingJobOrderByWithRelationInput | VisualizationProcessingJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VisualizationProcessingJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationProcessingJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationProcessingJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VisualizationProcessingJobs
+    **/
+    _count?: true | VisualizationProcessingJobCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: VisualizationProcessingJobAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: VisualizationProcessingJobSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VisualizationProcessingJobMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VisualizationProcessingJobMaxAggregateInputType
+  }
+
+  export type GetVisualizationProcessingJobAggregateType<T extends VisualizationProcessingJobAggregateArgs> = {
+        [P in keyof T & keyof AggregateVisualizationProcessingJob]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVisualizationProcessingJob[P]>
+      : GetScalarType<T[P], AggregateVisualizationProcessingJob[P]>
+  }
+
+
+
+
+  export type VisualizationProcessingJobGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationProcessingJobWhereInput
+    orderBy?: VisualizationProcessingJobOrderByWithAggregationInput | VisualizationProcessingJobOrderByWithAggregationInput[]
+    by: VisualizationProcessingJobScalarFieldEnum[] | VisualizationProcessingJobScalarFieldEnum
+    having?: VisualizationProcessingJobScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VisualizationProcessingJobCountAggregateInputType | true
+    _avg?: VisualizationProcessingJobAvgAggregateInputType
+    _sum?: VisualizationProcessingJobSumAggregateInputType
+    _min?: VisualizationProcessingJobMinAggregateInputType
+    _max?: VisualizationProcessingJobMaxAggregateInputType
+  }
+
+  export type VisualizationProcessingJobGroupByOutputType = {
+    id: string
+    productId: string
+    sourceAssetId: string
+    templateId: string | null
+    requestedById: string
+    status: $Enums.VisualizationJobStatus
+    analysisMode: $Enums.VisualizationAnalysisMode
+    attempt: number
+    maxAttempts: number
+    providerName: string | null
+    providerRequestId: string | null
+    analysisResult: JsonValue | null
+    confirmation: JsonValue | null
+    errorCode: string | null
+    errorMessage: string | null
+    nextAttemptAt: Date | null
+    lastAttemptAt: Date | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: VisualizationProcessingJobCountAggregateOutputType | null
+    _avg: VisualizationProcessingJobAvgAggregateOutputType | null
+    _sum: VisualizationProcessingJobSumAggregateOutputType | null
+    _min: VisualizationProcessingJobMinAggregateOutputType | null
+    _max: VisualizationProcessingJobMaxAggregateOutputType | null
+  }
+
+  type GetVisualizationProcessingJobGroupByPayload<T extends VisualizationProcessingJobGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VisualizationProcessingJobGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VisualizationProcessingJobGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VisualizationProcessingJobGroupByOutputType[P]>
+            : GetScalarType<T[P], VisualizationProcessingJobGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VisualizationProcessingJobSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    sourceAssetId?: boolean
+    templateId?: boolean
+    requestedById?: boolean
+    status?: boolean
+    analysisMode?: boolean
+    attempt?: boolean
+    maxAttempts?: boolean
+    providerName?: boolean
+    providerRequestId?: boolean
+    analysisResult?: boolean
+    confirmation?: boolean
+    errorCode?: boolean
+    errorMessage?: boolean
+    nextAttemptAt?: boolean
+    lastAttemptAt?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    sourceAsset?: boolean | VisualizationAssetDefaultArgs<ExtArgs>
+    template?: boolean | VisualizationProcessingJob$templateArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    assets?: boolean | VisualizationProcessingJob$assetsArgs<ExtArgs>
+    templatesCreated?: boolean | VisualizationProcessingJob$templatesCreatedArgs<ExtArgs>
+    _count?: boolean | VisualizationProcessingJobCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["visualizationProcessingJob"]>
+
+  export type VisualizationProcessingJobSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    sourceAssetId?: boolean
+    templateId?: boolean
+    requestedById?: boolean
+    status?: boolean
+    analysisMode?: boolean
+    attempt?: boolean
+    maxAttempts?: boolean
+    providerName?: boolean
+    providerRequestId?: boolean
+    analysisResult?: boolean
+    confirmation?: boolean
+    errorCode?: boolean
+    errorMessage?: boolean
+    nextAttemptAt?: boolean
+    lastAttemptAt?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    sourceAsset?: boolean | VisualizationAssetDefaultArgs<ExtArgs>
+    template?: boolean | VisualizationProcessingJob$templateArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["visualizationProcessingJob"]>
+
+  export type VisualizationProcessingJobSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    sourceAssetId?: boolean
+    templateId?: boolean
+    requestedById?: boolean
+    status?: boolean
+    analysisMode?: boolean
+    attempt?: boolean
+    maxAttempts?: boolean
+    providerName?: boolean
+    providerRequestId?: boolean
+    analysisResult?: boolean
+    confirmation?: boolean
+    errorCode?: boolean
+    errorMessage?: boolean
+    nextAttemptAt?: boolean
+    lastAttemptAt?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    sourceAsset?: boolean | VisualizationAssetDefaultArgs<ExtArgs>
+    template?: boolean | VisualizationProcessingJob$templateArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["visualizationProcessingJob"]>
+
+  export type VisualizationProcessingJobSelectScalar = {
+    id?: boolean
+    productId?: boolean
+    sourceAssetId?: boolean
+    templateId?: boolean
+    requestedById?: boolean
+    status?: boolean
+    analysisMode?: boolean
+    attempt?: boolean
+    maxAttempts?: boolean
+    providerName?: boolean
+    providerRequestId?: boolean
+    analysisResult?: boolean
+    confirmation?: boolean
+    errorCode?: boolean
+    errorMessage?: boolean
+    nextAttemptAt?: boolean
+    lastAttemptAt?: boolean
+    startedAt?: boolean
+    completedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type VisualizationProcessingJobOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "sourceAssetId" | "templateId" | "requestedById" | "status" | "analysisMode" | "attempt" | "maxAttempts" | "providerName" | "providerRequestId" | "analysisResult" | "confirmation" | "errorCode" | "errorMessage" | "nextAttemptAt" | "lastAttemptAt" | "startedAt" | "completedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["visualizationProcessingJob"]>
+  export type VisualizationProcessingJobInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    sourceAsset?: boolean | VisualizationAssetDefaultArgs<ExtArgs>
+    template?: boolean | VisualizationProcessingJob$templateArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+    assets?: boolean | VisualizationProcessingJob$assetsArgs<ExtArgs>
+    templatesCreated?: boolean | VisualizationProcessingJob$templatesCreatedArgs<ExtArgs>
+    _count?: boolean | VisualizationProcessingJobCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type VisualizationProcessingJobIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    sourceAsset?: boolean | VisualizationAssetDefaultArgs<ExtArgs>
+    template?: boolean | VisualizationProcessingJob$templateArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type VisualizationProcessingJobIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    sourceAsset?: boolean | VisualizationAssetDefaultArgs<ExtArgs>
+    template?: boolean | VisualizationProcessingJob$templateArgs<ExtArgs>
+    requestedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $VisualizationProcessingJobPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VisualizationProcessingJob"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs>
+      sourceAsset: Prisma.$VisualizationAssetPayload<ExtArgs>
+      template: Prisma.$VisualizationTemplatePayload<ExtArgs> | null
+      requestedBy: Prisma.$UserPayload<ExtArgs>
+      assets: Prisma.$VisualizationAssetPayload<ExtArgs>[]
+      templatesCreated: Prisma.$VisualizationTemplatePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      productId: string
+      sourceAssetId: string
+      templateId: string | null
+      requestedById: string
+      status: $Enums.VisualizationJobStatus
+      analysisMode: $Enums.VisualizationAnalysisMode
+      attempt: number
+      maxAttempts: number
+      providerName: string | null
+      providerRequestId: string | null
+      analysisResult: Prisma.JsonValue | null
+      confirmation: Prisma.JsonValue | null
+      errorCode: string | null
+      errorMessage: string | null
+      nextAttemptAt: Date | null
+      lastAttemptAt: Date | null
+      startedAt: Date | null
+      completedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["visualizationProcessingJob"]>
+    composites: {}
+  }
+
+  type VisualizationProcessingJobGetPayload<S extends boolean | null | undefined | VisualizationProcessingJobDefaultArgs> = $Result.GetResult<Prisma.$VisualizationProcessingJobPayload, S>
+
+  type VisualizationProcessingJobCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VisualizationProcessingJobFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VisualizationProcessingJobCountAggregateInputType | true
+    }
+
+  export interface VisualizationProcessingJobDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VisualizationProcessingJob'], meta: { name: 'VisualizationProcessingJob' } }
+    /**
+     * Find zero or one VisualizationProcessingJob that matches the filter.
+     * @param {VisualizationProcessingJobFindUniqueArgs} args - Arguments to find a VisualizationProcessingJob
+     * @example
+     * // Get one VisualizationProcessingJob
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VisualizationProcessingJobFindUniqueArgs>(args: SelectSubset<T, VisualizationProcessingJobFindUniqueArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one VisualizationProcessingJob that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VisualizationProcessingJobFindUniqueOrThrowArgs} args - Arguments to find a VisualizationProcessingJob
+     * @example
+     * // Get one VisualizationProcessingJob
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VisualizationProcessingJobFindUniqueOrThrowArgs>(args: SelectSubset<T, VisualizationProcessingJobFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VisualizationProcessingJob that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationProcessingJobFindFirstArgs} args - Arguments to find a VisualizationProcessingJob
+     * @example
+     * // Get one VisualizationProcessingJob
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VisualizationProcessingJobFindFirstArgs>(args?: SelectSubset<T, VisualizationProcessingJobFindFirstArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VisualizationProcessingJob that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationProcessingJobFindFirstOrThrowArgs} args - Arguments to find a VisualizationProcessingJob
+     * @example
+     * // Get one VisualizationProcessingJob
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VisualizationProcessingJobFindFirstOrThrowArgs>(args?: SelectSubset<T, VisualizationProcessingJobFindFirstOrThrowArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more VisualizationProcessingJobs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationProcessingJobFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VisualizationProcessingJobs
+     * const visualizationProcessingJobs = await prisma.visualizationProcessingJob.findMany()
+     * 
+     * // Get first 10 VisualizationProcessingJobs
+     * const visualizationProcessingJobs = await prisma.visualizationProcessingJob.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const visualizationProcessingJobWithIdOnly = await prisma.visualizationProcessingJob.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VisualizationProcessingJobFindManyArgs>(args?: SelectSubset<T, VisualizationProcessingJobFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a VisualizationProcessingJob.
+     * @param {VisualizationProcessingJobCreateArgs} args - Arguments to create a VisualizationProcessingJob.
+     * @example
+     * // Create one VisualizationProcessingJob
+     * const VisualizationProcessingJob = await prisma.visualizationProcessingJob.create({
+     *   data: {
+     *     // ... data to create a VisualizationProcessingJob
+     *   }
+     * })
+     * 
+     */
+    create<T extends VisualizationProcessingJobCreateArgs>(args: SelectSubset<T, VisualizationProcessingJobCreateArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many VisualizationProcessingJobs.
+     * @param {VisualizationProcessingJobCreateManyArgs} args - Arguments to create many VisualizationProcessingJobs.
+     * @example
+     * // Create many VisualizationProcessingJobs
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VisualizationProcessingJobCreateManyArgs>(args?: SelectSubset<T, VisualizationProcessingJobCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VisualizationProcessingJobs and returns the data saved in the database.
+     * @param {VisualizationProcessingJobCreateManyAndReturnArgs} args - Arguments to create many VisualizationProcessingJobs.
+     * @example
+     * // Create many VisualizationProcessingJobs
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VisualizationProcessingJobs and only return the `id`
+     * const visualizationProcessingJobWithIdOnly = await prisma.visualizationProcessingJob.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VisualizationProcessingJobCreateManyAndReturnArgs>(args?: SelectSubset<T, VisualizationProcessingJobCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a VisualizationProcessingJob.
+     * @param {VisualizationProcessingJobDeleteArgs} args - Arguments to delete one VisualizationProcessingJob.
+     * @example
+     * // Delete one VisualizationProcessingJob
+     * const VisualizationProcessingJob = await prisma.visualizationProcessingJob.delete({
+     *   where: {
+     *     // ... filter to delete one VisualizationProcessingJob
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VisualizationProcessingJobDeleteArgs>(args: SelectSubset<T, VisualizationProcessingJobDeleteArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one VisualizationProcessingJob.
+     * @param {VisualizationProcessingJobUpdateArgs} args - Arguments to update one VisualizationProcessingJob.
+     * @example
+     * // Update one VisualizationProcessingJob
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VisualizationProcessingJobUpdateArgs>(args: SelectSubset<T, VisualizationProcessingJobUpdateArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more VisualizationProcessingJobs.
+     * @param {VisualizationProcessingJobDeleteManyArgs} args - Arguments to filter VisualizationProcessingJobs to delete.
+     * @example
+     * // Delete a few VisualizationProcessingJobs
+     * const { count } = await prisma.visualizationProcessingJob.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VisualizationProcessingJobDeleteManyArgs>(args?: SelectSubset<T, VisualizationProcessingJobDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VisualizationProcessingJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationProcessingJobUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VisualizationProcessingJobs
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VisualizationProcessingJobUpdateManyArgs>(args: SelectSubset<T, VisualizationProcessingJobUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VisualizationProcessingJobs and returns the data updated in the database.
+     * @param {VisualizationProcessingJobUpdateManyAndReturnArgs} args - Arguments to update many VisualizationProcessingJobs.
+     * @example
+     * // Update many VisualizationProcessingJobs
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more VisualizationProcessingJobs and only return the `id`
+     * const visualizationProcessingJobWithIdOnly = await prisma.visualizationProcessingJob.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VisualizationProcessingJobUpdateManyAndReturnArgs>(args: SelectSubset<T, VisualizationProcessingJobUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one VisualizationProcessingJob.
+     * @param {VisualizationProcessingJobUpsertArgs} args - Arguments to update or create a VisualizationProcessingJob.
+     * @example
+     * // Update or create a VisualizationProcessingJob
+     * const visualizationProcessingJob = await prisma.visualizationProcessingJob.upsert({
+     *   create: {
+     *     // ... data to create a VisualizationProcessingJob
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VisualizationProcessingJob we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VisualizationProcessingJobUpsertArgs>(args: SelectSubset<T, VisualizationProcessingJobUpsertArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of VisualizationProcessingJobs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationProcessingJobCountArgs} args - Arguments to filter VisualizationProcessingJobs to count.
+     * @example
+     * // Count the number of VisualizationProcessingJobs
+     * const count = await prisma.visualizationProcessingJob.count({
+     *   where: {
+     *     // ... the filter for the VisualizationProcessingJobs we want to count
+     *   }
+     * })
+    **/
+    count<T extends VisualizationProcessingJobCountArgs>(
+      args?: Subset<T, VisualizationProcessingJobCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VisualizationProcessingJobCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VisualizationProcessingJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationProcessingJobAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VisualizationProcessingJobAggregateArgs>(args: Subset<T, VisualizationProcessingJobAggregateArgs>): Prisma.PrismaPromise<GetVisualizationProcessingJobAggregateType<T>>
+
+    /**
+     * Group by VisualizationProcessingJob.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationProcessingJobGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VisualizationProcessingJobGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VisualizationProcessingJobGroupByArgs['orderBy'] }
+        : { orderBy?: VisualizationProcessingJobGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VisualizationProcessingJobGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVisualizationProcessingJobGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VisualizationProcessingJob model
+   */
+  readonly fields: VisualizationProcessingJobFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VisualizationProcessingJob.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VisualizationProcessingJobClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sourceAsset<T extends VisualizationAssetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationAssetDefaultArgs<ExtArgs>>): Prisma__VisualizationAssetClient<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    template<T extends VisualizationProcessingJob$templateArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationProcessingJob$templateArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    requestedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    assets<T extends VisualizationProcessingJob$assetsArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationProcessingJob$assetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    templatesCreated<T extends VisualizationProcessingJob$templatesCreatedArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationProcessingJob$templatesCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VisualizationProcessingJob model
+   */
+  interface VisualizationProcessingJobFieldRefs {
+    readonly id: FieldRef<"VisualizationProcessingJob", 'String'>
+    readonly productId: FieldRef<"VisualizationProcessingJob", 'String'>
+    readonly sourceAssetId: FieldRef<"VisualizationProcessingJob", 'String'>
+    readonly templateId: FieldRef<"VisualizationProcessingJob", 'String'>
+    readonly requestedById: FieldRef<"VisualizationProcessingJob", 'String'>
+    readonly status: FieldRef<"VisualizationProcessingJob", 'VisualizationJobStatus'>
+    readonly analysisMode: FieldRef<"VisualizationProcessingJob", 'VisualizationAnalysisMode'>
+    readonly attempt: FieldRef<"VisualizationProcessingJob", 'Int'>
+    readonly maxAttempts: FieldRef<"VisualizationProcessingJob", 'Int'>
+    readonly providerName: FieldRef<"VisualizationProcessingJob", 'String'>
+    readonly providerRequestId: FieldRef<"VisualizationProcessingJob", 'String'>
+    readonly analysisResult: FieldRef<"VisualizationProcessingJob", 'Json'>
+    readonly confirmation: FieldRef<"VisualizationProcessingJob", 'Json'>
+    readonly errorCode: FieldRef<"VisualizationProcessingJob", 'String'>
+    readonly errorMessage: FieldRef<"VisualizationProcessingJob", 'String'>
+    readonly nextAttemptAt: FieldRef<"VisualizationProcessingJob", 'DateTime'>
+    readonly lastAttemptAt: FieldRef<"VisualizationProcessingJob", 'DateTime'>
+    readonly startedAt: FieldRef<"VisualizationProcessingJob", 'DateTime'>
+    readonly completedAt: FieldRef<"VisualizationProcessingJob", 'DateTime'>
+    readonly createdAt: FieldRef<"VisualizationProcessingJob", 'DateTime'>
+    readonly updatedAt: FieldRef<"VisualizationProcessingJob", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VisualizationProcessingJob findUnique
+   */
+  export type VisualizationProcessingJobFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationProcessingJob to fetch.
+     */
+    where: VisualizationProcessingJobWhereUniqueInput
+  }
+
+  /**
+   * VisualizationProcessingJob findUniqueOrThrow
+   */
+  export type VisualizationProcessingJobFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationProcessingJob to fetch.
+     */
+    where: VisualizationProcessingJobWhereUniqueInput
+  }
+
+  /**
+   * VisualizationProcessingJob findFirst
+   */
+  export type VisualizationProcessingJobFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationProcessingJob to fetch.
+     */
+    where?: VisualizationProcessingJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationProcessingJobs to fetch.
+     */
+    orderBy?: VisualizationProcessingJobOrderByWithRelationInput | VisualizationProcessingJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VisualizationProcessingJobs.
+     */
+    cursor?: VisualizationProcessingJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationProcessingJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationProcessingJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VisualizationProcessingJobs.
+     */
+    distinct?: VisualizationProcessingJobScalarFieldEnum | VisualizationProcessingJobScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationProcessingJob findFirstOrThrow
+   */
+  export type VisualizationProcessingJobFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationProcessingJob to fetch.
+     */
+    where?: VisualizationProcessingJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationProcessingJobs to fetch.
+     */
+    orderBy?: VisualizationProcessingJobOrderByWithRelationInput | VisualizationProcessingJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VisualizationProcessingJobs.
+     */
+    cursor?: VisualizationProcessingJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationProcessingJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationProcessingJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VisualizationProcessingJobs.
+     */
+    distinct?: VisualizationProcessingJobScalarFieldEnum | VisualizationProcessingJobScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationProcessingJob findMany
+   */
+  export type VisualizationProcessingJobFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationProcessingJobs to fetch.
+     */
+    where?: VisualizationProcessingJobWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationProcessingJobs to fetch.
+     */
+    orderBy?: VisualizationProcessingJobOrderByWithRelationInput | VisualizationProcessingJobOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VisualizationProcessingJobs.
+     */
+    cursor?: VisualizationProcessingJobWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationProcessingJobs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationProcessingJobs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VisualizationProcessingJobs.
+     */
+    distinct?: VisualizationProcessingJobScalarFieldEnum | VisualizationProcessingJobScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationProcessingJob create
+   */
+  export type VisualizationProcessingJobCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    /**
+     * The data needed to create a VisualizationProcessingJob.
+     */
+    data: XOR<VisualizationProcessingJobCreateInput, VisualizationProcessingJobUncheckedCreateInput>
+  }
+
+  /**
+   * VisualizationProcessingJob createMany
+   */
+  export type VisualizationProcessingJobCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VisualizationProcessingJobs.
+     */
+    data: VisualizationProcessingJobCreateManyInput | VisualizationProcessingJobCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VisualizationProcessingJob createManyAndReturn
+   */
+  export type VisualizationProcessingJobCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * The data used to create many VisualizationProcessingJobs.
+     */
+    data: VisualizationProcessingJobCreateManyInput | VisualizationProcessingJobCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VisualizationProcessingJob update
+   */
+  export type VisualizationProcessingJobUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    /**
+     * The data needed to update a VisualizationProcessingJob.
+     */
+    data: XOR<VisualizationProcessingJobUpdateInput, VisualizationProcessingJobUncheckedUpdateInput>
+    /**
+     * Choose, which VisualizationProcessingJob to update.
+     */
+    where: VisualizationProcessingJobWhereUniqueInput
+  }
+
+  /**
+   * VisualizationProcessingJob updateMany
+   */
+  export type VisualizationProcessingJobUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VisualizationProcessingJobs.
+     */
+    data: XOR<VisualizationProcessingJobUpdateManyMutationInput, VisualizationProcessingJobUncheckedUpdateManyInput>
+    /**
+     * Filter which VisualizationProcessingJobs to update
+     */
+    where?: VisualizationProcessingJobWhereInput
+    /**
+     * Limit how many VisualizationProcessingJobs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VisualizationProcessingJob updateManyAndReturn
+   */
+  export type VisualizationProcessingJobUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * The data used to update VisualizationProcessingJobs.
+     */
+    data: XOR<VisualizationProcessingJobUpdateManyMutationInput, VisualizationProcessingJobUncheckedUpdateManyInput>
+    /**
+     * Filter which VisualizationProcessingJobs to update
+     */
+    where?: VisualizationProcessingJobWhereInput
+    /**
+     * Limit how many VisualizationProcessingJobs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VisualizationProcessingJob upsert
+   */
+  export type VisualizationProcessingJobUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    /**
+     * The filter to search for the VisualizationProcessingJob to update in case it exists.
+     */
+    where: VisualizationProcessingJobWhereUniqueInput
+    /**
+     * In case the VisualizationProcessingJob found by the `where` argument doesn't exist, create a new VisualizationProcessingJob with this data.
+     */
+    create: XOR<VisualizationProcessingJobCreateInput, VisualizationProcessingJobUncheckedCreateInput>
+    /**
+     * In case the VisualizationProcessingJob was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VisualizationProcessingJobUpdateInput, VisualizationProcessingJobUncheckedUpdateInput>
+  }
+
+  /**
+   * VisualizationProcessingJob delete
+   */
+  export type VisualizationProcessingJobDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    /**
+     * Filter which VisualizationProcessingJob to delete.
+     */
+    where: VisualizationProcessingJobWhereUniqueInput
+  }
+
+  /**
+   * VisualizationProcessingJob deleteMany
+   */
+  export type VisualizationProcessingJobDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VisualizationProcessingJobs to delete
+     */
+    where?: VisualizationProcessingJobWhereInput
+    /**
+     * Limit how many VisualizationProcessingJobs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * VisualizationProcessingJob.template
+   */
+  export type VisualizationProcessingJob$templateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    where?: VisualizationTemplateWhereInput
+  }
+
+  /**
+   * VisualizationProcessingJob.assets
+   */
+  export type VisualizationProcessingJob$assetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    where?: VisualizationAssetWhereInput
+    orderBy?: VisualizationAssetOrderByWithRelationInput | VisualizationAssetOrderByWithRelationInput[]
+    cursor?: VisualizationAssetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationAssetScalarFieldEnum | VisualizationAssetScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationProcessingJob.templatesCreated
+   */
+  export type VisualizationProcessingJob$templatesCreatedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    where?: VisualizationTemplateWhereInput
+    orderBy?: VisualizationTemplateOrderByWithRelationInput | VisualizationTemplateOrderByWithRelationInput[]
+    cursor?: VisualizationTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationTemplateScalarFieldEnum | VisualizationTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationProcessingJob without action
+   */
+  export type VisualizationProcessingJobDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model VisualizationAsset
+   */
+
+  export type AggregateVisualizationAsset = {
+    _count: VisualizationAssetCountAggregateOutputType | null
+    _avg: VisualizationAssetAvgAggregateOutputType | null
+    _sum: VisualizationAssetSumAggregateOutputType | null
+    _min: VisualizationAssetMinAggregateOutputType | null
+    _max: VisualizationAssetMaxAggregateOutputType | null
+  }
+
+  export type VisualizationAssetAvgAggregateOutputType = {
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+  }
+
+  export type VisualizationAssetSumAggregateOutputType = {
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+  }
+
+  export type VisualizationAssetMinAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    jobId: string | null
+    templateId: string | null
+    ownerUserId: string | null
+    kind: $Enums.VisualizationAssetKind | null
+    storage: $Enums.VisualizationAssetStorage | null
+    originalName: string | null
+    mimeType: string | null
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+    sha256: string | null
+    content: Bytes | null
+    privateRef: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VisualizationAssetMaxAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    jobId: string | null
+    templateId: string | null
+    ownerUserId: string | null
+    kind: $Enums.VisualizationAssetKind | null
+    storage: $Enums.VisualizationAssetStorage | null
+    originalName: string | null
+    mimeType: string | null
+    sizeBytes: number | null
+    width: number | null
+    height: number | null
+    sha256: string | null
+    content: Bytes | null
+    privateRef: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VisualizationAssetCountAggregateOutputType = {
+    id: number
+    productId: number
+    jobId: number
+    templateId: number
+    ownerUserId: number
+    kind: number
+    storage: number
+    originalName: number
+    mimeType: number
+    sizeBytes: number
+    width: number
+    height: number
+    sha256: number
+    content: number
+    privateRef: number
+    metadata: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type VisualizationAssetAvgAggregateInputType = {
+    sizeBytes?: true
+    width?: true
+    height?: true
+  }
+
+  export type VisualizationAssetSumAggregateInputType = {
+    sizeBytes?: true
+    width?: true
+    height?: true
+  }
+
+  export type VisualizationAssetMinAggregateInputType = {
+    id?: true
+    productId?: true
+    jobId?: true
+    templateId?: true
+    ownerUserId?: true
+    kind?: true
+    storage?: true
+    originalName?: true
+    mimeType?: true
+    sizeBytes?: true
+    width?: true
+    height?: true
+    sha256?: true
+    content?: true
+    privateRef?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VisualizationAssetMaxAggregateInputType = {
+    id?: true
+    productId?: true
+    jobId?: true
+    templateId?: true
+    ownerUserId?: true
+    kind?: true
+    storage?: true
+    originalName?: true
+    mimeType?: true
+    sizeBytes?: true
+    width?: true
+    height?: true
+    sha256?: true
+    content?: true
+    privateRef?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VisualizationAssetCountAggregateInputType = {
+    id?: true
+    productId?: true
+    jobId?: true
+    templateId?: true
+    ownerUserId?: true
+    kind?: true
+    storage?: true
+    originalName?: true
+    mimeType?: true
+    sizeBytes?: true
+    width?: true
+    height?: true
+    sha256?: true
+    content?: true
+    privateRef?: true
+    metadata?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type VisualizationAssetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VisualizationAsset to aggregate.
+     */
+    where?: VisualizationAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationAssets to fetch.
+     */
+    orderBy?: VisualizationAssetOrderByWithRelationInput | VisualizationAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VisualizationAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned VisualizationAssets
+    **/
+    _count?: true | VisualizationAssetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: VisualizationAssetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: VisualizationAssetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VisualizationAssetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VisualizationAssetMaxAggregateInputType
+  }
+
+  export type GetVisualizationAssetAggregateType<T extends VisualizationAssetAggregateArgs> = {
+        [P in keyof T & keyof AggregateVisualizationAsset]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVisualizationAsset[P]>
+      : GetScalarType<T[P], AggregateVisualizationAsset[P]>
+  }
+
+
+
+
+  export type VisualizationAssetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VisualizationAssetWhereInput
+    orderBy?: VisualizationAssetOrderByWithAggregationInput | VisualizationAssetOrderByWithAggregationInput[]
+    by: VisualizationAssetScalarFieldEnum[] | VisualizationAssetScalarFieldEnum
+    having?: VisualizationAssetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VisualizationAssetCountAggregateInputType | true
+    _avg?: VisualizationAssetAvgAggregateInputType
+    _sum?: VisualizationAssetSumAggregateInputType
+    _min?: VisualizationAssetMinAggregateInputType
+    _max?: VisualizationAssetMaxAggregateInputType
+  }
+
+  export type VisualizationAssetGroupByOutputType = {
+    id: string
+    productId: string | null
+    jobId: string | null
+    templateId: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage: $Enums.VisualizationAssetStorage
+    originalName: string | null
+    mimeType: string
+    sizeBytes: number
+    width: number | null
+    height: number | null
+    sha256: string | null
+    content: Bytes | null
+    privateRef: string | null
+    metadata: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: VisualizationAssetCountAggregateOutputType | null
+    _avg: VisualizationAssetAvgAggregateOutputType | null
+    _sum: VisualizationAssetSumAggregateOutputType | null
+    _min: VisualizationAssetMinAggregateOutputType | null
+    _max: VisualizationAssetMaxAggregateOutputType | null
+  }
+
+  type GetVisualizationAssetGroupByPayload<T extends VisualizationAssetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VisualizationAssetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VisualizationAssetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VisualizationAssetGroupByOutputType[P]>
+            : GetScalarType<T[P], VisualizationAssetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VisualizationAssetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    jobId?: boolean
+    templateId?: boolean
+    ownerUserId?: boolean
+    kind?: boolean
+    storage?: boolean
+    originalName?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    sha256?: boolean
+    content?: boolean
+    privateRef?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | VisualizationAsset$productArgs<ExtArgs>
+    job?: boolean | VisualizationAsset$jobArgs<ExtArgs>
+    template?: boolean | VisualizationAsset$templateArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    sourceForJobs?: boolean | VisualizationAsset$sourceForJobsArgs<ExtArgs>
+    _count?: boolean | VisualizationAssetCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["visualizationAsset"]>
+
+  export type VisualizationAssetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    jobId?: boolean
+    templateId?: boolean
+    ownerUserId?: boolean
+    kind?: boolean
+    storage?: boolean
+    originalName?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    sha256?: boolean
+    content?: boolean
+    privateRef?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | VisualizationAsset$productArgs<ExtArgs>
+    job?: boolean | VisualizationAsset$jobArgs<ExtArgs>
+    template?: boolean | VisualizationAsset$templateArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["visualizationAsset"]>
+
+  export type VisualizationAssetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    jobId?: boolean
+    templateId?: boolean
+    ownerUserId?: boolean
+    kind?: boolean
+    storage?: boolean
+    originalName?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    sha256?: boolean
+    content?: boolean
+    privateRef?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | VisualizationAsset$productArgs<ExtArgs>
+    job?: boolean | VisualizationAsset$jobArgs<ExtArgs>
+    template?: boolean | VisualizationAsset$templateArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["visualizationAsset"]>
+
+  export type VisualizationAssetSelectScalar = {
+    id?: boolean
+    productId?: boolean
+    jobId?: boolean
+    templateId?: boolean
+    ownerUserId?: boolean
+    kind?: boolean
+    storage?: boolean
+    originalName?: boolean
+    mimeType?: boolean
+    sizeBytes?: boolean
+    width?: boolean
+    height?: boolean
+    sha256?: boolean
+    content?: boolean
+    privateRef?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type VisualizationAssetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "jobId" | "templateId" | "ownerUserId" | "kind" | "storage" | "originalName" | "mimeType" | "sizeBytes" | "width" | "height" | "sha256" | "content" | "privateRef" | "metadata" | "createdAt" | "updatedAt", ExtArgs["result"]["visualizationAsset"]>
+  export type VisualizationAssetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | VisualizationAsset$productArgs<ExtArgs>
+    job?: boolean | VisualizationAsset$jobArgs<ExtArgs>
+    template?: boolean | VisualizationAsset$templateArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    sourceForJobs?: boolean | VisualizationAsset$sourceForJobsArgs<ExtArgs>
+    _count?: boolean | VisualizationAssetCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type VisualizationAssetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | VisualizationAsset$productArgs<ExtArgs>
+    job?: boolean | VisualizationAsset$jobArgs<ExtArgs>
+    template?: boolean | VisualizationAsset$templateArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type VisualizationAssetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | VisualizationAsset$productArgs<ExtArgs>
+    job?: boolean | VisualizationAsset$jobArgs<ExtArgs>
+    template?: boolean | VisualizationAsset$templateArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $VisualizationAssetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "VisualizationAsset"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs> | null
+      job: Prisma.$VisualizationProcessingJobPayload<ExtArgs> | null
+      template: Prisma.$VisualizationTemplatePayload<ExtArgs> | null
+      owner: Prisma.$UserPayload<ExtArgs>
+      sourceForJobs: Prisma.$VisualizationProcessingJobPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      productId: string | null
+      jobId: string | null
+      templateId: string | null
+      ownerUserId: string
+      kind: $Enums.VisualizationAssetKind
+      storage: $Enums.VisualizationAssetStorage
+      originalName: string | null
+      mimeType: string
+      sizeBytes: number
+      width: number | null
+      height: number | null
+      sha256: string | null
+      content: Prisma.Bytes | null
+      privateRef: string | null
+      metadata: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["visualizationAsset"]>
+    composites: {}
+  }
+
+  type VisualizationAssetGetPayload<S extends boolean | null | undefined | VisualizationAssetDefaultArgs> = $Result.GetResult<Prisma.$VisualizationAssetPayload, S>
+
+  type VisualizationAssetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VisualizationAssetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VisualizationAssetCountAggregateInputType | true
+    }
+
+  export interface VisualizationAssetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['VisualizationAsset'], meta: { name: 'VisualizationAsset' } }
+    /**
+     * Find zero or one VisualizationAsset that matches the filter.
+     * @param {VisualizationAssetFindUniqueArgs} args - Arguments to find a VisualizationAsset
+     * @example
+     * // Get one VisualizationAsset
+     * const visualizationAsset = await prisma.visualizationAsset.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VisualizationAssetFindUniqueArgs>(args: SelectSubset<T, VisualizationAssetFindUniqueArgs<ExtArgs>>): Prisma__VisualizationAssetClient<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one VisualizationAsset that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VisualizationAssetFindUniqueOrThrowArgs} args - Arguments to find a VisualizationAsset
+     * @example
+     * // Get one VisualizationAsset
+     * const visualizationAsset = await prisma.visualizationAsset.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VisualizationAssetFindUniqueOrThrowArgs>(args: SelectSubset<T, VisualizationAssetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VisualizationAssetClient<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VisualizationAsset that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationAssetFindFirstArgs} args - Arguments to find a VisualizationAsset
+     * @example
+     * // Get one VisualizationAsset
+     * const visualizationAsset = await prisma.visualizationAsset.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VisualizationAssetFindFirstArgs>(args?: SelectSubset<T, VisualizationAssetFindFirstArgs<ExtArgs>>): Prisma__VisualizationAssetClient<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first VisualizationAsset that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationAssetFindFirstOrThrowArgs} args - Arguments to find a VisualizationAsset
+     * @example
+     * // Get one VisualizationAsset
+     * const visualizationAsset = await prisma.visualizationAsset.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VisualizationAssetFindFirstOrThrowArgs>(args?: SelectSubset<T, VisualizationAssetFindFirstOrThrowArgs<ExtArgs>>): Prisma__VisualizationAssetClient<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more VisualizationAssets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationAssetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all VisualizationAssets
+     * const visualizationAssets = await prisma.visualizationAsset.findMany()
+     * 
+     * // Get first 10 VisualizationAssets
+     * const visualizationAssets = await prisma.visualizationAsset.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const visualizationAssetWithIdOnly = await prisma.visualizationAsset.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VisualizationAssetFindManyArgs>(args?: SelectSubset<T, VisualizationAssetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a VisualizationAsset.
+     * @param {VisualizationAssetCreateArgs} args - Arguments to create a VisualizationAsset.
+     * @example
+     * // Create one VisualizationAsset
+     * const VisualizationAsset = await prisma.visualizationAsset.create({
+     *   data: {
+     *     // ... data to create a VisualizationAsset
+     *   }
+     * })
+     * 
+     */
+    create<T extends VisualizationAssetCreateArgs>(args: SelectSubset<T, VisualizationAssetCreateArgs<ExtArgs>>): Prisma__VisualizationAssetClient<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many VisualizationAssets.
+     * @param {VisualizationAssetCreateManyArgs} args - Arguments to create many VisualizationAssets.
+     * @example
+     * // Create many VisualizationAssets
+     * const visualizationAsset = await prisma.visualizationAsset.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VisualizationAssetCreateManyArgs>(args?: SelectSubset<T, VisualizationAssetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many VisualizationAssets and returns the data saved in the database.
+     * @param {VisualizationAssetCreateManyAndReturnArgs} args - Arguments to create many VisualizationAssets.
+     * @example
+     * // Create many VisualizationAssets
+     * const visualizationAsset = await prisma.visualizationAsset.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many VisualizationAssets and only return the `id`
+     * const visualizationAssetWithIdOnly = await prisma.visualizationAsset.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VisualizationAssetCreateManyAndReturnArgs>(args?: SelectSubset<T, VisualizationAssetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a VisualizationAsset.
+     * @param {VisualizationAssetDeleteArgs} args - Arguments to delete one VisualizationAsset.
+     * @example
+     * // Delete one VisualizationAsset
+     * const VisualizationAsset = await prisma.visualizationAsset.delete({
+     *   where: {
+     *     // ... filter to delete one VisualizationAsset
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VisualizationAssetDeleteArgs>(args: SelectSubset<T, VisualizationAssetDeleteArgs<ExtArgs>>): Prisma__VisualizationAssetClient<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one VisualizationAsset.
+     * @param {VisualizationAssetUpdateArgs} args - Arguments to update one VisualizationAsset.
+     * @example
+     * // Update one VisualizationAsset
+     * const visualizationAsset = await prisma.visualizationAsset.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VisualizationAssetUpdateArgs>(args: SelectSubset<T, VisualizationAssetUpdateArgs<ExtArgs>>): Prisma__VisualizationAssetClient<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more VisualizationAssets.
+     * @param {VisualizationAssetDeleteManyArgs} args - Arguments to filter VisualizationAssets to delete.
+     * @example
+     * // Delete a few VisualizationAssets
+     * const { count } = await prisma.visualizationAsset.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VisualizationAssetDeleteManyArgs>(args?: SelectSubset<T, VisualizationAssetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VisualizationAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationAssetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many VisualizationAssets
+     * const visualizationAsset = await prisma.visualizationAsset.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VisualizationAssetUpdateManyArgs>(args: SelectSubset<T, VisualizationAssetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more VisualizationAssets and returns the data updated in the database.
+     * @param {VisualizationAssetUpdateManyAndReturnArgs} args - Arguments to update many VisualizationAssets.
+     * @example
+     * // Update many VisualizationAssets
+     * const visualizationAsset = await prisma.visualizationAsset.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more VisualizationAssets and only return the `id`
+     * const visualizationAssetWithIdOnly = await prisma.visualizationAsset.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VisualizationAssetUpdateManyAndReturnArgs>(args: SelectSubset<T, VisualizationAssetUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one VisualizationAsset.
+     * @param {VisualizationAssetUpsertArgs} args - Arguments to update or create a VisualizationAsset.
+     * @example
+     * // Update or create a VisualizationAsset
+     * const visualizationAsset = await prisma.visualizationAsset.upsert({
+     *   create: {
+     *     // ... data to create a VisualizationAsset
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the VisualizationAsset we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VisualizationAssetUpsertArgs>(args: SelectSubset<T, VisualizationAssetUpsertArgs<ExtArgs>>): Prisma__VisualizationAssetClient<$Result.GetResult<Prisma.$VisualizationAssetPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of VisualizationAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationAssetCountArgs} args - Arguments to filter VisualizationAssets to count.
+     * @example
+     * // Count the number of VisualizationAssets
+     * const count = await prisma.visualizationAsset.count({
+     *   where: {
+     *     // ... the filter for the VisualizationAssets we want to count
+     *   }
+     * })
+    **/
+    count<T extends VisualizationAssetCountArgs>(
+      args?: Subset<T, VisualizationAssetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VisualizationAssetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a VisualizationAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationAssetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VisualizationAssetAggregateArgs>(args: Subset<T, VisualizationAssetAggregateArgs>): Prisma.PrismaPromise<GetVisualizationAssetAggregateType<T>>
+
+    /**
+     * Group by VisualizationAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VisualizationAssetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VisualizationAssetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VisualizationAssetGroupByArgs['orderBy'] }
+        : { orderBy?: VisualizationAssetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VisualizationAssetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVisualizationAssetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the VisualizationAsset model
+   */
+  readonly fields: VisualizationAssetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for VisualizationAsset.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VisualizationAssetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends VisualizationAsset$productArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationAsset$productArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    job<T extends VisualizationAsset$jobArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationAsset$jobArgs<ExtArgs>>): Prisma__VisualizationProcessingJobClient<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    template<T extends VisualizationAsset$templateArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationAsset$templateArgs<ExtArgs>>): Prisma__VisualizationTemplateClient<$Result.GetResult<Prisma.$VisualizationTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sourceForJobs<T extends VisualizationAsset$sourceForJobsArgs<ExtArgs> = {}>(args?: Subset<T, VisualizationAsset$sourceForJobsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VisualizationProcessingJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the VisualizationAsset model
+   */
+  interface VisualizationAssetFieldRefs {
+    readonly id: FieldRef<"VisualizationAsset", 'String'>
+    readonly productId: FieldRef<"VisualizationAsset", 'String'>
+    readonly jobId: FieldRef<"VisualizationAsset", 'String'>
+    readonly templateId: FieldRef<"VisualizationAsset", 'String'>
+    readonly ownerUserId: FieldRef<"VisualizationAsset", 'String'>
+    readonly kind: FieldRef<"VisualizationAsset", 'VisualizationAssetKind'>
+    readonly storage: FieldRef<"VisualizationAsset", 'VisualizationAssetStorage'>
+    readonly originalName: FieldRef<"VisualizationAsset", 'String'>
+    readonly mimeType: FieldRef<"VisualizationAsset", 'String'>
+    readonly sizeBytes: FieldRef<"VisualizationAsset", 'Int'>
+    readonly width: FieldRef<"VisualizationAsset", 'Int'>
+    readonly height: FieldRef<"VisualizationAsset", 'Int'>
+    readonly sha256: FieldRef<"VisualizationAsset", 'String'>
+    readonly content: FieldRef<"VisualizationAsset", 'Bytes'>
+    readonly privateRef: FieldRef<"VisualizationAsset", 'String'>
+    readonly metadata: FieldRef<"VisualizationAsset", 'Json'>
+    readonly createdAt: FieldRef<"VisualizationAsset", 'DateTime'>
+    readonly updatedAt: FieldRef<"VisualizationAsset", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * VisualizationAsset findUnique
+   */
+  export type VisualizationAssetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationAsset to fetch.
+     */
+    where: VisualizationAssetWhereUniqueInput
+  }
+
+  /**
+   * VisualizationAsset findUniqueOrThrow
+   */
+  export type VisualizationAssetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationAsset to fetch.
+     */
+    where: VisualizationAssetWhereUniqueInput
+  }
+
+  /**
+   * VisualizationAsset findFirst
+   */
+  export type VisualizationAssetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationAsset to fetch.
+     */
+    where?: VisualizationAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationAssets to fetch.
+     */
+    orderBy?: VisualizationAssetOrderByWithRelationInput | VisualizationAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VisualizationAssets.
+     */
+    cursor?: VisualizationAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VisualizationAssets.
+     */
+    distinct?: VisualizationAssetScalarFieldEnum | VisualizationAssetScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationAsset findFirstOrThrow
+   */
+  export type VisualizationAssetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationAsset to fetch.
+     */
+    where?: VisualizationAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationAssets to fetch.
+     */
+    orderBy?: VisualizationAssetOrderByWithRelationInput | VisualizationAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for VisualizationAssets.
+     */
+    cursor?: VisualizationAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VisualizationAssets.
+     */
+    distinct?: VisualizationAssetScalarFieldEnum | VisualizationAssetScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationAsset findMany
+   */
+  export type VisualizationAssetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which VisualizationAssets to fetch.
+     */
+    where?: VisualizationAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of VisualizationAssets to fetch.
+     */
+    orderBy?: VisualizationAssetOrderByWithRelationInput | VisualizationAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing VisualizationAssets.
+     */
+    cursor?: VisualizationAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` VisualizationAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` VisualizationAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of VisualizationAssets.
+     */
+    distinct?: VisualizationAssetScalarFieldEnum | VisualizationAssetScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationAsset create
+   */
+  export type VisualizationAssetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a VisualizationAsset.
+     */
+    data: XOR<VisualizationAssetCreateInput, VisualizationAssetUncheckedCreateInput>
+  }
+
+  /**
+   * VisualizationAsset createMany
+   */
+  export type VisualizationAssetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many VisualizationAssets.
+     */
+    data: VisualizationAssetCreateManyInput | VisualizationAssetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * VisualizationAsset createManyAndReturn
+   */
+  export type VisualizationAssetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * The data used to create many VisualizationAssets.
+     */
+    data: VisualizationAssetCreateManyInput | VisualizationAssetCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VisualizationAsset update
+   */
+  export type VisualizationAssetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a VisualizationAsset.
+     */
+    data: XOR<VisualizationAssetUpdateInput, VisualizationAssetUncheckedUpdateInput>
+    /**
+     * Choose, which VisualizationAsset to update.
+     */
+    where: VisualizationAssetWhereUniqueInput
+  }
+
+  /**
+   * VisualizationAsset updateMany
+   */
+  export type VisualizationAssetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update VisualizationAssets.
+     */
+    data: XOR<VisualizationAssetUpdateManyMutationInput, VisualizationAssetUncheckedUpdateManyInput>
+    /**
+     * Filter which VisualizationAssets to update
+     */
+    where?: VisualizationAssetWhereInput
+    /**
+     * Limit how many VisualizationAssets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * VisualizationAsset updateManyAndReturn
+   */
+  export type VisualizationAssetUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * The data used to update VisualizationAssets.
+     */
+    data: XOR<VisualizationAssetUpdateManyMutationInput, VisualizationAssetUncheckedUpdateManyInput>
+    /**
+     * Filter which VisualizationAssets to update
+     */
+    where?: VisualizationAssetWhereInput
+    /**
+     * Limit how many VisualizationAssets to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * VisualizationAsset upsert
+   */
+  export type VisualizationAssetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the VisualizationAsset to update in case it exists.
+     */
+    where: VisualizationAssetWhereUniqueInput
+    /**
+     * In case the VisualizationAsset found by the `where` argument doesn't exist, create a new VisualizationAsset with this data.
+     */
+    create: XOR<VisualizationAssetCreateInput, VisualizationAssetUncheckedCreateInput>
+    /**
+     * In case the VisualizationAsset was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VisualizationAssetUpdateInput, VisualizationAssetUncheckedUpdateInput>
+  }
+
+  /**
+   * VisualizationAsset delete
+   */
+  export type VisualizationAssetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
+    /**
+     * Filter which VisualizationAsset to delete.
+     */
+    where: VisualizationAssetWhereUniqueInput
+  }
+
+  /**
+   * VisualizationAsset deleteMany
+   */
+  export type VisualizationAssetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which VisualizationAssets to delete
+     */
+    where?: VisualizationAssetWhereInput
+    /**
+     * Limit how many VisualizationAssets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * VisualizationAsset.product
+   */
+  export type VisualizationAsset$productArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
+  }
+
+  /**
+   * VisualizationAsset.job
+   */
+  export type VisualizationAsset$jobArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    where?: VisualizationProcessingJobWhereInput
+  }
+
+  /**
+   * VisualizationAsset.template
+   */
+  export type VisualizationAsset$templateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationTemplate
+     */
+    select?: VisualizationTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationTemplate
+     */
+    omit?: VisualizationTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationTemplateInclude<ExtArgs> | null
+    where?: VisualizationTemplateWhereInput
+  }
+
+  /**
+   * VisualizationAsset.sourceForJobs
+   */
+  export type VisualizationAsset$sourceForJobsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationProcessingJob
+     */
+    select?: VisualizationProcessingJobSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationProcessingJob
+     */
+    omit?: VisualizationProcessingJobOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationProcessingJobInclude<ExtArgs> | null
+    where?: VisualizationProcessingJobWhereInput
+    orderBy?: VisualizationProcessingJobOrderByWithRelationInput | VisualizationProcessingJobOrderByWithRelationInput[]
+    cursor?: VisualizationProcessingJobWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VisualizationProcessingJobScalarFieldEnum | VisualizationProcessingJobScalarFieldEnum[]
+  }
+
+  /**
+   * VisualizationAsset without action
+   */
+  export type VisualizationAssetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VisualizationAsset
+     */
+    select?: VisualizationAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the VisualizationAsset
+     */
+    omit?: VisualizationAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VisualizationAssetInclude<ExtArgs> | null
   }
 
 
@@ -74083,6 +78935,84 @@ export namespace Prisma {
   export type ArtworkAssetScalarFieldEnum = (typeof ArtworkAssetScalarFieldEnum)[keyof typeof ArtworkAssetScalarFieldEnum]
 
 
+  export const VisualizationTemplateScalarFieldEnum: {
+    id: 'id',
+    familyKey: 'familyKey',
+    version: 'version',
+    productId: 'productId',
+    sourceJobId: 'sourceJobId',
+    createdById: 'createdById',
+    name: 'name',
+    slug: 'slug',
+    description: 'description',
+    productType: 'productType',
+    status: 'status',
+    geometry: 'geometry',
+    dimensions: 'dimensions',
+    surfaceMappings: 'surfaceMappings',
+    materialSettings: 'materialSettings',
+    previewCapabilities: 'previewCapabilities',
+    manufacturingMetadata: 'manufacturingMetadata',
+    publishedAt: 'publishedAt',
+    archivedAt: 'archivedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type VisualizationTemplateScalarFieldEnum = (typeof VisualizationTemplateScalarFieldEnum)[keyof typeof VisualizationTemplateScalarFieldEnum]
+
+
+  export const VisualizationProcessingJobScalarFieldEnum: {
+    id: 'id',
+    productId: 'productId',
+    sourceAssetId: 'sourceAssetId',
+    templateId: 'templateId',
+    requestedById: 'requestedById',
+    status: 'status',
+    analysisMode: 'analysisMode',
+    attempt: 'attempt',
+    maxAttempts: 'maxAttempts',
+    providerName: 'providerName',
+    providerRequestId: 'providerRequestId',
+    analysisResult: 'analysisResult',
+    confirmation: 'confirmation',
+    errorCode: 'errorCode',
+    errorMessage: 'errorMessage',
+    nextAttemptAt: 'nextAttemptAt',
+    lastAttemptAt: 'lastAttemptAt',
+    startedAt: 'startedAt',
+    completedAt: 'completedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type VisualizationProcessingJobScalarFieldEnum = (typeof VisualizationProcessingJobScalarFieldEnum)[keyof typeof VisualizationProcessingJobScalarFieldEnum]
+
+
+  export const VisualizationAssetScalarFieldEnum: {
+    id: 'id',
+    productId: 'productId',
+    jobId: 'jobId',
+    templateId: 'templateId',
+    ownerUserId: 'ownerUserId',
+    kind: 'kind',
+    storage: 'storage',
+    originalName: 'originalName',
+    mimeType: 'mimeType',
+    sizeBytes: 'sizeBytes',
+    width: 'width',
+    height: 'height',
+    sha256: 'sha256',
+    content: 'content',
+    privateRef: 'privateRef',
+    metadata: 'metadata',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type VisualizationAssetScalarFieldEnum = (typeof VisualizationAssetScalarFieldEnum)[keyof typeof VisualizationAssetScalarFieldEnum]
+
+
   export const ProductVariantScalarFieldEnum: {
     id: 'id',
     productId: 'productId',
@@ -75011,6 +79941,76 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'VisualizationTemplateStatus'
+   */
+  export type EnumVisualizationTemplateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationTemplateStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'VisualizationTemplateStatus[]'
+   */
+  export type ListEnumVisualizationTemplateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationTemplateStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'VisualizationJobStatus'
+   */
+  export type EnumVisualizationJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationJobStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'VisualizationJobStatus[]'
+   */
+  export type ListEnumVisualizationJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationJobStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'VisualizationAnalysisMode'
+   */
+  export type EnumVisualizationAnalysisModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationAnalysisMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'VisualizationAnalysisMode[]'
+   */
+  export type ListEnumVisualizationAnalysisModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationAnalysisMode[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'VisualizationAssetKind'
+   */
+  export type EnumVisualizationAssetKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationAssetKind'>
+    
+
+
+  /**
+   * Reference to a field of type 'VisualizationAssetKind[]'
+   */
+  export type ListEnumVisualizationAssetKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationAssetKind[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'VisualizationAssetStorage'
+   */
+  export type EnumVisualizationAssetStorageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationAssetStorage'>
+    
+
+
+  /**
+   * Reference to a field of type 'VisualizationAssetStorage[]'
+   */
+  export type ListEnumVisualizationAssetStorageFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'VisualizationAssetStorage[]'>
+    
+
+
+  /**
    * Reference to a field of type 'InventoryPolicy'
    */
   export type EnumInventoryPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'InventoryPolicy'>
@@ -75443,6 +80443,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentListRelationFilter
     reviewedVendorDocuments?: VendorDocumentListRelationFilter
     uploadedArtworkAssets?: ArtworkAssetListRelationFilter
+    visualizationTemplates?: VisualizationTemplateListRelationFilter
+    visualizationJobs?: VisualizationProcessingJobListRelationFilter
+    visualizationAssets?: VisualizationAssetListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -75480,6 +80483,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentOrderByRelationAggregateInput
     reviewedVendorDocuments?: VendorDocumentOrderByRelationAggregateInput
     uploadedArtworkAssets?: ArtworkAssetOrderByRelationAggregateInput
+    visualizationTemplates?: VisualizationTemplateOrderByRelationAggregateInput
+    visualizationJobs?: VisualizationProcessingJobOrderByRelationAggregateInput
+    visualizationAssets?: VisualizationAssetOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -75520,6 +80526,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentListRelationFilter
     reviewedVendorDocuments?: VendorDocumentListRelationFilter
     uploadedArtworkAssets?: ArtworkAssetListRelationFilter
+    visualizationTemplates?: VisualizationTemplateListRelationFilter
+    visualizationJobs?: VisualizationProcessingJobListRelationFilter
+    visualizationAssets?: VisualizationAssetListRelationFilter
   }, "id" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -76164,6 +81173,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestListRelationFilter
     vendorCapabilities?: VendorCapabilityListRelationFilter
     artworkAssets?: ArtworkAssetListRelationFilter
+    visualizationTemplates?: VisualizationTemplateListRelationFilter
+    visualizationJobs?: VisualizationProcessingJobListRelationFilter
+    visualizationAssets?: VisualizationAssetListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -76210,6 +81222,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestOrderByRelationAggregateInput
     vendorCapabilities?: VendorCapabilityOrderByRelationAggregateInput
     artworkAssets?: ArtworkAssetOrderByRelationAggregateInput
+    visualizationTemplates?: VisualizationTemplateOrderByRelationAggregateInput
+    visualizationJobs?: VisualizationProcessingJobOrderByRelationAggregateInput
+    visualizationAssets?: VisualizationAssetOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -76259,6 +81274,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestListRelationFilter
     vendorCapabilities?: VendorCapabilityListRelationFilter
     artworkAssets?: ArtworkAssetListRelationFilter
+    visualizationTemplates?: VisualizationTemplateListRelationFilter
+    visualizationJobs?: VisualizationProcessingJobListRelationFilter
+    visualizationAssets?: VisualizationAssetListRelationFilter
   }, "id" | "slug" | "baseSku">
 
   export type ProductOrderByWithAggregationInput = {
@@ -76511,6 +81529,442 @@ export namespace Prisma {
     attachedAt?: DateTimeNullableWithAggregatesFilter<"ArtworkAsset"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ArtworkAsset"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ArtworkAsset"> | Date | string
+  }
+
+  export type VisualizationTemplateWhereInput = {
+    AND?: VisualizationTemplateWhereInput | VisualizationTemplateWhereInput[]
+    OR?: VisualizationTemplateWhereInput[]
+    NOT?: VisualizationTemplateWhereInput | VisualizationTemplateWhereInput[]
+    id?: StringFilter<"VisualizationTemplate"> | string
+    familyKey?: StringFilter<"VisualizationTemplate"> | string
+    version?: IntFilter<"VisualizationTemplate"> | number
+    productId?: StringNullableFilter<"VisualizationTemplate"> | string | null
+    sourceJobId?: StringNullableFilter<"VisualizationTemplate"> | string | null
+    createdById?: StringFilter<"VisualizationTemplate"> | string
+    name?: StringFilter<"VisualizationTemplate"> | string
+    slug?: StringFilter<"VisualizationTemplate"> | string
+    description?: StringNullableFilter<"VisualizationTemplate"> | string | null
+    productType?: StringFilter<"VisualizationTemplate"> | string
+    status?: EnumVisualizationTemplateStatusFilter<"VisualizationTemplate"> | $Enums.VisualizationTemplateStatus
+    geometry?: JsonFilter<"VisualizationTemplate">
+    dimensions?: JsonFilter<"VisualizationTemplate">
+    surfaceMappings?: JsonFilter<"VisualizationTemplate">
+    materialSettings?: JsonNullableFilter<"VisualizationTemplate">
+    previewCapabilities?: JsonNullableFilter<"VisualizationTemplate">
+    manufacturingMetadata?: JsonNullableFilter<"VisualizationTemplate">
+    publishedAt?: DateTimeNullableFilter<"VisualizationTemplate"> | Date | string | null
+    archivedAt?: DateTimeNullableFilter<"VisualizationTemplate"> | Date | string | null
+    createdAt?: DateTimeFilter<"VisualizationTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"VisualizationTemplate"> | Date | string
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
+    sourceJob?: XOR<VisualizationProcessingJobNullableScalarRelationFilter, VisualizationProcessingJobWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    jobs?: VisualizationProcessingJobListRelationFilter
+    assets?: VisualizationAssetListRelationFilter
+  }
+
+  export type VisualizationTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    familyKey?: SortOrder
+    version?: SortOrder
+    productId?: SortOrderInput | SortOrder
+    sourceJobId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    productType?: SortOrder
+    status?: SortOrder
+    geometry?: SortOrder
+    dimensions?: SortOrder
+    surfaceMappings?: SortOrder
+    materialSettings?: SortOrderInput | SortOrder
+    previewCapabilities?: SortOrderInput | SortOrder
+    manufacturingMetadata?: SortOrderInput | SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    archivedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    product?: ProductOrderByWithRelationInput
+    sourceJob?: VisualizationProcessingJobOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+    jobs?: VisualizationProcessingJobOrderByRelationAggregateInput
+    assets?: VisualizationAssetOrderByRelationAggregateInput
+  }
+
+  export type VisualizationTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    familyKey_version?: VisualizationTemplateFamilyKeyVersionCompoundUniqueInput
+    AND?: VisualizationTemplateWhereInput | VisualizationTemplateWhereInput[]
+    OR?: VisualizationTemplateWhereInput[]
+    NOT?: VisualizationTemplateWhereInput | VisualizationTemplateWhereInput[]
+    familyKey?: StringFilter<"VisualizationTemplate"> | string
+    version?: IntFilter<"VisualizationTemplate"> | number
+    productId?: StringNullableFilter<"VisualizationTemplate"> | string | null
+    sourceJobId?: StringNullableFilter<"VisualizationTemplate"> | string | null
+    createdById?: StringFilter<"VisualizationTemplate"> | string
+    name?: StringFilter<"VisualizationTemplate"> | string
+    slug?: StringFilter<"VisualizationTemplate"> | string
+    description?: StringNullableFilter<"VisualizationTemplate"> | string | null
+    productType?: StringFilter<"VisualizationTemplate"> | string
+    status?: EnumVisualizationTemplateStatusFilter<"VisualizationTemplate"> | $Enums.VisualizationTemplateStatus
+    geometry?: JsonFilter<"VisualizationTemplate">
+    dimensions?: JsonFilter<"VisualizationTemplate">
+    surfaceMappings?: JsonFilter<"VisualizationTemplate">
+    materialSettings?: JsonNullableFilter<"VisualizationTemplate">
+    previewCapabilities?: JsonNullableFilter<"VisualizationTemplate">
+    manufacturingMetadata?: JsonNullableFilter<"VisualizationTemplate">
+    publishedAt?: DateTimeNullableFilter<"VisualizationTemplate"> | Date | string | null
+    archivedAt?: DateTimeNullableFilter<"VisualizationTemplate"> | Date | string | null
+    createdAt?: DateTimeFilter<"VisualizationTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"VisualizationTemplate"> | Date | string
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
+    sourceJob?: XOR<VisualizationProcessingJobNullableScalarRelationFilter, VisualizationProcessingJobWhereInput> | null
+    createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    jobs?: VisualizationProcessingJobListRelationFilter
+    assets?: VisualizationAssetListRelationFilter
+  }, "id" | "familyKey_version">
+
+  export type VisualizationTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    familyKey?: SortOrder
+    version?: SortOrder
+    productId?: SortOrderInput | SortOrder
+    sourceJobId?: SortOrderInput | SortOrder
+    createdById?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    productType?: SortOrder
+    status?: SortOrder
+    geometry?: SortOrder
+    dimensions?: SortOrder
+    surfaceMappings?: SortOrder
+    materialSettings?: SortOrderInput | SortOrder
+    previewCapabilities?: SortOrderInput | SortOrder
+    manufacturingMetadata?: SortOrderInput | SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    archivedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: VisualizationTemplateCountOrderByAggregateInput
+    _avg?: VisualizationTemplateAvgOrderByAggregateInput
+    _max?: VisualizationTemplateMaxOrderByAggregateInput
+    _min?: VisualizationTemplateMinOrderByAggregateInput
+    _sum?: VisualizationTemplateSumOrderByAggregateInput
+  }
+
+  export type VisualizationTemplateScalarWhereWithAggregatesInput = {
+    AND?: VisualizationTemplateScalarWhereWithAggregatesInput | VisualizationTemplateScalarWhereWithAggregatesInput[]
+    OR?: VisualizationTemplateScalarWhereWithAggregatesInput[]
+    NOT?: VisualizationTemplateScalarWhereWithAggregatesInput | VisualizationTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"VisualizationTemplate"> | string
+    familyKey?: StringWithAggregatesFilter<"VisualizationTemplate"> | string
+    version?: IntWithAggregatesFilter<"VisualizationTemplate"> | number
+    productId?: StringNullableWithAggregatesFilter<"VisualizationTemplate"> | string | null
+    sourceJobId?: StringNullableWithAggregatesFilter<"VisualizationTemplate"> | string | null
+    createdById?: StringWithAggregatesFilter<"VisualizationTemplate"> | string
+    name?: StringWithAggregatesFilter<"VisualizationTemplate"> | string
+    slug?: StringWithAggregatesFilter<"VisualizationTemplate"> | string
+    description?: StringNullableWithAggregatesFilter<"VisualizationTemplate"> | string | null
+    productType?: StringWithAggregatesFilter<"VisualizationTemplate"> | string
+    status?: EnumVisualizationTemplateStatusWithAggregatesFilter<"VisualizationTemplate"> | $Enums.VisualizationTemplateStatus
+    geometry?: JsonWithAggregatesFilter<"VisualizationTemplate">
+    dimensions?: JsonWithAggregatesFilter<"VisualizationTemplate">
+    surfaceMappings?: JsonWithAggregatesFilter<"VisualizationTemplate">
+    materialSettings?: JsonNullableWithAggregatesFilter<"VisualizationTemplate">
+    previewCapabilities?: JsonNullableWithAggregatesFilter<"VisualizationTemplate">
+    manufacturingMetadata?: JsonNullableWithAggregatesFilter<"VisualizationTemplate">
+    publishedAt?: DateTimeNullableWithAggregatesFilter<"VisualizationTemplate"> | Date | string | null
+    archivedAt?: DateTimeNullableWithAggregatesFilter<"VisualizationTemplate"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"VisualizationTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"VisualizationTemplate"> | Date | string
+  }
+
+  export type VisualizationProcessingJobWhereInput = {
+    AND?: VisualizationProcessingJobWhereInput | VisualizationProcessingJobWhereInput[]
+    OR?: VisualizationProcessingJobWhereInput[]
+    NOT?: VisualizationProcessingJobWhereInput | VisualizationProcessingJobWhereInput[]
+    id?: StringFilter<"VisualizationProcessingJob"> | string
+    productId?: StringFilter<"VisualizationProcessingJob"> | string
+    sourceAssetId?: StringFilter<"VisualizationProcessingJob"> | string
+    templateId?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    requestedById?: StringFilter<"VisualizationProcessingJob"> | string
+    status?: EnumVisualizationJobStatusFilter<"VisualizationProcessingJob"> | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFilter<"VisualizationProcessingJob"> | $Enums.VisualizationAnalysisMode
+    attempt?: IntFilter<"VisualizationProcessingJob"> | number
+    maxAttempts?: IntFilter<"VisualizationProcessingJob"> | number
+    providerName?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    providerRequestId?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    analysisResult?: JsonNullableFilter<"VisualizationProcessingJob">
+    confirmation?: JsonNullableFilter<"VisualizationProcessingJob">
+    errorCode?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    errorMessage?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    nextAttemptAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    lastAttemptAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    startedAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"VisualizationProcessingJob"> | Date | string
+    updatedAt?: DateTimeFilter<"VisualizationProcessingJob"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    sourceAsset?: XOR<VisualizationAssetScalarRelationFilter, VisualizationAssetWhereInput>
+    template?: XOR<VisualizationTemplateNullableScalarRelationFilter, VisualizationTemplateWhereInput> | null
+    requestedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    assets?: VisualizationAssetListRelationFilter
+    templatesCreated?: VisualizationTemplateListRelationFilter
+  }
+
+  export type VisualizationProcessingJobOrderByWithRelationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    sourceAssetId?: SortOrder
+    templateId?: SortOrderInput | SortOrder
+    requestedById?: SortOrder
+    status?: SortOrder
+    analysisMode?: SortOrder
+    attempt?: SortOrder
+    maxAttempts?: SortOrder
+    providerName?: SortOrderInput | SortOrder
+    providerRequestId?: SortOrderInput | SortOrder
+    analysisResult?: SortOrderInput | SortOrder
+    confirmation?: SortOrderInput | SortOrder
+    errorCode?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    nextAttemptAt?: SortOrderInput | SortOrder
+    lastAttemptAt?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    product?: ProductOrderByWithRelationInput
+    sourceAsset?: VisualizationAssetOrderByWithRelationInput
+    template?: VisualizationTemplateOrderByWithRelationInput
+    requestedBy?: UserOrderByWithRelationInput
+    assets?: VisualizationAssetOrderByRelationAggregateInput
+    templatesCreated?: VisualizationTemplateOrderByRelationAggregateInput
+  }
+
+  export type VisualizationProcessingJobWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: VisualizationProcessingJobWhereInput | VisualizationProcessingJobWhereInput[]
+    OR?: VisualizationProcessingJobWhereInput[]
+    NOT?: VisualizationProcessingJobWhereInput | VisualizationProcessingJobWhereInput[]
+    productId?: StringFilter<"VisualizationProcessingJob"> | string
+    sourceAssetId?: StringFilter<"VisualizationProcessingJob"> | string
+    templateId?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    requestedById?: StringFilter<"VisualizationProcessingJob"> | string
+    status?: EnumVisualizationJobStatusFilter<"VisualizationProcessingJob"> | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFilter<"VisualizationProcessingJob"> | $Enums.VisualizationAnalysisMode
+    attempt?: IntFilter<"VisualizationProcessingJob"> | number
+    maxAttempts?: IntFilter<"VisualizationProcessingJob"> | number
+    providerName?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    providerRequestId?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    analysisResult?: JsonNullableFilter<"VisualizationProcessingJob">
+    confirmation?: JsonNullableFilter<"VisualizationProcessingJob">
+    errorCode?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    errorMessage?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    nextAttemptAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    lastAttemptAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    startedAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"VisualizationProcessingJob"> | Date | string
+    updatedAt?: DateTimeFilter<"VisualizationProcessingJob"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    sourceAsset?: XOR<VisualizationAssetScalarRelationFilter, VisualizationAssetWhereInput>
+    template?: XOR<VisualizationTemplateNullableScalarRelationFilter, VisualizationTemplateWhereInput> | null
+    requestedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+    assets?: VisualizationAssetListRelationFilter
+    templatesCreated?: VisualizationTemplateListRelationFilter
+  }, "id">
+
+  export type VisualizationProcessingJobOrderByWithAggregationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    sourceAssetId?: SortOrder
+    templateId?: SortOrderInput | SortOrder
+    requestedById?: SortOrder
+    status?: SortOrder
+    analysisMode?: SortOrder
+    attempt?: SortOrder
+    maxAttempts?: SortOrder
+    providerName?: SortOrderInput | SortOrder
+    providerRequestId?: SortOrderInput | SortOrder
+    analysisResult?: SortOrderInput | SortOrder
+    confirmation?: SortOrderInput | SortOrder
+    errorCode?: SortOrderInput | SortOrder
+    errorMessage?: SortOrderInput | SortOrder
+    nextAttemptAt?: SortOrderInput | SortOrder
+    lastAttemptAt?: SortOrderInput | SortOrder
+    startedAt?: SortOrderInput | SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: VisualizationProcessingJobCountOrderByAggregateInput
+    _avg?: VisualizationProcessingJobAvgOrderByAggregateInput
+    _max?: VisualizationProcessingJobMaxOrderByAggregateInput
+    _min?: VisualizationProcessingJobMinOrderByAggregateInput
+    _sum?: VisualizationProcessingJobSumOrderByAggregateInput
+  }
+
+  export type VisualizationProcessingJobScalarWhereWithAggregatesInput = {
+    AND?: VisualizationProcessingJobScalarWhereWithAggregatesInput | VisualizationProcessingJobScalarWhereWithAggregatesInput[]
+    OR?: VisualizationProcessingJobScalarWhereWithAggregatesInput[]
+    NOT?: VisualizationProcessingJobScalarWhereWithAggregatesInput | VisualizationProcessingJobScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"VisualizationProcessingJob"> | string
+    productId?: StringWithAggregatesFilter<"VisualizationProcessingJob"> | string
+    sourceAssetId?: StringWithAggregatesFilter<"VisualizationProcessingJob"> | string
+    templateId?: StringNullableWithAggregatesFilter<"VisualizationProcessingJob"> | string | null
+    requestedById?: StringWithAggregatesFilter<"VisualizationProcessingJob"> | string
+    status?: EnumVisualizationJobStatusWithAggregatesFilter<"VisualizationProcessingJob"> | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeWithAggregatesFilter<"VisualizationProcessingJob"> | $Enums.VisualizationAnalysisMode
+    attempt?: IntWithAggregatesFilter<"VisualizationProcessingJob"> | number
+    maxAttempts?: IntWithAggregatesFilter<"VisualizationProcessingJob"> | number
+    providerName?: StringNullableWithAggregatesFilter<"VisualizationProcessingJob"> | string | null
+    providerRequestId?: StringNullableWithAggregatesFilter<"VisualizationProcessingJob"> | string | null
+    analysisResult?: JsonNullableWithAggregatesFilter<"VisualizationProcessingJob">
+    confirmation?: JsonNullableWithAggregatesFilter<"VisualizationProcessingJob">
+    errorCode?: StringNullableWithAggregatesFilter<"VisualizationProcessingJob"> | string | null
+    errorMessage?: StringNullableWithAggregatesFilter<"VisualizationProcessingJob"> | string | null
+    nextAttemptAt?: DateTimeNullableWithAggregatesFilter<"VisualizationProcessingJob"> | Date | string | null
+    lastAttemptAt?: DateTimeNullableWithAggregatesFilter<"VisualizationProcessingJob"> | Date | string | null
+    startedAt?: DateTimeNullableWithAggregatesFilter<"VisualizationProcessingJob"> | Date | string | null
+    completedAt?: DateTimeNullableWithAggregatesFilter<"VisualizationProcessingJob"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"VisualizationProcessingJob"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"VisualizationProcessingJob"> | Date | string
+  }
+
+  export type VisualizationAssetWhereInput = {
+    AND?: VisualizationAssetWhereInput | VisualizationAssetWhereInput[]
+    OR?: VisualizationAssetWhereInput[]
+    NOT?: VisualizationAssetWhereInput | VisualizationAssetWhereInput[]
+    id?: StringFilter<"VisualizationAsset"> | string
+    productId?: StringNullableFilter<"VisualizationAsset"> | string | null
+    jobId?: StringNullableFilter<"VisualizationAsset"> | string | null
+    templateId?: StringNullableFilter<"VisualizationAsset"> | string | null
+    ownerUserId?: StringFilter<"VisualizationAsset"> | string
+    kind?: EnumVisualizationAssetKindFilter<"VisualizationAsset"> | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFilter<"VisualizationAsset"> | $Enums.VisualizationAssetStorage
+    originalName?: StringNullableFilter<"VisualizationAsset"> | string | null
+    mimeType?: StringFilter<"VisualizationAsset"> | string
+    sizeBytes?: IntFilter<"VisualizationAsset"> | number
+    width?: IntNullableFilter<"VisualizationAsset"> | number | null
+    height?: IntNullableFilter<"VisualizationAsset"> | number | null
+    sha256?: StringNullableFilter<"VisualizationAsset"> | string | null
+    content?: BytesNullableFilter<"VisualizationAsset"> | Bytes | null
+    privateRef?: StringNullableFilter<"VisualizationAsset"> | string | null
+    metadata?: JsonNullableFilter<"VisualizationAsset">
+    createdAt?: DateTimeFilter<"VisualizationAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"VisualizationAsset"> | Date | string
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
+    job?: XOR<VisualizationProcessingJobNullableScalarRelationFilter, VisualizationProcessingJobWhereInput> | null
+    template?: XOR<VisualizationTemplateNullableScalarRelationFilter, VisualizationTemplateWhereInput> | null
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sourceForJobs?: VisualizationProcessingJobListRelationFilter
+  }
+
+  export type VisualizationAssetOrderByWithRelationInput = {
+    id?: SortOrder
+    productId?: SortOrderInput | SortOrder
+    jobId?: SortOrderInput | SortOrder
+    templateId?: SortOrderInput | SortOrder
+    ownerUserId?: SortOrder
+    kind?: SortOrder
+    storage?: SortOrder
+    originalName?: SortOrderInput | SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrderInput | SortOrder
+    height?: SortOrderInput | SortOrder
+    sha256?: SortOrderInput | SortOrder
+    content?: SortOrderInput | SortOrder
+    privateRef?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    product?: ProductOrderByWithRelationInput
+    job?: VisualizationProcessingJobOrderByWithRelationInput
+    template?: VisualizationTemplateOrderByWithRelationInput
+    owner?: UserOrderByWithRelationInput
+    sourceForJobs?: VisualizationProcessingJobOrderByRelationAggregateInput
+  }
+
+  export type VisualizationAssetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: VisualizationAssetWhereInput | VisualizationAssetWhereInput[]
+    OR?: VisualizationAssetWhereInput[]
+    NOT?: VisualizationAssetWhereInput | VisualizationAssetWhereInput[]
+    productId?: StringNullableFilter<"VisualizationAsset"> | string | null
+    jobId?: StringNullableFilter<"VisualizationAsset"> | string | null
+    templateId?: StringNullableFilter<"VisualizationAsset"> | string | null
+    ownerUserId?: StringFilter<"VisualizationAsset"> | string
+    kind?: EnumVisualizationAssetKindFilter<"VisualizationAsset"> | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFilter<"VisualizationAsset"> | $Enums.VisualizationAssetStorage
+    originalName?: StringNullableFilter<"VisualizationAsset"> | string | null
+    mimeType?: StringFilter<"VisualizationAsset"> | string
+    sizeBytes?: IntFilter<"VisualizationAsset"> | number
+    width?: IntNullableFilter<"VisualizationAsset"> | number | null
+    height?: IntNullableFilter<"VisualizationAsset"> | number | null
+    sha256?: StringNullableFilter<"VisualizationAsset"> | string | null
+    content?: BytesNullableFilter<"VisualizationAsset"> | Bytes | null
+    privateRef?: StringNullableFilter<"VisualizationAsset"> | string | null
+    metadata?: JsonNullableFilter<"VisualizationAsset">
+    createdAt?: DateTimeFilter<"VisualizationAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"VisualizationAsset"> | Date | string
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
+    job?: XOR<VisualizationProcessingJobNullableScalarRelationFilter, VisualizationProcessingJobWhereInput> | null
+    template?: XOR<VisualizationTemplateNullableScalarRelationFilter, VisualizationTemplateWhereInput> | null
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sourceForJobs?: VisualizationProcessingJobListRelationFilter
+  }, "id">
+
+  export type VisualizationAssetOrderByWithAggregationInput = {
+    id?: SortOrder
+    productId?: SortOrderInput | SortOrder
+    jobId?: SortOrderInput | SortOrder
+    templateId?: SortOrderInput | SortOrder
+    ownerUserId?: SortOrder
+    kind?: SortOrder
+    storage?: SortOrder
+    originalName?: SortOrderInput | SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrderInput | SortOrder
+    height?: SortOrderInput | SortOrder
+    sha256?: SortOrderInput | SortOrder
+    content?: SortOrderInput | SortOrder
+    privateRef?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: VisualizationAssetCountOrderByAggregateInput
+    _avg?: VisualizationAssetAvgOrderByAggregateInput
+    _max?: VisualizationAssetMaxOrderByAggregateInput
+    _min?: VisualizationAssetMinOrderByAggregateInput
+    _sum?: VisualizationAssetSumOrderByAggregateInput
+  }
+
+  export type VisualizationAssetScalarWhereWithAggregatesInput = {
+    AND?: VisualizationAssetScalarWhereWithAggregatesInput | VisualizationAssetScalarWhereWithAggregatesInput[]
+    OR?: VisualizationAssetScalarWhereWithAggregatesInput[]
+    NOT?: VisualizationAssetScalarWhereWithAggregatesInput | VisualizationAssetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"VisualizationAsset"> | string
+    productId?: StringNullableWithAggregatesFilter<"VisualizationAsset"> | string | null
+    jobId?: StringNullableWithAggregatesFilter<"VisualizationAsset"> | string | null
+    templateId?: StringNullableWithAggregatesFilter<"VisualizationAsset"> | string | null
+    ownerUserId?: StringWithAggregatesFilter<"VisualizationAsset"> | string
+    kind?: EnumVisualizationAssetKindWithAggregatesFilter<"VisualizationAsset"> | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageWithAggregatesFilter<"VisualizationAsset"> | $Enums.VisualizationAssetStorage
+    originalName?: StringNullableWithAggregatesFilter<"VisualizationAsset"> | string | null
+    mimeType?: StringWithAggregatesFilter<"VisualizationAsset"> | string
+    sizeBytes?: IntWithAggregatesFilter<"VisualizationAsset"> | number
+    width?: IntNullableWithAggregatesFilter<"VisualizationAsset"> | number | null
+    height?: IntNullableWithAggregatesFilter<"VisualizationAsset"> | number | null
+    sha256?: StringNullableWithAggregatesFilter<"VisualizationAsset"> | string | null
+    content?: BytesNullableWithAggregatesFilter<"VisualizationAsset"> | Bytes | null
+    privateRef?: StringNullableWithAggregatesFilter<"VisualizationAsset"> | string | null
+    metadata?: JsonNullableWithAggregatesFilter<"VisualizationAsset">
+    createdAt?: DateTimeWithAggregatesFilter<"VisualizationAsset"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"VisualizationAsset"> | Date | string
   }
 
   export type ProductVariantWhereInput = {
@@ -80508,6 +85962,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -80545,6 +86002,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUpdateInput = {
@@ -80582,6 +86042,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -80619,6 +86082,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -81312,6 +86778,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -81357,6 +86826,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -81402,6 +86874,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -81447,6 +86922,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -81728,6 +87206,498 @@ export namespace Prisma {
     status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationTemplateCreateInput = {
+    id?: string
+    familyKey: string
+    version: number
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationTemplatesInput
+    sourceJob?: VisualizationProcessingJobCreateNestedOneWithoutTemplatesCreatedInput
+    createdBy: UserCreateNestedOneWithoutVisualizationTemplatesInput
+    jobs?: VisualizationProcessingJobCreateNestedManyWithoutTemplateInput
+    assets?: VisualizationAssetCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateUncheckedCreateInput = {
+    id?: string
+    familyKey: string
+    version: number
+    productId?: string | null
+    sourceJobId?: string | null
+    createdById: string
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    jobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutTemplateInput
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationTemplatesNestedInput
+    sourceJob?: VisualizationProcessingJobUpdateOneWithoutTemplatesCreatedNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutVisualizationTemplatesNestedInput
+    jobs?: VisualizationProcessingJobUpdateManyWithoutTemplateNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    jobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutTemplateNestedInput
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateCreateManyInput = {
+    id?: string
+    familyKey: string
+    version: number
+    productId?: string | null
+    sourceJobId?: string | null
+    createdById: string
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationProcessingJobCreateInput = {
+    id?: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutVisualizationJobsInput
+    sourceAsset: VisualizationAssetCreateNestedOneWithoutSourceForJobsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutJobsInput
+    requestedBy: UserCreateNestedOneWithoutVisualizationJobsInput
+    assets?: VisualizationAssetCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateInput = {
+    id?: string
+    productId: string
+    sourceAssetId: string
+    templateId?: string | null
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateUncheckedCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    sourceAsset?: VisualizationAssetUpdateOneRequiredWithoutSourceForJobsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutJobsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUncheckedUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobCreateManyInput = {
+    id?: string
+    productId: string
+    sourceAssetId: string
+    templateId?: string | null
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationProcessingJobUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationAssetCreateInput = {
+    id?: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationAssetsInput
+    job?: VisualizationProcessingJobCreateNestedOneWithoutAssetsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutAssetsInput
+    owner: UserCreateNestedOneWithoutVisualizationAssetsInput
+    sourceForJobs?: VisualizationProcessingJobCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetUncheckedCreateInput = {
+    id?: string
+    productId?: string | null
+    jobId?: string | null
+    templateId?: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationAssetsNestedInput
+    job?: VisualizationProcessingJobUpdateOneWithoutAssetsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutAssetsNestedInput
+    owner?: UserUpdateOneRequiredWithoutVisualizationAssetsNestedInput
+    sourceForJobs?: VisualizationProcessingJobUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetCreateManyInput = {
+    id?: string
+    productId?: string | null
+    jobId?: string | null
+    templateId?: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationAssetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationAssetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -86279,6 +92249,24 @@ export namespace Prisma {
     none?: ArtworkAssetWhereInput
   }
 
+  export type VisualizationTemplateListRelationFilter = {
+    every?: VisualizationTemplateWhereInput
+    some?: VisualizationTemplateWhereInput
+    none?: VisualizationTemplateWhereInput
+  }
+
+  export type VisualizationProcessingJobListRelationFilter = {
+    every?: VisualizationProcessingJobWhereInput
+    some?: VisualizationProcessingJobWhereInput
+    none?: VisualizationProcessingJobWhereInput
+  }
+
+  export type VisualizationAssetListRelationFilter = {
+    every?: VisualizationAssetWhereInput
+    some?: VisualizationAssetWhereInput
+    none?: VisualizationAssetWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -86353,6 +92341,18 @@ export namespace Prisma {
   }
 
   export type ArtworkAssetOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VisualizationTemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VisualizationProcessingJobOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VisualizationAssetOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -87339,6 +93339,13 @@ export namespace Prisma {
     _min?: NestedEnumArtworkAssetStatusFilter<$PrismaModel>
     _max?: NestedEnumArtworkAssetStatusFilter<$PrismaModel>
   }
+
+  export type EnumVisualizationTemplateStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationTemplateStatus | EnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationTemplateStatus[] | ListEnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationTemplateStatus[] | ListEnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationTemplateStatusFilter<$PrismaModel> | $Enums.VisualizationTemplateStatus
+  }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -87361,6 +93368,371 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type ProductNullableScalarRelationFilter = {
+    is?: ProductWhereInput | null
+    isNot?: ProductWhereInput | null
+  }
+
+  export type VisualizationProcessingJobNullableScalarRelationFilter = {
+    is?: VisualizationProcessingJobWhereInput | null
+    isNot?: VisualizationProcessingJobWhereInput | null
+  }
+
+  export type VisualizationTemplateFamilyKeyVersionCompoundUniqueInput = {
+    familyKey: string
+    version: number
+  }
+
+  export type VisualizationTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    familyKey?: SortOrder
+    version?: SortOrder
+    productId?: SortOrder
+    sourceJobId?: SortOrder
+    createdById?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    productType?: SortOrder
+    status?: SortOrder
+    geometry?: SortOrder
+    dimensions?: SortOrder
+    surfaceMappings?: SortOrder
+    materialSettings?: SortOrder
+    previewCapabilities?: SortOrder
+    manufacturingMetadata?: SortOrder
+    publishedAt?: SortOrder
+    archivedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VisualizationTemplateAvgOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type VisualizationTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    familyKey?: SortOrder
+    version?: SortOrder
+    productId?: SortOrder
+    sourceJobId?: SortOrder
+    createdById?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    productType?: SortOrder
+    status?: SortOrder
+    publishedAt?: SortOrder
+    archivedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VisualizationTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    familyKey?: SortOrder
+    version?: SortOrder
+    productId?: SortOrder
+    sourceJobId?: SortOrder
+    createdById?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    productType?: SortOrder
+    status?: SortOrder
+    publishedAt?: SortOrder
+    archivedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VisualizationTemplateSumOrderByAggregateInput = {
+    version?: SortOrder
+  }
+
+  export type EnumVisualizationTemplateStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationTemplateStatus | EnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationTemplateStatus[] | ListEnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationTemplateStatus[] | ListEnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationTemplateStatusWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationTemplateStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationTemplateStatusFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationTemplateStatusFilter<$PrismaModel>
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type EnumVisualizationJobStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationJobStatus | EnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationJobStatus[] | ListEnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationJobStatus[] | ListEnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationJobStatusFilter<$PrismaModel> | $Enums.VisualizationJobStatus
+  }
+
+  export type EnumVisualizationAnalysisModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAnalysisMode | EnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAnalysisMode[] | ListEnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAnalysisMode[] | ListEnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAnalysisModeFilter<$PrismaModel> | $Enums.VisualizationAnalysisMode
+  }
+
+  export type VisualizationAssetScalarRelationFilter = {
+    is?: VisualizationAssetWhereInput
+    isNot?: VisualizationAssetWhereInput
+  }
+
+  export type VisualizationTemplateNullableScalarRelationFilter = {
+    is?: VisualizationTemplateWhereInput | null
+    isNot?: VisualizationTemplateWhereInput | null
+  }
+
+  export type VisualizationProcessingJobCountOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    sourceAssetId?: SortOrder
+    templateId?: SortOrder
+    requestedById?: SortOrder
+    status?: SortOrder
+    analysisMode?: SortOrder
+    attempt?: SortOrder
+    maxAttempts?: SortOrder
+    providerName?: SortOrder
+    providerRequestId?: SortOrder
+    analysisResult?: SortOrder
+    confirmation?: SortOrder
+    errorCode?: SortOrder
+    errorMessage?: SortOrder
+    nextAttemptAt?: SortOrder
+    lastAttemptAt?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VisualizationProcessingJobAvgOrderByAggregateInput = {
+    attempt?: SortOrder
+    maxAttempts?: SortOrder
+  }
+
+  export type VisualizationProcessingJobMaxOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    sourceAssetId?: SortOrder
+    templateId?: SortOrder
+    requestedById?: SortOrder
+    status?: SortOrder
+    analysisMode?: SortOrder
+    attempt?: SortOrder
+    maxAttempts?: SortOrder
+    providerName?: SortOrder
+    providerRequestId?: SortOrder
+    errorCode?: SortOrder
+    errorMessage?: SortOrder
+    nextAttemptAt?: SortOrder
+    lastAttemptAt?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VisualizationProcessingJobMinOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    sourceAssetId?: SortOrder
+    templateId?: SortOrder
+    requestedById?: SortOrder
+    status?: SortOrder
+    analysisMode?: SortOrder
+    attempt?: SortOrder
+    maxAttempts?: SortOrder
+    providerName?: SortOrder
+    providerRequestId?: SortOrder
+    errorCode?: SortOrder
+    errorMessage?: SortOrder
+    nextAttemptAt?: SortOrder
+    lastAttemptAt?: SortOrder
+    startedAt?: SortOrder
+    completedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VisualizationProcessingJobSumOrderByAggregateInput = {
+    attempt?: SortOrder
+    maxAttempts?: SortOrder
+  }
+
+  export type EnumVisualizationJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationJobStatus | EnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationJobStatus[] | ListEnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationJobStatus[] | ListEnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationJobStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationJobStatusFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationJobStatusFilter<$PrismaModel>
+  }
+
+  export type EnumVisualizationAnalysisModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAnalysisMode | EnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAnalysisMode[] | ListEnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAnalysisMode[] | ListEnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAnalysisModeWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationAnalysisMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationAnalysisModeFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationAnalysisModeFilter<$PrismaModel>
+  }
+
+  export type EnumVisualizationAssetKindFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAssetKind | EnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAssetKind[] | ListEnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAssetKind[] | ListEnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAssetKindFilter<$PrismaModel> | $Enums.VisualizationAssetKind
+  }
+
+  export type EnumVisualizationAssetStorageFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAssetStorage | EnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAssetStorage[] | ListEnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAssetStorage[] | ListEnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAssetStorageFilter<$PrismaModel> | $Enums.VisualizationAssetStorage
+  }
+
+  export type BytesNullableFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Bytes | null
+  }
+
+  export type VisualizationAssetCountOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    jobId?: SortOrder
+    templateId?: SortOrder
+    ownerUserId?: SortOrder
+    kind?: SortOrder
+    storage?: SortOrder
+    originalName?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    privateRef?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VisualizationAssetAvgOrderByAggregateInput = {
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+  }
+
+  export type VisualizationAssetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    jobId?: SortOrder
+    templateId?: SortOrder
+    ownerUserId?: SortOrder
+    kind?: SortOrder
+    storage?: SortOrder
+    originalName?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    privateRef?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VisualizationAssetMinOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    jobId?: SortOrder
+    templateId?: SortOrder
+    ownerUserId?: SortOrder
+    kind?: SortOrder
+    storage?: SortOrder
+    originalName?: SortOrder
+    mimeType?: SortOrder
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+    sha256?: SortOrder
+    content?: SortOrder
+    privateRef?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VisualizationAssetSumOrderByAggregateInput = {
+    sizeBytes?: SortOrder
+    width?: SortOrder
+    height?: SortOrder
+  }
+
+  export type EnumVisualizationAssetKindWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAssetKind | EnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAssetKind[] | ListEnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAssetKind[] | ListEnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAssetKindWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationAssetKind
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationAssetKindFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationAssetKindFilter<$PrismaModel>
+  }
+
+  export type EnumVisualizationAssetStorageWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAssetStorage | EnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAssetStorage[] | ListEnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAssetStorage[] | ListEnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAssetStorageWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationAssetStorage
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationAssetStorageFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationAssetStorageFilter<$PrismaModel>
+  }
+
+  export type BytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Bytes | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
   }
 
   export type EnumInventoryPolicyFilter<$PrismaModel = never> = {
@@ -87451,32 +93823,6 @@ export namespace Prisma {
     costPaise?: SortOrder
     weightGrams?: SortOrder
     sortOrder?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type EnumInventoryPolicyWithAggregatesFilter<$PrismaModel = never> = {
@@ -88983,11 +95329,6 @@ export namespace Prisma {
     _max?: NestedEnumOrderAddressTypeFilter<$PrismaModel>
   }
 
-  export type ProductNullableScalarRelationFilter = {
-    is?: ProductWhereInput | null
-    isNot?: ProductWhereInput | null
-  }
-
   export type ProductVariantNullableScalarRelationFilter = {
     is?: ProductVariantWhereInput | null
     isNot?: ProductVariantWhereInput | null
@@ -90375,6 +96716,27 @@ export namespace Prisma {
     connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
   }
 
+  export type VisualizationTemplateCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutCreatedByInput, VisualizationTemplateUncheckedCreateWithoutCreatedByInput> | VisualizationTemplateCreateWithoutCreatedByInput[] | VisualizationTemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutCreatedByInput | VisualizationTemplateCreateOrConnectWithoutCreatedByInput[]
+    createMany?: VisualizationTemplateCreateManyCreatedByInputEnvelope
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+  }
+
+  export type VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutRequestedByInput, VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput> | VisualizationProcessingJobCreateWithoutRequestedByInput[] | VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutRequestedByInput | VisualizationProcessingJobCreateOrConnectWithoutRequestedByInput[]
+    createMany?: VisualizationProcessingJobCreateManyRequestedByInputEnvelope
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+  }
+
+  export type VisualizationAssetCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<VisualizationAssetCreateWithoutOwnerInput, VisualizationAssetUncheckedCreateWithoutOwnerInput> | VisualizationAssetCreateWithoutOwnerInput[] | VisualizationAssetUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutOwnerInput | VisualizationAssetCreateOrConnectWithoutOwnerInput[]
+    createMany?: VisualizationAssetCreateManyOwnerInputEnvelope
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+  }
+
   export type AddressUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput> | AddressCreateWithoutUserInput[] | AddressUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AddressCreateOrConnectWithoutUserInput | AddressCreateOrConnectWithoutUserInput[]
@@ -90518,6 +96880,27 @@ export namespace Prisma {
     connectOrCreate?: ArtworkAssetCreateOrConnectWithoutOwnerInput | ArtworkAssetCreateOrConnectWithoutOwnerInput[]
     createMany?: ArtworkAssetCreateManyOwnerInputEnvelope
     connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+  }
+
+  export type VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutCreatedByInput, VisualizationTemplateUncheckedCreateWithoutCreatedByInput> | VisualizationTemplateCreateWithoutCreatedByInput[] | VisualizationTemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutCreatedByInput | VisualizationTemplateCreateOrConnectWithoutCreatedByInput[]
+    createMany?: VisualizationTemplateCreateManyCreatedByInputEnvelope
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutRequestedByInput, VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput> | VisualizationProcessingJobCreateWithoutRequestedByInput[] | VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutRequestedByInput | VisualizationProcessingJobCreateOrConnectWithoutRequestedByInput[]
+    createMany?: VisualizationProcessingJobCreateManyRequestedByInputEnvelope
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+  }
+
+  export type VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<VisualizationAssetCreateWithoutOwnerInput, VisualizationAssetUncheckedCreateWithoutOwnerInput> | VisualizationAssetCreateWithoutOwnerInput[] | VisualizationAssetUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutOwnerInput | VisualizationAssetCreateOrConnectWithoutOwnerInput[]
+    createMany?: VisualizationAssetCreateManyOwnerInputEnvelope
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -90826,6 +97209,48 @@ export namespace Prisma {
     deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
   }
 
+  export type VisualizationTemplateUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutCreatedByInput, VisualizationTemplateUncheckedCreateWithoutCreatedByInput> | VisualizationTemplateCreateWithoutCreatedByInput[] | VisualizationTemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutCreatedByInput | VisualizationTemplateCreateOrConnectWithoutCreatedByInput[]
+    upsert?: VisualizationTemplateUpsertWithWhereUniqueWithoutCreatedByInput | VisualizationTemplateUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: VisualizationTemplateCreateManyCreatedByInputEnvelope
+    set?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    disconnect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    delete?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    update?: VisualizationTemplateUpdateWithWhereUniqueWithoutCreatedByInput | VisualizationTemplateUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: VisualizationTemplateUpdateManyWithWhereWithoutCreatedByInput | VisualizationTemplateUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: VisualizationTemplateScalarWhereInput | VisualizationTemplateScalarWhereInput[]
+  }
+
+  export type VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutRequestedByInput, VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput> | VisualizationProcessingJobCreateWithoutRequestedByInput[] | VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutRequestedByInput | VisualizationProcessingJobCreateOrConnectWithoutRequestedByInput[]
+    upsert?: VisualizationProcessingJobUpsertWithWhereUniqueWithoutRequestedByInput | VisualizationProcessingJobUpsertWithWhereUniqueWithoutRequestedByInput[]
+    createMany?: VisualizationProcessingJobCreateManyRequestedByInputEnvelope
+    set?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    disconnect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    delete?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    update?: VisualizationProcessingJobUpdateWithWhereUniqueWithoutRequestedByInput | VisualizationProcessingJobUpdateWithWhereUniqueWithoutRequestedByInput[]
+    updateMany?: VisualizationProcessingJobUpdateManyWithWhereWithoutRequestedByInput | VisualizationProcessingJobUpdateManyWithWhereWithoutRequestedByInput[]
+    deleteMany?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
+  }
+
+  export type VisualizationAssetUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<VisualizationAssetCreateWithoutOwnerInput, VisualizationAssetUncheckedCreateWithoutOwnerInput> | VisualizationAssetCreateWithoutOwnerInput[] | VisualizationAssetUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutOwnerInput | VisualizationAssetCreateOrConnectWithoutOwnerInput[]
+    upsert?: VisualizationAssetUpsertWithWhereUniqueWithoutOwnerInput | VisualizationAssetUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: VisualizationAssetCreateManyOwnerInputEnvelope
+    set?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    disconnect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    delete?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    update?: VisualizationAssetUpdateWithWhereUniqueWithoutOwnerInput | VisualizationAssetUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: VisualizationAssetUpdateManyWithWhereWithoutOwnerInput | VisualizationAssetUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+  }
+
   export type AddressUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput> | AddressCreateWithoutUserInput[] | AddressUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AddressCreateOrConnectWithoutUserInput | AddressCreateOrConnectWithoutUserInput[]
@@ -91110,6 +97535,48 @@ export namespace Prisma {
     update?: ArtworkAssetUpdateWithWhereUniqueWithoutOwnerInput | ArtworkAssetUpdateWithWhereUniqueWithoutOwnerInput[]
     updateMany?: ArtworkAssetUpdateManyWithWhereWithoutOwnerInput | ArtworkAssetUpdateManyWithWhereWithoutOwnerInput[]
     deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
+  }
+
+  export type VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutCreatedByInput, VisualizationTemplateUncheckedCreateWithoutCreatedByInput> | VisualizationTemplateCreateWithoutCreatedByInput[] | VisualizationTemplateUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutCreatedByInput | VisualizationTemplateCreateOrConnectWithoutCreatedByInput[]
+    upsert?: VisualizationTemplateUpsertWithWhereUniqueWithoutCreatedByInput | VisualizationTemplateUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: VisualizationTemplateCreateManyCreatedByInputEnvelope
+    set?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    disconnect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    delete?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    update?: VisualizationTemplateUpdateWithWhereUniqueWithoutCreatedByInput | VisualizationTemplateUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: VisualizationTemplateUpdateManyWithWhereWithoutCreatedByInput | VisualizationTemplateUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: VisualizationTemplateScalarWhereInput | VisualizationTemplateScalarWhereInput[]
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutRequestedByInput, VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput> | VisualizationProcessingJobCreateWithoutRequestedByInput[] | VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutRequestedByInput | VisualizationProcessingJobCreateOrConnectWithoutRequestedByInput[]
+    upsert?: VisualizationProcessingJobUpsertWithWhereUniqueWithoutRequestedByInput | VisualizationProcessingJobUpsertWithWhereUniqueWithoutRequestedByInput[]
+    createMany?: VisualizationProcessingJobCreateManyRequestedByInputEnvelope
+    set?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    disconnect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    delete?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    update?: VisualizationProcessingJobUpdateWithWhereUniqueWithoutRequestedByInput | VisualizationProcessingJobUpdateWithWhereUniqueWithoutRequestedByInput[]
+    updateMany?: VisualizationProcessingJobUpdateManyWithWhereWithoutRequestedByInput | VisualizationProcessingJobUpdateManyWithWhereWithoutRequestedByInput[]
+    deleteMany?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
+  }
+
+  export type VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<VisualizationAssetCreateWithoutOwnerInput, VisualizationAssetUncheckedCreateWithoutOwnerInput> | VisualizationAssetCreateWithoutOwnerInput[] | VisualizationAssetUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutOwnerInput | VisualizationAssetCreateOrConnectWithoutOwnerInput[]
+    upsert?: VisualizationAssetUpsertWithWhereUniqueWithoutOwnerInput | VisualizationAssetUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: VisualizationAssetCreateManyOwnerInputEnvelope
+    set?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    disconnect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    delete?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    update?: VisualizationAssetUpdateWithWhereUniqueWithoutOwnerInput | VisualizationAssetUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: VisualizationAssetUpdateManyWithWhereWithoutOwnerInput | VisualizationAssetUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAuthSessionsInput = {
@@ -91672,6 +98139,27 @@ export namespace Prisma {
     connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
   }
 
+  export type VisualizationTemplateCreateNestedManyWithoutProductInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutProductInput, VisualizationTemplateUncheckedCreateWithoutProductInput> | VisualizationTemplateCreateWithoutProductInput[] | VisualizationTemplateUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutProductInput | VisualizationTemplateCreateOrConnectWithoutProductInput[]
+    createMany?: VisualizationTemplateCreateManyProductInputEnvelope
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+  }
+
+  export type VisualizationProcessingJobCreateNestedManyWithoutProductInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutProductInput, VisualizationProcessingJobUncheckedCreateWithoutProductInput> | VisualizationProcessingJobCreateWithoutProductInput[] | VisualizationProcessingJobUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutProductInput | VisualizationProcessingJobCreateOrConnectWithoutProductInput[]
+    createMany?: VisualizationProcessingJobCreateManyProductInputEnvelope
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+  }
+
+  export type VisualizationAssetCreateNestedManyWithoutProductInput = {
+    create?: XOR<VisualizationAssetCreateWithoutProductInput, VisualizationAssetUncheckedCreateWithoutProductInput> | VisualizationAssetCreateWithoutProductInput[] | VisualizationAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutProductInput | VisualizationAssetCreateOrConnectWithoutProductInput[]
+    createMany?: VisualizationAssetCreateManyProductInputEnvelope
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+  }
+
   export type ProductCategoryUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput> | ProductCategoryCreateWithoutProductInput[] | ProductCategoryUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductCategoryCreateOrConnectWithoutProductInput | ProductCategoryCreateOrConnectWithoutProductInput[]
@@ -91768,6 +98256,27 @@ export namespace Prisma {
     connectOrCreate?: ArtworkAssetCreateOrConnectWithoutProductInput | ArtworkAssetCreateOrConnectWithoutProductInput[]
     createMany?: ArtworkAssetCreateManyProductInputEnvelope
     connect?: ArtworkAssetWhereUniqueInput | ArtworkAssetWhereUniqueInput[]
+  }
+
+  export type VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutProductInput, VisualizationTemplateUncheckedCreateWithoutProductInput> | VisualizationTemplateCreateWithoutProductInput[] | VisualizationTemplateUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutProductInput | VisualizationTemplateCreateOrConnectWithoutProductInput[]
+    createMany?: VisualizationTemplateCreateManyProductInputEnvelope
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutProductInput, VisualizationProcessingJobUncheckedCreateWithoutProductInput> | VisualizationProcessingJobCreateWithoutProductInput[] | VisualizationProcessingJobUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutProductInput | VisualizationProcessingJobCreateOrConnectWithoutProductInput[]
+    createMany?: VisualizationProcessingJobCreateManyProductInputEnvelope
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+  }
+
+  export type VisualizationAssetUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<VisualizationAssetCreateWithoutProductInput, VisualizationAssetUncheckedCreateWithoutProductInput> | VisualizationAssetCreateWithoutProductInput[] | VisualizationAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutProductInput | VisualizationAssetCreateOrConnectWithoutProductInput[]
+    createMany?: VisualizationAssetCreateManyProductInputEnvelope
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
   }
 
   export type EnumProductStatusFieldUpdateOperationsInput = {
@@ -91991,6 +98500,48 @@ export namespace Prisma {
     deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
   }
 
+  export type VisualizationTemplateUpdateManyWithoutProductNestedInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutProductInput, VisualizationTemplateUncheckedCreateWithoutProductInput> | VisualizationTemplateCreateWithoutProductInput[] | VisualizationTemplateUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutProductInput | VisualizationTemplateCreateOrConnectWithoutProductInput[]
+    upsert?: VisualizationTemplateUpsertWithWhereUniqueWithoutProductInput | VisualizationTemplateUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: VisualizationTemplateCreateManyProductInputEnvelope
+    set?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    disconnect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    delete?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    update?: VisualizationTemplateUpdateWithWhereUniqueWithoutProductInput | VisualizationTemplateUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: VisualizationTemplateUpdateManyWithWhereWithoutProductInput | VisualizationTemplateUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: VisualizationTemplateScalarWhereInput | VisualizationTemplateScalarWhereInput[]
+  }
+
+  export type VisualizationProcessingJobUpdateManyWithoutProductNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutProductInput, VisualizationProcessingJobUncheckedCreateWithoutProductInput> | VisualizationProcessingJobCreateWithoutProductInput[] | VisualizationProcessingJobUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutProductInput | VisualizationProcessingJobCreateOrConnectWithoutProductInput[]
+    upsert?: VisualizationProcessingJobUpsertWithWhereUniqueWithoutProductInput | VisualizationProcessingJobUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: VisualizationProcessingJobCreateManyProductInputEnvelope
+    set?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    disconnect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    delete?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    update?: VisualizationProcessingJobUpdateWithWhereUniqueWithoutProductInput | VisualizationProcessingJobUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: VisualizationProcessingJobUpdateManyWithWhereWithoutProductInput | VisualizationProcessingJobUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
+  }
+
+  export type VisualizationAssetUpdateManyWithoutProductNestedInput = {
+    create?: XOR<VisualizationAssetCreateWithoutProductInput, VisualizationAssetUncheckedCreateWithoutProductInput> | VisualizationAssetCreateWithoutProductInput[] | VisualizationAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutProductInput | VisualizationAssetCreateOrConnectWithoutProductInput[]
+    upsert?: VisualizationAssetUpsertWithWhereUniqueWithoutProductInput | VisualizationAssetUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: VisualizationAssetCreateManyProductInputEnvelope
+    set?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    disconnect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    delete?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    update?: VisualizationAssetUpdateWithWhereUniqueWithoutProductInput | VisualizationAssetUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: VisualizationAssetUpdateManyWithWhereWithoutProductInput | VisualizationAssetUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+  }
+
   export type ProductCategoryUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<ProductCategoryCreateWithoutProductInput, ProductCategoryUncheckedCreateWithoutProductInput> | ProductCategoryCreateWithoutProductInput[] | ProductCategoryUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductCategoryCreateOrConnectWithoutProductInput | ProductCategoryCreateOrConnectWithoutProductInput[]
@@ -92187,6 +98738,48 @@ export namespace Prisma {
     deleteMany?: ArtworkAssetScalarWhereInput | ArtworkAssetScalarWhereInput[]
   }
 
+  export type VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutProductInput, VisualizationTemplateUncheckedCreateWithoutProductInput> | VisualizationTemplateCreateWithoutProductInput[] | VisualizationTemplateUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutProductInput | VisualizationTemplateCreateOrConnectWithoutProductInput[]
+    upsert?: VisualizationTemplateUpsertWithWhereUniqueWithoutProductInput | VisualizationTemplateUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: VisualizationTemplateCreateManyProductInputEnvelope
+    set?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    disconnect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    delete?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    update?: VisualizationTemplateUpdateWithWhereUniqueWithoutProductInput | VisualizationTemplateUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: VisualizationTemplateUpdateManyWithWhereWithoutProductInput | VisualizationTemplateUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: VisualizationTemplateScalarWhereInput | VisualizationTemplateScalarWhereInput[]
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutProductInput, VisualizationProcessingJobUncheckedCreateWithoutProductInput> | VisualizationProcessingJobCreateWithoutProductInput[] | VisualizationProcessingJobUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutProductInput | VisualizationProcessingJobCreateOrConnectWithoutProductInput[]
+    upsert?: VisualizationProcessingJobUpsertWithWhereUniqueWithoutProductInput | VisualizationProcessingJobUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: VisualizationProcessingJobCreateManyProductInputEnvelope
+    set?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    disconnect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    delete?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    update?: VisualizationProcessingJobUpdateWithWhereUniqueWithoutProductInput | VisualizationProcessingJobUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: VisualizationProcessingJobUpdateManyWithWhereWithoutProductInput | VisualizationProcessingJobUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
+  }
+
+  export type VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<VisualizationAssetCreateWithoutProductInput, VisualizationAssetUncheckedCreateWithoutProductInput> | VisualizationAssetCreateWithoutProductInput[] | VisualizationAssetUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutProductInput | VisualizationAssetCreateOrConnectWithoutProductInput[]
+    upsert?: VisualizationAssetUpsertWithWhereUniqueWithoutProductInput | VisualizationAssetUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: VisualizationAssetCreateManyProductInputEnvelope
+    set?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    disconnect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    delete?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    update?: VisualizationAssetUpdateWithWhereUniqueWithoutProductInput | VisualizationAssetUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: VisualizationAssetUpdateManyWithWhereWithoutProductInput | VisualizationAssetUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+  }
+
   export type ProductCreateNestedOneWithoutCategoryLinksInput = {
     create?: XOR<ProductCreateWithoutCategoryLinksInput, ProductUncheckedCreateWithoutCategoryLinksInput>
     connectOrCreate?: ProductCreateOrConnectWithoutCategoryLinksInput
@@ -92267,6 +98860,406 @@ export namespace Prisma {
     delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUploadedArtworkAssetsInput, UserUpdateWithoutUploadedArtworkAssetsInput>, UserUncheckedUpdateWithoutUploadedArtworkAssetsInput>
+  }
+
+  export type ProductCreateNestedOneWithoutVisualizationTemplatesInput = {
+    create?: XOR<ProductCreateWithoutVisualizationTemplatesInput, ProductUncheckedCreateWithoutVisualizationTemplatesInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutVisualizationTemplatesInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type VisualizationProcessingJobCreateNestedOneWithoutTemplatesCreatedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutTemplatesCreatedInput, VisualizationProcessingJobUncheckedCreateWithoutTemplatesCreatedInput>
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutTemplatesCreatedInput
+    connect?: VisualizationProcessingJobWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutVisualizationTemplatesInput = {
+    create?: XOR<UserCreateWithoutVisualizationTemplatesInput, UserUncheckedCreateWithoutVisualizationTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVisualizationTemplatesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type VisualizationProcessingJobCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutTemplateInput, VisualizationProcessingJobUncheckedCreateWithoutTemplateInput> | VisualizationProcessingJobCreateWithoutTemplateInput[] | VisualizationProcessingJobUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutTemplateInput | VisualizationProcessingJobCreateOrConnectWithoutTemplateInput[]
+    createMany?: VisualizationProcessingJobCreateManyTemplateInputEnvelope
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+  }
+
+  export type VisualizationAssetCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<VisualizationAssetCreateWithoutTemplateInput, VisualizationAssetUncheckedCreateWithoutTemplateInput> | VisualizationAssetCreateWithoutTemplateInput[] | VisualizationAssetUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutTemplateInput | VisualizationAssetCreateOrConnectWithoutTemplateInput[]
+    createMany?: VisualizationAssetCreateManyTemplateInputEnvelope
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutTemplateInput, VisualizationProcessingJobUncheckedCreateWithoutTemplateInput> | VisualizationProcessingJobCreateWithoutTemplateInput[] | VisualizationProcessingJobUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutTemplateInput | VisualizationProcessingJobCreateOrConnectWithoutTemplateInput[]
+    createMany?: VisualizationProcessingJobCreateManyTemplateInputEnvelope
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+  }
+
+  export type VisualizationAssetUncheckedCreateNestedManyWithoutTemplateInput = {
+    create?: XOR<VisualizationAssetCreateWithoutTemplateInput, VisualizationAssetUncheckedCreateWithoutTemplateInput> | VisualizationAssetCreateWithoutTemplateInput[] | VisualizationAssetUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutTemplateInput | VisualizationAssetCreateOrConnectWithoutTemplateInput[]
+    createMany?: VisualizationAssetCreateManyTemplateInputEnvelope
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+  }
+
+  export type EnumVisualizationTemplateStatusFieldUpdateOperationsInput = {
+    set?: $Enums.VisualizationTemplateStatus
+  }
+
+  export type ProductUpdateOneWithoutVisualizationTemplatesNestedInput = {
+    create?: XOR<ProductCreateWithoutVisualizationTemplatesInput, ProductUncheckedCreateWithoutVisualizationTemplatesInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutVisualizationTemplatesInput
+    upsert?: ProductUpsertWithoutVisualizationTemplatesInput
+    disconnect?: ProductWhereInput | boolean
+    delete?: ProductWhereInput | boolean
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutVisualizationTemplatesInput, ProductUpdateWithoutVisualizationTemplatesInput>, ProductUncheckedUpdateWithoutVisualizationTemplatesInput>
+  }
+
+  export type VisualizationProcessingJobUpdateOneWithoutTemplatesCreatedNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutTemplatesCreatedInput, VisualizationProcessingJobUncheckedCreateWithoutTemplatesCreatedInput>
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutTemplatesCreatedInput
+    upsert?: VisualizationProcessingJobUpsertWithoutTemplatesCreatedInput
+    disconnect?: VisualizationProcessingJobWhereInput | boolean
+    delete?: VisualizationProcessingJobWhereInput | boolean
+    connect?: VisualizationProcessingJobWhereUniqueInput
+    update?: XOR<XOR<VisualizationProcessingJobUpdateToOneWithWhereWithoutTemplatesCreatedInput, VisualizationProcessingJobUpdateWithoutTemplatesCreatedInput>, VisualizationProcessingJobUncheckedUpdateWithoutTemplatesCreatedInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutVisualizationTemplatesNestedInput = {
+    create?: XOR<UserCreateWithoutVisualizationTemplatesInput, UserUncheckedCreateWithoutVisualizationTemplatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVisualizationTemplatesInput
+    upsert?: UserUpsertWithoutVisualizationTemplatesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVisualizationTemplatesInput, UserUpdateWithoutVisualizationTemplatesInput>, UserUncheckedUpdateWithoutVisualizationTemplatesInput>
+  }
+
+  export type VisualizationProcessingJobUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutTemplateInput, VisualizationProcessingJobUncheckedCreateWithoutTemplateInput> | VisualizationProcessingJobCreateWithoutTemplateInput[] | VisualizationProcessingJobUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutTemplateInput | VisualizationProcessingJobCreateOrConnectWithoutTemplateInput[]
+    upsert?: VisualizationProcessingJobUpsertWithWhereUniqueWithoutTemplateInput | VisualizationProcessingJobUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: VisualizationProcessingJobCreateManyTemplateInputEnvelope
+    set?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    disconnect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    delete?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    update?: VisualizationProcessingJobUpdateWithWhereUniqueWithoutTemplateInput | VisualizationProcessingJobUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: VisualizationProcessingJobUpdateManyWithWhereWithoutTemplateInput | VisualizationProcessingJobUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
+  }
+
+  export type VisualizationAssetUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<VisualizationAssetCreateWithoutTemplateInput, VisualizationAssetUncheckedCreateWithoutTemplateInput> | VisualizationAssetCreateWithoutTemplateInput[] | VisualizationAssetUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutTemplateInput | VisualizationAssetCreateOrConnectWithoutTemplateInput[]
+    upsert?: VisualizationAssetUpsertWithWhereUniqueWithoutTemplateInput | VisualizationAssetUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: VisualizationAssetCreateManyTemplateInputEnvelope
+    set?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    disconnect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    delete?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    update?: VisualizationAssetUpdateWithWhereUniqueWithoutTemplateInput | VisualizationAssetUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: VisualizationAssetUpdateManyWithWhereWithoutTemplateInput | VisualizationAssetUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutTemplateInput, VisualizationProcessingJobUncheckedCreateWithoutTemplateInput> | VisualizationProcessingJobCreateWithoutTemplateInput[] | VisualizationProcessingJobUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutTemplateInput | VisualizationProcessingJobCreateOrConnectWithoutTemplateInput[]
+    upsert?: VisualizationProcessingJobUpsertWithWhereUniqueWithoutTemplateInput | VisualizationProcessingJobUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: VisualizationProcessingJobCreateManyTemplateInputEnvelope
+    set?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    disconnect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    delete?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    update?: VisualizationProcessingJobUpdateWithWhereUniqueWithoutTemplateInput | VisualizationProcessingJobUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: VisualizationProcessingJobUpdateManyWithWhereWithoutTemplateInput | VisualizationProcessingJobUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
+  }
+
+  export type VisualizationAssetUncheckedUpdateManyWithoutTemplateNestedInput = {
+    create?: XOR<VisualizationAssetCreateWithoutTemplateInput, VisualizationAssetUncheckedCreateWithoutTemplateInput> | VisualizationAssetCreateWithoutTemplateInput[] | VisualizationAssetUncheckedCreateWithoutTemplateInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutTemplateInput | VisualizationAssetCreateOrConnectWithoutTemplateInput[]
+    upsert?: VisualizationAssetUpsertWithWhereUniqueWithoutTemplateInput | VisualizationAssetUpsertWithWhereUniqueWithoutTemplateInput[]
+    createMany?: VisualizationAssetCreateManyTemplateInputEnvelope
+    set?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    disconnect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    delete?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    update?: VisualizationAssetUpdateWithWhereUniqueWithoutTemplateInput | VisualizationAssetUpdateWithWhereUniqueWithoutTemplateInput[]
+    updateMany?: VisualizationAssetUpdateManyWithWhereWithoutTemplateInput | VisualizationAssetUpdateManyWithWhereWithoutTemplateInput[]
+    deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+  }
+
+  export type ProductCreateNestedOneWithoutVisualizationJobsInput = {
+    create?: XOR<ProductCreateWithoutVisualizationJobsInput, ProductUncheckedCreateWithoutVisualizationJobsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutVisualizationJobsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type VisualizationAssetCreateNestedOneWithoutSourceForJobsInput = {
+    create?: XOR<VisualizationAssetCreateWithoutSourceForJobsInput, VisualizationAssetUncheckedCreateWithoutSourceForJobsInput>
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutSourceForJobsInput
+    connect?: VisualizationAssetWhereUniqueInput
+  }
+
+  export type VisualizationTemplateCreateNestedOneWithoutJobsInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutJobsInput, VisualizationTemplateUncheckedCreateWithoutJobsInput>
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutJobsInput
+    connect?: VisualizationTemplateWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutVisualizationJobsInput = {
+    create?: XOR<UserCreateWithoutVisualizationJobsInput, UserUncheckedCreateWithoutVisualizationJobsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVisualizationJobsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type VisualizationAssetCreateNestedManyWithoutJobInput = {
+    create?: XOR<VisualizationAssetCreateWithoutJobInput, VisualizationAssetUncheckedCreateWithoutJobInput> | VisualizationAssetCreateWithoutJobInput[] | VisualizationAssetUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutJobInput | VisualizationAssetCreateOrConnectWithoutJobInput[]
+    createMany?: VisualizationAssetCreateManyJobInputEnvelope
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+  }
+
+  export type VisualizationTemplateCreateNestedManyWithoutSourceJobInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutSourceJobInput, VisualizationTemplateUncheckedCreateWithoutSourceJobInput> | VisualizationTemplateCreateWithoutSourceJobInput[] | VisualizationTemplateUncheckedCreateWithoutSourceJobInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutSourceJobInput | VisualizationTemplateCreateOrConnectWithoutSourceJobInput[]
+    createMany?: VisualizationTemplateCreateManySourceJobInputEnvelope
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+  }
+
+  export type VisualizationAssetUncheckedCreateNestedManyWithoutJobInput = {
+    create?: XOR<VisualizationAssetCreateWithoutJobInput, VisualizationAssetUncheckedCreateWithoutJobInput> | VisualizationAssetCreateWithoutJobInput[] | VisualizationAssetUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutJobInput | VisualizationAssetCreateOrConnectWithoutJobInput[]
+    createMany?: VisualizationAssetCreateManyJobInputEnvelope
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+  }
+
+  export type VisualizationTemplateUncheckedCreateNestedManyWithoutSourceJobInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutSourceJobInput, VisualizationTemplateUncheckedCreateWithoutSourceJobInput> | VisualizationTemplateCreateWithoutSourceJobInput[] | VisualizationTemplateUncheckedCreateWithoutSourceJobInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutSourceJobInput | VisualizationTemplateCreateOrConnectWithoutSourceJobInput[]
+    createMany?: VisualizationTemplateCreateManySourceJobInputEnvelope
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+  }
+
+  export type EnumVisualizationJobStatusFieldUpdateOperationsInput = {
+    set?: $Enums.VisualizationJobStatus
+  }
+
+  export type EnumVisualizationAnalysisModeFieldUpdateOperationsInput = {
+    set?: $Enums.VisualizationAnalysisMode
+  }
+
+  export type ProductUpdateOneRequiredWithoutVisualizationJobsNestedInput = {
+    create?: XOR<ProductCreateWithoutVisualizationJobsInput, ProductUncheckedCreateWithoutVisualizationJobsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutVisualizationJobsInput
+    upsert?: ProductUpsertWithoutVisualizationJobsInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutVisualizationJobsInput, ProductUpdateWithoutVisualizationJobsInput>, ProductUncheckedUpdateWithoutVisualizationJobsInput>
+  }
+
+  export type VisualizationAssetUpdateOneRequiredWithoutSourceForJobsNestedInput = {
+    create?: XOR<VisualizationAssetCreateWithoutSourceForJobsInput, VisualizationAssetUncheckedCreateWithoutSourceForJobsInput>
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutSourceForJobsInput
+    upsert?: VisualizationAssetUpsertWithoutSourceForJobsInput
+    connect?: VisualizationAssetWhereUniqueInput
+    update?: XOR<XOR<VisualizationAssetUpdateToOneWithWhereWithoutSourceForJobsInput, VisualizationAssetUpdateWithoutSourceForJobsInput>, VisualizationAssetUncheckedUpdateWithoutSourceForJobsInput>
+  }
+
+  export type VisualizationTemplateUpdateOneWithoutJobsNestedInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutJobsInput, VisualizationTemplateUncheckedCreateWithoutJobsInput>
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutJobsInput
+    upsert?: VisualizationTemplateUpsertWithoutJobsInput
+    disconnect?: VisualizationTemplateWhereInput | boolean
+    delete?: VisualizationTemplateWhereInput | boolean
+    connect?: VisualizationTemplateWhereUniqueInput
+    update?: XOR<XOR<VisualizationTemplateUpdateToOneWithWhereWithoutJobsInput, VisualizationTemplateUpdateWithoutJobsInput>, VisualizationTemplateUncheckedUpdateWithoutJobsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutVisualizationJobsNestedInput = {
+    create?: XOR<UserCreateWithoutVisualizationJobsInput, UserUncheckedCreateWithoutVisualizationJobsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVisualizationJobsInput
+    upsert?: UserUpsertWithoutVisualizationJobsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVisualizationJobsInput, UserUpdateWithoutVisualizationJobsInput>, UserUncheckedUpdateWithoutVisualizationJobsInput>
+  }
+
+  export type VisualizationAssetUpdateManyWithoutJobNestedInput = {
+    create?: XOR<VisualizationAssetCreateWithoutJobInput, VisualizationAssetUncheckedCreateWithoutJobInput> | VisualizationAssetCreateWithoutJobInput[] | VisualizationAssetUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutJobInput | VisualizationAssetCreateOrConnectWithoutJobInput[]
+    upsert?: VisualizationAssetUpsertWithWhereUniqueWithoutJobInput | VisualizationAssetUpsertWithWhereUniqueWithoutJobInput[]
+    createMany?: VisualizationAssetCreateManyJobInputEnvelope
+    set?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    disconnect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    delete?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    update?: VisualizationAssetUpdateWithWhereUniqueWithoutJobInput | VisualizationAssetUpdateWithWhereUniqueWithoutJobInput[]
+    updateMany?: VisualizationAssetUpdateManyWithWhereWithoutJobInput | VisualizationAssetUpdateManyWithWhereWithoutJobInput[]
+    deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+  }
+
+  export type VisualizationTemplateUpdateManyWithoutSourceJobNestedInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutSourceJobInput, VisualizationTemplateUncheckedCreateWithoutSourceJobInput> | VisualizationTemplateCreateWithoutSourceJobInput[] | VisualizationTemplateUncheckedCreateWithoutSourceJobInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutSourceJobInput | VisualizationTemplateCreateOrConnectWithoutSourceJobInput[]
+    upsert?: VisualizationTemplateUpsertWithWhereUniqueWithoutSourceJobInput | VisualizationTemplateUpsertWithWhereUniqueWithoutSourceJobInput[]
+    createMany?: VisualizationTemplateCreateManySourceJobInputEnvelope
+    set?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    disconnect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    delete?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    update?: VisualizationTemplateUpdateWithWhereUniqueWithoutSourceJobInput | VisualizationTemplateUpdateWithWhereUniqueWithoutSourceJobInput[]
+    updateMany?: VisualizationTemplateUpdateManyWithWhereWithoutSourceJobInput | VisualizationTemplateUpdateManyWithWhereWithoutSourceJobInput[]
+    deleteMany?: VisualizationTemplateScalarWhereInput | VisualizationTemplateScalarWhereInput[]
+  }
+
+  export type VisualizationAssetUncheckedUpdateManyWithoutJobNestedInput = {
+    create?: XOR<VisualizationAssetCreateWithoutJobInput, VisualizationAssetUncheckedCreateWithoutJobInput> | VisualizationAssetCreateWithoutJobInput[] | VisualizationAssetUncheckedCreateWithoutJobInput[]
+    connectOrCreate?: VisualizationAssetCreateOrConnectWithoutJobInput | VisualizationAssetCreateOrConnectWithoutJobInput[]
+    upsert?: VisualizationAssetUpsertWithWhereUniqueWithoutJobInput | VisualizationAssetUpsertWithWhereUniqueWithoutJobInput[]
+    createMany?: VisualizationAssetCreateManyJobInputEnvelope
+    set?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    disconnect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    delete?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    connect?: VisualizationAssetWhereUniqueInput | VisualizationAssetWhereUniqueInput[]
+    update?: VisualizationAssetUpdateWithWhereUniqueWithoutJobInput | VisualizationAssetUpdateWithWhereUniqueWithoutJobInput[]
+    updateMany?: VisualizationAssetUpdateManyWithWhereWithoutJobInput | VisualizationAssetUpdateManyWithWhereWithoutJobInput[]
+    deleteMany?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+  }
+
+  export type VisualizationTemplateUncheckedUpdateManyWithoutSourceJobNestedInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutSourceJobInput, VisualizationTemplateUncheckedCreateWithoutSourceJobInput> | VisualizationTemplateCreateWithoutSourceJobInput[] | VisualizationTemplateUncheckedCreateWithoutSourceJobInput[]
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutSourceJobInput | VisualizationTemplateCreateOrConnectWithoutSourceJobInput[]
+    upsert?: VisualizationTemplateUpsertWithWhereUniqueWithoutSourceJobInput | VisualizationTemplateUpsertWithWhereUniqueWithoutSourceJobInput[]
+    createMany?: VisualizationTemplateCreateManySourceJobInputEnvelope
+    set?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    disconnect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    delete?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    connect?: VisualizationTemplateWhereUniqueInput | VisualizationTemplateWhereUniqueInput[]
+    update?: VisualizationTemplateUpdateWithWhereUniqueWithoutSourceJobInput | VisualizationTemplateUpdateWithWhereUniqueWithoutSourceJobInput[]
+    updateMany?: VisualizationTemplateUpdateManyWithWhereWithoutSourceJobInput | VisualizationTemplateUpdateManyWithWhereWithoutSourceJobInput[]
+    deleteMany?: VisualizationTemplateScalarWhereInput | VisualizationTemplateScalarWhereInput[]
+  }
+
+  export type ProductCreateNestedOneWithoutVisualizationAssetsInput = {
+    create?: XOR<ProductCreateWithoutVisualizationAssetsInput, ProductUncheckedCreateWithoutVisualizationAssetsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutVisualizationAssetsInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type VisualizationProcessingJobCreateNestedOneWithoutAssetsInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutAssetsInput, VisualizationProcessingJobUncheckedCreateWithoutAssetsInput>
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutAssetsInput
+    connect?: VisualizationProcessingJobWhereUniqueInput
+  }
+
+  export type VisualizationTemplateCreateNestedOneWithoutAssetsInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutAssetsInput, VisualizationTemplateUncheckedCreateWithoutAssetsInput>
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutAssetsInput
+    connect?: VisualizationTemplateWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutVisualizationAssetsInput = {
+    create?: XOR<UserCreateWithoutVisualizationAssetsInput, UserUncheckedCreateWithoutVisualizationAssetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVisualizationAssetsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type VisualizationProcessingJobCreateNestedManyWithoutSourceAssetInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutSourceAssetInput, VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput> | VisualizationProcessingJobCreateWithoutSourceAssetInput[] | VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutSourceAssetInput | VisualizationProcessingJobCreateOrConnectWithoutSourceAssetInput[]
+    createMany?: VisualizationProcessingJobCreateManySourceAssetInputEnvelope
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateNestedManyWithoutSourceAssetInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutSourceAssetInput, VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput> | VisualizationProcessingJobCreateWithoutSourceAssetInput[] | VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutSourceAssetInput | VisualizationProcessingJobCreateOrConnectWithoutSourceAssetInput[]
+    createMany?: VisualizationProcessingJobCreateManySourceAssetInputEnvelope
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+  }
+
+  export type EnumVisualizationAssetKindFieldUpdateOperationsInput = {
+    set?: $Enums.VisualizationAssetKind
+  }
+
+  export type EnumVisualizationAssetStorageFieldUpdateOperationsInput = {
+    set?: $Enums.VisualizationAssetStorage
+  }
+
+  export type NullableBytesFieldUpdateOperationsInput = {
+    set?: Bytes | null
+  }
+
+  export type ProductUpdateOneWithoutVisualizationAssetsNestedInput = {
+    create?: XOR<ProductCreateWithoutVisualizationAssetsInput, ProductUncheckedCreateWithoutVisualizationAssetsInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutVisualizationAssetsInput
+    upsert?: ProductUpsertWithoutVisualizationAssetsInput
+    disconnect?: ProductWhereInput | boolean
+    delete?: ProductWhereInput | boolean
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutVisualizationAssetsInput, ProductUpdateWithoutVisualizationAssetsInput>, ProductUncheckedUpdateWithoutVisualizationAssetsInput>
+  }
+
+  export type VisualizationProcessingJobUpdateOneWithoutAssetsNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutAssetsInput, VisualizationProcessingJobUncheckedCreateWithoutAssetsInput>
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutAssetsInput
+    upsert?: VisualizationProcessingJobUpsertWithoutAssetsInput
+    disconnect?: VisualizationProcessingJobWhereInput | boolean
+    delete?: VisualizationProcessingJobWhereInput | boolean
+    connect?: VisualizationProcessingJobWhereUniqueInput
+    update?: XOR<XOR<VisualizationProcessingJobUpdateToOneWithWhereWithoutAssetsInput, VisualizationProcessingJobUpdateWithoutAssetsInput>, VisualizationProcessingJobUncheckedUpdateWithoutAssetsInput>
+  }
+
+  export type VisualizationTemplateUpdateOneWithoutAssetsNestedInput = {
+    create?: XOR<VisualizationTemplateCreateWithoutAssetsInput, VisualizationTemplateUncheckedCreateWithoutAssetsInput>
+    connectOrCreate?: VisualizationTemplateCreateOrConnectWithoutAssetsInput
+    upsert?: VisualizationTemplateUpsertWithoutAssetsInput
+    disconnect?: VisualizationTemplateWhereInput | boolean
+    delete?: VisualizationTemplateWhereInput | boolean
+    connect?: VisualizationTemplateWhereUniqueInput
+    update?: XOR<XOR<VisualizationTemplateUpdateToOneWithWhereWithoutAssetsInput, VisualizationTemplateUpdateWithoutAssetsInput>, VisualizationTemplateUncheckedUpdateWithoutAssetsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutVisualizationAssetsNestedInput = {
+    create?: XOR<UserCreateWithoutVisualizationAssetsInput, UserUncheckedCreateWithoutVisualizationAssetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVisualizationAssetsInput
+    upsert?: UserUpsertWithoutVisualizationAssetsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVisualizationAssetsInput, UserUpdateWithoutVisualizationAssetsInput>, UserUncheckedUpdateWithoutVisualizationAssetsInput>
+  }
+
+  export type VisualizationProcessingJobUpdateManyWithoutSourceAssetNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutSourceAssetInput, VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput> | VisualizationProcessingJobCreateWithoutSourceAssetInput[] | VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutSourceAssetInput | VisualizationProcessingJobCreateOrConnectWithoutSourceAssetInput[]
+    upsert?: VisualizationProcessingJobUpsertWithWhereUniqueWithoutSourceAssetInput | VisualizationProcessingJobUpsertWithWhereUniqueWithoutSourceAssetInput[]
+    createMany?: VisualizationProcessingJobCreateManySourceAssetInputEnvelope
+    set?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    disconnect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    delete?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    update?: VisualizationProcessingJobUpdateWithWhereUniqueWithoutSourceAssetInput | VisualizationProcessingJobUpdateWithWhereUniqueWithoutSourceAssetInput[]
+    updateMany?: VisualizationProcessingJobUpdateManyWithWhereWithoutSourceAssetInput | VisualizationProcessingJobUpdateManyWithWhereWithoutSourceAssetInput[]
+    deleteMany?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateManyWithoutSourceAssetNestedInput = {
+    create?: XOR<VisualizationProcessingJobCreateWithoutSourceAssetInput, VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput> | VisualizationProcessingJobCreateWithoutSourceAssetInput[] | VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput[]
+    connectOrCreate?: VisualizationProcessingJobCreateOrConnectWithoutSourceAssetInput | VisualizationProcessingJobCreateOrConnectWithoutSourceAssetInput[]
+    upsert?: VisualizationProcessingJobUpsertWithWhereUniqueWithoutSourceAssetInput | VisualizationProcessingJobUpsertWithWhereUniqueWithoutSourceAssetInput[]
+    createMany?: VisualizationProcessingJobCreateManySourceAssetInputEnvelope
+    set?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    disconnect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    delete?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    connect?: VisualizationProcessingJobWhereUniqueInput | VisualizationProcessingJobWhereUniqueInput[]
+    update?: VisualizationProcessingJobUpdateWithWhereUniqueWithoutSourceAssetInput | VisualizationProcessingJobUpdateWithWhereUniqueWithoutSourceAssetInput[]
+    updateMany?: VisualizationProcessingJobUpdateManyWithWhereWithoutSourceAssetInput | VisualizationProcessingJobUpdateManyWithWhereWithoutSourceAssetInput[]
+    deleteMany?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
   }
 
   export type ProductCreateNestedOneWithoutVariantsInput = {
@@ -95294,11 +102287,21 @@ export namespace Prisma {
     _max?: NestedEnumArtworkAssetStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumInventoryPolicyFilter<$PrismaModel = never> = {
-    equals?: $Enums.InventoryPolicy | EnumInventoryPolicyFieldRefInput<$PrismaModel>
-    in?: $Enums.InventoryPolicy[] | ListEnumInventoryPolicyFieldRefInput<$PrismaModel>
-    notIn?: $Enums.InventoryPolicy[] | ListEnumInventoryPolicyFieldRefInput<$PrismaModel>
-    not?: NestedEnumInventoryPolicyFilter<$PrismaModel> | $Enums.InventoryPolicy
+  export type NestedEnumVisualizationTemplateStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationTemplateStatus | EnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationTemplateStatus[] | ListEnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationTemplateStatus[] | ListEnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationTemplateStatusFilter<$PrismaModel> | $Enums.VisualizationTemplateStatus
+  }
+
+  export type NestedEnumVisualizationTemplateStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationTemplateStatus | EnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationTemplateStatus[] | ListEnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationTemplateStatus[] | ListEnumVisualizationTemplateStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationTemplateStatusWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationTemplateStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationTemplateStatusFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationTemplateStatusFilter<$PrismaModel>
   }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -95322,6 +102325,98 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumVisualizationJobStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationJobStatus | EnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationJobStatus[] | ListEnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationJobStatus[] | ListEnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationJobStatusFilter<$PrismaModel> | $Enums.VisualizationJobStatus
+  }
+
+  export type NestedEnumVisualizationAnalysisModeFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAnalysisMode | EnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAnalysisMode[] | ListEnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAnalysisMode[] | ListEnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAnalysisModeFilter<$PrismaModel> | $Enums.VisualizationAnalysisMode
+  }
+
+  export type NestedEnumVisualizationJobStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationJobStatus | EnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationJobStatus[] | ListEnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationJobStatus[] | ListEnumVisualizationJobStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationJobStatusWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationJobStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationJobStatusFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationJobStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumVisualizationAnalysisModeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAnalysisMode | EnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAnalysisMode[] | ListEnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAnalysisMode[] | ListEnumVisualizationAnalysisModeFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAnalysisModeWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationAnalysisMode
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationAnalysisModeFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationAnalysisModeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumVisualizationAssetKindFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAssetKind | EnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAssetKind[] | ListEnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAssetKind[] | ListEnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAssetKindFilter<$PrismaModel> | $Enums.VisualizationAssetKind
+  }
+
+  export type NestedEnumVisualizationAssetStorageFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAssetStorage | EnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAssetStorage[] | ListEnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAssetStorage[] | ListEnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAssetStorageFilter<$PrismaModel> | $Enums.VisualizationAssetStorage
+  }
+
+  export type NestedBytesNullableFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableFilter<$PrismaModel> | Bytes | null
+  }
+
+  export type NestedEnumVisualizationAssetKindWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAssetKind | EnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAssetKind[] | ListEnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAssetKind[] | ListEnumVisualizationAssetKindFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAssetKindWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationAssetKind
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationAssetKindFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationAssetKindFilter<$PrismaModel>
+  }
+
+  export type NestedEnumVisualizationAssetStorageWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.VisualizationAssetStorage | EnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    in?: $Enums.VisualizationAssetStorage[] | ListEnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    notIn?: $Enums.VisualizationAssetStorage[] | ListEnumVisualizationAssetStorageFieldRefInput<$PrismaModel>
+    not?: NestedEnumVisualizationAssetStorageWithAggregatesFilter<$PrismaModel> | $Enums.VisualizationAssetStorage
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumVisualizationAssetStorageFilter<$PrismaModel>
+    _max?: NestedEnumVisualizationAssetStorageFilter<$PrismaModel>
+  }
+
+  export type NestedBytesNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Bytes | BytesFieldRefInput<$PrismaModel> | null
+    in?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    notIn?: Bytes[] | ListBytesFieldRefInput<$PrismaModel> | null
+    not?: NestedBytesNullableWithAggregatesFilter<$PrismaModel> | Bytes | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBytesNullableFilter<$PrismaModel>
+    _max?: NestedBytesNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumInventoryPolicyFilter<$PrismaModel = never> = {
+    equals?: $Enums.InventoryPolicy | EnumInventoryPolicyFieldRefInput<$PrismaModel>
+    in?: $Enums.InventoryPolicy[] | ListEnumInventoryPolicyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.InventoryPolicy[] | ListEnumInventoryPolicyFieldRefInput<$PrismaModel>
+    not?: NestedEnumInventoryPolicyFilter<$PrismaModel> | $Enums.InventoryPolicy
   }
 
   export type NestedEnumInventoryPolicyWithAggregatesFilter<$PrismaModel = never> = {
@@ -96743,6 +103838,178 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type VisualizationTemplateCreateWithoutCreatedByInput = {
+    id?: string
+    familyKey: string
+    version: number
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationTemplatesInput
+    sourceJob?: VisualizationProcessingJobCreateNestedOneWithoutTemplatesCreatedInput
+    jobs?: VisualizationProcessingJobCreateNestedManyWithoutTemplateInput
+    assets?: VisualizationAssetCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    familyKey: string
+    version: number
+    productId?: string | null
+    sourceJobId?: string | null
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    jobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutTemplateInput
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateCreateOrConnectWithoutCreatedByInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    create: XOR<VisualizationTemplateCreateWithoutCreatedByInput, VisualizationTemplateUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type VisualizationTemplateCreateManyCreatedByInputEnvelope = {
+    data: VisualizationTemplateCreateManyCreatedByInput | VisualizationTemplateCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VisualizationProcessingJobCreateWithoutRequestedByInput = {
+    id?: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutVisualizationJobsInput
+    sourceAsset: VisualizationAssetCreateNestedOneWithoutSourceForJobsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutJobsInput
+    assets?: VisualizationAssetCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput = {
+    id?: string
+    productId: string
+    sourceAssetId: string
+    templateId?: string | null
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateUncheckedCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobCreateOrConnectWithoutRequestedByInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    create: XOR<VisualizationProcessingJobCreateWithoutRequestedByInput, VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput>
+  }
+
+  export type VisualizationProcessingJobCreateManyRequestedByInputEnvelope = {
+    data: VisualizationProcessingJobCreateManyRequestedByInput | VisualizationProcessingJobCreateManyRequestedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VisualizationAssetCreateWithoutOwnerInput = {
+    id?: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationAssetsInput
+    job?: VisualizationProcessingJobCreateNestedOneWithoutAssetsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutAssetsInput
+    sourceForJobs?: VisualizationProcessingJobCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetUncheckedCreateWithoutOwnerInput = {
+    id?: string
+    productId?: string | null
+    jobId?: string | null
+    templateId?: string | null
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetCreateOrConnectWithoutOwnerInput = {
+    where: VisualizationAssetWhereUniqueInput
+    create: XOR<VisualizationAssetCreateWithoutOwnerInput, VisualizationAssetUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type VisualizationAssetCreateManyOwnerInputEnvelope = {
+    data: VisualizationAssetCreateManyOwnerInput | VisualizationAssetCreateManyOwnerInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AddressUpsertWithWhereUniqueWithoutUserInput = {
     where: AddressWhereUniqueInput
     update: XOR<AddressUpdateWithoutUserInput, AddressUncheckedUpdateWithoutUserInput>
@@ -97548,6 +104815,132 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"ArtworkAsset"> | Date | string
   }
 
+  export type VisualizationTemplateUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    update: XOR<VisualizationTemplateUpdateWithoutCreatedByInput, VisualizationTemplateUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<VisualizationTemplateCreateWithoutCreatedByInput, VisualizationTemplateUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type VisualizationTemplateUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    data: XOR<VisualizationTemplateUpdateWithoutCreatedByInput, VisualizationTemplateUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type VisualizationTemplateUpdateManyWithWhereWithoutCreatedByInput = {
+    where: VisualizationTemplateScalarWhereInput
+    data: XOR<VisualizationTemplateUpdateManyMutationInput, VisualizationTemplateUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type VisualizationTemplateScalarWhereInput = {
+    AND?: VisualizationTemplateScalarWhereInput | VisualizationTemplateScalarWhereInput[]
+    OR?: VisualizationTemplateScalarWhereInput[]
+    NOT?: VisualizationTemplateScalarWhereInput | VisualizationTemplateScalarWhereInput[]
+    id?: StringFilter<"VisualizationTemplate"> | string
+    familyKey?: StringFilter<"VisualizationTemplate"> | string
+    version?: IntFilter<"VisualizationTemplate"> | number
+    productId?: StringNullableFilter<"VisualizationTemplate"> | string | null
+    sourceJobId?: StringNullableFilter<"VisualizationTemplate"> | string | null
+    createdById?: StringFilter<"VisualizationTemplate"> | string
+    name?: StringFilter<"VisualizationTemplate"> | string
+    slug?: StringFilter<"VisualizationTemplate"> | string
+    description?: StringNullableFilter<"VisualizationTemplate"> | string | null
+    productType?: StringFilter<"VisualizationTemplate"> | string
+    status?: EnumVisualizationTemplateStatusFilter<"VisualizationTemplate"> | $Enums.VisualizationTemplateStatus
+    geometry?: JsonFilter<"VisualizationTemplate">
+    dimensions?: JsonFilter<"VisualizationTemplate">
+    surfaceMappings?: JsonFilter<"VisualizationTemplate">
+    materialSettings?: JsonNullableFilter<"VisualizationTemplate">
+    previewCapabilities?: JsonNullableFilter<"VisualizationTemplate">
+    manufacturingMetadata?: JsonNullableFilter<"VisualizationTemplate">
+    publishedAt?: DateTimeNullableFilter<"VisualizationTemplate"> | Date | string | null
+    archivedAt?: DateTimeNullableFilter<"VisualizationTemplate"> | Date | string | null
+    createdAt?: DateTimeFilter<"VisualizationTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"VisualizationTemplate"> | Date | string
+  }
+
+  export type VisualizationProcessingJobUpsertWithWhereUniqueWithoutRequestedByInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    update: XOR<VisualizationProcessingJobUpdateWithoutRequestedByInput, VisualizationProcessingJobUncheckedUpdateWithoutRequestedByInput>
+    create: XOR<VisualizationProcessingJobCreateWithoutRequestedByInput, VisualizationProcessingJobUncheckedCreateWithoutRequestedByInput>
+  }
+
+  export type VisualizationProcessingJobUpdateWithWhereUniqueWithoutRequestedByInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    data: XOR<VisualizationProcessingJobUpdateWithoutRequestedByInput, VisualizationProcessingJobUncheckedUpdateWithoutRequestedByInput>
+  }
+
+  export type VisualizationProcessingJobUpdateManyWithWhereWithoutRequestedByInput = {
+    where: VisualizationProcessingJobScalarWhereInput
+    data: XOR<VisualizationProcessingJobUpdateManyMutationInput, VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByInput>
+  }
+
+  export type VisualizationProcessingJobScalarWhereInput = {
+    AND?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
+    OR?: VisualizationProcessingJobScalarWhereInput[]
+    NOT?: VisualizationProcessingJobScalarWhereInput | VisualizationProcessingJobScalarWhereInput[]
+    id?: StringFilter<"VisualizationProcessingJob"> | string
+    productId?: StringFilter<"VisualizationProcessingJob"> | string
+    sourceAssetId?: StringFilter<"VisualizationProcessingJob"> | string
+    templateId?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    requestedById?: StringFilter<"VisualizationProcessingJob"> | string
+    status?: EnumVisualizationJobStatusFilter<"VisualizationProcessingJob"> | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFilter<"VisualizationProcessingJob"> | $Enums.VisualizationAnalysisMode
+    attempt?: IntFilter<"VisualizationProcessingJob"> | number
+    maxAttempts?: IntFilter<"VisualizationProcessingJob"> | number
+    providerName?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    providerRequestId?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    analysisResult?: JsonNullableFilter<"VisualizationProcessingJob">
+    confirmation?: JsonNullableFilter<"VisualizationProcessingJob">
+    errorCode?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    errorMessage?: StringNullableFilter<"VisualizationProcessingJob"> | string | null
+    nextAttemptAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    lastAttemptAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    startedAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    completedAt?: DateTimeNullableFilter<"VisualizationProcessingJob"> | Date | string | null
+    createdAt?: DateTimeFilter<"VisualizationProcessingJob"> | Date | string
+    updatedAt?: DateTimeFilter<"VisualizationProcessingJob"> | Date | string
+  }
+
+  export type VisualizationAssetUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: VisualizationAssetWhereUniqueInput
+    update: XOR<VisualizationAssetUpdateWithoutOwnerInput, VisualizationAssetUncheckedUpdateWithoutOwnerInput>
+    create: XOR<VisualizationAssetCreateWithoutOwnerInput, VisualizationAssetUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type VisualizationAssetUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: VisualizationAssetWhereUniqueInput
+    data: XOR<VisualizationAssetUpdateWithoutOwnerInput, VisualizationAssetUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type VisualizationAssetUpdateManyWithWhereWithoutOwnerInput = {
+    where: VisualizationAssetScalarWhereInput
+    data: XOR<VisualizationAssetUpdateManyMutationInput, VisualizationAssetUncheckedUpdateManyWithoutOwnerInput>
+  }
+
+  export type VisualizationAssetScalarWhereInput = {
+    AND?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+    OR?: VisualizationAssetScalarWhereInput[]
+    NOT?: VisualizationAssetScalarWhereInput | VisualizationAssetScalarWhereInput[]
+    id?: StringFilter<"VisualizationAsset"> | string
+    productId?: StringNullableFilter<"VisualizationAsset"> | string | null
+    jobId?: StringNullableFilter<"VisualizationAsset"> | string | null
+    templateId?: StringNullableFilter<"VisualizationAsset"> | string | null
+    ownerUserId?: StringFilter<"VisualizationAsset"> | string
+    kind?: EnumVisualizationAssetKindFilter<"VisualizationAsset"> | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFilter<"VisualizationAsset"> | $Enums.VisualizationAssetStorage
+    originalName?: StringNullableFilter<"VisualizationAsset"> | string | null
+    mimeType?: StringFilter<"VisualizationAsset"> | string
+    sizeBytes?: IntFilter<"VisualizationAsset"> | number
+    width?: IntNullableFilter<"VisualizationAsset"> | number | null
+    height?: IntNullableFilter<"VisualizationAsset"> | number | null
+    sha256?: StringNullableFilter<"VisualizationAsset"> | string | null
+    content?: BytesNullableFilter<"VisualizationAsset"> | Bytes | null
+    privateRef?: StringNullableFilter<"VisualizationAsset"> | string | null
+    metadata?: JsonNullableFilter<"VisualizationAsset">
+    createdAt?: DateTimeFilter<"VisualizationAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"VisualizationAsset"> | Date | string
+  }
+
   export type UserCreateWithoutAuthSessionsInput = {
     id?: string
     email: string
@@ -97582,6 +104975,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutAuthSessionsInput = {
@@ -97618,6 +105014,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutAuthSessionsInput = {
@@ -97670,6 +105069,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuthSessionsInput = {
@@ -97706,6 +105108,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserRoleCreateWithoutRoleInput = {
@@ -97854,6 +105259,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutRolesInput = {
@@ -97890,6 +105298,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutRolesInput = {
@@ -97969,6 +105380,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRolesInput = {
@@ -98005,6 +105419,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type RoleUpsertWithoutUsersInput = {
@@ -98174,6 +105591,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutAddressesInput = {
@@ -98210,6 +105630,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutAddressesInput = {
@@ -98262,6 +105685,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAddressesInput = {
@@ -98298,6 +105724,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type CategoryCreateWithoutChildrenInput = {
@@ -98433,6 +105862,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCategoryInput = {
@@ -98477,6 +105909,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCategoryInput = {
@@ -99347,6 +106782,178 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type VisualizationTemplateCreateWithoutProductInput = {
+    id?: string
+    familyKey: string
+    version: number
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sourceJob?: VisualizationProcessingJobCreateNestedOneWithoutTemplatesCreatedInput
+    createdBy: UserCreateNestedOneWithoutVisualizationTemplatesInput
+    jobs?: VisualizationProcessingJobCreateNestedManyWithoutTemplateInput
+    assets?: VisualizationAssetCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateUncheckedCreateWithoutProductInput = {
+    id?: string
+    familyKey: string
+    version: number
+    sourceJobId?: string | null
+    createdById: string
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    jobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutTemplateInput
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateCreateOrConnectWithoutProductInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    create: XOR<VisualizationTemplateCreateWithoutProductInput, VisualizationTemplateUncheckedCreateWithoutProductInput>
+  }
+
+  export type VisualizationTemplateCreateManyProductInputEnvelope = {
+    data: VisualizationTemplateCreateManyProductInput | VisualizationTemplateCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VisualizationProcessingJobCreateWithoutProductInput = {
+    id?: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sourceAsset: VisualizationAssetCreateNestedOneWithoutSourceForJobsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutJobsInput
+    requestedBy: UserCreateNestedOneWithoutVisualizationJobsInput
+    assets?: VisualizationAssetCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateWithoutProductInput = {
+    id?: string
+    sourceAssetId: string
+    templateId?: string | null
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateUncheckedCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobCreateOrConnectWithoutProductInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    create: XOR<VisualizationProcessingJobCreateWithoutProductInput, VisualizationProcessingJobUncheckedCreateWithoutProductInput>
+  }
+
+  export type VisualizationProcessingJobCreateManyProductInputEnvelope = {
+    data: VisualizationProcessingJobCreateManyProductInput | VisualizationProcessingJobCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VisualizationAssetCreateWithoutProductInput = {
+    id?: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    job?: VisualizationProcessingJobCreateNestedOneWithoutAssetsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutAssetsInput
+    owner: UserCreateNestedOneWithoutVisualizationAssetsInput
+    sourceForJobs?: VisualizationProcessingJobCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetUncheckedCreateWithoutProductInput = {
+    id?: string
+    jobId?: string | null
+    templateId?: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetCreateOrConnectWithoutProductInput = {
+    where: VisualizationAssetWhereUniqueInput
+    create: XOR<VisualizationAssetCreateWithoutProductInput, VisualizationAssetUncheckedCreateWithoutProductInput>
+  }
+
+  export type VisualizationAssetCreateManyProductInputEnvelope = {
+    data: VisualizationAssetCreateManyProductInput | VisualizationAssetCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CategoryUpsertWithoutProductsInput = {
     update: XOR<CategoryUpdateWithoutProductsInput, CategoryUncheckedUpdateWithoutProductsInput>
     create: XOR<CategoryCreateWithoutProductsInput, CategoryUncheckedCreateWithoutProductsInput>
@@ -99752,6 +107359,54 @@ export namespace Prisma {
     data: XOR<ArtworkAssetUpdateManyMutationInput, ArtworkAssetUncheckedUpdateManyWithoutProductInput>
   }
 
+  export type VisualizationTemplateUpsertWithWhereUniqueWithoutProductInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    update: XOR<VisualizationTemplateUpdateWithoutProductInput, VisualizationTemplateUncheckedUpdateWithoutProductInput>
+    create: XOR<VisualizationTemplateCreateWithoutProductInput, VisualizationTemplateUncheckedCreateWithoutProductInput>
+  }
+
+  export type VisualizationTemplateUpdateWithWhereUniqueWithoutProductInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    data: XOR<VisualizationTemplateUpdateWithoutProductInput, VisualizationTemplateUncheckedUpdateWithoutProductInput>
+  }
+
+  export type VisualizationTemplateUpdateManyWithWhereWithoutProductInput = {
+    where: VisualizationTemplateScalarWhereInput
+    data: XOR<VisualizationTemplateUpdateManyMutationInput, VisualizationTemplateUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type VisualizationProcessingJobUpsertWithWhereUniqueWithoutProductInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    update: XOR<VisualizationProcessingJobUpdateWithoutProductInput, VisualizationProcessingJobUncheckedUpdateWithoutProductInput>
+    create: XOR<VisualizationProcessingJobCreateWithoutProductInput, VisualizationProcessingJobUncheckedCreateWithoutProductInput>
+  }
+
+  export type VisualizationProcessingJobUpdateWithWhereUniqueWithoutProductInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    data: XOR<VisualizationProcessingJobUpdateWithoutProductInput, VisualizationProcessingJobUncheckedUpdateWithoutProductInput>
+  }
+
+  export type VisualizationProcessingJobUpdateManyWithWhereWithoutProductInput = {
+    where: VisualizationProcessingJobScalarWhereInput
+    data: XOR<VisualizationProcessingJobUpdateManyMutationInput, VisualizationProcessingJobUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type VisualizationAssetUpsertWithWhereUniqueWithoutProductInput = {
+    where: VisualizationAssetWhereUniqueInput
+    update: XOR<VisualizationAssetUpdateWithoutProductInput, VisualizationAssetUncheckedUpdateWithoutProductInput>
+    create: XOR<VisualizationAssetCreateWithoutProductInput, VisualizationAssetUncheckedCreateWithoutProductInput>
+  }
+
+  export type VisualizationAssetUpdateWithWhereUniqueWithoutProductInput = {
+    where: VisualizationAssetWhereUniqueInput
+    data: XOR<VisualizationAssetUpdateWithoutProductInput, VisualizationAssetUncheckedUpdateWithoutProductInput>
+  }
+
+  export type VisualizationAssetUpdateManyWithWhereWithoutProductInput = {
+    where: VisualizationAssetScalarWhereInput
+    data: XOR<VisualizationAssetUpdateManyMutationInput, VisualizationAssetUncheckedUpdateManyWithoutProductInput>
+  }
+
   export type ProductCreateWithoutCategoryLinksInput = {
     id?: string
     name: string
@@ -99794,6 +107449,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCategoryLinksInput = {
@@ -99838,6 +107496,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCategoryLinksInput = {
@@ -99941,6 +107602,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCategoryLinksInput = {
@@ -99985,6 +107649,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type CategoryUpsertWithoutProductLinksInput = {
@@ -100078,6 +107745,9 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutArtworkAssetsInput = {
@@ -100122,6 +107792,9 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutArtworkAssetsInput = {
@@ -100210,6 +107883,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutUploadedArtworkAssetsInput = {
@@ -100246,6 +107922,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutUploadedArtworkAssetsInput = {
@@ -100306,6 +107985,9 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutArtworkAssetsInput = {
@@ -100350,6 +108032,9 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type OrderItemUpsertWithoutArtworkAssetsInput = {
@@ -100450,6 +108135,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUploadedArtworkAssetsInput = {
@@ -100486,6 +108174,2065 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type ProductCreateWithoutVisualizationTemplatesInput = {
+    id?: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
+    variants?: ProductVariantCreateNestedManyWithoutProductInput
+    images?: ProductImageCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductInput
+    reviews?: ReviewCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutVisualizationTemplatesInput = {
+    id?: string
+    categoryId: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
+    variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
+    images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateUncheckedCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutVisualizationTemplatesInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutVisualizationTemplatesInput, ProductUncheckedCreateWithoutVisualizationTemplatesInput>
+  }
+
+  export type VisualizationProcessingJobCreateWithoutTemplatesCreatedInput = {
+    id?: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutVisualizationJobsInput
+    sourceAsset: VisualizationAssetCreateNestedOneWithoutSourceForJobsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutJobsInput
+    requestedBy: UserCreateNestedOneWithoutVisualizationJobsInput
+    assets?: VisualizationAssetCreateNestedManyWithoutJobInput
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateWithoutTemplatesCreatedInput = {
+    id?: string
+    productId: string
+    sourceAssetId: string
+    templateId?: string | null
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutJobInput
+  }
+
+  export type VisualizationProcessingJobCreateOrConnectWithoutTemplatesCreatedInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    create: XOR<VisualizationProcessingJobCreateWithoutTemplatesCreatedInput, VisualizationProcessingJobUncheckedCreateWithoutTemplatesCreatedInput>
+  }
+
+  export type UserCreateWithoutVisualizationTemplatesInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    passwordHash?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    status?: $Enums.UserStatus
+    emailVerifiedAt?: Date | string | null
+    phoneVerifiedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addresses?: AddressCreateNestedManyWithoutUserInput
+    roles?: UserRoleCreateNestedManyWithoutUserInput
+    carts?: CartCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    wishlists?: WishlistCreateNestedManyWithoutUserInput
+    couponRedemptions?: CouponRedemptionCreateNestedManyWithoutUserInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketCreateNestedManyWithoutUserInput
+    supportMessages?: SupportMessageCreateNestedManyWithoutAuthorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    vendorProfile?: VendorProfileCreateNestedOneWithoutUserInput
+    vendorApplication?: VendorApplicationCreateNestedOneWithoutUserInput
+    authSessions?: AuthSessionCreateNestedManyWithoutUserInput
+    reviewedVendorApplications?: VendorApplicationCreateNestedManyWithoutReviewerInput
+    vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
+    uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
+    reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserUncheckedCreateWithoutVisualizationTemplatesInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    passwordHash?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    status?: $Enums.UserStatus
+    emailVerifiedAt?: Date | string | null
+    phoneVerifiedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
+    roles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    carts?: CartUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    wishlists?: WishlistUncheckedCreateNestedManyWithoutUserInput
+    couponRedemptions?: CouponRedemptionUncheckedCreateNestedManyWithoutUserInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketUncheckedCreateNestedManyWithoutUserInput
+    supportMessages?: SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    vendorProfile?: VendorProfileUncheckedCreateNestedOneWithoutUserInput
+    vendorApplication?: VendorApplicationUncheckedCreateNestedOneWithoutUserInput
+    authSessions?: AuthSessionUncheckedCreateNestedManyWithoutUserInput
+    reviewedVendorApplications?: VendorApplicationUncheckedCreateNestedManyWithoutReviewerInput
+    vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
+    uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+    reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserCreateOrConnectWithoutVisualizationTemplatesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutVisualizationTemplatesInput, UserUncheckedCreateWithoutVisualizationTemplatesInput>
+  }
+
+  export type VisualizationProcessingJobCreateWithoutTemplateInput = {
+    id?: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutVisualizationJobsInput
+    sourceAsset: VisualizationAssetCreateNestedOneWithoutSourceForJobsInput
+    requestedBy: UserCreateNestedOneWithoutVisualizationJobsInput
+    assets?: VisualizationAssetCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateWithoutTemplateInput = {
+    id?: string
+    productId: string
+    sourceAssetId: string
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateUncheckedCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobCreateOrConnectWithoutTemplateInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    create: XOR<VisualizationProcessingJobCreateWithoutTemplateInput, VisualizationProcessingJobUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type VisualizationProcessingJobCreateManyTemplateInputEnvelope = {
+    data: VisualizationProcessingJobCreateManyTemplateInput | VisualizationProcessingJobCreateManyTemplateInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VisualizationAssetCreateWithoutTemplateInput = {
+    id?: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationAssetsInput
+    job?: VisualizationProcessingJobCreateNestedOneWithoutAssetsInput
+    owner: UserCreateNestedOneWithoutVisualizationAssetsInput
+    sourceForJobs?: VisualizationProcessingJobCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetUncheckedCreateWithoutTemplateInput = {
+    id?: string
+    productId?: string | null
+    jobId?: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetCreateOrConnectWithoutTemplateInput = {
+    where: VisualizationAssetWhereUniqueInput
+    create: XOR<VisualizationAssetCreateWithoutTemplateInput, VisualizationAssetUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type VisualizationAssetCreateManyTemplateInputEnvelope = {
+    data: VisualizationAssetCreateManyTemplateInput | VisualizationAssetCreateManyTemplateInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductUpsertWithoutVisualizationTemplatesInput = {
+    update: XOR<ProductUpdateWithoutVisualizationTemplatesInput, ProductUncheckedUpdateWithoutVisualizationTemplatesInput>
+    create: XOR<ProductCreateWithoutVisualizationTemplatesInput, ProductUncheckedCreateWithoutVisualizationTemplatesInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutVisualizationTemplatesInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutVisualizationTemplatesInput, ProductUncheckedUpdateWithoutVisualizationTemplatesInput>
+  }
+
+  export type ProductUpdateWithoutVisualizationTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUpdateManyWithoutProductNestedInput
+    images?: ProductImageUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutVisualizationTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+    images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type VisualizationProcessingJobUpsertWithoutTemplatesCreatedInput = {
+    update: XOR<VisualizationProcessingJobUpdateWithoutTemplatesCreatedInput, VisualizationProcessingJobUncheckedUpdateWithoutTemplatesCreatedInput>
+    create: XOR<VisualizationProcessingJobCreateWithoutTemplatesCreatedInput, VisualizationProcessingJobUncheckedCreateWithoutTemplatesCreatedInput>
+    where?: VisualizationProcessingJobWhereInput
+  }
+
+  export type VisualizationProcessingJobUpdateToOneWithWhereWithoutTemplatesCreatedInput = {
+    where?: VisualizationProcessingJobWhereInput
+    data: XOR<VisualizationProcessingJobUpdateWithoutTemplatesCreatedInput, VisualizationProcessingJobUncheckedUpdateWithoutTemplatesCreatedInput>
+  }
+
+  export type VisualizationProcessingJobUpdateWithoutTemplatesCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    sourceAsset?: VisualizationAssetUpdateOneRequiredWithoutSourceForJobsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutJobsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateWithoutTemplatesCreatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutJobNestedInput
+  }
+
+  export type UserUpsertWithoutVisualizationTemplatesInput = {
+    update: XOR<UserUpdateWithoutVisualizationTemplatesInput, UserUncheckedUpdateWithoutVisualizationTemplatesInput>
+    create: XOR<UserCreateWithoutVisualizationTemplatesInput, UserUncheckedCreateWithoutVisualizationTemplatesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutVisualizationTemplatesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutVisualizationTemplatesInput, UserUncheckedUpdateWithoutVisualizationTemplatesInput>
+  }
+
+  export type UserUpdateWithoutVisualizationTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phoneVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addresses?: AddressUpdateManyWithoutUserNestedInput
+    roles?: UserRoleUpdateManyWithoutUserNestedInput
+    carts?: CartUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    wishlists?: WishlistUpdateManyWithoutUserNestedInput
+    couponRedemptions?: CouponRedemptionUpdateManyWithoutUserNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUpdateManyWithoutUserNestedInput
+    supportMessages?: SupportMessageUpdateManyWithoutAuthorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    vendorProfile?: VendorProfileUpdateOneWithoutUserNestedInput
+    vendorApplication?: VendorApplicationUpdateOneWithoutUserNestedInput
+    authSessions?: AuthSessionUpdateManyWithoutUserNestedInput
+    reviewedVendorApplications?: VendorApplicationUpdateManyWithoutReviewerNestedInput
+    vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
+    uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
+    reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutVisualizationTemplatesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phoneVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
+    roles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    carts?: CartUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    wishlists?: WishlistUncheckedUpdateManyWithoutUserNestedInput
+    couponRedemptions?: CouponRedemptionUncheckedUpdateManyWithoutUserNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+    supportMessages?: SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    vendorProfile?: VendorProfileUncheckedUpdateOneWithoutUserNestedInput
+    vendorApplication?: VendorApplicationUncheckedUpdateOneWithoutUserNestedInput
+    authSessions?: AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+    reviewedVendorApplications?: VendorApplicationUncheckedUpdateManyWithoutReviewerNestedInput
+    vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
+    uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+    reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type VisualizationProcessingJobUpsertWithWhereUniqueWithoutTemplateInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    update: XOR<VisualizationProcessingJobUpdateWithoutTemplateInput, VisualizationProcessingJobUncheckedUpdateWithoutTemplateInput>
+    create: XOR<VisualizationProcessingJobCreateWithoutTemplateInput, VisualizationProcessingJobUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type VisualizationProcessingJobUpdateWithWhereUniqueWithoutTemplateInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    data: XOR<VisualizationProcessingJobUpdateWithoutTemplateInput, VisualizationProcessingJobUncheckedUpdateWithoutTemplateInput>
+  }
+
+  export type VisualizationProcessingJobUpdateManyWithWhereWithoutTemplateInput = {
+    where: VisualizationProcessingJobScalarWhereInput
+    data: XOR<VisualizationProcessingJobUpdateManyMutationInput, VisualizationProcessingJobUncheckedUpdateManyWithoutTemplateInput>
+  }
+
+  export type VisualizationAssetUpsertWithWhereUniqueWithoutTemplateInput = {
+    where: VisualizationAssetWhereUniqueInput
+    update: XOR<VisualizationAssetUpdateWithoutTemplateInput, VisualizationAssetUncheckedUpdateWithoutTemplateInput>
+    create: XOR<VisualizationAssetCreateWithoutTemplateInput, VisualizationAssetUncheckedCreateWithoutTemplateInput>
+  }
+
+  export type VisualizationAssetUpdateWithWhereUniqueWithoutTemplateInput = {
+    where: VisualizationAssetWhereUniqueInput
+    data: XOR<VisualizationAssetUpdateWithoutTemplateInput, VisualizationAssetUncheckedUpdateWithoutTemplateInput>
+  }
+
+  export type VisualizationAssetUpdateManyWithWhereWithoutTemplateInput = {
+    where: VisualizationAssetScalarWhereInput
+    data: XOR<VisualizationAssetUpdateManyMutationInput, VisualizationAssetUncheckedUpdateManyWithoutTemplateInput>
+  }
+
+  export type ProductCreateWithoutVisualizationJobsInput = {
+    id?: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
+    variants?: ProductVariantCreateNestedManyWithoutProductInput
+    images?: ProductImageCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductInput
+    reviews?: ReviewCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutVisualizationJobsInput = {
+    id?: string
+    categoryId: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
+    variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
+    images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateUncheckedCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutVisualizationJobsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutVisualizationJobsInput, ProductUncheckedCreateWithoutVisualizationJobsInput>
+  }
+
+  export type VisualizationAssetCreateWithoutSourceForJobsInput = {
+    id?: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationAssetsInput
+    job?: VisualizationProcessingJobCreateNestedOneWithoutAssetsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutAssetsInput
+    owner: UserCreateNestedOneWithoutVisualizationAssetsInput
+  }
+
+  export type VisualizationAssetUncheckedCreateWithoutSourceForJobsInput = {
+    id?: string
+    productId?: string | null
+    jobId?: string | null
+    templateId?: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationAssetCreateOrConnectWithoutSourceForJobsInput = {
+    where: VisualizationAssetWhereUniqueInput
+    create: XOR<VisualizationAssetCreateWithoutSourceForJobsInput, VisualizationAssetUncheckedCreateWithoutSourceForJobsInput>
+  }
+
+  export type VisualizationTemplateCreateWithoutJobsInput = {
+    id?: string
+    familyKey: string
+    version: number
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationTemplatesInput
+    sourceJob?: VisualizationProcessingJobCreateNestedOneWithoutTemplatesCreatedInput
+    createdBy: UserCreateNestedOneWithoutVisualizationTemplatesInput
+    assets?: VisualizationAssetCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateUncheckedCreateWithoutJobsInput = {
+    id?: string
+    familyKey: string
+    version: number
+    productId?: string | null
+    sourceJobId?: string | null
+    createdById: string
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateCreateOrConnectWithoutJobsInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    create: XOR<VisualizationTemplateCreateWithoutJobsInput, VisualizationTemplateUncheckedCreateWithoutJobsInput>
+  }
+
+  export type UserCreateWithoutVisualizationJobsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    passwordHash?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    status?: $Enums.UserStatus
+    emailVerifiedAt?: Date | string | null
+    phoneVerifiedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addresses?: AddressCreateNestedManyWithoutUserInput
+    roles?: UserRoleCreateNestedManyWithoutUserInput
+    carts?: CartCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    wishlists?: WishlistCreateNestedManyWithoutUserInput
+    couponRedemptions?: CouponRedemptionCreateNestedManyWithoutUserInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketCreateNestedManyWithoutUserInput
+    supportMessages?: SupportMessageCreateNestedManyWithoutAuthorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    vendorProfile?: VendorProfileCreateNestedOneWithoutUserInput
+    vendorApplication?: VendorApplicationCreateNestedOneWithoutUserInput
+    authSessions?: AuthSessionCreateNestedManyWithoutUserInput
+    reviewedVendorApplications?: VendorApplicationCreateNestedManyWithoutReviewerInput
+    vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
+    uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
+    reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserUncheckedCreateWithoutVisualizationJobsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    passwordHash?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    status?: $Enums.UserStatus
+    emailVerifiedAt?: Date | string | null
+    phoneVerifiedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
+    roles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    carts?: CartUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    wishlists?: WishlistUncheckedCreateNestedManyWithoutUserInput
+    couponRedemptions?: CouponRedemptionUncheckedCreateNestedManyWithoutUserInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketUncheckedCreateNestedManyWithoutUserInput
+    supportMessages?: SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    vendorProfile?: VendorProfileUncheckedCreateNestedOneWithoutUserInput
+    vendorApplication?: VendorApplicationUncheckedCreateNestedOneWithoutUserInput
+    authSessions?: AuthSessionUncheckedCreateNestedManyWithoutUserInput
+    reviewedVendorApplications?: VendorApplicationUncheckedCreateNestedManyWithoutReviewerInput
+    vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
+    uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+    reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserCreateOrConnectWithoutVisualizationJobsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutVisualizationJobsInput, UserUncheckedCreateWithoutVisualizationJobsInput>
+  }
+
+  export type VisualizationAssetCreateWithoutJobInput = {
+    id?: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationAssetsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutAssetsInput
+    owner: UserCreateNestedOneWithoutVisualizationAssetsInput
+    sourceForJobs?: VisualizationProcessingJobCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetUncheckedCreateWithoutJobInput = {
+    id?: string
+    productId?: string | null
+    templateId?: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutSourceAssetInput
+  }
+
+  export type VisualizationAssetCreateOrConnectWithoutJobInput = {
+    where: VisualizationAssetWhereUniqueInput
+    create: XOR<VisualizationAssetCreateWithoutJobInput, VisualizationAssetUncheckedCreateWithoutJobInput>
+  }
+
+  export type VisualizationAssetCreateManyJobInputEnvelope = {
+    data: VisualizationAssetCreateManyJobInput | VisualizationAssetCreateManyJobInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VisualizationTemplateCreateWithoutSourceJobInput = {
+    id?: string
+    familyKey: string
+    version: number
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationTemplatesInput
+    createdBy: UserCreateNestedOneWithoutVisualizationTemplatesInput
+    jobs?: VisualizationProcessingJobCreateNestedManyWithoutTemplateInput
+    assets?: VisualizationAssetCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateUncheckedCreateWithoutSourceJobInput = {
+    id?: string
+    familyKey: string
+    version: number
+    productId?: string | null
+    createdById: string
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    jobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutTemplateInput
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateCreateOrConnectWithoutSourceJobInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    create: XOR<VisualizationTemplateCreateWithoutSourceJobInput, VisualizationTemplateUncheckedCreateWithoutSourceJobInput>
+  }
+
+  export type VisualizationTemplateCreateManySourceJobInputEnvelope = {
+    data: VisualizationTemplateCreateManySourceJobInput | VisualizationTemplateCreateManySourceJobInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductUpsertWithoutVisualizationJobsInput = {
+    update: XOR<ProductUpdateWithoutVisualizationJobsInput, ProductUncheckedUpdateWithoutVisualizationJobsInput>
+    create: XOR<ProductCreateWithoutVisualizationJobsInput, ProductUncheckedCreateWithoutVisualizationJobsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutVisualizationJobsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutVisualizationJobsInput, ProductUncheckedUpdateWithoutVisualizationJobsInput>
+  }
+
+  export type ProductUpdateWithoutVisualizationJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUpdateManyWithoutProductNestedInput
+    images?: ProductImageUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutVisualizationJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+    images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type VisualizationAssetUpsertWithoutSourceForJobsInput = {
+    update: XOR<VisualizationAssetUpdateWithoutSourceForJobsInput, VisualizationAssetUncheckedUpdateWithoutSourceForJobsInput>
+    create: XOR<VisualizationAssetCreateWithoutSourceForJobsInput, VisualizationAssetUncheckedCreateWithoutSourceForJobsInput>
+    where?: VisualizationAssetWhereInput
+  }
+
+  export type VisualizationAssetUpdateToOneWithWhereWithoutSourceForJobsInput = {
+    where?: VisualizationAssetWhereInput
+    data: XOR<VisualizationAssetUpdateWithoutSourceForJobsInput, VisualizationAssetUncheckedUpdateWithoutSourceForJobsInput>
+  }
+
+  export type VisualizationAssetUpdateWithoutSourceForJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationAssetsNestedInput
+    job?: VisualizationProcessingJobUpdateOneWithoutAssetsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutAssetsNestedInput
+    owner?: UserUpdateOneRequiredWithoutVisualizationAssetsNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateWithoutSourceForJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationTemplateUpsertWithoutJobsInput = {
+    update: XOR<VisualizationTemplateUpdateWithoutJobsInput, VisualizationTemplateUncheckedUpdateWithoutJobsInput>
+    create: XOR<VisualizationTemplateCreateWithoutJobsInput, VisualizationTemplateUncheckedCreateWithoutJobsInput>
+    where?: VisualizationTemplateWhereInput
+  }
+
+  export type VisualizationTemplateUpdateToOneWithWhereWithoutJobsInput = {
+    where?: VisualizationTemplateWhereInput
+    data: XOR<VisualizationTemplateUpdateWithoutJobsInput, VisualizationTemplateUncheckedUpdateWithoutJobsInput>
+  }
+
+  export type VisualizationTemplateUpdateWithoutJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationTemplatesNestedInput
+    sourceJob?: VisualizationProcessingJobUpdateOneWithoutTemplatesCreatedNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutVisualizationTemplatesNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateUncheckedUpdateWithoutJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type UserUpsertWithoutVisualizationJobsInput = {
+    update: XOR<UserUpdateWithoutVisualizationJobsInput, UserUncheckedUpdateWithoutVisualizationJobsInput>
+    create: XOR<UserCreateWithoutVisualizationJobsInput, UserUncheckedCreateWithoutVisualizationJobsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutVisualizationJobsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutVisualizationJobsInput, UserUncheckedUpdateWithoutVisualizationJobsInput>
+  }
+
+  export type UserUpdateWithoutVisualizationJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phoneVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addresses?: AddressUpdateManyWithoutUserNestedInput
+    roles?: UserRoleUpdateManyWithoutUserNestedInput
+    carts?: CartUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    wishlists?: WishlistUpdateManyWithoutUserNestedInput
+    couponRedemptions?: CouponRedemptionUpdateManyWithoutUserNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUpdateManyWithoutUserNestedInput
+    supportMessages?: SupportMessageUpdateManyWithoutAuthorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    vendorProfile?: VendorProfileUpdateOneWithoutUserNestedInput
+    vendorApplication?: VendorApplicationUpdateOneWithoutUserNestedInput
+    authSessions?: AuthSessionUpdateManyWithoutUserNestedInput
+    reviewedVendorApplications?: VendorApplicationUpdateManyWithoutReviewerNestedInput
+    vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
+    uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
+    reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutVisualizationJobsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phoneVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
+    roles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    carts?: CartUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    wishlists?: WishlistUncheckedUpdateManyWithoutUserNestedInput
+    couponRedemptions?: CouponRedemptionUncheckedUpdateManyWithoutUserNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+    supportMessages?: SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    vendorProfile?: VendorProfileUncheckedUpdateOneWithoutUserNestedInput
+    vendorApplication?: VendorApplicationUncheckedUpdateOneWithoutUserNestedInput
+    authSessions?: AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+    reviewedVendorApplications?: VendorApplicationUncheckedUpdateManyWithoutReviewerNestedInput
+    vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
+    uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+    reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type VisualizationAssetUpsertWithWhereUniqueWithoutJobInput = {
+    where: VisualizationAssetWhereUniqueInput
+    update: XOR<VisualizationAssetUpdateWithoutJobInput, VisualizationAssetUncheckedUpdateWithoutJobInput>
+    create: XOR<VisualizationAssetCreateWithoutJobInput, VisualizationAssetUncheckedCreateWithoutJobInput>
+  }
+
+  export type VisualizationAssetUpdateWithWhereUniqueWithoutJobInput = {
+    where: VisualizationAssetWhereUniqueInput
+    data: XOR<VisualizationAssetUpdateWithoutJobInput, VisualizationAssetUncheckedUpdateWithoutJobInput>
+  }
+
+  export type VisualizationAssetUpdateManyWithWhereWithoutJobInput = {
+    where: VisualizationAssetScalarWhereInput
+    data: XOR<VisualizationAssetUpdateManyMutationInput, VisualizationAssetUncheckedUpdateManyWithoutJobInput>
+  }
+
+  export type VisualizationTemplateUpsertWithWhereUniqueWithoutSourceJobInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    update: XOR<VisualizationTemplateUpdateWithoutSourceJobInput, VisualizationTemplateUncheckedUpdateWithoutSourceJobInput>
+    create: XOR<VisualizationTemplateCreateWithoutSourceJobInput, VisualizationTemplateUncheckedCreateWithoutSourceJobInput>
+  }
+
+  export type VisualizationTemplateUpdateWithWhereUniqueWithoutSourceJobInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    data: XOR<VisualizationTemplateUpdateWithoutSourceJobInput, VisualizationTemplateUncheckedUpdateWithoutSourceJobInput>
+  }
+
+  export type VisualizationTemplateUpdateManyWithWhereWithoutSourceJobInput = {
+    where: VisualizationTemplateScalarWhereInput
+    data: XOR<VisualizationTemplateUpdateManyMutationInput, VisualizationTemplateUncheckedUpdateManyWithoutSourceJobInput>
+  }
+
+  export type ProductCreateWithoutVisualizationAssetsInput = {
+    id?: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    category: CategoryCreateNestedOneWithoutProductsInput
+    categoryLinks?: ProductCategoryCreateNestedManyWithoutProductInput
+    variants?: ProductVariantCreateNestedManyWithoutProductInput
+    images?: ProductImageCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutProductInput
+    cartItems?: CartItemCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemCreateNestedManyWithoutProductInput
+    reviews?: ReviewCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutVisualizationAssetsInput = {
+    id?: string
+    categoryId: string
+    name: string
+    slug: string
+    baseSku: string
+    status?: $Enums.ProductStatus
+    shortDescription?: string | null
+    description?: string | null
+    basePricePaise: number
+    compareAtPricePaise?: number | null
+    currency?: string
+    customizable?: boolean
+    material?: string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: number | null
+    packSize?: number
+    taxCode?: string | null
+    taxRateBasisPoints?: number
+    productionDaysMin?: number
+    productionDaysMax?: number
+    seoTitle?: string | null
+    seoDescription?: string | null
+    tags?: ProductCreatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    categoryLinks?: ProductCategoryUncheckedCreateNestedManyWithoutProductInput
+    variants?: ProductVariantUncheckedCreateNestedManyWithoutProductInput
+    images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedCreateNestedManyWithoutProductInput
+    templateLinks?: ProductTemplateUncheckedCreateNestedManyWithoutProductInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutProductInput
+    cartItems?: CartItemUncheckedCreateNestedManyWithoutProductInput
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutProductInput
+    wishlistItems?: WishlistItemUncheckedCreateNestedManyWithoutProductInput
+    couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
+    vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
+    artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutVisualizationAssetsInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutVisualizationAssetsInput, ProductUncheckedCreateWithoutVisualizationAssetsInput>
+  }
+
+  export type VisualizationProcessingJobCreateWithoutAssetsInput = {
+    id?: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutVisualizationJobsInput
+    sourceAsset: VisualizationAssetCreateNestedOneWithoutSourceForJobsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutJobsInput
+    requestedBy: UserCreateNestedOneWithoutVisualizationJobsInput
+    templatesCreated?: VisualizationTemplateCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateWithoutAssetsInput = {
+    id?: string
+    productId: string
+    sourceAssetId: string
+    templateId?: string | null
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    templatesCreated?: VisualizationTemplateUncheckedCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobCreateOrConnectWithoutAssetsInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    create: XOR<VisualizationProcessingJobCreateWithoutAssetsInput, VisualizationProcessingJobUncheckedCreateWithoutAssetsInput>
+  }
+
+  export type VisualizationTemplateCreateWithoutAssetsInput = {
+    id?: string
+    familyKey: string
+    version: number
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product?: ProductCreateNestedOneWithoutVisualizationTemplatesInput
+    sourceJob?: VisualizationProcessingJobCreateNestedOneWithoutTemplatesCreatedInput
+    createdBy: UserCreateNestedOneWithoutVisualizationTemplatesInput
+    jobs?: VisualizationProcessingJobCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateUncheckedCreateWithoutAssetsInput = {
+    id?: string
+    familyKey: string
+    version: number
+    productId?: string | null
+    sourceJobId?: string | null
+    createdById: string
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    jobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutTemplateInput
+  }
+
+  export type VisualizationTemplateCreateOrConnectWithoutAssetsInput = {
+    where: VisualizationTemplateWhereUniqueInput
+    create: XOR<VisualizationTemplateCreateWithoutAssetsInput, VisualizationTemplateUncheckedCreateWithoutAssetsInput>
+  }
+
+  export type UserCreateWithoutVisualizationAssetsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    passwordHash?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    status?: $Enums.UserStatus
+    emailVerifiedAt?: Date | string | null
+    phoneVerifiedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addresses?: AddressCreateNestedManyWithoutUserInput
+    roles?: UserRoleCreateNestedManyWithoutUserInput
+    carts?: CartCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    customizations?: CustomizationConfigurationCreateNestedManyWithoutUserInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    wishlists?: WishlistCreateNestedManyWithoutUserInput
+    couponRedemptions?: CouponRedemptionCreateNestedManyWithoutUserInput
+    bulkRequests?: BulkOrderRequestCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketCreateNestedManyWithoutUserInput
+    supportMessages?: SupportMessageCreateNestedManyWithoutAuthorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutActorInput
+    vendorProfile?: VendorProfileCreateNestedOneWithoutUserInput
+    vendorApplication?: VendorApplicationCreateNestedOneWithoutUserInput
+    authSessions?: AuthSessionCreateNestedManyWithoutUserInput
+    reviewedVendorApplications?: VendorApplicationCreateNestedManyWithoutReviewerInput
+    vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
+    uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
+    reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+  }
+
+  export type UserUncheckedCreateWithoutVisualizationAssetsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    passwordHash?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    status?: $Enums.UserStatus
+    emailVerifiedAt?: Date | string | null
+    phoneVerifiedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
+    roles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    carts?: CartUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    customizations?: CustomizationConfigurationUncheckedCreateNestedManyWithoutUserInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    wishlists?: WishlistUncheckedCreateNestedManyWithoutUserInput
+    couponRedemptions?: CouponRedemptionUncheckedCreateNestedManyWithoutUserInput
+    bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutUserInput
+    supportTickets?: SupportTicketUncheckedCreateNestedManyWithoutUserInput
+    supportMessages?: SupportMessageUncheckedCreateNestedManyWithoutAuthorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutActorInput
+    vendorProfile?: VendorProfileUncheckedCreateNestedOneWithoutUserInput
+    vendorApplication?: VendorApplicationUncheckedCreateNestedOneWithoutUserInput
+    authSessions?: AuthSessionUncheckedCreateNestedManyWithoutUserInput
+    reviewedVendorApplications?: VendorApplicationUncheckedCreateNestedManyWithoutReviewerInput
+    vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
+    uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+    reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+  }
+
+  export type UserCreateOrConnectWithoutVisualizationAssetsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutVisualizationAssetsInput, UserUncheckedCreateWithoutVisualizationAssetsInput>
+  }
+
+  export type VisualizationProcessingJobCreateWithoutSourceAssetInput = {
+    id?: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutVisualizationJobsInput
+    template?: VisualizationTemplateCreateNestedOneWithoutJobsInput
+    requestedBy: UserCreateNestedOneWithoutVisualizationJobsInput
+    assets?: VisualizationAssetCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput = {
+    id?: string
+    productId: string
+    templateId?: string | null
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assets?: VisualizationAssetUncheckedCreateNestedManyWithoutJobInput
+    templatesCreated?: VisualizationTemplateUncheckedCreateNestedManyWithoutSourceJobInput
+  }
+
+  export type VisualizationProcessingJobCreateOrConnectWithoutSourceAssetInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    create: XOR<VisualizationProcessingJobCreateWithoutSourceAssetInput, VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput>
+  }
+
+  export type VisualizationProcessingJobCreateManySourceAssetInputEnvelope = {
+    data: VisualizationProcessingJobCreateManySourceAssetInput | VisualizationProcessingJobCreateManySourceAssetInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductUpsertWithoutVisualizationAssetsInput = {
+    update: XOR<ProductUpdateWithoutVisualizationAssetsInput, ProductUncheckedUpdateWithoutVisualizationAssetsInput>
+    create: XOR<ProductCreateWithoutVisualizationAssetsInput, ProductUncheckedCreateWithoutVisualizationAssetsInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutVisualizationAssetsInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutVisualizationAssetsInput, ProductUncheckedUpdateWithoutVisualizationAssetsInput>
+  }
+
+  export type ProductUpdateWithoutVisualizationAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutProductsNestedInput
+    categoryLinks?: ProductCategoryUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUpdateManyWithoutProductNestedInput
+    images?: ProductImageUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutVisualizationAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    baseSku?: StringFieldUpdateOperationsInput | string
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    shortDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    basePricePaise?: IntFieldUpdateOperationsInput | number
+    compareAtPricePaise?: NullableIntFieldUpdateOperationsInput | number | null
+    currency?: StringFieldUpdateOperationsInput | string
+    customizable?: BoolFieldUpdateOperationsInput | boolean
+    material?: NullableStringFieldUpdateOperationsInput | string | null
+    dimensions?: NullableJsonNullValueInput | InputJsonValue
+    weightGrams?: NullableIntFieldUpdateOperationsInput | number | null
+    packSize?: IntFieldUpdateOperationsInput | number
+    taxCode?: NullableStringFieldUpdateOperationsInput | string | null
+    taxRateBasisPoints?: IntFieldUpdateOperationsInput | number
+    productionDaysMin?: IntFieldUpdateOperationsInput | number
+    productionDaysMax?: IntFieldUpdateOperationsInput | number
+    seoTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    seoDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: ProductUpdatetagsInput | string[]
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    categoryLinks?: ProductCategoryUncheckedUpdateManyWithoutProductNestedInput
+    variants?: ProductVariantUncheckedUpdateManyWithoutProductNestedInput
+    images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
+    personalizationFields?: ProductPersonalizationFieldUncheckedUpdateManyWithoutProductNestedInput
+    templateLinks?: ProductTemplateUncheckedUpdateManyWithoutProductNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutProductNestedInput
+    cartItems?: CartItemUncheckedUpdateManyWithoutProductNestedInput
+    orderItems?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutProductNestedInput
+    wishlistItems?: WishlistItemUncheckedUpdateManyWithoutProductNestedInput
+    couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
+    vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
+    artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type VisualizationProcessingJobUpsertWithoutAssetsInput = {
+    update: XOR<VisualizationProcessingJobUpdateWithoutAssetsInput, VisualizationProcessingJobUncheckedUpdateWithoutAssetsInput>
+    create: XOR<VisualizationProcessingJobCreateWithoutAssetsInput, VisualizationProcessingJobUncheckedCreateWithoutAssetsInput>
+    where?: VisualizationProcessingJobWhereInput
+  }
+
+  export type VisualizationProcessingJobUpdateToOneWithWhereWithoutAssetsInput = {
+    where?: VisualizationProcessingJobWhereInput
+    data: XOR<VisualizationProcessingJobUpdateWithoutAssetsInput, VisualizationProcessingJobUncheckedUpdateWithoutAssetsInput>
+  }
+
+  export type VisualizationProcessingJobUpdateWithoutAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    sourceAsset?: VisualizationAssetUpdateOneRequiredWithoutSourceForJobsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutJobsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    templatesCreated?: VisualizationTemplateUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateWithoutAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    templatesCreated?: VisualizationTemplateUncheckedUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationTemplateUpsertWithoutAssetsInput = {
+    update: XOR<VisualizationTemplateUpdateWithoutAssetsInput, VisualizationTemplateUncheckedUpdateWithoutAssetsInput>
+    create: XOR<VisualizationTemplateCreateWithoutAssetsInput, VisualizationTemplateUncheckedCreateWithoutAssetsInput>
+    where?: VisualizationTemplateWhereInput
+  }
+
+  export type VisualizationTemplateUpdateToOneWithWhereWithoutAssetsInput = {
+    where?: VisualizationTemplateWhereInput
+    data: XOR<VisualizationTemplateUpdateWithoutAssetsInput, VisualizationTemplateUncheckedUpdateWithoutAssetsInput>
+  }
+
+  export type VisualizationTemplateUpdateWithoutAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationTemplatesNestedInput
+    sourceJob?: VisualizationProcessingJobUpdateOneWithoutTemplatesCreatedNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutVisualizationTemplatesNestedInput
+    jobs?: VisualizationProcessingJobUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateUncheckedUpdateWithoutAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    jobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type UserUpsertWithoutVisualizationAssetsInput = {
+    update: XOR<UserUpdateWithoutVisualizationAssetsInput, UserUncheckedUpdateWithoutVisualizationAssetsInput>
+    create: XOR<UserCreateWithoutVisualizationAssetsInput, UserUncheckedCreateWithoutVisualizationAssetsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutVisualizationAssetsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutVisualizationAssetsInput, UserUncheckedUpdateWithoutVisualizationAssetsInput>
+  }
+
+  export type UserUpdateWithoutVisualizationAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phoneVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addresses?: AddressUpdateManyWithoutUserNestedInput
+    roles?: UserRoleUpdateManyWithoutUserNestedInput
+    carts?: CartUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    customizations?: CustomizationConfigurationUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    wishlists?: WishlistUpdateManyWithoutUserNestedInput
+    couponRedemptions?: CouponRedemptionUpdateManyWithoutUserNestedInput
+    bulkRequests?: BulkOrderRequestUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUpdateManyWithoutUserNestedInput
+    supportMessages?: SupportMessageUpdateManyWithoutAuthorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutActorNestedInput
+    vendorProfile?: VendorProfileUpdateOneWithoutUserNestedInput
+    vendorApplication?: VendorApplicationUpdateOneWithoutUserNestedInput
+    authSessions?: AuthSessionUpdateManyWithoutUserNestedInput
+    reviewedVendorApplications?: VendorApplicationUpdateManyWithoutReviewerNestedInput
+    vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
+    uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
+    reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutVisualizationAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    emailVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    phoneVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
+    roles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    carts?: CartUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    customizations?: CustomizationConfigurationUncheckedUpdateManyWithoutUserNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    wishlists?: WishlistUncheckedUpdateManyWithoutUserNestedInput
+    couponRedemptions?: CouponRedemptionUncheckedUpdateManyWithoutUserNestedInput
+    bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutUserNestedInput
+    supportTickets?: SupportTicketUncheckedUpdateManyWithoutUserNestedInput
+    supportMessages?: SupportMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutActorNestedInput
+    vendorProfile?: VendorProfileUncheckedUpdateOneWithoutUserNestedInput
+    vendorApplication?: VendorApplicationUncheckedUpdateOneWithoutUserNestedInput
+    authSessions?: AuthSessionUncheckedUpdateManyWithoutUserNestedInput
+    reviewedVendorApplications?: VendorApplicationUncheckedUpdateManyWithoutReviewerNestedInput
+    vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
+    uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+    reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+    uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+  }
+
+  export type VisualizationProcessingJobUpsertWithWhereUniqueWithoutSourceAssetInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    update: XOR<VisualizationProcessingJobUpdateWithoutSourceAssetInput, VisualizationProcessingJobUncheckedUpdateWithoutSourceAssetInput>
+    create: XOR<VisualizationProcessingJobCreateWithoutSourceAssetInput, VisualizationProcessingJobUncheckedCreateWithoutSourceAssetInput>
+  }
+
+  export type VisualizationProcessingJobUpdateWithWhereUniqueWithoutSourceAssetInput = {
+    where: VisualizationProcessingJobWhereUniqueInput
+    data: XOR<VisualizationProcessingJobUpdateWithoutSourceAssetInput, VisualizationProcessingJobUncheckedUpdateWithoutSourceAssetInput>
+  }
+
+  export type VisualizationProcessingJobUpdateManyWithWhereWithoutSourceAssetInput = {
+    where: VisualizationProcessingJobScalarWhereInput
+    data: XOR<VisualizationProcessingJobUpdateManyMutationInput, VisualizationProcessingJobUncheckedUpdateManyWithoutSourceAssetInput>
   }
 
   export type ProductCreateWithoutVariantsInput = {
@@ -100530,6 +110277,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVariantsInput = {
@@ -100574,6 +110324,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVariantsInput = {
@@ -100769,6 +110522,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVariantsInput = {
@@ -100813,6 +110569,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type InventoryUpsertWithoutVariantInput = {
@@ -100946,6 +110705,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutImagesInput = {
@@ -100990,6 +110752,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutImagesInput = {
@@ -101050,6 +110815,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutImagesInput = {
@@ -101094,6 +110862,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateWithoutPersonalizationFieldsInput = {
@@ -101138,6 +110909,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutPersonalizationFieldsInput = {
@@ -101182,6 +110956,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutPersonalizationFieldsInput = {
@@ -101242,6 +111019,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutPersonalizationFieldsInput = {
@@ -101286,6 +111066,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type CategoryCreateWithoutTemplatesInput = {
@@ -101588,6 +111371,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutTemplateLinksInput = {
@@ -101632,6 +111418,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutTemplateLinksInput = {
@@ -101741,6 +111530,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutTemplateLinksInput = {
@@ -101785,6 +111577,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PersonalizationTemplateUpsertWithoutProductLinksInput = {
@@ -102076,6 +111871,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutCustomizationsInput = {
@@ -102112,6 +111910,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutCustomizationsInput = {
@@ -102161,6 +111962,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCustomizationsInput = {
@@ -102205,6 +112009,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCustomizationsInput = {
@@ -102333,6 +112140,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCustomizationsInput = {
@@ -102369,6 +112179,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type ProductUpsertWithoutCustomizationsInput = {
@@ -102424,6 +112237,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCustomizationsInput = {
@@ -102468,6 +112284,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PersonalizationTemplateUpsertWithoutCustomizationsInput = {
@@ -102592,6 +112411,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutCartsInput = {
@@ -102628,6 +112450,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutCartsInput = {
@@ -102712,6 +112537,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCartsInput = {
@@ -102748,6 +112576,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type CartItemUpsertWithWhereUniqueWithoutCartInput = {
@@ -102835,6 +112666,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCartItemsInput = {
@@ -102879,6 +112713,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCartItemsInput = {
@@ -103054,6 +112891,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCartItemsInput = {
@@ -103098,6 +112938,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductVariantUpsertWithoutCartItemsInput = {
@@ -103228,6 +113071,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -103264,6 +113110,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -103631,6 +113480,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -103667,6 +113519,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type OrderAddressUpsertWithWhereUniqueWithoutOrderInput = {
@@ -103932,6 +113787,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutVendorProfileInput = {
@@ -103968,6 +113826,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutVendorProfileInput = {
@@ -104235,6 +114096,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVendorProfileInput = {
@@ -104271,6 +114135,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type VendorApplicationUpsertWithoutProfileInput = {
@@ -104492,6 +114359,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutVendorApplicationInput = {
@@ -104528,6 +114398,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutVendorApplicationInput = {
@@ -104569,6 +114442,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutReviewedVendorApplicationsInput = {
@@ -104605,6 +114481,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutReviewedVendorApplicationsInput = {
@@ -104804,6 +114683,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVendorApplicationInput = {
@@ -104840,6 +114722,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUpsertWithoutReviewedVendorApplicationsInput = {
@@ -104887,6 +114772,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewedVendorApplicationsInput = {
@@ -104923,6 +114811,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type VendorProfileUpsertWithoutApplicationInput = {
@@ -105147,6 +115038,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutUploadedVendorDocumentsInput = {
@@ -105183,6 +115077,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutUploadedVendorDocumentsInput = {
@@ -105224,6 +115121,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutReviewedVendorDocumentsInput = {
@@ -105260,6 +115160,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedCreateNestedManyWithoutActorInput
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutReviewedVendorDocumentsInput = {
@@ -105399,6 +115302,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUploadedVendorDocumentsInput = {
@@ -105435,6 +115341,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUpsertWithoutReviewedVendorDocumentsInput = {
@@ -105482,6 +115391,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewedVendorDocumentsInput = {
@@ -105518,6 +115430,9 @@ export namespace Prisma {
     vendorApplicationEvents?: VendorApplicationEventUncheckedUpdateManyWithoutActorNestedInput
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type VendorApplicationCreateWithoutEventsInput = {
@@ -105635,6 +115550,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutVendorApplicationEventsInput = {
@@ -105671,6 +115589,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutVendorApplicationEventsInput = {
@@ -105810,6 +115731,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVendorApplicationEventsInput = {
@@ -105846,6 +115770,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type VendorProfileCreateWithoutCapabilitiesInput = {
@@ -105959,6 +115886,9 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutVendorCapabilitiesInput = {
@@ -106003,6 +115933,9 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutVendorCapabilitiesInput = {
@@ -106138,6 +116071,9 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutVendorCapabilitiesInput = {
@@ -106182,6 +116118,9 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type OrderCreateWithoutAssignmentInput = {
@@ -107421,6 +117360,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutOrderItemsInput = {
@@ -107465,6 +117407,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutOrderItemsInput = {
@@ -107798,6 +117743,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutOrderItemsInput = {
@@ -107842,6 +117790,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductVariantUpsertWithoutOrderItemsInput = {
@@ -109151,6 +119102,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCouponLinksInput = {
@@ -109195,6 +119149,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCouponLinksInput = {
@@ -109306,6 +119263,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCouponLinksInput = {
@@ -109350,6 +119310,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type CouponCreateWithoutCategoryLinksInput = {
@@ -109619,6 +119582,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutCouponRedemptionsInput = {
@@ -109655,6 +119621,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutCouponRedemptionsInput = {
@@ -109829,6 +119798,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCouponRedemptionsInput = {
@@ -109865,6 +119837,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type OrderUpsertWithoutCouponRedemptionsInput = {
@@ -109986,6 +119961,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutReviewsInput = {
@@ -110030,6 +120008,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutReviewsInput = {
@@ -110071,6 +120052,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutReviewsInput = {
@@ -110107,6 +120091,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutReviewsInput = {
@@ -110214,6 +120201,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutReviewsInput = {
@@ -110258,6 +120248,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserUpsertWithoutReviewsInput = {
@@ -110305,6 +120298,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -110341,6 +120337,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type OrderItemUpsertWithoutReviewInput = {
@@ -110430,6 +120429,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutWishlistsInput = {
@@ -110466,6 +120468,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutWishlistsInput = {
@@ -110538,6 +120543,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWishlistsInput = {
@@ -110574,6 +120582,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type WishlistItemUpsertWithWhereUniqueWithoutWishlistInput = {
@@ -110655,6 +120666,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutWishlistItemsInput = {
@@ -110699,6 +120713,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutWishlistItemsInput = {
@@ -110786,6 +120803,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutWishlistItemsInput = {
@@ -110830,6 +120850,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutBulkRequestsInput = {
@@ -110866,6 +120889,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutBulkRequestsInput = {
@@ -110902,6 +120928,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutBulkRequestsInput = {
@@ -110951,6 +120980,9 @@ export namespace Prisma {
     couponLinks?: CouponProductCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutBulkRequestsInput = {
@@ -110995,6 +121027,9 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedCreateNestedManyWithoutProductInput
     vendorCapabilities?: VendorCapabilityUncheckedCreateNestedManyWithoutProductInput
     artworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutProductInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutProductInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutProductInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutBulkRequestsInput = {
@@ -111077,6 +121112,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBulkRequestsInput = {
@@ -111113,6 +121151,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type ProductUpsertWithoutBulkRequestsInput = {
@@ -111168,6 +121209,9 @@ export namespace Prisma {
     couponLinks?: CouponProductUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutBulkRequestsInput = {
@@ -111212,6 +121256,9 @@ export namespace Prisma {
     couponLinks?: CouponProductUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type BulkOrderRowUpsertWithWhereUniqueWithoutBulkRequestInput = {
@@ -111374,6 +121421,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutSupportTicketsInput = {
@@ -111410,6 +121460,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutSupportTicketsInput = {
@@ -111561,6 +121614,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportTicketsInput = {
@@ -111597,6 +121653,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type OrderUpsertWithoutSupportTicketsInput = {
@@ -111759,6 +121818,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutSupportMessagesInput = {
@@ -111795,6 +121857,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutSupportMessagesInput = {
@@ -111886,6 +121951,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSupportMessagesInput = {
@@ -111922,6 +121990,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -111958,6 +122029,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -111994,6 +122068,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -112046,6 +122123,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -112082,6 +122162,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -112118,6 +122201,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetCreateNestedManyWithoutOwnerInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -112154,6 +122240,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutUploadedByInput
     reviewedVendorDocuments?: VendorDocumentUncheckedCreateNestedManyWithoutReviewedByInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedCreateNestedManyWithoutOwnerInput
+    visualizationTemplates?: VisualizationTemplateUncheckedCreateNestedManyWithoutCreatedByInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedCreateNestedManyWithoutRequestedByInput
+    visualizationAssets?: VisualizationAssetUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -112206,6 +122295,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -112242,6 +122334,9 @@ export namespace Prisma {
     uploadedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
     reviewedVendorDocuments?: VendorDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
     uploadedArtworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutOwnerNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutCreatedByNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type AddressCreateManyUserInput = {
@@ -112524,6 +122619,72 @@ export namespace Prisma {
     status?: $Enums.ArtworkAssetStatus
     expiresAt: Date | string
     attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationTemplateCreateManyCreatedByInput = {
+    id?: string
+    familyKey: string
+    version: number
+    productId?: string | null
+    sourceJobId?: string | null
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationProcessingJobCreateManyRequestedByInput = {
+    id?: string
+    productId: string
+    sourceAssetId: string
+    templateId?: string | null
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationAssetCreateManyOwnerInput = {
+    id?: string
+    productId?: string | null
+    jobId?: string | null
+    templateId?: string | null
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -113412,6 +123573,214 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type VisualizationTemplateUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationTemplatesNestedInput
+    sourceJob?: VisualizationProcessingJobUpdateOneWithoutTemplatesCreatedNestedInput
+    jobs?: VisualizationProcessingJobUpdateManyWithoutTemplateNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    jobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutTemplateNestedInput
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    sourceJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationProcessingJobUpdateWithoutRequestedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    sourceAsset?: VisualizationAssetUpdateOneRequiredWithoutSourceForJobsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutJobsNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateWithoutRequestedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUncheckedUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateManyWithoutRequestedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationAssetUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationAssetsNestedInput
+    job?: VisualizationProcessingJobUpdateOneWithoutAssetsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutAssetsNestedInput
+    sourceForJobs?: VisualizationProcessingJobUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateManyWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserRoleCreateManyRoleInput = {
     userId: string
     assignedAt?: Date | string
@@ -113630,6 +123999,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCategoryInput = {
@@ -113674,6 +124046,9 @@ export namespace Prisma {
     bulkRequests?: BulkOrderRequestUncheckedUpdateManyWithoutProductNestedInput
     vendorCapabilities?: VendorCapabilityUncheckedUpdateManyWithoutProductNestedInput
     artworkAssets?: ArtworkAssetUncheckedUpdateManyWithoutProductNestedInput
+    visualizationTemplates?: VisualizationTemplateUncheckedUpdateManyWithoutProductNestedInput
+    visualizationJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutProductNestedInput
+    visualizationAssets?: VisualizationAssetUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutCategoryInput = {
@@ -113963,6 +124338,72 @@ export namespace Prisma {
     status?: $Enums.ArtworkAssetStatus
     expiresAt: Date | string
     attachedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationTemplateCreateManyProductInput = {
+    id?: string
+    familyKey: string
+    version: number
+    sourceJobId?: string | null
+    createdById: string
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationProcessingJobCreateManyProductInput = {
+    id?: string
+    sourceAssetId: string
+    templateId?: string | null
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationAssetCreateManyProductInput = {
+    id?: string
+    jobId?: string | null
+    templateId?: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -114496,6 +124937,666 @@ export namespace Prisma {
     status?: EnumArtworkAssetStatusFieldUpdateOperationsInput | $Enums.ArtworkAssetStatus
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attachedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationTemplateUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceJob?: VisualizationProcessingJobUpdateOneWithoutTemplatesCreatedNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutVisualizationTemplatesNestedInput
+    jobs?: VisualizationProcessingJobUpdateManyWithoutTemplateNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    sourceJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    jobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutTemplateNestedInput
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    sourceJobId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationProcessingJobUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceAsset?: VisualizationAssetUpdateOneRequiredWithoutSourceForJobsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutJobsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUncheckedUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationAssetUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    job?: VisualizationProcessingJobUpdateOneWithoutAssetsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutAssetsNestedInput
+    owner?: UserUpdateOneRequiredWithoutVisualizationAssetsNestedInput
+    sourceForJobs?: VisualizationProcessingJobUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationProcessingJobCreateManyTemplateInput = {
+    id?: string
+    productId: string
+    sourceAssetId: string
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationAssetCreateManyTemplateInput = {
+    id?: string
+    productId?: string | null
+    jobId?: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationProcessingJobUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    sourceAsset?: VisualizationAssetUpdateOneRequiredWithoutSourceForJobsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUncheckedUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateManyWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    sourceAssetId?: StringFieldUpdateOperationsInput | string
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationAssetUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationAssetsNestedInput
+    job?: VisualizationProcessingJobUpdateOneWithoutAssetsNestedInput
+    owner?: UserUpdateOneRequiredWithoutVisualizationAssetsNestedInput
+    sourceForJobs?: VisualizationProcessingJobUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateManyWithoutTemplateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationAssetCreateManyJobInput = {
+    id?: string
+    productId?: string | null
+    templateId?: string | null
+    ownerUserId: string
+    kind: $Enums.VisualizationAssetKind
+    storage?: $Enums.VisualizationAssetStorage
+    originalName?: string | null
+    mimeType: string
+    sizeBytes: number
+    width?: number | null
+    height?: number | null
+    sha256?: string | null
+    content?: Bytes | null
+    privateRef?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationTemplateCreateManySourceJobInput = {
+    id?: string
+    familyKey: string
+    version: number
+    productId?: string | null
+    createdById: string
+    name: string
+    slug: string
+    description?: string | null
+    productType: string
+    status?: $Enums.VisualizationTemplateStatus
+    geometry: JsonNullValueInput | InputJsonValue
+    dimensions: JsonNullValueInput | InputJsonValue
+    surfaceMappings: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: Date | string | null
+    archivedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationAssetUpdateWithoutJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationAssetsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutAssetsNestedInput
+    owner?: UserUpdateOneRequiredWithoutVisualizationAssetsNestedInput
+    sourceForJobs?: VisualizationProcessingJobUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateWithoutJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sourceForJobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutSourceAssetNestedInput
+  }
+
+  export type VisualizationAssetUncheckedUpdateManyWithoutJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerUserId?: StringFieldUpdateOperationsInput | string
+    kind?: EnumVisualizationAssetKindFieldUpdateOperationsInput | $Enums.VisualizationAssetKind
+    storage?: EnumVisualizationAssetStorageFieldUpdateOperationsInput | $Enums.VisualizationAssetStorage
+    originalName?: NullableStringFieldUpdateOperationsInput | string | null
+    mimeType?: StringFieldUpdateOperationsInput | string
+    sizeBytes?: IntFieldUpdateOperationsInput | number
+    width?: NullableIntFieldUpdateOperationsInput | number | null
+    height?: NullableIntFieldUpdateOperationsInput | number | null
+    sha256?: NullableStringFieldUpdateOperationsInput | string | null
+    content?: NullableBytesFieldUpdateOperationsInput | Bytes | null
+    privateRef?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationTemplateUpdateWithoutSourceJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneWithoutVisualizationTemplatesNestedInput
+    createdBy?: UserUpdateOneRequiredWithoutVisualizationTemplatesNestedInput
+    jobs?: VisualizationProcessingJobUpdateManyWithoutTemplateNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateUncheckedUpdateWithoutSourceJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    jobs?: VisualizationProcessingJobUncheckedUpdateManyWithoutTemplateNestedInput
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutTemplateNestedInput
+  }
+
+  export type VisualizationTemplateUncheckedUpdateManyWithoutSourceJobInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    familyKey?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    productType?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationTemplateStatusFieldUpdateOperationsInput | $Enums.VisualizationTemplateStatus
+    geometry?: JsonNullValueInput | InputJsonValue
+    dimensions?: JsonNullValueInput | InputJsonValue
+    surfaceMappings?: JsonNullValueInput | InputJsonValue
+    materialSettings?: NullableJsonNullValueInput | InputJsonValue
+    previewCapabilities?: NullableJsonNullValueInput | InputJsonValue
+    manufacturingMetadata?: NullableJsonNullValueInput | InputJsonValue
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    archivedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VisualizationProcessingJobCreateManySourceAssetInput = {
+    id?: string
+    productId: string
+    templateId?: string | null
+    requestedById: string
+    status?: $Enums.VisualizationJobStatus
+    analysisMode?: $Enums.VisualizationAnalysisMode
+    attempt?: number
+    maxAttempts?: number
+    providerName?: string | null
+    providerRequestId?: string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: string | null
+    errorMessage?: string | null
+    nextAttemptAt?: Date | string | null
+    lastAttemptAt?: Date | string | null
+    startedAt?: Date | string | null
+    completedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VisualizationProcessingJobUpdateWithoutSourceAssetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    template?: VisualizationTemplateUpdateOneWithoutJobsNestedInput
+    requestedBy?: UserUpdateOneRequiredWithoutVisualizationJobsNestedInput
+    assets?: VisualizationAssetUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateWithoutSourceAssetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assets?: VisualizationAssetUncheckedUpdateManyWithoutJobNestedInput
+    templatesCreated?: VisualizationTemplateUncheckedUpdateManyWithoutSourceJobNestedInput
+  }
+
+  export type VisualizationProcessingJobUncheckedUpdateManyWithoutSourceAssetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    requestedById?: StringFieldUpdateOperationsInput | string
+    status?: EnumVisualizationJobStatusFieldUpdateOperationsInput | $Enums.VisualizationJobStatus
+    analysisMode?: EnumVisualizationAnalysisModeFieldUpdateOperationsInput | $Enums.VisualizationAnalysisMode
+    attempt?: IntFieldUpdateOperationsInput | number
+    maxAttempts?: IntFieldUpdateOperationsInput | number
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    providerRequestId?: NullableStringFieldUpdateOperationsInput | string | null
+    analysisResult?: NullableJsonNullValueInput | InputJsonValue
+    confirmation?: NullableJsonNullValueInput | InputJsonValue
+    errorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    errorMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    nextAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastAttemptAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    startedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -1,4 +1,5 @@
 import { CommerceError } from "./commerce-error";
+import { createOrderVisualizationSnapshot } from "./order-visualization-snapshot";
 import { buildProductConfiguration } from "./product-configuration";
 import { resolveProductTemplate } from "./product-template-resolution";
 import { snapshotJsonValue } from "./template-production";
@@ -80,6 +81,12 @@ export function normalizePersistentOrderCustomization(
     displayUnit: _untrustedUnit,
     ...stable
   } = submitted;
+  const visualization = createOrderVisualizationSnapshot(
+    product,
+    configuration,
+    preset,
+    priced.productSnapshot.material,
+  );
 
   return {
     ...stable,
@@ -87,6 +94,7 @@ export function normalizePersistentOrderCustomization(
     dimensionPresetId: preset.id,
     dimensionLabel: preset.label,
     displayUnit,
+    ...(visualization ? { visualization } : {}),
     presentation: {
       name,
       ...(detail ? { detail } : {}),

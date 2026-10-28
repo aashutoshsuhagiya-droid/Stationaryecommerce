@@ -37,6 +37,9 @@ npm.cmd run db:bootstrap-admin
 The configurator contract, pricing boundary, bulk quote API and production dependencies are documented
 in `docs/CONFIGURATOR.md`.
 
+The administrator image-to-3D workflow, publishing boundary, optional analyzer contract and deployment
+steps are documented in `docs/VISUALIZATION_STUDIO.md`.
+
 For a fresh local database, `db:setup` pushes the Prisma schema, installs the atomic marketplace
 database functions and trigger, and seeds the catalog plus authorization roles. Before the first
 admin login, temporarily set `BOOTSTRAP_ADMIN_EMAIL` and a strong `BOOTSTRAP_ADMIN_PASSWORD`, run

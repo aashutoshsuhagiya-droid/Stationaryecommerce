@@ -6,7 +6,9 @@ import { getPrisma } from "./prisma";
 import { normalizeProductCategoryIds } from "./product-category-links";
 import { productArtworkPolicySchema } from "./artwork-policy-schema";
 import { normalizeTemplateProduction } from "./template-production";
-import type { Category, CustomizationField, PersonalizationTemplate, Product, ProductTemplateLink, ProductVariant, StockStatus } from "./types";
+import { visualizationSurfaceMappingsSchema } from "./visualization-studio-domain";
+import { publicVisualizationAssetUrl } from "./visualization-studio-service-policy";
+import type { Category, CustomizationField, PersonalizationTemplate, Product, ProductTemplateLink, ProductVariant, ProductVisualizationTemplate, StockStatus } from "./types";
 
 const jsonObject = (value: unknown): Record<string, unknown> => value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
 const stringList = (value: unknown) => Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
@@ -72,6 +74,153 @@ function mappedArtworkPolicy(value: unknown, productId: string) {
     });
   }
   return parsed.data;
+}
+
+const visualizationRoles = new Set([
+  "front", "back", "left", "right", "top", "bottom", "wrap", "gusset", "inside", "other",
+]);
+const visualizationGeometryKinds = new Set([
+  "box", "cylinder", "plane", "bag", "pouch", "label", "custom",
+]);
+
+function mappedVisualizationTemplate(value: any, productId: string): ProductVisualizationTemplate | undefined {
+  const publishedAt = value?.publishedAt ? new Date(value.publishedAt) : null;
+  if (
+    !value
+    || value.status !== "PUBLISHED"
+    || !publishedAt
+    || Number.isNaN(publishedAt.valueOf())
+    || publishedAt > new Date()
+    || value.archivedAt
+  ) return undefined;
+  const version = value.version;
+  const geometry = jsonObject(value.geometry);
+  const dimensions = jsonObject(value.dimensions);
+  const geometryKind = typeof geometry.kind === "string" && visualizationGeometryKinds.has(geometry.kind)
+    ? geometry.kind
+    : undefined;
+  if (
+    typeof value.id !== "string"
+    || typeof value.name !== "string"
+    || typeof value.productType !== "string"
+    || !Number.isSafeInteger(version)
+    || version < 1
+    || !geometryKind
+  ) {
+    throw new CommerceError(500, "CATALOG_CONFIGURATION_INVALID", "A published visualization template is invalid.", {
+      productId,
+      visualizationTemplateId: typeof value.id === "string" ? value.id : undefined,
+    });
+  }
+  const dimensionsMm = Object.fromEntries(
+    ["width", "height", "depth", "diameter", "gusset", "labelWidth", "labelHeight"].flatMap((key) => {
+      const numeric = dimensions[key];
+      return typeof numeric === "number" && Number.isFinite(numeric) && numeric > 0 && numeric <= 10_000_000
+        ? [[key, numeric] as const]
+        : [];
+    }),
+  );
+  if (!Object.keys(dimensionsMm).length || dimensions.unit !== "mm") {
+    throw new CommerceError(500, "CATALOG_CONFIGURATION_INVALID", "A published visualization has invalid dimensions.", {
+      productId,
+      visualizationTemplateId: value.id,
+    });
+  }
+  const sourceAsset = Array.isArray(value.assets)
+    ? value.assets.find((asset: any) =>
+      asset?.kind === "SOURCE_IMAGE"
+      && asset.storage === "DATABASE"
+      && asset.productId === productId
+      && typeof asset.id === "string"
+      && typeof asset.sha256 === "string"
+      && /^[a-f0-9]{64}$/i.test(asset.sha256)
+      && Number.isSafeInteger(asset.width)
+      && asset.width > 0
+      && Number.isSafeInteger(asset.height)
+      && asset.height > 0
+      && ["image/jpeg", "image/png", "image/webp"].includes(asset.mimeType))
+    : undefined;
+  if (!sourceAsset) return undefined;
+  const parsedSurfaceMappings = visualizationSurfaceMappingsSchema.safeParse(value.surfaceMappings);
+  if (!parsedSurfaceMappings.success) {
+    throw new CommerceError(500, "CATALOG_CONFIGURATION_INVALID", "A published visualization has an invalid surface mapping.", {
+      productId,
+      visualizationTemplateId: value.id,
+    });
+  }
+  const surfaceIds = new Set<string>();
+  const surfaces = parsedSurfaceMappings.data.map((rawSurface, index) => {
+    const surface = jsonObject(rawSurface);
+    const surfaceId = typeof surface.surfaceId === "string" ? surface.surfaceId.trim() : "";
+    const label = typeof surface.label === "string" ? surface.label.trim() : "";
+    const role = typeof surface.role === "string" && visualizationRoles.has(surface.role) ? surface.role : undefined;
+    const normalizedId = surfaceId.toLowerCase();
+    if (
+      !/^[a-z0-9][a-z0-9_-]{0,79}$/i.test(surfaceId)
+      || !label
+      || label.length > 120
+      || !role
+      || surfaceIds.has(normalizedId)
+    ) {
+      throw new CommerceError(500, "CATALOG_CONFIGURATION_INVALID", "A published visualization has an invalid surface mapping.", {
+        productId,
+        visualizationTemplateId: value.id,
+        surfaceIndex: index,
+      });
+    }
+    surfaceIds.add(normalizedId);
+    const bounds = jsonObject(surface.sourceBounds);
+    const measurements = [bounds.x, bounds.y, bounds.width, bounds.height];
+    const hasBounds = measurements.every((measurement): measurement is number =>
+      typeof measurement === "number" && Number.isFinite(measurement));
+    const validBounds = hasBounds
+      && (bounds.x as number) >= 0
+      && (bounds.y as number) >= 0
+      && (bounds.width as number) > 0
+      && (bounds.height as number) > 0
+      && (bounds.x as number) + (bounds.width as number) <= 1 + Number.EPSILON
+      && (bounds.y as number) + (bounds.height as number) <= 1 + Number.EPSILON;
+    if (Object.keys(bounds).length && !validBounds) {
+      throw new CommerceError(500, "CATALOG_CONFIGURATION_INVALID", "A published visualization has invalid panel bounds.", {
+        productId,
+        visualizationTemplateId: value.id,
+        surfaceIndex: index,
+      });
+    }
+    return {
+      surfaceId,
+      label,
+      role: role as "front" | "back" | "left" | "right" | "top" | "bottom" | "wrap" | "gusset" | "inside" | "other",
+      ...(validBounds ? {
+        sourceBounds: {
+          x: bounds.x as number,
+          y: bounds.y as number,
+          width: bounds.width as number,
+          height: bounds.height as number,
+        },
+      } : {}),
+      ...((validBounds || index === 0) ? {
+        textureUrl: publicVisualizationAssetUrl(sourceAsset.id, surfaceId),
+      } : {}),
+    };
+  });
+  const manufacturingMetadata = jsonObject(value.manufacturingMetadata);
+  return {
+    id: value.id,
+    version,
+    name: value.name,
+    productType: value.productType,
+    geometryKind: geometryKind as "box" | "cylinder" | "plane" | "bag" | "pouch" | "label" | "custom",
+    dimensionsMm,
+    surfaces,
+    sourceAsset: {
+      id: sourceAsset.id,
+      width: sourceAsset.width,
+      height: sourceAsset.height,
+      mimeType: sourceAsset.mimeType as "image/jpeg" | "image/png" | "image/webp",
+    },
+    manufacturingValidated: manufacturingMetadata.validated === true,
+  };
 }
 
 function mappedTemplatePreview(value: unknown): PersonalizationTemplate["preview"] | undefined {
@@ -145,6 +294,9 @@ function mapProduct(product: any): Product {
   const metadata = jsonObject(product.metadata);
   const dimensions = jsonObject(product.dimensions);
   const configurator = jsonObject(metadata.configurator);
+  const visualizationTemplate = Array.isArray(product.visualizationTemplates)
+    ? mappedVisualizationTemplate(product.visualizationTemplates[0], product.id)
+    : undefined;
   const linkedCategories = Array.isArray(product.categoryLinks)
     ? product.categoryLinks.flatMap((link: any) => {
       const category = link?.category;
@@ -205,11 +357,11 @@ function mapProduct(product: any): Product {
     description: product.description ?? product.shortDescription ?? "", shortDescription: product.shortDescription ?? "", material: product.material ?? "Not specified", dimensions: typeof dimensions.display === "string" ? dimensions.display : "Not specified", packSize: product.packSize,
     artwork: typeof metadata.artwork === "string" ? metadata.artwork : "labels", image: images[0]?.src ?? "", images, stockStatus: variantList[0]?.stockStatus ?? "made_to_order", featured: Boolean(metadata.featured), newArrival: Boolean(metadata.newArrival), tags: product.tags, features: stringList(metadata.features), careInstructions: typeof metadata.careInstructions === "string" ? metadata.careInstructions : undefined,
     productionDays: { min: product.productionDaysMin, max: product.productionDaysMax }, variants: variantList, customizationFields: fields, templateIds: templateLinks.map((link) => link.template.id), templateLinks, sizes: stringList(metadata.sizes), colors: stringList(metadata.colors), themes: stringList(metadata.themes), productType: typeof metadata.productType === "string" ? metadata.productType : undefined, badge: undefined,
-    configurator: (() => { const areas = Array.isArray(configurator.printAreas) ? configurator.printAreas.flatMap((area) => { if (!area || typeof area !== "object") return []; const record = area as Record<string, unknown>; if (typeof record.id !== "string" || typeof record.label !== "string") return []; return [{ id: record.id, label: record.label, widthMm: typeof record.widthMm === "number" ? record.widthMm : undefined, heightMm: typeof record.heightMm === "number" ? record.heightMm : undefined, safeInsetMm: typeof record.safeInsetMm === "number" ? record.safeInsetMm : undefined }]; }) : []; const mimeTypes = stringList(configurator.acceptedMimeTypes); return { allow2D: configurator.allow2D !== false, allow3D: configurator.allow3D === true, quantityMin: typeof configurator.quantityMin === "number" ? configurator.quantityMin : 1, quantityMax: typeof configurator.quantityMax === "number" ? configurator.quantityMax : 100, quantityTiers: mappedQuantityTiers(configurator.quantityTiers, product.id), setupCharge: mappedSetupCharge(configurator.setupCharge, product.id), printAreas: areas.length ? areas : [{ id: "primary", label: "Primary print area" }], artworkUpload: { enabled: Boolean(configurator.artworkUpload), acceptedMimeTypes: mimeTypes, maximumBytes: typeof configurator.maximumArtworkBytes === "number" ? configurator.maximumArtworkBytes : 2_000_000 }, artworkPolicy: mappedArtworkPolicy(configurator.artworkPolicy, product.id), previewTemplate: typeof configurator.previewTemplate === "string" ? configurator.previewTemplate : undefined, productModel: typeof configurator.productModel === "string" ? configurator.productModel : undefined, configurationVersion: typeof configurator.configurationVersion === "string" ? configurator.configurationVersion : undefined }; })(),
+    configurator: (() => { const areas = Array.isArray(configurator.printAreas) ? configurator.printAreas.flatMap((area) => { if (!area || typeof area !== "object") return []; const record = area as Record<string, unknown>; if (typeof record.id !== "string" || typeof record.label !== "string") return []; return [{ id: record.id, label: record.label, widthMm: typeof record.widthMm === "number" ? record.widthMm : undefined, heightMm: typeof record.heightMm === "number" ? record.heightMm : undefined, safeInsetMm: typeof record.safeInsetMm === "number" ? record.safeInsetMm : undefined }]; }) : []; const mimeTypes = stringList(configurator.acceptedMimeTypes); return { allow2D: configurator.allow2D !== false, allow3D: configurator.allow3D === true, quantityMin: typeof configurator.quantityMin === "number" ? configurator.quantityMin : 1, quantityMax: typeof configurator.quantityMax === "number" ? configurator.quantityMax : 100, quantityTiers: mappedQuantityTiers(configurator.quantityTiers, product.id), setupCharge: mappedSetupCharge(configurator.setupCharge, product.id), printAreas: areas.length ? areas : [{ id: "primary", label: "Primary print area" }], artworkUpload: { enabled: Boolean(configurator.artworkUpload), acceptedMimeTypes: mimeTypes, maximumBytes: typeof configurator.maximumArtworkBytes === "number" ? configurator.maximumArtworkBytes : 2_000_000 }, artworkPolicy: mappedArtworkPolicy(configurator.artworkPolicy, product.id), previewTemplate: typeof configurator.previewTemplate === "string" ? configurator.previewTemplate : undefined, productModel: typeof configurator.productModel === "string" ? configurator.productModel : undefined, configurationVersion: typeof configurator.configurationVersion === "string" ? configurator.configurationVersion : undefined, ...(visualizationTemplate ? { visualizationTemplate } : {}) }; })(),
   };
 }
 
-const include = { category: { include: { parent: { select: { id: true, isActive: true } } } }, categoryLinks: { include: { category: { include: { parent: { select: { id: true, isActive: true } } } } } }, images: { orderBy: { sortOrder: "asc" as const } }, variants: { include: { inventory: true }, orderBy: { sortOrder: "asc" as const } }, personalizationFields: { orderBy: { sortOrder: "asc" as const } }, templateLinks: { include: { template: true }, orderBy: [{ isDefault: "desc" as const }, { sortOrder: "asc" as const }] } };
+const include = { category: { include: { parent: { select: { id: true, isActive: true } } } }, categoryLinks: { include: { category: { include: { parent: { select: { id: true, isActive: true } } } } } }, images: { orderBy: { sortOrder: "asc" as const } }, variants: { include: { inventory: true }, orderBy: { sortOrder: "asc" as const } }, personalizationFields: { orderBy: { sortOrder: "asc" as const } }, templateLinks: { include: { template: true }, orderBy: [{ isDefault: "desc" as const }, { sortOrder: "asc" as const }] }, visualizationTemplates: { where: { status: "PUBLISHED" as const, publishedAt: { not: null }, archivedAt: null }, orderBy: { publishedAt: "desc" as const }, take: 1, select: { id: true, version: true, name: true, productType: true, status: true, geometry: true, dimensions: true, surfaceMappings: true, manufacturingMetadata: true, publishedAt: true, archivedAt: true, assets: { where: { kind: "SOURCE_IMAGE" as const, storage: "DATABASE" as const, sha256: { not: null }, mimeType: { in: ["image/jpeg", "image/png", "image/webp"] } }, take: 1, select: { id: true, productId: true, kind: true, storage: true, mimeType: true, width: true, height: true, sha256: true } } } } };
 const storefrontCategoryWhere = { isActive: true, OR: [{ parentId: null }, { parent: { isActive: true } }] };
 
 export async function getStorefrontCatalog() {

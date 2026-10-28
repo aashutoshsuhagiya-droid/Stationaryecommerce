@@ -8,6 +8,7 @@ import {
   sampleOrder,
 } from "./data";
 import { buildProductConfiguration } from "./product-configuration";
+import { createOrderVisualizationSnapshot } from "./order-visualization-snapshot";
 import { priceCatalogItem } from "./pricing-service";
 import type { Order, OrderItemSnapshot, PersonalizationValues } from "./types";
 import type { CreateOrderInput, OrderItemInput } from "./validation";
@@ -112,12 +113,19 @@ function createOrderCustomization(
     displayUnit: _untrustedDisplayUnit,
     ...stable
   } = submitted;
+  const visualization = createOrderVisualizationSnapshot(
+    product,
+    configuration,
+    preset,
+    priced.productSnapshot.material,
+  );
 
   return {
     ...stable,
     dimensionPresetId: preset.id,
     dimensionLabel: preset.label,
     displayUnit,
+    ...(visualization ? { visualization } : {}),
     presentation: {
       name,
       ...(detail ? { detail } : {}),

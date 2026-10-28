@@ -20,7 +20,7 @@ let productionClient: PrismaClient | undefined;
 export function getPrisma() {
   if (globalThis.__naamlyPrisma) return globalThis.__naamlyPrisma;
   if (productionClient) return productionClient;
-  const connectionString = process.env.DATABASE_URL?.trim();
+  const connectionString = (process.env.DATABASE_URL_POOLED || process.env.DATABASE_URL)?.trim();
   if (!connectionString) throw new DatabaseConfigurationError();
 
   const prisma = new PrismaClient({

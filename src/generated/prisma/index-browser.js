@@ -277,6 +277,75 @@ exports.Prisma.ArtworkAssetScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.VisualizationTemplateScalarFieldEnum = {
+  id: 'id',
+  familyKey: 'familyKey',
+  version: 'version',
+  productId: 'productId',
+  sourceJobId: 'sourceJobId',
+  createdById: 'createdById',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  productType: 'productType',
+  status: 'status',
+  geometry: 'geometry',
+  dimensions: 'dimensions',
+  surfaceMappings: 'surfaceMappings',
+  materialSettings: 'materialSettings',
+  previewCapabilities: 'previewCapabilities',
+  manufacturingMetadata: 'manufacturingMetadata',
+  publishedAt: 'publishedAt',
+  archivedAt: 'archivedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VisualizationProcessingJobScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  sourceAssetId: 'sourceAssetId',
+  templateId: 'templateId',
+  requestedById: 'requestedById',
+  status: 'status',
+  analysisMode: 'analysisMode',
+  attempt: 'attempt',
+  maxAttempts: 'maxAttempts',
+  providerName: 'providerName',
+  providerRequestId: 'providerRequestId',
+  analysisResult: 'analysisResult',
+  confirmation: 'confirmation',
+  errorCode: 'errorCode',
+  errorMessage: 'errorMessage',
+  nextAttemptAt: 'nextAttemptAt',
+  lastAttemptAt: 'lastAttemptAt',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VisualizationAssetScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  jobId: 'jobId',
+  templateId: 'templateId',
+  ownerUserId: 'ownerUserId',
+  kind: 'kind',
+  storage: 'storage',
+  originalName: 'originalName',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  width: 'width',
+  height: 'height',
+  sha256: 'sha256',
+  content: 'content',
+  privateRef: 'privateRef',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProductVariantScalarFieldEnum = {
   id: 'id',
   productId: 'productId',
@@ -944,6 +1013,41 @@ exports.ArtworkAssetStatus = exports.$Enums.ArtworkAssetStatus = {
   REJECTED: 'REJECTED'
 };
 
+exports.VisualizationTemplateStatus = exports.$Enums.VisualizationTemplateStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+exports.VisualizationJobStatus = exports.$Enums.VisualizationJobStatus = {
+  QUEUED: 'QUEUED',
+  PROCESSING: 'PROCESSING',
+  NEEDS_CONFIRMATION: 'NEEDS_CONFIRMATION',
+  SUCCEEDED: 'SUCCEEDED',
+  FAILED: 'FAILED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.VisualizationAnalysisMode = exports.$Enums.VisualizationAnalysisMode = {
+  MANUAL: 'MANUAL',
+  EXTERNAL: 'EXTERNAL'
+};
+
+exports.VisualizationAssetKind = exports.$Enums.VisualizationAssetKind = {
+  SOURCE_IMAGE: 'SOURCE_IMAGE',
+  PROCESSED_IMAGE: 'PROCESSED_IMAGE',
+  PREVIEW_IMAGE: 'PREVIEW_IMAGE',
+  TEXTURE: 'TEXTURE',
+  MODEL_GLTF: 'MODEL_GLTF',
+  MODEL_GLB: 'MODEL_GLB',
+  OTHER_GENERATED: 'OTHER_GENERATED'
+};
+
+exports.VisualizationAssetStorage = exports.$Enums.VisualizationAssetStorage = {
+  DATABASE: 'DATABASE',
+  PRIVATE_REFERENCE: 'PRIVATE_REFERENCE'
+};
+
 exports.InventoryPolicy = exports.$Enums.InventoryPolicy = {
   DENY: 'DENY',
   CONTINUE: 'CONTINUE',
@@ -1170,6 +1274,9 @@ exports.Prisma.ModelName = {
   Product: 'Product',
   ProductCategory: 'ProductCategory',
   ArtworkAsset: 'ArtworkAsset',
+  VisualizationTemplate: 'VisualizationTemplate',
+  VisualizationProcessingJob: 'VisualizationProcessingJob',
+  VisualizationAsset: 'VisualizationAsset',
   ProductVariant: 'ProductVariant',
   ProductImage: 'ProductImage',
   ProductPersonalizationField: 'ProductPersonalizationField',
