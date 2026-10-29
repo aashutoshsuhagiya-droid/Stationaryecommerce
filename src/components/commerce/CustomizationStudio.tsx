@@ -543,6 +543,28 @@ export function CustomizationStudio({
     || structuredDescription?.bestFor?.length
     || structuredBulletLabels.length,
   );
+  const usesStandardPreview = previewMode !== "3d" && !(configuration.personalization.supported && previewMode === "2d");
+  const productImageGallery = productImages.length > 1 ? (
+    <div className={configuratorStyles.standardPreviewMedia}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={selectedProductImageUrl} alt={product.name} />
+      <div className={configuratorStyles.standardPreviewThumbnails} aria-label="Product images" role="group">
+        {productImages.map((image, index) => (
+          <button
+            aria-label={`Show product image ${index + 1}`}
+            aria-pressed={image.src === selectedProductImageUrl}
+            className={image.src === selectedProductImageUrl ? configuratorStyles.standardPreviewThumbnailActive : ""}
+            key={image.id || image.src}
+            onClick={() => setSelectedProductImage(image.src)}
+            type="button"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt={image.alt || `${product.name} ${index + 1}`} src={image.src} />
+          </button>
+        ))}
+      </div>
+    </div>
+  ) : null;
   const visiblePersonalizationFields = useMemo(
     () => visibleConfigurationFields(configuration.personalization.fields, fields),
     [configuration.personalization.fields, fields],
@@ -1286,27 +1308,7 @@ export function CustomizationStudio({
                 />
               ) : (
               <div className={configuratorStyles.standardPreview}>
-                {productImages.length > 1 ? (
-                  <div className={configuratorStyles.standardPreviewMedia}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={selectedProductImageUrl} alt={product.name} />
-                    <div className={configuratorStyles.standardPreviewThumbnails} aria-label="Product images" role="group">
-                      {productImages.map((image, index) => (
-                        <button
-                          aria-label={`Show product image ${index + 1}`}
-                          aria-pressed={image.src === selectedProductImageUrl}
-                          className={image.src === selectedProductImageUrl ? configuratorStyles.standardPreviewThumbnailActive : ""}
-                          key={image.id || image.src}
-                          onClick={() => setSelectedProductImage(image.src)}
-                          type="button"
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img alt={image.alt || `${product.name} ${index + 1}`} src={image.src} />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
+                {productImageGallery ?? (
                   <>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={product.image} alt={product.name} />
@@ -1315,6 +1317,7 @@ export function CustomizationStudio({
                 {purchasePanel}
               </div>
              )}
+             {productImageGallery && !usesStandardPreview && <section aria-label="Product images" className={configuratorStyles.catalogImageGallery}>{productImageGallery}</section>}
              {configuration.preview.template && <div className={configuratorStyles.capabilityNotice}><CircleAlert /><span><strong>Preview template: {configuration.preview.template}</strong>This reference is saved with the product configuration. Production artwork still requires review.</span></div>}
              {artworkUploadsEnabled ? (
               <div className={configuratorStyles.capabilityNotice}><ShieldCheck /><span><strong>Uploads are validated and stored privately.</strong>Only claimed asset references continue to checkout; local preview data is removed from the order payload.</span></div>

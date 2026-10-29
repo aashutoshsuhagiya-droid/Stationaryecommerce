@@ -105,33 +105,51 @@ export function QuickListProductWizard({
   const [fullDetailsSaving, setFullDetailsSaving] = useState(false);
   const [detailUploadingSlots, setDetailUploadingSlots] = useState<number[]>([]);
   const [publishedTemplates, setPublishedTemplates] = useState<PublishedVisualizationTemplate[]>([]);
-  const [lastExportHandle, setLastExportHandle] = useState("");
+
   const previewUrls = useRef(new Set<string>());
 
   useEffect(() => () => previewUrls.current.forEach((url) => URL.revokeObjectURL(url)), []);
   useEffect(() => {
     if (!skuEdited) setSku(autoSku(name));
   }, [name, skuEdited]);
+  const primaryCategories = useMemo(() => {
+    const industryCollections = categories.find((category) => category.slug === "industry-collections");
+    return categories.filter((category) => (
+      category.id !== industryCollections?.id && category.parentId !== industryCollections?.id
+    ));
+  }, [categories]);
+
   useEffect(() => {
     if (categoryId || !categories.length) return;
-    setCategoryId(categories[0].id);
-  }, [categories, categoryId]);
+    const availableCategories = starterMode === "packaging" || starterMode === "ranbazaar" ? primaryCategories : categories;
+    setCategoryId(availableCategories[0]?.id ?? categories[0].id);
+  }, [categories, categoryId, primaryCategories, starterMode]);
 
   const primarySurface = draft.printAreas[0];
+  const readinessDetails = step === 4 ? fullDetails : null;
   const readiness = checkProductPublishReadiness({
-    artworkUpload: draft.artworkUpload,
-    acceptedArtworkTypes: draft.acceptedArtworkTypes,
-    printAreas: draft.printAreas,
-    artworkPolicy: draft.artworkPolicy,
-    packagingRequiresVisualization: isEzpacPackagingProductType(productType),
-    hasPublishedVisualization: publishedTemplates.some((template) => fullDetails?.previewTemplate === `visualization:${template.id}`),
+    artworkUpload: readinessDetails?.artworkUpload ?? draft.artworkUpload,
+    acceptedArtworkTypes: readinessDetails?.acceptedArtworkTypes ?? draft.acceptedArtworkTypes,
+    printAreas: readinessDetails?.printAreas ?? draft.printAreas,
+    artworkPolicy: readinessDetails?.artworkPolicy ?? draft.artworkPolicy,
+    packagingRequiresVisualization: isEzpacPackagingProductType(readinessDetails?.productType ?? productType),
+    hasPublishedVisualization: publishedTemplates.some((template) => readinessDetails?.previewTemplate === `visualization:${template.id}`),
   });
   const essentialsReady = Boolean(name.trim() && price.trim() && Number(price) >= 0 && categoryId && sku.trim());
 
   function selectDraft(nextDraft: RanBazaarStarterDraft, mode: Exclude<typeof starterMode, null>, suggestedSlug?: string) {
+    const packagingProduct = mode === "packaging" ? getEzpacPackagingProductType(nextDraft.id) : undefined;
     setDraft(nextDraft); setStarterMode(mode); setStep(2); setError("");
-    const matchingCategory = suggestedSlug ? categories.find((category) => category.slug === suggestedSlug) : undefined;
-    setCategoryId(matchingCategory?.id ?? categories[0]?.id ?? "");
+    setProductType(packagingProduct?.id ?? "");
+    if (packagingProduct) {
+      setName(packagingProduct.name);
+      setSkuEdited(false);
+      setSku(autoSku(packagingProduct.name));
+    }
+    const categorySlug = suggestedSlug ?? packagingProduct?.primarySubcategoryId;
+    const selectableCategories = mode === "blank" ? categories : primaryCategories;
+    const matchingCategory = categorySlug ? selectableCategories.find((category) => category.slug === categorySlug) : undefined;
+    setCategoryId(matchingCategory?.id ?? selectableCategories[0]?.id ?? "");
   }
 
   function choosePrimary(file: File | undefined) {
@@ -170,7 +188,7 @@ export function QuickListProductWizard({
   function applyEzpacExport(handle: string) {
     const mapping = EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.shopifyHandle === handle);
     if (!mapping) return;
-    setLastExportHandle(handle);
+
     const categoryMapping = ezpacMappingCategory(mapping.presetId);
     const primary = categoryMapping?.primarySubcategoryId ? categories.find((item) => item.slug === categoryMapping.primarySubcategoryId) : undefined;
     const collectionIds = (categoryMapping?.collectionIds ?? []).flatMap((collectionId) => {
@@ -179,27 +197,60 @@ export function QuickListProductWizard({
     });
     const structuredDescription = { ...(mapping.prefills.intro ? { intro: mapping.prefills.intro } : {}), ...(mapping.prefills.bestFor?.length ? { bestFor: [...mapping.prefills.bestFor] } : {}), ...(mapping.prefills.featureBullets?.length ? { featureBullets: [...mapping.prefills.featureBullets] } : {}) };
     const imageUrls = mapping.prefills.imageUrls ?? [];
-    setFullDetails((current) => current ? { ...current, name: mapping.shopifyTitle, sku: autoSku(mapping.shopifyTitle), price: mapping.prefills.priceRupees, productType: mapping.presetId ?? current.productType, categoryId: primary?.id ?? current.categoryId, categoryIds: [...new Set([primary?.id, ...collectionIds].filter((id): id is string => Boolean(id)))], material: mapping.prefills.materialHint ?? current.material, structuredDescription, description: formatStructuredDescription(structuredDescription), imageUrl: imageUrls[0] ?? current.imageUrl, extraImages: imageUrls.slice(1, 6).map((url) => ({ url })) } : current);
+    setFullDetails((current) => current ? { ...current, name: mapping.shopifyTitle, sku: autoSku(mapping.shopifyTitle), price: mapping.prefills.priceRupees, productType: mapping.presetId ?? current.productType, categoryId: primary?.id ?? "", categoryIds: [...new Set([primary?.id, ...collectionIds].filter((id): id is string => Boolean(id)))], material: mapping.prefills.materialHint ?? current.material, structuredDescription, description: formatStructuredDescription(structuredDescription), imageUrl: imageUrls[0] ?? current.imageUrl, extraImages: imageUrls.slice(1, 6).map((url) => ({ url })) } : current);
   }
 
-  function importEzpacUrls() {
-    const mapping = EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.shopifyHandle === lastExportHandle);
+  function importEzpacUrls(handle: string) {
+    const mapping = EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.shopifyHandle === handle);
     if (!mapping) return;
     const imageUrls = mapping.prefills.imageUrls ?? [];
     setFullDetails((current) => current ? { ...current, imageUrl: imageUrls[0] ?? current.imageUrl, extraImages: imageUrls.slice(1, 6).map((url) => ({ url })) } : current);
   }
 
-  function prefillRanBazaarDetails() {
-    if (!savedProduct) return;
-    setFullDetails(makeFullDetails(savedProduct.id));
+  function prefillRanBazaarDetails(starterId: string) {
+    const starter = createRanBazaarStarterDraft(starterId);
+    if (!starter) return;
+    setFullDetails((current) => current ? {
+      ...current,
+      customizable: starter.configurationFields.length > 0,
+      configurationFields: starter.configurationFields.map((field, index) => ({
+        ...field,
+        id: `${field.key || "field"}-${index + 1}`,
+        priceDelta: 0,
+        minValue: null,
+        maxValue: null,
+        step: null,
+        unit: "",
+        visibleWhen: null,
+      })),
+      printAreas: starter.printAreas,
+      artworkUpload: starter.artworkUpload,
+      acceptedArtworkTypes: starter.acceptedArtworkTypes,
+      artworkPolicy: starter.artworkPolicy,
+    } : current);
   }
 
+  function normalizeFullDetails(product: FullDetailsProductBase): FullDetailsProductBase {
+    return {
+      ...product,
+      categoryIds: product.categoryIds?.length ? product.categoryIds : [product.categoryId].filter(Boolean),
+      quantityTiers: (product.quantityTiers ?? []).map((tier, index) => ({ ...tier, id: tier.id || `tier-${index + 1}` })),
+      configurationFields: (product.configurationFields ?? []).map((field, index) => ({ ...field, id: field.id || `${field.key || "field"}-${index + 1}` })),
+    };
+  }
 
   function continueFullDetails() {
     if (!savedProduct) return;
     setFullDetails((current) => current ? { ...current, id: savedProduct.id } : makeFullDetails(savedProduct.id));
     setStep(4);
-    void fetch(`/api/admin/catalog?productId=${encodeURIComponent(savedProduct.id)}`).then((response) => response.json()).then((data: { data?: { product?: { publishedVisualizationTemplates?: PublishedVisualizationTemplate[] } } }) => setPublishedTemplates(data.data?.product?.publishedVisualizationTemplates ?? [])).catch(() => setPublishedTemplates([]));
+    void fetch(`/api/admin/catalog?productId=${encodeURIComponent(savedProduct.id)}`)
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error("Could not load the saved product.")))
+      .then((data: { data?: { product?: FullDetailsProductBase & { publishedVisualizationTemplates?: PublishedVisualizationTemplate[] } } }) => {
+        const product = data.data?.product;
+        if (product) setFullDetails(normalizeFullDetails(product));
+        setPublishedTemplates(product?.publishedVisualizationTemplates ?? []);
+      })
+      .catch(() => setPublishedTemplates([]));
   }
 
   async function uploadFullDetailsSlot(slot: number, file: File) {
@@ -348,19 +399,16 @@ export function QuickListProductWizard({
               <fieldset className={styles.quickListPublishChoice}><legend>Save choice</legend><label><input checked={publishNow} name="quick-publish" onChange={() => setPublishNow(true)} type="radio" /> Publish now</label><label><input checked={!publishNow} name="quick-publish" onChange={() => setPublishNow(false)} type="radio" /> Save as draft</label></fieldset>
               <div className={styles.quickListSequence} aria-live="polite">{[["1", "saving draft", saveStatus], ["2", "uploading images", uploadStatus], ["3", publishNow ? "attaching and publishing" : "attaching", attachStatus]].map(([number, label, status]) => <span className={styles[`quickListSequence${String(status)[0].toUpperCase()}${String(status).slice(1)}` as "quickListSequenceWaiting"]} key={String(number)}>{number}) {label} {status === "done" ? "✓" : status === "working" ? "…" : status === "failed" ? "×" : ""}</span>)}</div>
               {error && <p className={styles.formError} role="alert">{error}</p>}
-              {success ? <div className={styles.quickListSuccess}><strong>{publishNow ? "Product published" : "Draft saved"}</strong><p><a href={`/products/${savedProduct.slug}`} target="_blank">/products/{savedProduct.slug}</a></p><button className={styles.buttonPrimary} onClick={() => void onSaved(savedProduct.id)} type="button">Open 3D visualization studio</button></div> : <button className={styles.buttonPrimary} disabled={saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" || (publishNow && !readiness.canPublish)} onClick={() => void save()} type="button">{saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" ? "Saving…" : (saveStatus === "failed" || uploadStatus === "failed" || attachStatus === "failed") ? "Retry failed step" : publishNow ? "Save and publish" : "Save draft"}</button>}
+              {success ? <div className={styles.quickListSuccess}><strong>{publishNow ? "Product published" : "Draft saved"}</strong><p><a href={`/products/${savedProduct.slug}`} target="_blank">/products/{savedProduct.slug}</a></p><button className={styles.buttonPrimary} onClick={() => void onSaved(savedProduct.id)} type="button">Open 3D visualization studio</button>{supportsFullDetails && <button className={styles.buttonSecondary} onClick={continueFullDetails} type="button">Continue with full details</button>}</div> : <button className={styles.buttonPrimary} disabled={saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" || (publishNow && !readiness.canPublish)} onClick={() => void save()} type="button">{saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" ? "Saving…" : (saveStatus === "failed" || uploadStatus === "failed" || attachStatus === "failed") ? "Retry failed step" : publishNow ? "Save and publish" : "Save draft"}</button>}
             </div>
-              {success && supportsFullDetails && <button className={styles.buttonSecondary} onClick={continueFullDetails} type="button">Continue with full details</button>}
             <SurfaceCustomerPreview baseImageUrl={basePreview} heightMm={primarySurface?.heightMm} productPhotoUrl={primaryPreview} sampleText={sampleText} surfaceLabel={primarySurface?.label ?? "Primary surface"} widthMm={primarySurface?.widthMm} />
           </div>}
-        </div>
-        <div className={styles.drawerBody}>
           {step === 4 && fullDetails && <div className={styles.quickListContent}>
             <div className={styles.quickListForm}>
               <ProductFullDetailsSections
-                autoSku={autoSku} categories={categories} exportPresets={exportPresets}
-                onApplyExport={applyEzpacExport} onChange={(value) => setFullDetails(value)}
-                onImportExportUrls={importEzpacUrls} onPrefillRanBazaar={prefillRanBazaarDetails}
+                autoSku={autoSku} categories={categories} exportPresets={starterMode === "packaging" ? exportPresets : undefined}
+                onApplyExport={starterMode === "packaging" ? applyEzpacExport : undefined} onChange={(value) => setFullDetails(value)}
+                onImportExportUrls={starterMode === "packaging" ? importEzpacUrls : undefined} onPrefillRanBazaar={starterMode === "ranbazaar" ? prefillRanBazaarDetails : undefined}
                 onSkuEditedChange={setSkuEdited} onUploadSlot={uploadFullDetailsSlot}
                 skuEdited={skuEdited} uploadingSlots={detailUploadingSlots} value={fullDetails}
               />

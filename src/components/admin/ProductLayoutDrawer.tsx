@@ -15,6 +15,7 @@ import styles from "./admin.module.css";
 
 type LoadedProduct = FullDetailsProductBase & {
   status?: string;
+  baseImages?: Record<string, { url: string }>;
   publishedVisualizationTemplates?: PublishedVisualizationTemplate[];
 };
 
@@ -41,7 +42,7 @@ function normalizedProduct(input: LoadedProduct): LoadedProduct {
     allow3D: input.allow3D === true,
     quantityMin: input.quantityMin ?? 1,
     quantityMax: input.quantityMax ?? 100,
-    quantityTiers: input.quantityTiers ?? [],
+    quantityTiers: (input.quantityTiers ?? []).map((tier, index) => ({ ...tier, id: tier.id || `tier-${index + 1}` })),
     setupCharge: input.setupCharge ?? 0,
     productionDaysMin: input.productionDaysMin ?? 0,
     productionDaysMax: input.productionDaysMax ?? 0,
@@ -68,6 +69,7 @@ export function ProductLayoutDrawer({ productId, categories, onClose, onSaved }:
 
   const exportPresets = useMemo<FullDetailsExportPreset[]>(() => EZPAC_SHOPIFY_PRODUCT_MAPPING.map((item) => ({ value: item.shopifyHandle, label: item.shopifyTitle, unmapped: item.unmapped === true })), []);
   const selectedMapping = useMemo(() => EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.shopifyHandle === lastExport) ?? EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.presetId === product?.productType), [lastExport, product?.productType]);
+  const baseImageUrls = useMemo(() => Object.fromEntries(Object.entries(product?.baseImages ?? {}).map(([surfaceId, asset]) => [surfaceId, asset.url])), [product?.baseImages]);
 
   const load = useCallback(async () => {
     setLoading(true); setError("");
@@ -113,16 +115,16 @@ export function ProductLayoutDrawer({ productId, categories, onClose, onSaved }:
     } : current);
   }
 
-  function importUrls() {
-    if (!selectedMapping || !product) return;
-    const urls = selectedMapping.prefills.imageUrls ?? [];
+  function importUrls(handle: string) {
+    const mapping = EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.shopifyHandle === handle) ?? selectedMapping;
+    if (!mapping || !product) return;
+    setLastExport(mapping.shopifyHandle);
+    const urls = mapping.prefills.imageUrls ?? [];
     setProduct({ ...product, imageUrl: urls[0] ?? product.imageUrl, extraImages: urls.slice(1, 6).map((url) => ({ url })) });
   }
 
-  function prefillRanBazaar() {
+  function prefillRanBazaar(id: string) {
     if (!product) return;
-    const id = window.prompt("RanBazaar starter id (for example: notebook)")?.trim();
-    if (!id) return;
     const starter = createRanBazaarStarterDraft(id);
     if (!starter) { setError("That RanBazaar starter was not found."); return; }
     setProduct({
@@ -139,7 +141,6 @@ export function ProductLayoutDrawer({ productId, categories, onClose, onSaved }:
       artworkPolicy: starter.artworkPolicy,
     });
   }
-
   async function uploadSlot(slot: number, file: File) {
     if (!product) return;
     setUploadingSlots((current) => [...new Set([...current, slot])]); setError("");
@@ -189,7 +190,7 @@ export function ProductLayoutDrawer({ productId, categories, onClose, onSaved }:
         {!loading && product && <div className={styles.fullDetailsDrawerContent}>
           <div className={styles.fullDetailsDrawerTitle}><strong>{product.name}</strong>{product.status && <StatusBadge>{product.status}</StatusBadge>}</div>
           <ProductFullDetailsSections value={product} onChange={setProduct} categories={categories} exportPresets={exportPresets} includePresetSection={Boolean(selectedMapping)} onApplyExport={applyExport} onImportExportUrls={importUrls} onPrefillRanBazaar={prefillRanBazaar} onUploadSlot={uploadSlot} uploadingSlots={uploadingSlots} autoSku={autoSku} />
-          <ProductLayoutControls value={product} onChange={setProduct} publishedTemplates={product.publishedVisualizationTemplates ?? []} />
+          <ProductLayoutControls baseImageUrls={baseImageUrls} value={product} onChange={setProduct} publishedTemplates={product.publishedVisualizationTemplates ?? []} />
         </div>}
         {error && <p className={styles.formError} role="alert">{error}</p>}
         {status && <p className={styles.formSuccess} role="status">{status}</p>}

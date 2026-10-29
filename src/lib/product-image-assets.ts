@@ -193,10 +193,10 @@ function unavailable(): never {
   throw new ProductImageAssetError(404, "PRODUCT_IMAGE_NOT_FOUND", "Product image not found.");
 }
 
-function isCurrentPublicAsset(asset: any) {
+export function isCurrentPublicProductImageAsset(asset: any) {
   const publicUrl = productImageAssetUrl(asset.id);
   if (asset.kind === "gallery") return true;
-  if (asset.kind === "primary") return asset.product?.images?.[0]?.url === publicUrl;
+  if (asset.kind === "primary") return asset.product?.images?.some((image: { url?: unknown }) => image.url === publicUrl) === true;
   if (asset.kind !== "surface-base" || !asset.surfaceId) return false;
   const configurator = metadataRecord(metadataRecord(asset.product?.metadata).configurator);
   return hasConfiguredProductImageSurface(asset.product?.metadata, asset.surfaceId)
@@ -241,7 +241,7 @@ export async function getProductImageAssetForServing(input: {
           publishedAt: true,
           archivedAt: true,
           metadata: true,
-          images: { where: { sortOrder: 0 }, take: 1, select: { url: true } },
+          images: { select: { url: true } },
         },
       },
     },
@@ -258,7 +258,7 @@ export async function getProductImageAssetForServing(input: {
     || !asset.product.publishedAt
     || asset.product.publishedAt > now
     || asset.product.archivedAt
-    || !isCurrentPublicAsset(asset)
+    || !isCurrentPublicProductImageAsset(asset)
   ) unavailable();
 
   const etag = productImageAssetEtag(asset);

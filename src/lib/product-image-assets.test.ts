@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   isFirstPartyProductImageUrl,
+  isCurrentPublicProductImageAsset,
   isProductImageAssetKind,
   productImageAssetEtag,
   productImageAssetUrl,
@@ -24,4 +25,20 @@ test("product image kinds and entity tags are stable", () => {
   const input = { id: "asset_123", sha256: "a".repeat(64), updatedAt: "2026-10-28T00:00:00.000Z" };
   assert.equal(productImageAssetEtag(input), productImageAssetEtag(input));
   assert.notEqual(productImageAssetEtag(input), productImageAssetEtag({ ...input, id: "asset_456" }));
+});
+
+test("a primary asset remains public when it is retained as an ordered gallery image", () => {
+  const primaryAsset = {
+    id: "asset_primary",
+    kind: "primary",
+    product: {
+      images: [
+        { url: "/api/product-images/asset_gallery" },
+        { url: "/api/product-images/asset_primary" },
+      ],
+    },
+  };
+
+  assert.equal(isCurrentPublicProductImageAsset(primaryAsset), true);
+  assert.equal(isCurrentPublicProductImageAsset({ ...primaryAsset, product: { images: [] } }), false);
 });
