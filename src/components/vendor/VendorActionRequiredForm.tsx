@@ -4,9 +4,12 @@ import { AlertCircle, CheckCircle2, FileUp, LoaderCircle, Send } from "lucide-re
 import { useRouter } from "next/navigation";
 import { FormEvent, useRef, useState } from "react";
 
+import { selectedCategoryActiveParent } from "@/lib/vendor-category-options";
+import type { VendorCategoryGroup } from "@/lib/vendor-category-options";
+
+import { VendorCategorySelector } from "./VendorCategorySelector";
 import styles from "./vendor.module.css";
 
-type CategoryOption = { id: string; name: string; description: string };
 type DocumentType =
   | "BUSINESS_REGISTRATION"
   | "GST_CERTIFICATE"
@@ -65,11 +68,11 @@ function apiMessage(body: ApiBody, fallback: string) {
 
 export function VendorActionRequiredForm({
   application,
-  categories,
+  categoryGroups,
   requestMessage,
 }: {
   application: CorrectionValues;
-  categories: CategoryOption[];
+  categoryGroups: VendorCategoryGroup[];
   requestMessage: string;
 }) {
   const router = useRouter();
@@ -77,6 +80,7 @@ export function VendorActionRequiredForm({
   const uploadStatusRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedCategories, setSelectedCategories] = useState(application.serviceCategoryIds);
+  const [activeParent, setActiveParent] = useState(() => selectedCategoryActiveParent(categoryGroups, application.serviceCategoryIds));
   const [submitting, setSubmitting] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -294,14 +298,15 @@ export function VendorActionRequiredForm({
               </label>
               <div className={styles.actionFullField}>
                 <span className={styles.actionGroupLabel}>Service categories</span>
-                <div className={styles.actionCheckboxGrid}>
-                  {categories.map((category) => (
-                    <label key={category.id} title={category.description}>
-                      <input checked={selectedCategories.includes(category.id)} onChange={() => toggleCategory(category.id)} type="checkbox" />
-                      <span>{category.name}</span>
-                    </label>
-                  ))}
-                </div>
+                <VendorCategorySelector
+                  activeParent={activeParent}
+                  error={fieldErrors.serviceCategoryIds}
+                  groups={categoryGroups}
+                  maxSelectable={30}
+                  onActiveParent={setActiveParent}
+                  onToggle={toggleCategory}
+                  selected={selectedCategories}
+                />
                 {fieldErrors.serviceCategoryIds && <em className={styles.actionInlineError}>{fieldErrors.serviceCategoryIds}</em>}
               </div>
               <label className={styles.actionFullField}>

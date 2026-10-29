@@ -3,13 +3,15 @@ import { BadgeCheck, ClipboardCheck, MapPinned, Settings2 } from "lucide-react";
 
 import VendorRegistrationForm from "@/components/vendor/VendorRegistrationForm";
 import styles from "@/components/vendor/vendor-registration.module.css";
-import { getVendorCategoryOptions } from "@/lib/runtime-catalog";
+import { getVendorCategoryGroups } from "@/lib/runtime-catalog";
 import { getVendorRegistrationOptions } from "@/lib/vendor-registration-options";
 
 export const metadata: Metadata = {
   title: "Become a vendor",
   description: "Apply to join Naamly's printing and production partner network.",
 };
+
+export const dynamic = "force-dynamic";
 
 const applicationSteps = [
   {
@@ -30,7 +32,7 @@ const applicationSteps = [
 ] as const;
 
 export default async function VendorRegisterPage() {
-  const categoryOptions = await getVendorCategoryOptions();
+  const categoryGroups = await getVendorCategoryGroups();
   const registrationOptions = await getVendorRegistrationOptions();
 
   return (
@@ -74,7 +76,7 @@ export default async function VendorRegisterPage() {
           </div>
         </aside>
 
-        <VendorRegistrationForm categories={categoryOptions} equipmentOptions={registrationOptions.equipment} serviceOptions={registrationOptions.printingServices} />
+        <VendorRegistrationForm categoryGroups={categoryGroups} equipmentOptions={registrationOptions.equipment} serviceOptions={registrationOptions.printingServices} />
       </div>
     </div>
   );

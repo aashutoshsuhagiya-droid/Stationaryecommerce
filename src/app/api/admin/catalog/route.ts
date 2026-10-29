@@ -123,6 +123,9 @@ function serializeCatalogProduct(product: any) {
     artworkUpload: Boolean(configurator.artworkUpload),
     acceptedArtworkTypes: strings(configurator.acceptedMimeTypes),
     artworkPolicy: configurator.artworkPolicy ?? null,
+    visualizationJobStatus: Array.isArray(product.visualizationJobs) && typeof product.visualizationJobs[0]?.status === "string"
+      ? product.visualizationJobs[0].status
+      : "",
     templateLinks: Array.isArray(product.templateLinks) ? product.templateLinks.map((link: any) => ({ templateId: link.templateId, isDefault: link.isDefault === true, sortOrder: typeof link.sortOrder === "number" ? link.sortOrder : 0 })) : [],
     configurationFields: product.personalizationFields.map((field: any) => {
       const validation = objectRecord(field.validation);
@@ -437,7 +440,7 @@ export async function GET(request: Request) {
     const prisma = getPrisma();
     const productId = new URL(request.url).searchParams.get("productId");
     if (productId) {
-      const product = await prisma.product.findUnique({ where: { id: productId }, include: { categoryLinks: { select: { categoryId: true } }, images: { orderBy: { sortOrder: "asc" } }, imageAssets: { where: { kind: { in: ["primary", "surface-base"] } }, select: { id: true, kind: true, surfaceId: true, altText: true }, orderBy: { createdAt: "desc" } }, personalizationFields: { orderBy: { sortOrder: "asc" } }, templateLinks: { orderBy: [{ isDefault: "desc" }, { sortOrder: "asc" }] } } });
+      const product = await prisma.product.findUnique({ where: { id: productId }, include: { categoryLinks: { select: { categoryId: true } }, images: { orderBy: { sortOrder: "asc" } }, imageAssets: { where: { kind: { in: ["primary", "surface-base"] } }, select: { id: true, kind: true, surfaceId: true, altText: true }, orderBy: { createdAt: "desc" } }, personalizationFields: { orderBy: { sortOrder: "asc" } }, templateLinks: { orderBy: [{ isDefault: "desc" }, { sortOrder: "asc" }] }, visualizationJobs: { where: { status: { in: ["QUEUED", "PROCESSING", "NEEDS_CONFIRMATION"] } }, select: { status: true }, orderBy: { updatedAt: "desc" }, take: 1 } } });
       if (!product) return NextResponse.json({ error: { code: "PRODUCT_NOT_FOUND", message: "The requested product was not found." } }, { status: 404, headers: { "Cache-Control": "no-store" } });
       return NextResponse.json({ data: { product: serializeCatalogProduct(product) } }, { headers: { "Cache-Control": "no-store" } });
     }

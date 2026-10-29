@@ -8,6 +8,7 @@ import { productArtworkPolicySchema } from "./artwork-policy-schema";
 import { normalizeTemplateProduction } from "./template-production";
 import { visualizationSurfaceMappingsSchema } from "./visualization-studio-domain";
 import { publicVisualizationAssetUrl } from "./visualization-studio-service-policy";
+import { groupVendorCategories } from "./vendor-category-options";
 import type { Category, CustomizationField, PersonalizationTemplate, Product, ProductTemplateLink, ProductVariant, ProductVisualizationTemplate, StockStatus } from "./types";
 
 const jsonObject = (value: unknown): Record<string, unknown> => value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
@@ -465,5 +466,26 @@ export async function getVendorCategoryOptions() {
     return records.map((category) => ({ id: category.id, name: category.parent ? `${category.parent.name} · ${category.name}` : category.name, description: category.description ?? "" }));
   } catch {
     return demoCategories.slice().sort((left, right) => left.sortOrder - right.sortOrder).map(({ id, name, description }) => ({ id, name, description }));
+  }
+}
+
+export async function getVendorCategoryGroups() {
+  try {
+    const records = await getPrisma().category.findMany({
+      where: storefrontCategoryWhere,
+      select: { id: true, name: true, description: true, parentId: true, sortOrder: true },
+      orderBy: [{ parentId: "asc" }, { sortOrder: "asc" }],
+    });
+    return groupVendorCategories(records);
+  } catch {
+    return groupVendorCategories(
+      demoCategories.map(({ id, name, description, sortOrder }) => ({
+        id,
+        name,
+        description,
+        parentId: null,
+        sortOrder,
+      })),
+    );
   }
 }

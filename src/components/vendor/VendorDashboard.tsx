@@ -20,6 +20,7 @@ import {
 import Link from "next/link";
 
 import type { getVendorApplicationForUser } from "@/lib/vendor-onboarding";
+import type { VendorCategoryGroup } from "@/lib/vendor-category-options";
 
 import { VendorActionRequiredForm } from "./VendorActionRequiredForm";
 import { VendorLogoutButton } from "./VendorLogoutButton";
@@ -192,11 +193,11 @@ function readableDocumentStatus(status: VendorApplication["documents"][number]["
 
 export function VendorDashboard({
   application,
-  categories,
+  categoryGroups,
   email,
 }: {
   application: VendorApplication;
-  categories: Array<{ id: string; name: string; description: string }>;
+  categoryGroups: VendorCategoryGroup[];
   email: string;
 }) {
   const state = getDashboardState(application);
@@ -282,7 +283,7 @@ export function VendorDashboard({
                 businessRegistrationNumber: application.businessRegistrationNumber ?? "",
                 gstin: application.gstin ?? "",
               }}
-              categories={categories}
+              categoryGroups={categoryGroups}
               requestMessage={latestMessage}
             />
           )}

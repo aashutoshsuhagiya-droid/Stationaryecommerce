@@ -5,6 +5,9 @@
   --vendor-control-radius: var(--radius-control);
   --vendor-card-radius: var(--radius-card);
   --vendor-large-radius: var(--radius-large);
+  --registration-surface: var(--surface-main);
+  --registration-surface-quiet: var(--surface-subtle);
+  --registration-control-radius: var(--radius-control);
   display: flex;
   min-height: 100svh;
   overflow-x: clip;

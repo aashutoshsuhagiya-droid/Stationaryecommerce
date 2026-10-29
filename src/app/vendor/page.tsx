@@ -3,13 +3,15 @@ import { redirect } from "next/navigation";
 
 import { VendorDashboard } from "@/components/vendor/VendorDashboard";
 import { getPageActor } from "@/lib/auth-session";
-import { getVendorCategoryOptions } from "@/lib/runtime-catalog";
+import { getVendorCategoryGroups } from "@/lib/runtime-catalog";
 import { getVendorApplicationForUser } from "@/lib/vendor-onboarding";
 
 export const metadata: Metadata = {
   title: "Partner dashboard",
   description: "Track your Naamly printing partner application and operational approval status.",
 };
+
+export const dynamic = "force-dynamic";
 
 export default async function VendorPage() {
   const actor = await getPageActor();
@@ -28,7 +30,7 @@ export default async function VendorPage() {
     redirect("/");
   }
 
-  const categoryOptions = await getVendorCategoryOptions();
+  const categoryGroups = await getVendorCategoryGroups();
 
-  return <VendorDashboard application={application} categories={categoryOptions} email={actor.email} />;
+  return <VendorDashboard application={application} categoryGroups={categoryGroups} email={actor.email} />;
 }

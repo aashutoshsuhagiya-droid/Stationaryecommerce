@@ -97,6 +97,7 @@ type EditingProduct = {
   productionDaysMax: number;
   printAreas: Array<{ id: string; label: string; widthMm: number | null; heightMm: number | null; safeInsetMm: number | null }>;
   previewTemplate: string;
+  visualizationJobStatus?: "QUEUED" | "PROCESSING" | "NEEDS_CONFIRMATION" | "";
   productModel: string;
   artworkUpload: boolean;
   acceptedArtworkTypes: string[];
@@ -746,7 +747,7 @@ export function ProductsPanel() {
         uploadsEnabled: product.artworkUpload,
         allowedMimeTypes: loadedArtworkTypes,
       }));
-      setVisualizationOpen((current) => current || product.previewTemplate.startsWith("visualization:"));
+      setVisualizationOpen((current) => current || product.previewTemplate.startsWith("visualization:") || Boolean(product.visualizationJobStatus));
       setAdding(true);
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not load this product."); } finally { setSaving(false); }
   }
@@ -1187,7 +1188,7 @@ export function ProductsPanel() {
             {editingProduct && (
               <div className={styles.visualizationDrawerSlot}>
                 <details className={styles.visualizationDetails} onToggle={(event) => setVisualizationOpen(event.currentTarget.open)} open={visualizationOpen}>
-                  <summary><span>3D visualization studio</span><StatusBadge tone={editingProduct.previewTemplate.startsWith("visualization:") ? "success" : "muted"}>{editingProduct.previewTemplate.startsWith("visualization:") ? "3D published ✓" : "No 3D template yet"}</StatusBadge></summary>
+                  <summary><span>3D visualization studio</span><StatusBadge tone={editingProduct.previewTemplate.startsWith("visualization:") ? "success" : editingProduct.visualizationJobStatus ? "info" : "muted"}>{editingProduct.previewTemplate.startsWith("visualization:") ? "3D published ✓" : editingProduct.visualizationJobStatus === "NEEDS_CONFIRMATION" ? "Job: needs confirmation" : editingProduct.visualizationJobStatus ? "Job: processing" : "No 3D template yet"}</StatusBadge></summary>
                   <ProductVisualizationStudio
                     key={editingProduct.id}
                     hasPrimaryImage={editingProduct.hasUploadedPrimaryImage === true}

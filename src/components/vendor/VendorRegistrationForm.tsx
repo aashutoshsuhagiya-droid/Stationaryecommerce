@@ -18,14 +18,11 @@ import {
 import { FormEvent, useRef, useState } from "react";
 
 import { INDIA_CITIES, INDIA_STATES } from "@/lib/india-cities";
+import { selectedCategoryActiveParent } from "@/lib/vendor-category-options";
+import type { VendorCategoryGroup } from "@/lib/vendor-category-options";
 
+import { VendorCategorySelector } from "./VendorCategorySelector";
 import styles from "./vendor-registration.module.css";
-
-type CategoryOption = {
-  id: string;
-  name: string;
-  description: string;
-};
 
 type DocumentType =
   | "BUSINESS_REGISTRATION"
@@ -108,7 +105,7 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   return <span className={styles.fieldError} id={id}>{message}</span>;
 }
 
-export default function VendorRegistrationForm({ categories, serviceOptions, equipmentOptions }: { categories: CategoryOption[]; serviceOptions: string[]; equipmentOptions: string[] }) {
+export default function VendorRegistrationForm({ categoryGroups, serviceOptions, equipmentOptions }: { categoryGroups: VendorCategoryGroup[]; serviceOptions: string[]; equipmentOptions: string[] }) {
   const router = useRouter();
   const errorSummaryRef = useRef<HTMLDivElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
@@ -124,6 +121,7 @@ export default function VendorRegistrationForm({ categories, serviceOptions, equ
     verifiedMobile: "",
   });
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [activeParent, setActiveParent] = useState(() => selectedCategoryActiveParent(categoryGroups, selectedCategories));
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEquipment, setSelectedEquipment] = useState<string[]>([]);
   const [gstStatus, setGstStatus] = useState("");
@@ -617,18 +615,15 @@ export default function VendorRegistrationForm({ categories, serviceOptions, equ
         <fieldset className={styles.section} aria-describedby="category-help application-serviceCategoryIds-error">
           <legend><span>03</span><strong>Product categories</strong></legend>
           <p className={styles.sectionDescription} id="category-help">Select every Naamly category your workshop can produce. Choose at least one.</p>
-          <div className={styles.choiceGrid}>
-            {categories.map((category) => {
-              const selected = selectedCategories.includes(category.id);
-              return (
-                <label className={`${styles.choiceCard} ${selected ? styles.choiceCardSelected : ""}`} key={category.id}>
-                  <input type="checkbox" name="serviceCategoryIds" value={category.id} checked={selected} onChange={() => toggleValue(category.id, selectedCategories, setSelectedCategories, "application.serviceCategoryIds")} />
-                  <span className={styles.checkMark}><Check aria-hidden="true" /></span>
-                  <span><strong>{category.name}</strong><small>{category.description}</small></span>
-                </label>
-              );
-            })}
-          </div>
+          <VendorCategorySelector
+            activeParent={activeParent}
+            error={fieldError("application.serviceCategoryIds")}
+            groups={categoryGroups}
+            maxSelectable={30}
+            onActiveParent={setActiveParent}
+            onToggle={(categoryId) => toggleValue(categoryId, selectedCategories, setSelectedCategories, "application.serviceCategoryIds")}
+            selected={selectedCategories}
+          />
           <FieldError id="application-serviceCategoryIds-error" message={fieldError("application.serviceCategoryIds")} />
         </fieldset>
 
