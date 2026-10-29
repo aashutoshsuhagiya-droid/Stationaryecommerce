@@ -79,6 +79,8 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
   const [loadedQuery, setLoadedQuery] = useState("");
   const [loadingCatalog, setLoadingCatalog] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [catalogError, setCatalogError] = useState<string | null>(null);
+  const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
   const filterButtonRef = useRef<HTMLButtonElement>(null);
   const filterDrawerRef = useRef<HTMLElement>(null);
   const activeQueryRef = useRef("");
@@ -102,8 +104,10 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
     const controller = new AbortController();
     loadMoreAbortRef.current?.abort();
     setLoadingMore(false);
+    setLoadMoreError(null);
     const timeout = window.setTimeout(() => {
       setLoadingCatalog(true);
+      setCatalogError(null);
       fetchCatalogPage(catalogQuery, 1, controller.signal)
         .then((payload) => {
           if (activeQueryRef.current !== catalogQuery) return;
@@ -111,10 +115,15 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
           setCategories(payload.categories);
           setCatalogMeta(payload.meta);
           setLoadedQuery(catalogQuery);
+          setCatalogError(null);
           setVisible(8);
         })
         .catch((cause: unknown) => {
           if (cause instanceof DOMException && cause.name === "AbortError") return;
+          const message = cause instanceof Error ? cause.message : "Could not load the product catalogue.";
+          setCatalogError(message);
+          setCatalog([]);
+          setCatalogMeta({ total: 0, page: 1, limit: catalogPageSize, pageCount: 0 });
         })
         .finally(() => {
           if (activeQueryRef.current === catalogQuery) setLoadingCatalog(false);
@@ -191,6 +200,7 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
     const controller = new AbortController();
     loadMoreAbortRef.current = controller;
     setLoadingMore(true);
+    setLoadMoreError(null);
     try {
       const payload = await fetchCatalogPage(catalogQuery, catalogMeta.page + 1, controller.signal);
       if (activeQueryRef.current !== catalogQuery) return;
@@ -202,6 +212,8 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
       setVisible(Math.min(nextVisible, merged.length));
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === "AbortError") return;
+      const message = cause instanceof Error ? cause.message : "Failed to load additional products.";
+      setLoadMoreError(message);
     } finally {
       if (activeQueryRef.current === catalogQuery) setLoadingMore(false);
     }
@@ -237,7 +249,78 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
             <div className="active-filters">{category !== "all" && <button onClick={() => setCategory("all")}>{selectedCategory?.shortName} <X /></button>}{customOnly && <button onClick={() => setCustomOnly(false)}>Personalised <X /></button>}{inStockOnly && <button onClick={() => setInStockOnly(false)}>Available <X /></button>}</div>
             <label className="sort-control"><span>Sort by</span><select value={sort} onChange={(event) => setSort(event.target.value as SortOption)}><option value="recommended">Recommended</option><option value="newest">New arrivals</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select><ChevronDown /></label>
           </div>
-          {results.length > 0 ? <><div className="product-grid catalog-product-grid">{results.slice(0, visible).map((product, index) => <ScrollReveal key={product.id} delayMs={(index % 3) * 60}><ProductCard product={product} /></ScrollReveal>)}</div>{shownResults < totalResults && <div className="load-more"><p>Showing {shownResults} of {totalResults}</p><span><i style={{ width: `${Math.min(100, shownResults / totalResults * 100)}%` }} /></span><button className="button button-secondary" onClick={() => void loadMoreProducts()}>Load more products</button></div>}</> : <div className="empty-state catalog-empty-state"><Search size={35} /><div role="status" aria-live="polite" aria-atomic="true"><h2>No matches just yet</h2><p>Try a broader phrase or clear a filter. If you have something specific in mind, customer care can help.</p></div><div className="catalog-empty-actions"><button className="button button-primary" onClick={reset}>Clear filters</button><Link className="button button-secondary" href="/contact">Ask customer care</Link></div></div>}
+          {catalogError ? (
+            <div className="empty-state catalog-empty-state" role="alert">
+              <SlidersHorizontal size={35} />
+              <div>
+                <h2>Could not load products</h2>
+                <p>{catalogError}</p>
+              </div>
+              <div className="catalog-empty-actions">
+                <button
+                  className="button button-primary"
+                  onClick={() => {
+                    setCatalogError(null);
+                    setLoadingCatalog(true);
+                    const controller = new AbortController();
+                    fetchCatalogPage(catalogQuery, 1, controller.signal)
+                      .then((payload) => {
+                        setCatalog(payload.data);
+                        setCategories(payload.categories);
+                        setCatalogMeta(payload.meta);
+                        setLoadedQuery(catalogQuery);
+                        setVisible(8);
+                      })
+                      .catch((cause) => {
+                        if (cause instanceof DOMException && cause.name === "AbortError") return;
+                        setCatalogError(cause instanceof Error ? cause.message : "Could not load the product catalogue.");
+                      })
+                      .finally(() => setLoadingCatalog(false));
+                  }}
+                  type="button"
+                >
+                  Try again
+                </button>
+                <Link className="button button-secondary" href="/contact">Ask customer care</Link>
+              </div>
+            </div>
+          ) : results.length > 0 ? (
+            <>
+              <div className="product-grid catalog-product-grid">
+                {results.slice(0, visible).map((product, index) => (
+                  <ScrollReveal key={product.id} delayMs={(index % 3) * 60}>
+                    <ProductCard product={product} />
+                  </ScrollReveal>
+                ))}
+              </div>
+              {shownResults < totalResults && (
+                <div className="load-more">
+                  <p>Showing {shownResults} of {totalResults}</p>
+                  <span><i style={{ width: `${Math.min(100, shownResults / totalResults * 100)}%` }} /></span>
+                  <button className="button button-secondary" disabled={loadingMore} onClick={() => void loadMoreProducts()} type="button">
+                    {loadingMore ? "Loading…" : "Load more products"}
+                  </button>
+                  {loadMoreError && (
+                    <p style={{ color: "var(--danger, #c42b3f)", fontSize: "13px", marginTop: "8px" }} role="alert">
+                      {loadMoreError} — <button style={{ textDecoration: "underline", background: "none", border: "none", cursor: "pointer", color: "inherit", font: "inherit" }} onClick={() => void loadMoreProducts()} type="button">Retry</button>
+                    </p>
+                  )}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="empty-state catalog-empty-state">
+              <Search size={35} />
+              <div role="status" aria-live="polite" aria-atomic="true">
+                <h2>No matches just yet</h2>
+                <p>Try a broader phrase or clear a filter. If you have something specific in mind, customer care can help.</p>
+              </div>
+              <div className="catalog-empty-actions">
+                <button className="button button-primary" onClick={reset}>Clear filters</button>
+                <Link className="button button-secondary" href="/contact">Ask customer care</Link>
+              </div>
+            </div>
+          )}
         </div>
       </section>
       {filtersOpen && <div className="filter-drawer-backdrop" onMouseDown={() => setFiltersOpen(false)}><aside ref={filterDrawerRef} className="filter-drawer" role="dialog" aria-modal="true" aria-label="Filter products" onMouseDown={(event) => event.stopPropagation()}><div className="filter-drawer-title"><strong>Filter products</strong><button onClick={() => setFiltersOpen(false)} aria-label="Close filters"><X /></button></div>{filters}<button className="button button-primary button-block" onClick={() => setFiltersOpen(false)}>Show {totalResults} products</button></aside></div>}

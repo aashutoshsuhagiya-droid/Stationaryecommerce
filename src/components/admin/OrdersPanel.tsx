@@ -14,7 +14,7 @@ import {
   SlidersHorizontal,
   X,
 } from "lucide-react";
-import { orders, inr, type AdminOrder } from "./admin-data";
+import { inr, type AdminOrder } from "./admin-data";
 import { Card, PageHeader, StatusBadge, statusTone } from "./AdminUI";
 import styles from "./admin.module.css";
 
@@ -204,26 +204,38 @@ export function OrdersPanel() {
   const [status, setStatus] = useState("All statuses");
   const [selected, setSelected] = useState<OrderRow | null>(null);
   const [liveOrders, setLiveOrders] = useState<OrderRow[] | null>(null);
+  const [ordersLoading, setOrdersLoading] = useState(true);
+  const [ordersLoadError, setOrdersLoadError] = useState("");
   const [reviewingItemId, setReviewingItemId] = useState<string | null>(null);
   const [reviewMessage, setReviewMessage] = useState<{ text: string; error: boolean } | null>(null);
 
   const refreshOrders = useCallback(async (signal?: AbortSignal) => {
-    const response = await fetch("/api/admin/orders", { cache: "no-store", signal });
-    const payload = await response.json() as { data?: { orders?: ApiOrder[] }; error?: { message?: string } };
-    if (!response.ok || !payload.data?.orders) {
-      throw new Error(payload.error?.message ?? "Orders could not be refreshed.");
+    setOrdersLoading(true);
+    setOrdersLoadError("");
+    try {
+      const response = await fetch("/api/admin/orders", { cache: "no-store", signal });
+      const payload = await response.json() as { data?: { orders?: ApiOrder[] }; error?: { message?: string } };
+      if (!response.ok || !payload.data?.orders) {
+        throw new Error(payload.error?.message ?? "Orders could not be refreshed.");
+      }
+      const mapped = payload.data.orders.map(mapApiOrder);
+      setLiveOrders(mapped);
+      setSelected((current) => current?.databaseId
+        ? mapped.find((order) => order.databaseId === current.databaseId) ?? current
+        : current);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      const message = error instanceof Error ? error.message : "Orders could not be refreshed.";
+      setOrdersLoadError(message);
+      setLiveOrders([]);
+    } finally {
+      setOrdersLoading(false);
     }
-    const mapped = payload.data.orders.map(mapApiOrder);
-    setLiveOrders(mapped);
-    setSelected((current) => current?.databaseId
-      ? mapped.find((order) => order.databaseId === current.databaseId) ?? current
-      : current);
   }, []);
 
   useEffect(() => {
     const controller = new AbortController();
-    refreshOrders(controller.signal)
-      .catch(() => undefined);
+    refreshOrders(controller.signal);
     return () => controller.abort();
   }, [refreshOrders]);
 
@@ -249,12 +261,23 @@ export function OrdersPanel() {
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return (liveOrders ?? orders).filter((order) => {
+    const source = liveOrders ?? [];
+    return source.filter((order) => {
       const matchesQuery = !needle || [order.id, order.customer, order.product, order.detail].some((value) => value.toLowerCase().includes(needle));
       const matchesStatus = status === "All statuses" || order.status === status;
       return matchesQuery && matchesStatus;
     });
   }, [liveOrders, query, status]);
+
+  const summary = useMemo(() => {
+    const current = liveOrders ?? [];
+    return {
+      open: current.filter((o) => o.status !== "Shipped").length,
+      needReview: current.filter((o) => o.status === "Artwork review").length,
+      dueToday: current.filter((o) => o.due.toLowerCase().includes("today")).length,
+      readyToDispatch: current.filter((o) => o.status === "Ready to ship").length,
+    };
+  }, [liveOrders]);
 
   return (
     <>
@@ -270,12 +293,26 @@ export function OrdersPanel() {
         title="Orders & fulfillment"
       />
 
+      {ordersLoadError && (
+        <div className={styles.catalogLoadError} role="alert" style={{ marginBottom: "1rem" }}>
+          <span><strong>Live orders unavailable.</strong> {ordersLoadError}</span>
+          <button
+            className={styles.buttonSecondary}
+            disabled={ordersLoading}
+            onClick={() => void refreshOrders()}
+            type="button"
+          >
+            {ordersLoading ? "Retrying…" : "Retry"}
+          </button>
+        </div>
+      )}
+
       <Card>
         <div className={styles.catalogSummary}>
-          <span className={styles.summaryItem}><strong>28</strong> open orders</span>
-          <span className={styles.summaryItem}><strong>6</strong> need review</span>
-          <span className={styles.summaryItem}><strong>2</strong> due today</span>
-          <span className={styles.summaryItem}><strong>9</strong> ready to dispatch</span>
+          <span className={styles.summaryItem}><strong>{summary.open}</strong> open orders</span>
+          <span className={styles.summaryItem}><strong>{summary.needReview}</strong> need review</span>
+          <span className={styles.summaryItem}><strong>{summary.dueToday}</strong> due today</span>
+          <span className={styles.summaryItem}><strong>{summary.readyToDispatch}</strong> ready to dispatch</span>
         </div>
         <div className={styles.toolbar}>
           <label className={styles.localSearch}>
@@ -293,7 +330,7 @@ export function OrdersPanel() {
             <button aria-label="Table view" className={`${styles.segmentButton} ${view === "table" ? styles.segmentActive : ""}`} onClick={() => setView("table")} type="button"><List size={14} /></button>
             <button aria-label="Board view" className={`${styles.segmentButton} ${view === "board" ? styles.segmentActive : ""}`} onClick={() => setView("board")} type="button"><KanbanSquare size={14} /></button>
           </div>
-          <span className={styles.resultCount}>{filtered.length} orders shown</span>
+          <span className={styles.resultCount}>{ordersLoading && liveOrders === null ? "Loading orders…" : `${filtered.length} orders shown`}</span>
         </div>
 
         {view === "table" ? (
@@ -301,22 +338,30 @@ export function OrdersPanel() {
             <table className={styles.table}>
               <thead><tr><th>Order</th><th>Customer</th><th>Product & personalization</th><th>Payment</th><th>Fulfillment</th><th>Due</th><th /></tr></thead>
               <tbody>
-                {filtered.map((order) => (
-                  <tr className={styles.clickRow} key={order.id} onClick={() => { setSelected(order); setReviewMessage(null); }}>
-                    <td><span className={styles.orderId}>{order.id}</span><span className={styles.cellStack}><span>{order.placed}</span></span></td>
-                    <td>
-                      <div className={styles.customerCell}>
-                        <span className={styles.avatar} data-color={order.color}>{order.initials}</span>
-                        <span className={styles.cellStack}><strong>{order.customer}</strong><span>{order.email}</span></span>
-                      </div>
+                {filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} style={{ textAlign: "center", padding: "32px 16px", color: "var(--muted)" }}>
+                      {ordersLoading ? "Loading orders…" : ordersLoadError ? "Orders could not be loaded." : "No orders found."}
                     </td>
-                    <td><span className={styles.cellStack}><strong>{order.product}</strong><span>{order.detail}</span></span></td>
-                    <td><span className={styles.cellStack}><strong>{inr(order.total)}</strong><span><StatusBadge tone={statusTone(order.payment)}>{order.payment}</StatusBadge></span></span></td>
-                    <td><StatusBadge tone={statusTone(order.status)}>{order.status}</StatusBadge></td>
-                    <td>{order.due}</td>
-                    <td><button aria-label={`Open ${order.id}`} className={styles.buttonGhost} type="button"><ChevronRight size={14} /></button></td>
                   </tr>
-                ))}
+                ) : (
+                  filtered.map((order) => (
+                    <tr className={styles.clickRow} key={order.id} onClick={() => { setSelected(order); setReviewMessage(null); }}>
+                      <td><span className={styles.orderId}>{order.id}</span><span className={styles.cellStack}><span>{order.placed}</span></span></td>
+                      <td>
+                        <div className={styles.customerCell}>
+                          <span className={styles.avatar} data-color={order.color}>{order.initials}</span>
+                          <span className={styles.cellStack}><strong>{order.customer}</strong><span>{order.email}</span></span>
+                        </div>
+                      </td>
+                      <td><span className={styles.cellStack}><strong>{order.product}</strong><span>{order.detail}</span></span></td>
+                      <td><span className={styles.cellStack}><strong>{inr(order.total)}</strong><span><StatusBadge tone={statusTone(order.payment)}>{order.payment}</StatusBadge></span></span></td>
+                      <td><StatusBadge tone={statusTone(order.status)}>{order.status}</StatusBadge></td>
+                      <td>{order.due}</td>
+                      <td><button aria-label={`Open ${order.id}`} className={styles.buttonGhost} type="button"><ChevronRight size={14} /></button></td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
