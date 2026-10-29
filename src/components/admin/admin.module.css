@@ -1352,6 +1352,21 @@
   background: var(--surface-alt);
 }
 
+.catalogLoadError {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  border: 1px solid color-mix(in srgb, var(--danger, #c42b3f) 42%, var(--border-default));
+  border-radius: var(--admin-card-radius);
+  background: color-mix(in srgb, var(--danger, #c42b3f) 7%, var(--surface-main));
+  color: var(--text-body);
+  font-size: 12px;
+}
+
+.catalogLoadError strong { color: var(--text-heading); }
+
 .summaryItem {
   display: flex;
   align-items: center;

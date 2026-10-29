@@ -68,6 +68,10 @@ type QuantityTierInput = { id: string; minimum: string; priceDelta: string; labe
 type TemplateOption = { id: string; name: string; slug: string; theme: string; thumbnailUrl: string; premiumPrice: number };
 type TemplateLinkInput = { templateId: string; isDefault: boolean; sortOrder?: number };
 type ProductBaseImage = { id: string; url: string; altText: string | null };
+type CatalogResponse = {
+  data?: { products?: AdminProduct[]; categories?: CategoryRecord[]; templates?: TemplateOption[] };
+  error?: { message?: string };
+};
 type EditingProduct = {
   id: string;
   name: string;
@@ -209,6 +213,8 @@ export function ProductsPanel() {
   const [managingCategories, setManagingCategories] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [catalogLoadError, setCatalogLoadError] = useState("");
   const [categoryImportMessage, setCategoryImportMessage] = useState("");
   const packagingCategoryStarters = useMemo(() => listEzpacPackagingCategories(), []);
   const packagingIndustryCollections = useMemo(() => listEzpacIndustryCollections(), []);
@@ -245,12 +251,28 @@ export function ProductsPanel() {
   }
 
   async function loadCatalog() {
-    const response = await fetch("/api/admin/catalog", { cache: "no-store" });
-    const payload = await response.json();
-    if (!response.ok) throw new Error(payload.error?.message || "Could not load the live catalog.");
-    setCatalog(payload.data.products);
-    setCategoryRecords(payload.data.categories.map((item: CategoryRecord) => ({ id: item.id, slug: item.slug, name: item.name, parentId: item.parentId ?? null, description: item.description, imageUrl: item.imageUrl, isActive: item.isActive, sortOrder: item.sortOrder })));
-    setTemplateOptions(Array.isArray(payload.data.templates) ? payload.data.templates : []);
+    setCatalogLoading(true);
+    setCatalogLoadError("");
+    try {
+      const response = await fetch("/api/admin/catalog", { cache: "no-store" });
+      const payload = await response.json().catch(() => undefined) as CatalogResponse | undefined;
+      if (!response.ok) throw new Error(payload?.error?.message || "Could not load the live catalog.");
+      if (!Array.isArray(payload?.data?.products) || !Array.isArray(payload.data.categories)) {
+        throw new Error("The live catalog response is incomplete. Please try again.");
+      }
+      setCatalog(payload.data.products);
+      setCategoryRecords(payload.data.categories.map((item) => ({ id: item.id, slug: item.slug, name: item.name, parentId: item.parentId ?? null, description: item.description, imageUrl: item.imageUrl, isActive: item.isActive, sortOrder: item.sortOrder })));
+      setTemplateOptions(Array.isArray(payload.data.templates) ? payload.data.templates : []);
+    } catch (cause) {
+      setCatalog([]);
+      setCategoryRecords([]);
+      setTemplateOptions([]);
+      const message = cause instanceof Error ? cause.message : "Could not load the live catalog.";
+      setCatalogLoadError(message);
+      throw cause;
+    } finally {
+      setCatalogLoading(false);
+    }
   }
 
   async function refreshEditingProductPreviewState() {
@@ -774,6 +796,7 @@ export function ProductsPanel() {
   const crossListingCategoryOptions = categoryOptions.filter((option) => option.id !== industryCollectionRoot?.id);
   const activeCount = catalog.filter((product) => product.status === "Active").length;
   const lowCount = catalog.filter((product) => product.status === "Low stock").length;
+  const catalogControlsAvailable = !catalogLoading && !catalogLoadError;
 
   function exportFilteredProducts() {
     const blob = new Blob([JSON.stringify(filtered, null, 2)], { type: "application/json" });
@@ -789,18 +812,27 @@ export function ProductsPanel() {
       <PageHeader
         actions={
           <>
-            <button className={styles.buttonSecondary} onClick={exportFilteredProducts} type="button"><Download size={14} /> Export</button>
-            <button className={styles.buttonSecondary} onClick={() => void addCategory(false)} type="button"><Plus size={14} /> Add category</button>
-            <button className={styles.buttonSecondary} onClick={() => void addCategory(true)} type="button"><Plus size={14} /> Add subcategory</button>
-            <button className={styles.buttonSecondary} onClick={() => { setError(""); setManagingCategories(true); }} type="button"><SlidersHorizontal size={14} /> Manage categories</button>
-            <button className={styles.buttonSecondary} onClick={() => { setError(""); setQuickAdding(true); }} type="button"><Sparkles size={14} /> Quick add</button>
-            <button className={styles.buttonPrimary} onClick={() => { setError(""); setVisualizationOpen(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkUploadEnabled(false); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts(); setAdding(true); }} type="button"><Plus size={14} /> Add product</button>
+            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={exportFilteredProducts} type="button"><Download size={14} /> Export</button>
+            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => void addCategory(false)} type="button"><Plus size={14} /> Add category</button>
+            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => void addCategory(true)} type="button"><Plus size={14} /> Add subcategory</button>
+            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setManagingCategories(true); }} type="button"><SlidersHorizontal size={14} /> Manage categories</button>
+            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setQuickAdding(true); }} type="button"><Sparkles size={14} /> Quick add</button>
+            <button className={styles.buttonPrimary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setVisualizationOpen(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkUploadEnabled(false); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts(); setAdding(true); }} type="button"><Plus size={14} /> Add product</button>
           </>
         }
         description="Build a clean catalog, control inventory, and connect each personalized product to the right design experience."
         eyebrow="Catalog"
         title="Products"
       />
+
+      {catalogLoadError && (
+        <div className={styles.catalogLoadError} role="alert">
+          <span><strong>Live catalog unavailable.</strong> {catalogLoadError}</span>
+          <button className={styles.buttonSecondary} disabled={catalogLoading} onClick={() => void loadCatalog().catch(() => undefined)} type="button">
+            {catalogLoading ? "Retrying…" : "Retry"}
+          </button>
+        </div>
+      )}
 
       <Card>
         <div className={styles.catalogSummary}>
