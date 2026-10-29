@@ -629,9 +629,8 @@ Prereq: local dev database — `npm run db:setup` + `npm run db:bootstrap-admin`
 `ProductsPanel.tsx:688,709`).
 
 **A — No migration, no breakage**
-1. `npx prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma`
-   (or `npx prisma db pull` and diff) → **no new tables/columns/indexes**;
-   `git diff prisma/schema.prisma` is **empty**.
+1. `git diff prisma/schema.prisma` is **empty** → **no new tables/columns/indexes/migrations**.
+   (Avoid running `npx prisma migrate diff` in sandboxed environments as Windows blocks query-engine binary spawning with `spawn EPERM`; `git diff prisma/schema.prisma` is the source of truth).
 2. `npm run test:domain` → all existing suites green, including
    `admin-quick-list.test.ts`, the catalog/artwork-policy tests
    (`artwork-policy.test.ts`, `artwork-policy-schema.test.ts`), plus your new
@@ -717,6 +716,6 @@ byte-identical).
 
 When done, report: files added/changed grouped by steps A–E of section 2; the exact
 commands run with results (`npm run typecheck`, `npm run test:domain`, `npm run
-build`, and the `prisma migrate diff` / `git diff prisma/schema.prisma` output
+build`, and the `git diff prisma/schema.prisma` output
 proving a zero schema diff); the acceptance-test walkthrough outcome for A–E of
 section 3; and any place where you deviated from this document (with the reason).
