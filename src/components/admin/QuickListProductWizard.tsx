@@ -17,9 +17,14 @@ import {
   isEzpacPackagingProductType,
   listEzpacPackagingProductTypes,
 } from "@/lib/ezpac-packaging-presets";
+import { ezpacIndustryCollectionCategorySlug } from "@/lib/ezpac-packaging-presets";
+import { formatStructuredDescription } from "@/lib/admin-structured-description";
+import { EZPAC_SHOPIFY_PRODUCT_MAPPING, ezpacMappingCategory } from "@/lib/ezpac-product-mapping";
 import { listRanBazaarCustomizationStarters } from "@/lib/ranbazaar-customization-presets";
 import { StatusBadge } from "./AdminUI";
+import { ProductFullDetailsSections, ProductLayoutControls, clampLayoutElementDefaults, type PublishedVisualizationTemplate } from "./ProductFullDetailsSections";
 import { SurfaceCustomerPreview } from "./SurfaceCustomerPreview";
+import { buildFullDetailsPatch, type FullDetailsProductBase } from "./product-details-payload";
 import styles from "./admin.module.css";
 
 type CategoryRecord = { id: string; slug: string; name: string; parentId: string | null; sortOrder: number };
@@ -72,6 +77,7 @@ export function QuickListProductWizard({
 }) {
   const starters = useMemo(() => listRanBazaarCustomizationStarters(), []);
   const packagingStarters = useMemo(() => listEzpacPackagingProductTypes(), []);
+  const exportPresets = useMemo(() => EZPAC_SHOPIFY_PRODUCT_MAPPING.map((mapping) => ({ value: mapping.shopifyHandle, label: mapping.shopifyTitle, unmapped: mapping.unmapped === true })), []);
   const [step, setStep] = useState(1);
   const [draft, setDraft] = useState<RanBazaarStarterDraft>(() => blankDraft());
   const [starterMode, setStarterMode] = useState<"ranbazaar" | "blank" | "packaging" | null>(null);
@@ -95,6 +101,11 @@ export function QuickListProductWizard({
   const [uploadStatus, setUploadStatus] = useState<StepStatus>("waiting");
   const [attachStatus, setAttachStatus] = useState<StepStatus>("waiting");
   const [reusingPhoto, setReusingPhoto] = useState(false);
+  const [fullDetails, setFullDetails] = useState<FullDetailsProductBase | null>(null);
+  const [fullDetailsSaving, setFullDetailsSaving] = useState(false);
+  const [detailUploadingSlots, setDetailUploadingSlots] = useState<number[]>([]);
+  const [publishedTemplates, setPublishedTemplates] = useState<PublishedVisualizationTemplate[]>([]);
+  const [lastExportHandle, setLastExportHandle] = useState("");
   const previewUrls = useRef(new Set<string>());
 
   useEffect(() => () => previewUrls.current.forEach((url) => URL.revokeObjectURL(url)), []);
@@ -113,7 +124,7 @@ export function QuickListProductWizard({
     printAreas: draft.printAreas,
     artworkPolicy: draft.artworkPolicy,
     packagingRequiresVisualization: isEzpacPackagingProductType(productType),
-    hasPublishedVisualization: false,
+    hasPublishedVisualization: publishedTemplates.some((template) => fullDetails?.previewTemplate === `visualization:${template.id}`),
   });
   const essentialsReady = Boolean(name.trim() && price.trim() && Number(price) >= 0 && categoryId && sku.trim());
 
@@ -153,6 +164,72 @@ export function QuickListProductWizard({
     };
   }
 
+  function makeFullDetails(id: string): FullDetailsProductBase {
+    return { id, name: name.trim(), sku: sku.trim(), categoryId, categoryIds: [categoryId], productType, price: Number(price), imageUrl: uploadedPrimaryUrl || primaryPreview || "/api/product-images/pending", material: "", sizes: [], sizeDescription: "", features: [], description: description.trim(), customizable: draft.configurationFields.length > 0, published: publishNow, allow2D: true, allow3D: false, quantityMin: 1, quantityMax: 100, quantityTiers: [], setupCharge: 0, productionDaysMin: 0, productionDaysMax: 0, printAreas: draft.printAreas, previewTemplate: "", productModel: "", artworkUpload: draft.artworkUpload, acceptedArtworkTypes: draft.acceptedArtworkTypes, artworkPolicy: draft.artworkPolicy, templateLinks: [], configurationFields: draft.configurationFields.map((field, index) => ({ ...field, id: `${field.key || "field"}-${index + 1}`, priceDelta: 0, minValue: null, maxValue: null, step: null, unit: "", visibleWhen: null })) };
+  }
+  function applyEzpacExport(handle: string) {
+    const mapping = EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.shopifyHandle === handle);
+    if (!mapping) return;
+    setLastExportHandle(handle);
+    const categoryMapping = ezpacMappingCategory(mapping.presetId);
+    const primary = categoryMapping?.primarySubcategoryId ? categories.find((item) => item.slug === categoryMapping.primarySubcategoryId) : undefined;
+    const collectionIds = (categoryMapping?.collectionIds ?? []).flatMap((collectionId) => {
+      const category = categories.find((item) => item.slug === ezpacIndustryCollectionCategorySlug(collectionId));
+      return category ? [category.id] : [];
+    });
+    const structuredDescription = { ...(mapping.prefills.intro ? { intro: mapping.prefills.intro } : {}), ...(mapping.prefills.bestFor?.length ? { bestFor: [...mapping.prefills.bestFor] } : {}), ...(mapping.prefills.featureBullets?.length ? { featureBullets: [...mapping.prefills.featureBullets] } : {}) };
+    const imageUrls = mapping.prefills.imageUrls ?? [];
+    setFullDetails((current) => current ? { ...current, name: mapping.shopifyTitle, sku: autoSku(mapping.shopifyTitle), price: mapping.prefills.priceRupees, productType: mapping.presetId ?? current.productType, categoryId: primary?.id ?? current.categoryId, categoryIds: [...new Set([primary?.id, ...collectionIds].filter((id): id is string => Boolean(id)))], material: mapping.prefills.materialHint ?? current.material, structuredDescription, description: formatStructuredDescription(structuredDescription), imageUrl: imageUrls[0] ?? current.imageUrl, extraImages: imageUrls.slice(1, 6).map((url) => ({ url })) } : current);
+  }
+
+  function importEzpacUrls() {
+    const mapping = EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.shopifyHandle === lastExportHandle);
+    if (!mapping) return;
+    const imageUrls = mapping.prefills.imageUrls ?? [];
+    setFullDetails((current) => current ? { ...current, imageUrl: imageUrls[0] ?? current.imageUrl, extraImages: imageUrls.slice(1, 6).map((url) => ({ url })) } : current);
+  }
+
+  function prefillRanBazaarDetails() {
+    if (!savedProduct) return;
+    setFullDetails(makeFullDetails(savedProduct.id));
+  }
+
+
+  function continueFullDetails() {
+    if (!savedProduct) return;
+    setFullDetails((current) => current ? { ...current, id: savedProduct.id } : makeFullDetails(savedProduct.id));
+    setStep(4);
+    void fetch(`/api/admin/catalog?productId=${encodeURIComponent(savedProduct.id)}`).then((response) => response.json()).then((data: { data?: { product?: { publishedVisualizationTemplates?: PublishedVisualizationTemplate[] } } }) => setPublishedTemplates(data.data?.product?.publishedVisualizationTemplates ?? [])).catch(() => setPublishedTemplates([]));
+  }
+
+  async function uploadFullDetailsSlot(slot: number, file: File) {
+    if (!savedProduct || !fullDetails) return;
+    setDetailUploadingSlots((current) => [...new Set([...current, slot])]); setError("");
+    try {
+      const url = await upload(savedProduct.id, slot === 0 ? "primary" : "gallery", file);
+      setFullDetails((current) => {
+        if (!current) return current;
+        if (!slot) return { ...current, imageUrl: url };
+        const extraImages = Array.from({ length: 5 }, (_, index) => current.extraImages?.[index] ?? { url: "" });
+        extraImages[slot - 1] = { ...extraImages[slot - 1], url };
+        return { ...current, extraImages };
+      });
+      if (!slot) setUploadedPrimaryUrl(url);
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "The image could not be uploaded."); }
+    finally { setDetailUploadingSlots((current) => current.filter((item) => item !== slot)); }
+  }
+
+  async function saveFullDetails(published: boolean) {
+    if (!savedProduct || !fullDetails) return;
+    setFullDetailsSaving(true); setError("");
+    try {
+      const next = { ...fullDetails, id: savedProduct.id, published, artworkPolicy: fullDetails.artworkPolicy ? clampLayoutElementDefaults(fullDetails.artworkPolicy) : null };
+      await request("PATCH", buildFullDetailsPatch(next));
+      setFullDetails(next); setAttachStatus("done");
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not save the full product details."); }
+    finally { setFullDetailsSaving(false); }
+  }
+
   async function request(method: "POST" | "PATCH", body: Record<string, unknown>) {
     const response = await fetch("/api/admin/catalog", {
       method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
@@ -162,7 +239,7 @@ export function QuickListProductWizard({
     return data?.data;
   }
 
-  async function upload(productId: string, kind: "primary" | "surface-base", file: File, surfaceId?: string) {
+  async function upload(productId: string, kind: "primary" | "surface-base" | "gallery", file: File, surfaceId?: string) {
     const form = new FormData(); form.set("productId", productId); form.set("kind", kind); form.set("image", file);
     if (surfaceId) form.set("surfaceId", surfaceId);
     const response = await fetch("/api/admin/catalog/images", { method: "POST", body: form });
@@ -230,6 +307,8 @@ export function QuickListProductWizard({
   }
 
   const success = attachStatus === "done" && savedProduct;
+  const supportsFullDetails = starterMode === "packaging" || starterMode === "ranbazaar";
+  const wizardSteps = supportsFullDetails ? ["Pick a starter", "Essentials", "Images & publish", "Full details"] : ["Pick a starter", "Essentials", "Images & publish"];
   return (
     <>
       <button aria-label="Close quick add" className={styles.drawerBackdrop} onClick={onClose} type="button" />
@@ -239,7 +318,7 @@ export function QuickListProductWizard({
           <button aria-label="Close" className={styles.iconButton} onClick={onClose} type="button"><X size={16} /></button>
         </div>
         <div className={styles.quickListRail} aria-label="Quick add progress">
-          {["Pick a starter", "Essentials", "Images & publish"].map((label, index) => <button className={step === index + 1 ? styles.quickListStepActive : styles.quickListStep} key={label} onClick={() => { if (index + 1 <= step) setStep(index + 1); }} type="button"><span>{index + 1}</span>{label}</button>)}
+          {wizardSteps.map((label, index) => <button className={step === index + 1 ? styles.quickListStepActive : styles.quickListStep} key={label} onClick={() => { if (index + 1 <= step) setStep(index + 1); }} type="button"><span>{index + 1}</span>{label}</button>)}
         </div>
         <div className={styles.drawerBody}>
           {step === 1 && <div className={styles.quickListContent}>
@@ -271,12 +350,35 @@ export function QuickListProductWizard({
               {error && <p className={styles.formError} role="alert">{error}</p>}
               {success ? <div className={styles.quickListSuccess}><strong>{publishNow ? "Product published" : "Draft saved"}</strong><p><a href={`/products/${savedProduct.slug}`} target="_blank">/products/{savedProduct.slug}</a></p><button className={styles.buttonPrimary} onClick={() => void onSaved(savedProduct.id)} type="button">Open 3D visualization studio</button></div> : <button className={styles.buttonPrimary} disabled={saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" || (publishNow && !readiness.canPublish)} onClick={() => void save()} type="button">{saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" ? "Saving…" : (saveStatus === "failed" || uploadStatus === "failed" || attachStatus === "failed") ? "Retry failed step" : publishNow ? "Save and publish" : "Save draft"}</button>}
             </div>
+              {success && supportsFullDetails && <button className={styles.buttonSecondary} onClick={continueFullDetails} type="button">Continue with full details</button>}
             <SurfaceCustomerPreview baseImageUrl={basePreview} heightMm={primarySurface?.heightMm} productPhotoUrl={primaryPreview} sampleText={sampleText} surfaceLabel={primarySurface?.label ?? "Primary surface"} widthMm={primarySurface?.widthMm} />
           </div>}
         </div>
+        <div className={styles.drawerBody}>
+          {step === 4 && fullDetails && <div className={styles.quickListContent}>
+            <div className={styles.quickListForm}>
+              <ProductFullDetailsSections
+                autoSku={autoSku} categories={categories} exportPresets={exportPresets}
+                onApplyExport={applyEzpacExport} onChange={(value) => setFullDetails(value)}
+                onImportExportUrls={importEzpacUrls} onPrefillRanBazaar={prefillRanBazaarDetails}
+                onSkuEditedChange={setSkuEdited} onUploadSlot={uploadFullDetailsSlot}
+                skuEdited={skuEdited} uploadingSlots={detailUploadingSlots} value={fullDetails}
+              />
+              <ProductLayoutControls onChange={(value) => setFullDetails(value)} publishedTemplates={publishedTemplates} value={fullDetails} />
+              <div className={styles.quickListChecklist}><strong>Publish readiness</strong>{readiness.items.map((item) => {
+                const notApplicable = item.id === "packaging-visualization" && !isEzpacPackagingProductType(fullDetails.productType);
+                return <p className={notApplicable || item.ready ? styles.quickListReady : styles.quickListNotReady} key={item.id}><span>{notApplicable || item.ready ? <Check size={13} /> : "x"}</span>{notApplicable ? "not applicable" : item.ready ? item.id.replaceAll("-", " ") : item.message}{!notApplicable && !item.blocking && " (hint)"}</p>;
+              })}</div>
+              {error && <p className={styles.formError} role="alert">{error}</p>}
+            </div>
+            <SurfaceCustomerPreview productPhotoUrl={fullDetails.imageUrl} sampleText={sampleText} surfaceLabel={fullDetails.printAreas[0]?.label ?? "Primary surface"} />
+          </div>}
+        </div>
+
         <div className={styles.drawerFooter}>
           <button className={styles.buttonSecondary} onClick={() => step === 1 ? onClose() : setStep((current) => current - 1)} type="button">{step === 1 ? "Cancel" : <><ChevronLeft size={13} /> Back</>}</button>
           {step < 3 && <button className={styles.buttonPrimary} disabled={step === 1 ? !starterMode : !essentialsReady} onClick={() => setStep((current) => current + 1)} type="button">Continue <ChevronRight size={13} /></button>}
+          {step === 4 && <span className={styles.fullDetailsSaveActions}><button className={styles.buttonSecondary} disabled={fullDetailsSaving} onClick={() => void saveFullDetails(false)} type="button">Save draft</button><button className={styles.buttonPrimary} disabled={fullDetailsSaving || !readiness.canPublish} onClick={() => void saveFullDetails(true)} type="button">{fullDetailsSaving ? "Saving..." : "Save and publish"}</button></span>}
         </div>
       </aside>
     </>

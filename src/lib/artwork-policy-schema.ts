@@ -53,6 +53,22 @@ const permissionsSchema = z.object({
 const fontFamilySchema = z.enum(["sans", "serif", "rounded"]);
 const textAlignmentSchema = z.enum(["left", "center", "right"]);
 
+const defaultTextLayerSchema = z.object({
+  label: z.string().trim().min(1).max(80),
+  sampleText: z.string().trim().min(1).max(120),
+  geometry: geometrySchema,
+  color: colour,
+  fontSize: z.number().finite().min(1).max(1_000),
+  fontFamily: fontFamilySchema,
+  fontWeight: z.number().int().min(100).max(900),
+  rotation: z.number().finite().min(-360).max(360),
+}).strict();
+
+const defaultImageLayerSchema = z.object({
+  label: z.string().trim().min(1).max(80),
+  geometry: geometrySchema,
+}).strict();
+
 const textPolicySchema = z.object({
   enabled: z.boolean(),
   maximumElements: nonNegativeInteger,
@@ -67,6 +83,7 @@ const textPolicySchema = z.object({
   maximumFontSize: z.number().finite().min(1).max(1_000).optional(),
   defaultTextAlign: textAlignmentSchema.optional(),
   allowedTextAlignments: z.array(textAlignmentSchema).min(1).max(3).optional(),
+  defaultTextLayers: z.array(defaultTextLayerSchema).max(8).optional(),
 }).strict().superRefine((policy, context) => {
   if (policy.enabled && policy.maximumElements < 1) {
     context.addIssue({ code: "custom", path: ["maximumElements"], message: "Enabled text needs at least one allowed element." });
@@ -110,6 +127,7 @@ const imagePolicySchema = z.object({
   allowCrop: z.boolean(),
   approvalRequired: z.boolean(),
   chargePerImagePaise: z.number().int().min(0).max(100_000_000),
+  defaultImageLayers: z.array(defaultImageLayerSchema).max(8).optional(),
 }).strict().superRefine((policy, context) => {
   if (policy.required && !policy.enabled) {
     context.addIssue({ code: "custom", path: ["required"], message: "A required image upload must be enabled." });
@@ -154,6 +172,26 @@ const surfacePolicySchema = z.object({
       geometry.y + geometry.height > bounds.y + bounds.height
     ) {
       context.addIssue({ code: "custom", path: [key, "geometry", "default"], message: "Default placement must remain inside the printable bounds." });
+    }
+  }
+  const defaultElements = [
+    ...(surface.text.defaultTextLayers ?? []).map((layer, index) => ({
+      geometry: layer.geometry,
+      path: ["text", "defaultTextLayers", index, "geometry"],
+    })),
+    ...(surface.image.defaultImageLayers ?? []).map((layer, index) => ({
+      geometry: layer.geometry,
+      path: ["image", "defaultImageLayers", index, "geometry"],
+    })),
+  ];
+  for (const element of defaultElements) {
+    const { geometry } = element;
+    if (
+      geometry.x < bounds.x || geometry.y < bounds.y ||
+      geometry.x + geometry.width > bounds.x + bounds.width ||
+      geometry.y + geometry.height > bounds.y + bounds.height
+    ) {
+      context.addIssue({ code: "custom", path: element.path, message: "Default element placement must remain inside the printable bounds." });
     }
   }
 });

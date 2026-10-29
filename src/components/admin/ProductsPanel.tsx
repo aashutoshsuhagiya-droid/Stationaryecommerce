@@ -6,6 +6,7 @@ import {
   ChevronDown,
   ChevronUp,
   Download,
+  LayoutTemplate,
   MoreHorizontal,
   Package,
   Plus,
@@ -20,6 +21,7 @@ import { Card, PageHeader, StatusBadge, statusTone } from "./AdminUI";
 import { ProductArtworkPolicyEditor } from "./ProductArtworkPolicyEditor";
 import { ProductListThumb } from "./ProductListThumb";
 import { ProductVisualizationStudio } from "./ProductVisualizationStudio";
+import { ProductLayoutDrawer } from "./ProductLayoutDrawer";
 import { QuickListProductWizard } from "./QuickListProductWizard";
 import { createRanBazaarStarterDraft } from "@/lib/admin-quick-list";
 import { buildDefaultAdminArtworkPolicy, reconcileAdminArtworkPolicy } from "@/lib/admin-artwork-policy";
@@ -184,6 +186,7 @@ export function ProductsPanel() {
   const [quickAdding, setQuickAdding] = useState(false);
   const [statusFilter, setStatusFilter] = useState("All statuses");
   const [visualizationOpen, setVisualizationOpen] = useState(false);
+  const [layoutProductId, setLayoutProductId] = useState<string | null>(null);
   const [categoryRecords, setCategoryRecords] = useState<CategoryRecord[]>([]);
   const [templateOptions, setTemplateOptions] = useState<TemplateOption[]>([]);
   const [productCategoryId, setProductCategoryId] = useState("");
@@ -880,7 +883,10 @@ export function ProductsPanel() {
                       <td><strong>{inr(product.price)}</strong></td>
                       <td>{product.orders}</td>
                       <td>{product.personalized ? <StatusBadge tone="violet">Enabled</StatusBadge> : <StatusBadge>Standard</StatusBadge>}</td>
-                      <td><button aria-label={`Configure ${product.name}`} className={styles.buttonGhost} onClick={() => void editProduct(product.id)} type="button"><MoreHorizontal size={15} /></button></td>
+                      <td><span className={styles.fullDetailsRowActions}>
+                        <button aria-label={`Open 3D and layout editor for ${product.name}`} className={styles.buttonGhost} onClick={() => setLayoutProductId(product.id)} type="button"><LayoutTemplate size={14} /> 3D &amp; Layout</button>
+                        <button aria-label={`Configure ${product.name}`} className={styles.buttonGhost} onClick={() => void editProduct(product.id)} type="button"><MoreHorizontal size={15} /></button>
+                      </span></td>
                     </tr>
                   );
                 })}
@@ -1250,6 +1256,12 @@ export function ProductsPanel() {
           setVisualizationOpen(true);
           await editProduct(productId);
         }}
+      />}
+      {layoutProductId && <ProductLayoutDrawer
+        categories={categoryRecords}
+        onClose={() => setLayoutProductId(null)}
+        onSaved={async () => { await loadCatalog(); }}
+        productId={layoutProductId}
       />}
     </>
   );

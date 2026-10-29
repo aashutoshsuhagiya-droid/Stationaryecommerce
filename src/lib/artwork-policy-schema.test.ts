@@ -64,6 +64,43 @@ test("product artwork policy schema accepts a bounded production policy", () => 
   assert.equal(productArtworkPolicySchema.safeParse(validPolicy()).success, true);
 });
 
+test("product artwork policy schema accepts nested default layer geometry", () => {
+  const policy = validPolicy();
+  policy.surfaces[0].text.defaultTextLayers = [{
+    label: "Brand line",
+    sampleText: "Kado",
+    geometry: { x: 20, y: 20, width: 80, height: 24, rotation: 0 },
+    color: "#17324d",
+    fontSize: 24,
+    fontFamily: "rounded",
+    fontWeight: 600,
+    rotation: 0,
+  }];
+  policy.surfaces[0].image.defaultImageLayers = [{
+    label: "Logo",
+    geometry: { x: 30, y: 50, width: 60, height: 30, rotation: 0 },
+  }];
+
+  assert.equal(productArtworkPolicySchema.safeParse(policy).success, true);
+});
+
+test("product artwork policy schema rejects a default layer outside printable bounds", () => {
+  const policy = validPolicy();
+  policy.surfaces[0].image.defaultImageLayers = [{
+    label: "Logo",
+    geometry: { x: 181, y: 20, width: 10, height: 20, rotation: 0 },
+  }];
+
+  const parsed = productArtworkPolicySchema.safeParse(policy);
+  assert.equal(parsed.success, false);
+  if (parsed.success) return;
+  const issue = parsed.error.issues.find((candidate) => (
+    candidate.path.join(".") === "surfaces.0.image.defaultImageLayers.0.geometry"
+  ));
+  assert.ok(issue);
+  assert.equal(issue.message, "Default element placement must remain inside the printable bounds.");
+});
+
 test("product artwork policy schema rejects unsafe geometry and incomplete upload rules", () => {
   const policy = validPolicy();
   policy.surfaces[0].printableBounds.width = 300;

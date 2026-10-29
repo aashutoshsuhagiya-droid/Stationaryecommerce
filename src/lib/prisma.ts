@@ -10,7 +10,7 @@ declare global {
 
 export class DatabaseConfigurationError extends Error {
   constructor() {
-    super("DATABASE_URL is not configured.");
+    super("DATABASE_URL_POOLED or DATABASE_URL is not configured.");
     this.name = "DatabaseConfigurationError";
   }
 }

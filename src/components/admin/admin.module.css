@@ -2640,6 +2640,33 @@ button.configCard:hover { border-color: var(--border-focus); background: var(--s
 .quickListSuccess strong { color: var(--success); font-size: 12px; }
 .quickListSuccess p { margin: 0; color: var(--text-body); font-size: 10px; }
 .quickListSuccess a { color: var(--text-heading); text-decoration: underline; }
+.fullDetailsDrawer { width: min(1180px, calc(100vw - 24px)); }
+.fullDetailsDrawerContent { display: grid; gap: 12px; }
+.fullDetailsDrawerTitle { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.fullDetailsSections { display: grid; gap: 10px; }
+.fullDetailsSection { border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); background: var(--surface-raised); }
+.fullDetailsSection > summary { cursor: pointer; padding: 11px 13px; color: var(--text-heading); font-size: 11px; font-weight: 700; list-style: none; }
+.fullDetailsSection > summary span { display: flex; align-items: center; gap: 8px; }
+.fullDetailsSection > summary small { color: var(--teal); font-weight: 800; }
+.fullDetailsSectionBody { display: grid; gap: 11px; padding: 0 13px 13px; }
+.fullDetailsPreset, .fullDetailsPresetActions { display: grid; gap: 9px; }
+.fullDetailsExportChoice, .fullDetailsTabs, .fullDetailsRowActions, .fullDetailsSaveActions, .quickListSuccessActions { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.fullDetailsCrossList, .fullDetailsBulletGrid { display: flex; flex-wrap: wrap; gap: 8px; border: 0; margin: 0; padding: 0; }
+.fullDetailsDescriptionPreview { padding: 10px; border-radius: var(--admin-card-radius); background: var(--surface-sunken); color: var(--text-body); font-size: 10px; }
+.fullDetailsDescriptionPreview p { margin: 5px 0 0; white-space: pre-line; }
+.fullDetailsImages { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+.fullDetailsImageCard { display: grid; gap: 7px; padding: 9px; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); }
+.fullDetailsImagePreview { display: grid; place-items: center; min-height: 94px; overflow: hidden; border-radius: 7px; background: var(--surface-sunken); }
+.fullDetailsImagePreview img { width: 100%; height: 100%; object-fit: cover; }
+.fullDetailsTab, .fullDetailsTabActive, .fullDetailsRadio { font-size: 10px; }
+.fullDetailsTab, .fullDetailsTabActive { border: 1px solid var(--border-default); border-radius: 999px; padding: 6px 9px; background: transparent; color: var(--text-body); cursor: pointer; }
+.fullDetailsTabActive { border-color: var(--teal); color: var(--teal); background: var(--teal-soft); }
+.fullDetailsRadio { display: flex; align-items: center; gap: 7px; }
+.fullDetailsLayoutGrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, .7fr); gap: 12px; }
+.fullDetailsElementRow { display: grid; gap: 8px; padding: 8px 0; border-top: 1px solid var(--border-subtle); }
+.fullDetailsRowActions { justify-content: flex-end; white-space: nowrap; }
+@media (max-width: 760px) { .fullDetailsImages { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fullDetailsLayoutGrid { grid-template-columns: 1fr; } }
+
 
 .visualizationStudio {
   display: grid;

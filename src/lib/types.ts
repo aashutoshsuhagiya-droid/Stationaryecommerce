@@ -134,6 +134,11 @@ export interface Product {
       label?: string;
     }>;
     setupCharge?: number;
+    structuredDescription?: {
+      intro?: string;
+      bestFor?: string[];
+      featureBullets?: string[];
+    };
     printAreas: Array<{
       id: string;
       label: string;
@@ -363,6 +368,17 @@ export interface ArtworkTextPolicy {
   maximumFontSize?: number;
   defaultTextAlign?: ArtworkTextAlignment;
   allowedTextAlignments?: ArtworkTextAlignment[];
+  defaultTextLayers?: Array<{
+    label: string;
+    sampleText: string;
+    geometry: ArtworkGeometry;
+    color: string;
+    fontSize: number;
+    fontFamily: ArtworkFontFamily;
+    fontWeight: number;
+    rotation: number;
+    maxLength?: number;
+  }>;
 }
 
 export interface ArtworkImagePolicy {
@@ -385,6 +401,10 @@ export interface ArtworkImagePolicy {
   approvalRequired: boolean;
   /** Policy metadata for a future pricing rule; this validator never changes prices. */
   chargePerImagePaise: number;
+  defaultImageLayers?: Array<{
+    label: string;
+    geometry: ArtworkGeometry;
+  }>;
 }
 
 export interface ArtworkSurfacePolicy {

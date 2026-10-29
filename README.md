@@ -46,6 +46,20 @@ admin login, temporarily set `BOOTSTRAP_ADMIN_EMAIL` and a strong `BOOTSTRAP_ADM
 `db:bootstrap-admin`, then remove both values from the environment. The bootstrap refuses to
 overwrite an existing user.
 
+Prisma CLI commands use the direct, unpooled `DATABASE_URL`. The deployed Next.js runtime
+prioritizes `DATABASE_URL_POOLED`, which must be the matching Neon PgBouncer endpoint, and only
+falls back to `DATABASE_URL` when the pooled value is absent. Configure both Vercel variables for
+the same seeded Neon database; an old integration URL can otherwise cause missing-table (`P2021`)
+errors.
+
+To bootstrap an administrator from Windows PowerShell, use the direct Neon URL and prefer IPv4
+DNS resolution. The password must be at least 16 characters and include a letter, number and
+symbol; remove these two temporary variables as soon as the command succeeds.
+
+```powershell
+$env:NODE_OPTIONS="--dns-result-order=ipv4first"; $env:BOOTSTRAP_ADMIN_EMAIL="admin@naamly.com"; $env:BOOTSTRAP_ADMIN_PASSWORD="replace-with-a-unique-strong-password"; npm.cmd run db:bootstrap-admin
+```
+
 Vendor onboarding requires PostgreSQL and the seeded authorization roles.
 In non-production environments the OTP request response includes a development code; production
 requires `VENDOR_OTP_PROVIDER_URL` and strong `VENDOR_OTP_SECRET` credentials.

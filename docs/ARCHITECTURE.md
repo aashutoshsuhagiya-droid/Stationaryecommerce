@@ -182,6 +182,13 @@ Uploaded assets need MIME sniffing, size and pixel limits, malware scanning, met
 
 ## Running the data layer
 
+Use Neon's direct, unpooled URL as `DATABASE_URL` for Prisma CLI work (migrations, schema changes,
+seeds and administrator bootstrap). Set `DATABASE_URL_POOLED` to the matching Neon PgBouncer
+endpoint for the Vercel/Next.js runtime. `src/lib/prisma.ts` prioritizes the pooled URL and falls
+back to the direct URL only for environments without a pooler. If Vercel reports `P2021` or a
+missing Prisma table, confirm `DATABASE_URL_POOLED` targets the active seeded Neon database, not
+an older integration.
+
 With PostgreSQL available and `DATABASE_URL` configured:
 
 ```bash
@@ -195,9 +202,15 @@ migrations, backups and recovery drills for a live environment; `db:push` is sui
 local prototyping.
 
 The seed intentionally creates no default password or administrator. For a fresh deployment,
-temporarily set `BOOTSTRAP_ADMIN_EMAIL` and a strong `BOOTSTRAP_ADMIN_PASSWORD`, run
-`npm run db:bootstrap-admin`, and remove those credentials immediately afterward. The command
-refuses to replace an existing account.
+temporarily set `BOOTSTRAP_ADMIN_EMAIL` and a strong `BOOTSTRAP_ADMIN_PASSWORD` (at least 16
+characters with a letter, number and symbol), then run this PowerShell command with the direct
+database URL. The IPv4 preference is required on Windows networks where Neon hostnames can resolve
+to unusable IPv6 addresses. Remove those credentials immediately afterward; the command refuses
+to replace an existing account.
+
+```powershell
+$env:NODE_OPTIONS="--dns-result-order=ipv4first"; $env:BOOTSTRAP_ADMIN_EMAIL="admin@naamly.com"; $env:BOOTSTRAP_ADMIN_PASSWORD="replace-with-a-unique-strong-password"; npm.cmd run db:bootstrap-admin
+```
 
 ## Production cutover checklist
 

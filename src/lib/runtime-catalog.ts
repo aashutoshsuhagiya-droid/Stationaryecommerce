@@ -77,6 +77,31 @@ function mappedSetupCharge(value: unknown, productId: string) {
   return value;
 }
 
+type StructuredDescription = NonNullable<NonNullable<Product["configurator"]>["structuredDescription"]>;
+
+function mappedStructuredDescription(value: unknown): StructuredDescription | undefined {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
+  const description = value as Record<string, unknown>;
+  const intro = description.intro;
+  const bestFor = description.bestFor;
+  const featureBullets = description.featureBullets;
+  if (
+    (intro !== undefined && (typeof intro !== "string" || intro.trim().length > 2_000)) ||
+    (bestFor !== undefined && (!Array.isArray(bestFor) || bestFor.length > 12 || bestFor.some((entry) => typeof entry !== "string" || !entry.trim() || entry.trim().length > 120))) ||
+    (featureBullets !== undefined && (!Array.isArray(featureBullets) || featureBullets.length > 12 || featureBullets.some((entry) => typeof entry !== "string" || !entry.trim() || entry.trim().length > 120)))
+  ) return undefined;
+  const mappedIntro = typeof intro === "string" ? intro.trim() : undefined;
+  const mappedBestFor = Array.isArray(bestFor) && bestFor.length ? bestFor.map((entry) => entry.trim()) : undefined;
+  const mappedFeatureBullets = Array.isArray(featureBullets) && featureBullets.length ? featureBullets.map((entry) => entry.trim()) : undefined;
+  return mappedIntro || mappedBestFor || mappedFeatureBullets
+    ? {
+        ...(mappedIntro ? { intro: mappedIntro } : {}),
+        ...(mappedBestFor ? { bestFor: mappedBestFor } : {}),
+        ...(mappedFeatureBullets ? { featureBullets: mappedFeatureBullets } : {}),
+      }
+    : undefined;
+}
+
 function mappedArtworkPolicy(value: unknown, productId: string) {
   if (value === undefined || value === null) return undefined;
   const parsed = productArtworkPolicySchema.safeParse(value);
@@ -393,6 +418,7 @@ function mapProduct(product: any): Product {
         quantityMax: typeof configurator.quantityMax === "number" ? configurator.quantityMax : 100,
         quantityTiers: mappedQuantityTiers(configurator.quantityTiers, product.id),
         setupCharge: mappedSetupCharge(configurator.setupCharge, product.id),
+        structuredDescription: mappedStructuredDescription(configurator.structuredDescription),
         printAreas: printedAreas,
         ...(Object.keys(baseImages).length ? { baseImages } : {}),
         artworkUpload: {

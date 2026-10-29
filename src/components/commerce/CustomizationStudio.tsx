@@ -48,6 +48,7 @@ import {
   visibleConfigurationFields,
 } from "@/lib/configuration-field-visibility";
 import { formatPrice, neutralPresentationPalette } from "@/lib/data";
+import { EZPAC_FEATURE_BULLET_LABELS } from "@/lib/ezpac-feature-bullets";
 import type { ProductConfigurationSchema } from "@/lib/product-configuration";
 import { newestSavedDesign } from "@/lib/saved-design";
 import type { Product } from "@/lib/types";
@@ -516,6 +517,7 @@ export function CustomizationStudio({
   const [added, setAdded] = useState(false);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [previewReady, setPreviewReady] = useState(false);
+  const [selectedProductImage, setSelectedProductImage] = useState(product.image);
   const initializedProductId = useRef<string | null>(null);
   const productHeroReveal = useScrollReveal<HTMLElement>();
   const practicalDetailsReveal = useScrollReveal<HTMLDivElement>();
@@ -525,6 +527,22 @@ export function CustomizationStudio({
 
   const primaryTextPolicy = configuration.artwork.policy.surfaces[0]?.text;
   const artworkUploadsEnabled = configuration.artwork.uploads.supported;
+  const productImages = product.images.length
+    ? product.images
+    : [{ id: "legacy-product-image", src: product.image, alt: product.name, width: 0, height: 0 }];
+  const selectedProductImageUrl = productImages.some((image) => image.src === selectedProductImage)
+    ? selectedProductImage
+    : productImages[0]?.src ?? product.image;
+  const structuredDescription = product.configurator?.structuredDescription;
+  const structuredBulletLabels = (structuredDescription?.featureBullets ?? []).flatMap((bullet) => {
+    if (!Object.prototype.hasOwnProperty.call(EZPAC_FEATURE_BULLET_LABELS, bullet)) return [];
+    return [EZPAC_FEATURE_BULLET_LABELS[bullet as keyof typeof EZPAC_FEATURE_BULLET_LABELS]];
+  });
+  const hasStructuredDescription = Boolean(
+    structuredDescription?.intro?.trim()
+    || structuredDescription?.bestFor?.length
+    || structuredBulletLabels.length,
+  );
   const visiblePersonalizationFields = useMemo(
     () => visibleConfigurationFields(configuration.personalization.fields, fields),
     [configuration.personalization.fields, fields],
@@ -672,6 +690,10 @@ export function CustomizationStudio({
       setSaveMessage("Looking for this saved design in your account...");
     }
   }, [cart, configuration, defaultPreset?.id, firstTemplate?.id, firstVariant?.id, isHydrated, product.id]);
+
+  useEffect(() => {
+    setSelectedProductImage(product.image);
+  }, [product.id, product.image]);
 
   useEffect(() => {
     if (!isHydrated || typeof window === "undefined") return;
@@ -1264,8 +1286,32 @@ export function CustomizationStudio({
                 />
               ) : (
               <div className={configuratorStyles.standardPreview}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={product.image} alt={product.name} />
+                {productImages.length > 1 ? (
+                  <div className={configuratorStyles.standardPreviewMedia}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={selectedProductImageUrl} alt={product.name} />
+                    <div className={configuratorStyles.standardPreviewThumbnails} aria-label="Product images" role="group">
+                      {productImages.map((image, index) => (
+                        <button
+                          aria-label={`Show product image ${index + 1}`}
+                          aria-pressed={image.src === selectedProductImageUrl}
+                          className={image.src === selectedProductImageUrl ? configuratorStyles.standardPreviewThumbnailActive : ""}
+                          key={image.id || image.src}
+                          onClick={() => setSelectedProductImage(image.src)}
+                          type="button"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img alt={image.alt || `${product.name} ${index + 1}`} src={image.src} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={product.image} alt={product.name} />
+                  </>
+                )}
                 {purchasePanel}
               </div>
              )}
@@ -1289,7 +1335,7 @@ export function CustomizationStudio({
           ref={practicalDetailsReveal.ref}
           className={`shell product-info-grid ${practicalDetailsReveal.className}`}
           data-scroll-reveal={practicalDetailsReveal.state}
-        ><div><span className="eyebrow">The practical details</span><h2>Made for everyday use</h2><p>{product.description}</p><ul>{product.features.map((feature) => <li key={feature}><Check /> {feature}</li>)}</ul></div><dl><div><dt>Material</dt><dd>{selectedVariant?.material || product.material}</dd></div><div><dt>Dimensions</dt><dd>{product.dimensions}</dd></div><div><dt>What is included</dt><dd>{selectedVariant?.packSize || product.packSize} pieces in your selected format</dd></div><div><dt>Production window</dt><dd>{product.productionDays.min}-{product.productionDays.max} working days after design review</dd></div>{product.careInstructions && <div><dt>Care</dt><dd>{product.careInstructions}</dd></div>}</dl></div>
+        ><div><span className="eyebrow">The practical details</span><h2>Made for everyday use</h2>{hasStructuredDescription ? <>{structuredDescription?.intro && <p>{structuredDescription.intro}</p>}{structuredDescription?.bestFor?.length ? <p><strong>Best for:</strong> {structuredDescription.bestFor.join(", ")}</p> : null}{structuredBulletLabels.length ? <ul>{structuredBulletLabels.map((label, index) => <li key={`${label}-${index}`}><Check /> {label}</li>)}</ul> : null}</> : <><p>{product.description}</p><ul>{product.features.map((feature) => <li key={feature}><Check /> {feature}</li>)}</ul></>}</div><dl><div><dt>Material</dt><dd>{selectedVariant?.material || product.material}</dd></div><div><dt>Dimensions</dt><dd>{product.dimensions}</dd></div><div><dt>What is included</dt><dd>{selectedVariant?.packSize || product.packSize} pieces in your selected format</dd></div><div><dt>Production window</dt><dd>{product.productionDays.min}-{product.productionDays.max} working days after design review</dd></div>{product.careInstructions && <div><dt>Care</dt><dd>{product.careInstructions}</dd></div>}</dl></div>
       </section>
 
       <div className={configuratorStyles.mobileBuyBar}><div><small>{quote.message}</small><strong>{formatPrice(displaySubtotal / 100)}</strong></div><button type="button" onClick={addToCart} disabled={quote.status !== "ready"}>{added ? "Added" : "Add to cart"}</button></div>
