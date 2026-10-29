@@ -19,6 +19,7 @@ import { readJson, validationError } from "@/lib/http";
 import { onboardingApiError } from "@/lib/onboarding-api";
 import { getPrisma } from "@/lib/prisma";
 import { normalizeProductCategoryIds } from "@/lib/product-category-links";
+import { productImageAssetUrl } from "@/lib/product-image-assets";
 import {
   RANBAZAAR_CATEGORY_PRESETS,
   findRanBazaarCategoryMatch,
@@ -95,6 +96,9 @@ function serializeCatalogProduct(product: any) {
     productType: typeof metadata.productType === "string" ? metadata.productType : "",
     price: product.basePricePaise / 100,
     imageUrl: product.images[0]?.url ?? "",
+    hasUploadedPrimaryImage: (Array.isArray(product.imageAssets) ? product.imageAssets : []).some((asset: any) =>
+      asset.kind === "primary" && productImageAssetUrl(asset.id) === product.images[0]?.url,
+    ),
     material: product.material ?? "",
     sizes: strings(metadata.sizes),
     sizeDescription: typeof dimensions.display === "string" ? dimensions.display : "",
@@ -433,16 +437,27 @@ export async function GET(request: Request) {
     const prisma = getPrisma();
     const productId = new URL(request.url).searchParams.get("productId");
     if (productId) {
-      const product = await prisma.product.findUnique({ where: { id: productId }, include: { categoryLinks: { select: { categoryId: true } }, images: { orderBy: { sortOrder: "asc" } }, imageAssets: { where: { kind: "surface-base" }, select: { id: true, surfaceId: true, altText: true }, orderBy: { createdAt: "desc" } }, personalizationFields: { orderBy: { sortOrder: "asc" } }, templateLinks: { orderBy: [{ isDefault: "desc" }, { sortOrder: "asc" }] } } });
+      const product = await prisma.product.findUnique({ where: { id: productId }, include: { categoryLinks: { select: { categoryId: true } }, images: { orderBy: { sortOrder: "asc" } }, imageAssets: { where: { kind: { in: ["primary", "surface-base"] } }, select: { id: true, kind: true, surfaceId: true, altText: true }, orderBy: { createdAt: "desc" } }, personalizationFields: { orderBy: { sortOrder: "asc" } }, templateLinks: { orderBy: [{ isDefault: "desc" }, { sortOrder: "asc" }] } } });
       if (!product) return NextResponse.json({ error: { code: "PRODUCT_NOT_FOUND", message: "The requested product was not found." } }, { status: 404, headers: { "Cache-Control": "no-store" } });
       return NextResponse.json({ data: { product: serializeCatalogProduct(product) } }, { headers: { "Cache-Control": "no-store" } });
     }
     const [categories, products, templates] = await Promise.all([
       prisma.category.findMany({ orderBy: { sortOrder: "asc" } }),
-      prisma.product.findMany({ include: { category: true, categoryLinks: { select: { categoryId: true } }, variants: { include: { inventory: true } } }, orderBy: { updatedAt: "desc" } }),
+      prisma.product.findMany({ include: { category: true, categoryLinks: { select: { categoryId: true } }, images: { where: { sortOrder: 0 }, take: 1, select: { url: true } }, variants: { include: { inventory: true } } }, orderBy: { updatedAt: "desc" } }),
       prisma.personalizationTemplate.findMany({ where: { status: "ACTIVE" }, select: { id: true, name: true, slug: true, theme: true, thumbnailUrl: true, premiumPricePaise: true }, orderBy: [{ theme: "asc" }, { name: "asc" }] }),
     ]);
-    return NextResponse.json({ data: { categories, templates: templates.map((template) => ({ id: template.id, name: template.name, slug: template.slug, theme: template.theme ?? "", thumbnailUrl: template.thumbnailUrl ?? "", premiumPrice: template.premiumPricePaise / 100 })), products: products.map((product) => ({ id: product.id, name: product.name, category: product.category.name, categoryId: product.categoryId, categoryIds: normalizeProductCategoryIds(product.categoryId, product.categoryLinks.map((link) => link.categoryId)), sku: product.baseSku, price: product.basePricePaise / 100, stock: product.variants.reduce((total, variant) => total + (variant.inventory?.quantityOnHand ?? 0), 0), status: product.status === "ACTIVE" ? "Active" : product.status === "ARCHIVED" ? "Archived" : "Draft", personalized: product.customizable, art: "labels" })) } }, { headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json({ data: { categories, templates: templates.map((template) => ({ id: template.id, name: template.name, slug: template.slug, theme: template.theme ?? "", thumbnailUrl: template.thumbnailUrl ?? "", premiumPrice: template.premiumPricePaise / 100 })), products: products.map((product) => {
+      const configurator = objectRecord(objectRecord(product.metadata).configurator);
+      return {
+        id: product.id, name: product.name, category: product.category.name, categoryId: product.categoryId,
+        categoryIds: normalizeProductCategoryIds(product.categoryId, product.categoryLinks.map((link) => link.categoryId)),
+        sku: product.baseSku, price: product.basePricePaise / 100,
+        stock: product.variants.reduce((total, variant) => total + (variant.inventory?.quantityOnHand ?? 0), 0),
+        status: product.status === "ACTIVE" ? "Active" : product.status === "ARCHIVED" ? "Archived" : "Draft",
+        personalized: product.customizable, art: "labels", imageUrl: product.images[0]?.url ?? "",
+        has3DTemplate: typeof configurator.previewTemplate === "string" && configurator.previewTemplate.startsWith("visualization:"),
+      };
+    }) } }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) { return onboardingApiError(error); }
 }
 

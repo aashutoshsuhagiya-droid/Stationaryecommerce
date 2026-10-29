@@ -261,11 +261,12 @@ function initialMappings(surfaces: Array<{ id: string; label: string }>): Mappin
   }));
 }
 
-export function ProductVisualizationStudio({ productId, productName, productType: initialProductType, surfaces, onTemplateStatusChange }: {
+export function ProductVisualizationStudio({ productId, productName, productType: initialProductType, surfaces, hasPrimaryImage = false, onTemplateStatusChange }: {
   productId: string;
   productName: string;
   productType?: string;
   surfaces: Array<{ id: string; label: string }>;
+  hasPrimaryImage?: boolean;
   onTemplateStatusChange?: () => void | Promise<void>;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -553,6 +554,26 @@ export function ProductVisualizationStudio({ productId, productName, productType
     }
   }
 
+  async function reuseProductImage() {
+    if (!hasPrimaryImage || workingAction) return;
+    setWorkingAction("reuse-product-image"); setError(""); setMessage("");
+    try {
+      const response = await fetch("/api/admin/visualization-studio/from-product-image", {
+        method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId }),
+      });
+      const payload = await response.json().catch(() => undefined) as ApiPayload | undefined;
+      const job = payload?.data?.job;
+      if (!response.ok || !isJob(job)) throw new Error(apiMessage(payload, "The product image could not be reused."));
+      setJobs((current) => [job, ...current.filter((item) => item.id !== job.id)]);
+      setSelectedJobId(job.id); setConfigurationMatchesConfirmation(false);
+      setMessage("Product image reused. The job status will update here as processing continues.");
+      void loadStudio(true);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The product image could not be reused.");
+    } finally { setWorkingAction(""); }
+  }
+
   async function patchStudio(body: Record<string, unknown>, actionKey: string) {
     setWorkingAction(actionKey); setError(''); setMessage('');
     try {
@@ -648,6 +669,9 @@ export function ProductVisualizationStudio({ productId, productName, productType
           </div>
           <input accept='image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp' className={styles.studioFileInput} onChange={(event) => chooseFile(event.target.files?.[0])} ref={fileInputRef} type='file' />
           <button className={styles.buttonSecondary} onClick={() => fileInputRef.current?.click()} type='button'><CloudUpload size={13} /> {selectedFile ? 'Replace image' : 'Browse images'}</button>
+          <button className={styles.buttonSecondary} disabled={!hasPrimaryImage || Boolean(workingAction)} onClick={() => void reuseProductImage()} title={hasPrimaryImage ? "Reuse this product's uploaded photo" : "Upload a primary product photo first"} type='button'>
+            <RefreshCw size={13} /> {workingAction === "reuse-product-image" ? "Reusing…" : "Reuse this product's uploaded photo"}
+          </button>
         </div>
         {workingAction === 'upload' && (
           <div className={styles.studioProgress} role='progressbar' aria-label='Image upload progress' aria-valuemax={100} aria-valuemin={0} aria-valuenow={uploadProgress}>

@@ -114,9 +114,11 @@ export type AdminProduct = {
   price: number;
   stock: number;
   orders: number;
-  status: "Active" | "Draft" | "Low stock";
+  status: "Active" | "Draft" | "Archived" | "Low stock";
   personalized: boolean;
   art: "labels" | "pencils" | "notebook" | "bottle" | "combo";
+  imageUrl?: string;
+  has3DTemplate?: boolean;
 };
 
 export const products: AdminProduct[] = [

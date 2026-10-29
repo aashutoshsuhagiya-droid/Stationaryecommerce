@@ -37,8 +37,10 @@ interface PlacementPreset { x: number; y: number; width: number; height: number 
 export interface RanBazaarCustomizationSurfacePreset {
   id: string;
   label: string;
-  /** Editor-only ratio. Physical dimensions deliberately remain unset. */
+  /** Editor-only ratio used by the customer canvas. */
   aspectRatio: number;
+  /** Suggested physical production dimensions used by the quick-list flow. */
+  suggestedMm?: { widthMm: number; heightMm: number };
   printableInset: number;
   text: { maximumElements: number; permissions: ArtworkEditPermissions; placement: PlacementPreset; rotation: readonly [number, number] };
   image: { enabled: boolean; required: boolean; maximumElements: number; permissions: ArtworkEditPermissions; placement: PlacementPreset; allowCrop: boolean };
@@ -102,12 +104,14 @@ function surface(input: {
   textPlacement?: PlacementPreset;
   imagePlacement?: PlacementPreset;
   printableInset?: number;
+  suggestedMm?: { widthMm: number; heightMm: number };
 }): RanBazaarCustomizationSurfacePreset {
   const imageMaximum = input.imageMaximum ?? 0;
   return {
     id: input.id ?? "primary",
     label: input.label ?? "Primary print area",
     aspectRatio: input.aspectRatio,
+    ...(input.suggestedMm ? { suggestedMm: { ...input.suggestedMm } } : {}),
     printableInset: input.printableInset ?? 0.08,
     text: {
       maximumElements: input.textMaximum,
@@ -137,6 +141,7 @@ const STARTERS = [
     ],
     surfaces: [surface({
       aspectRatio: 1.875,
+      suggestedMm: { widthMm: 150, heightMm: 80 },
       textMaximum: 3,
       textPlacement: { x: 0.08, y: 0.3, width: 0.84, height: 0.4 },
     })],
@@ -153,6 +158,7 @@ const STARTERS = [
     ],
     surfaces: [surface({
       aspectRatio: 5,
+      suggestedMm: { widthMm: 140, heightMm: 30 },
       textMaximum: 1,
       fixedText: true,
       printableInset: 0.06,
@@ -172,6 +178,7 @@ const STARTERS = [
     ],
     surfaces: [surface({
       aspectRatio: 0.7,
+      suggestedMm: { widthMm: 210, heightMm: 297 },
       textMaximum: 3,
       imageMaximum: 1,
       textPlacement: { x: 0.12, y: 0.62, width: 0.76, height: 0.2 },
@@ -189,7 +196,7 @@ const STARTERS = [
       fontField(),
       adminSelect("print-surface", "Print surface"),
     ],
-    surfaces: [surface({ aspectRatio: 1.667, textMaximum: 2, imageMaximum: 1 })],
+    surfaces: [surface({ aspectRatio: 1.667, suggestedMm: { widthMm: 80, heightMm: 60 }, textMaximum: 2, imageMaximum: 1 })],
     maximumElements: 3,
     artworkUpload: { enabled: true, acceptedMimeTypes: IMAGE_MIME_TYPES },
   },
@@ -204,6 +211,7 @@ const STARTERS = [
     ],
     surfaces: [surface({
       aspectRatio: 1.667,
+      suggestedMm: { widthMm: 100, heightMm: 60 },
       textMaximum: 3,
       imageMaximum: 1,
       textPlacement: { x: 0.1, y: 0.52, width: 0.8, height: 0.28 },
@@ -224,6 +232,7 @@ const STARTERS = [
     ],
     surfaces: [surface({
       aspectRatio: 0.833,
+      suggestedMm: { widthMm: 300, heightMm: 400 },
       textMaximum: 4,
       imageMaximum: 2,
       textPlacement: { x: 0.12, y: 0.68, width: 0.76, height: 0.16 },
@@ -244,6 +253,7 @@ const STARTERS = [
     ],
     surfaces: [surface({
       aspectRatio: 2.5,
+      suggestedMm: { widthMm: 60, heightMm: 25 },
       textMaximum: 3,
       textPlacement: { x: 0.08, y: 0.22, width: 0.84, height: 0.56 },
     })],
@@ -259,7 +269,7 @@ const STARTERS = [
       fontField(),
       adminSelect("finished-size", "Finished size"),
     ],
-    surfaces: [surface({ aspectRatio: 1, textMaximum: 4, imageMaximum: 2 })],
+    surfaces: [surface({ aspectRatio: 1, suggestedMm: { widthMm: 300, heightMm: 300 }, textMaximum: 4, imageMaximum: 2 })],
     maximumElements: 6,
     artworkUpload: { enabled: true, acceptedMimeTypes: IMAGE_MIME_TYPES },
   },
@@ -274,6 +284,7 @@ function cloneStarter(starter: RanBazaarCustomizationStarter): RanBazaarCustomiz
     })),
     surfaces: starter.surfaces.map((item) => ({
       ...item,
+      ...(item.suggestedMm ? { suggestedMm: { ...item.suggestedMm } } : {}),
       text: {
         ...item.text,
         permissions: { ...item.text.permissions },

@@ -1372,6 +1372,10 @@
   border-radius: 10px;
   background: var(--surface-subtle);
 }
+.productThumbImage { background: var(--surface-main); }
+.productThumbImage::before,
+.productThumbImage::after { display: none; }
+.productThumbImage img { width: 100%; height: 100%; object-fit: cover; }
 
 .productThumb::before,
 .productThumb::after {
@@ -2559,6 +2563,68 @@
   padding: 0 20px 28px;
   border-top: 1px solid var(--border-default);
 }
+.visualizationDetails { padding-top: 16px; }
+.visualizationDetails > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; list-style: none; color: var(--text-heading); font-size: 12px; font-weight: 750; cursor: pointer; }
+.visualizationDetails > summary::-webkit-details-marker { display: none; }
+.visualizationDetails > summary::after { content: "+"; order: -1; color: var(--text-secondary); }
+.visualizationDetails[open] > summary::after { content: "−"; }
+
+.quickListDrawer { width: min(1040px, calc(100vw - 24px)); }
+.quickListRail { display: flex; gap: 6px; padding: 14px 20px; border-bottom: 1px solid var(--border-default); background: var(--surface-main); }
+.quickListStep,
+.quickListStepActive { min-height: 36px; border: 1px solid transparent; border-radius: var(--admin-control-radius); display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px; color: var(--text-secondary); background: transparent; font-size: 10px; font-weight: 700; cursor: pointer; }
+.quickListStep span,
+.quickListStepActive span { width: 20px; height: 20px; border: 1px solid var(--border-strong); border-radius: 50%; display: grid; place-items: center; font-size: 9px; }
+.quickListStepActive { color: var(--text-heading); border-color: var(--border-strong); background: var(--surface-subtle); }
+.quickListStepActive span { color: var(--text-inverse); border-color: var(--button-primary); background: var(--button-primary); }
+.quickListContent { display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, 360px); gap: 16px; align-items: start; }
+.quickListContent > .quickListImportCard,
+.quickListContent > .quickListStarterGrid { grid-column: 1 / -1; }
+.quickListStarterGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 10px; }
+.quickListStarterGrid > .configCard { min-height: 150px; text-align: left; cursor: pointer; }
+button.configCard:hover { border-color: var(--border-focus); background: var(--surface-subtle); }
+.quickListStarterGrid small { color: var(--text-secondary); font-size: 10px; line-height: 1.45; }
+.quickListChips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+.quickListImportCard { display: grid; gap: 8px; padding: 14px; border: 1px solid var(--warning-border); border-radius: var(--admin-card-radius); background: var(--warning-bg); color: var(--warning); }
+.quickListImportCard p { margin: 0; color: var(--text-body); font-size: 10px; }
+.quickListImportCard > span { display: flex; flex-wrap: wrap; gap: 8px; }
+.quickListForm { display: grid; gap: 14px; min-width: 0; }
+.quickListSku { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 9px 10px; border: 1px solid var(--border-default); border-radius: var(--admin-control-radius); background: var(--surface-subtle); color: var(--text-secondary); font-size: 10px; }
+.quickListSku strong { margin-left: 5px; color: var(--text-heading); letter-spacing: .04em; }
+.quickListSku .input { flex: 1 1 160px; }
+.quickListChecklist { display: grid; gap: 6px; padding: 12px; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); background: var(--surface-main); }
+.quickListChecklist > strong { color: var(--text-heading); font-size: 11px; }
+.quickListChecklist p { display: flex; align-items: flex-start; gap: 6px; margin: 0; font-size: 9px; line-height: 1.4; text-transform: capitalize; }
+.quickListReady { color: var(--success); }
+.quickListNotReady { color: var(--warning); }
+.quickListReady span,
+.quickListNotReady span { width: 14px; height: 14px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; background: var(--surface-subtle); }
+.surfaceCustomerPreview { display: grid; gap: 10px; padding: 13px; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); background: var(--surface-main); }
+.surfacePreviewHeader { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.surfacePreviewHeader > div { display: grid; gap: 2px; }
+.surfacePreviewHeader span { color: var(--text-secondary); font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.surfacePreviewHeader strong { color: var(--text-heading); font-size: 11px; }
+.surfacePreviewHeader small { padding: 3px 6px; border-radius: 99px; color: var(--text-secondary); background: var(--surface-subtle); font-size: 8px; font-weight: 700; }
+.surfacePreviewCanvas { position: relative; min-height: 180px; overflow: hidden; display: grid; place-items: center; border: 1px solid var(--border-strong); border-radius: var(--admin-control-radius); background: var(--surface-subtle); }
+.surfacePreviewBase { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.surfacePreviewEmpty { color: var(--text-muted); font-size: 10px; font-weight: 700; }
+.surfacePreviewCanvas .templateSafeArea { inset: 10%; z-index: 1; border-color: var(--border-focus); }
+.surfacePreviewText { position: relative; z-index: 2; max-width: 74%; padding: 8px; font-size: clamp(12px, 3vw, 18px); }
+.surfacePreviewPhoto { position: absolute; z-index: 3; right: 12%; bottom: 13%; width: 24%; max-height: 30%; border: 1px solid var(--border-strong); border-radius: 5px; object-fit: cover; background: var(--surface-main); }
+.surfaceCustomerPreview > p { margin: 0; color: var(--text-secondary); font-size: 9px; line-height: 1.5; }
+.quickListPublishChoice { display: flex; flex-wrap: wrap; gap: 11px; padding: 10px; margin: 0; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); }
+.quickListPublishChoice legend { padding: 0 4px; color: var(--text-heading); font-size: 10px; font-weight: 700; }
+.quickListPublishChoice label { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); font-size: 10px; }
+.quickListSequence { display: flex; flex-wrap: wrap; gap: 6px; color: var(--text-muted); font-size: 9px; }
+.quickListSequence span { padding: 4px 6px; border: 1px solid var(--border-default); border-radius: 99px; background: var(--surface-main); }
+.quickListSequenceDone { color: var(--success); }
+.quickListSequenceWorking { color: var(--text-body); }
+.quickListSequenceFailed { color: var(--danger); }
+.quickListSequenceWaiting { color: var(--text-muted); }
+.quickListSuccess { display: grid; gap: 7px; padding: 13px; border: 1px solid var(--success-border); border-radius: var(--admin-card-radius); background: var(--success-bg); }
+.quickListSuccess strong { color: var(--success); font-size: 12px; }
+.quickListSuccess p { margin: 0; color: var(--text-body); font-size: 10px; }
+.quickListSuccess a { color: var(--text-heading); text-decoration: underline; }
 
 .visualizationStudio {
   display: grid;
@@ -2795,4 +2861,13 @@
   .studioAnalysis dl { grid-template-columns: 1fr; }
   .studioTemplateCreate,
   .studioTemplateReuse { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .quickListDrawer { width: min(100vw, 680px); }
+  .quickListRail { overflow-x: auto; padding-inline: 14px; }
+  .quickListRail button { white-space: nowrap; }
+  .quickListContent { grid-template-columns: 1fr; }
+  .quickListContent > .quickListImportCard,
+  .quickListContent > .quickListStarterGrid { grid-column: auto; }
 }

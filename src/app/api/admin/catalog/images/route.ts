@@ -8,11 +8,13 @@ import { requireCatalogAdmin } from "@/lib/catalog-admin";
 import { apiError, readJson } from "@/lib/http";
 import {
   createProductImageAsset,
+  hasConfiguredProductImageSurface,
   isProductImageAssetId,
   isProductImageAssetKind,
   prepareProductImageAssetUpload,
   PRODUCT_IMAGE_MAXIMUM_REQUEST_BYTES,
   productImageAssetUrl,
+  linkProductSurfaceBaseImage,
   ProductImageAssetError,
   type ProductImageAssetKind,
 } from "@/lib/product-image-assets";
@@ -94,17 +96,6 @@ function parseUploadForm(form: FormData) {
   };
 }
 
-function configuredSurfaceIds(metadata: unknown) {
-  const configurator = objectRecord(objectRecord(metadata).configurator);
-  const printAreas = Array.isArray(configurator.printAreas) ? configurator.printAreas : [];
-  return new Set(printAreas.flatMap((area) => {
-    const record = objectRecord(area);
-    return typeof record.id === "string" && /^[a-z][a-z0-9-]{0,79}$/.test(record.id)
-      ? [record.id]
-      : [];
-  }));
-}
-
 function bumpedMetadata(metadata: unknown, updateConfigurator: (configurator: Record<string, unknown>) => Record<string, unknown>) {
   const current = objectRecord(metadata);
   const configurator = objectRecord(current.configurator);
@@ -167,7 +158,7 @@ export async function POST(request: Request) {
       if (!product) {
         throw new CatalogImageRequestError(404, "PRODUCT_NOT_FOUND", "The requested product was not found.");
       }
-      if (input.kind === "surface-base" && (!input.surfaceId || !configuredSurfaceIds(product.metadata).has(input.surfaceId))) {
+      if (input.kind === "surface-base" && (!input.surfaceId || !hasConfiguredProductImageSurface(product.metadata, input.surfaceId))) {
         throw new CatalogImageRequestError(422, "SURFACE_ID_UNKNOWN", "Choose a configured printable surface for this base image.");
       }
 
@@ -181,12 +172,11 @@ export async function POST(request: Request) {
         });
       }
       if (input.kind === "surface-base" && input.surfaceId) {
-        const key = `${input.surfaceId}.baseImage`;
-        await transaction.product.update({
-          where: { id: product.id },
-          data: {
-            metadata: bumpedMetadata(product.metadata, (configurator) => ({ ...configurator, [key]: url })),
-          },
+        await linkProductSurfaceBaseImage({
+          database: transaction,
+          product,
+          surfaceId: input.surfaceId,
+          assetId: asset.id,
         });
       }
       return asset;

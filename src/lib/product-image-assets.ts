@@ -65,10 +65,42 @@ function metadataRecord(value: unknown): Record<string, unknown> {
     : {};
 }
 
-function hasConfiguredSurface(metadata: unknown, surfaceId: string) {
+export function hasConfiguredProductImageSurface(metadata: unknown, surfaceId: string) {
   const configurator = metadataRecord(metadataRecord(metadata).configurator);
   const printAreas = Array.isArray(configurator.printAreas) ? configurator.printAreas : [];
   return printAreas.some((area) => metadataRecord(area).id === surfaceId);
+}
+
+function nextConfigurationVersion(value: Record<string, unknown>) {
+  const current = typeof value.configurationVersion === "string" ? Number(value.configurationVersion) : 0;
+  return Number.isSafeInteger(current) && current >= 0 && current < 1_000_000 ? String(current + 1) : "1";
+}
+
+/**
+ * Writes the one canonical configurator pointer for a surface base image and
+ * advances the version used by order snapshots. Both admin image paths use it.
+ */
+export async function linkProductSurfaceBaseImage(input: {
+  database: any;
+  product: { id: string; metadata: unknown };
+  surfaceId: string;
+  assetId: string;
+}) {
+  const current = metadataRecord(input.product.metadata);
+  const configurator = metadataRecord(current.configurator);
+  const metadata = {
+    ...current,
+    configurator: {
+      ...configurator,
+      [`${input.surfaceId}.baseImage`]: productImageAssetUrl(input.assetId),
+      configurationVersion: nextConfigurationVersion(configurator),
+    },
+  };
+  await input.database.product.update({
+    where: { id: input.product.id },
+    data: { metadata },
+  });
+  return metadata;
 }
 
 async function database() {
@@ -118,12 +150,15 @@ export async function createProductImageAsset(input: {
   kind: ProductImageAssetKind;
   surfaceId?: string;
   altText?: string;
-  file: File;
+  file?: File;
   prepared?: PreparedArtworkUpload;
   database?: any;
 }) {
   validateCreateInput(input);
-  const prepared = input.prepared ?? await prepareProductImageAssetUpload(input.file);
+  if (!input.prepared && !input.file) {
+    throw new ProductImageAssetError(400, "PRODUCT_IMAGE_REQUIRED", "Choose a JPG, PNG or WEBP image to upload.");
+  }
+  const prepared = input.prepared ?? await prepareProductImageAssetUpload(input.file!);
   const prisma = input.database ?? await database();
   return prisma.productImageAsset.create({
     data: {
@@ -164,7 +199,7 @@ function isCurrentPublicAsset(asset: any) {
   if (asset.kind === "primary") return asset.product?.images?.[0]?.url === publicUrl;
   if (asset.kind !== "surface-base" || !asset.surfaceId) return false;
   const configurator = metadataRecord(metadataRecord(asset.product?.metadata).configurator);
-  return hasConfiguredSurface(asset.product?.metadata, asset.surfaceId)
+  return hasConfiguredProductImageSurface(asset.product?.metadata, asset.surfaceId)
     && configurator[`${asset.surfaceId}.baseImage`] === publicUrl;
 }
 

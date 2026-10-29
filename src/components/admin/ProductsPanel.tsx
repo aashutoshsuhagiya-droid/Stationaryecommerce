@@ -18,7 +18,10 @@ import {
 import { products as initialProducts, inr, type AdminProduct } from "./admin-data";
 import { Card, PageHeader, StatusBadge, statusTone } from "./AdminUI";
 import { ProductArtworkPolicyEditor } from "./ProductArtworkPolicyEditor";
+import { ProductListThumb } from "./ProductListThumb";
 import { ProductVisualizationStudio } from "./ProductVisualizationStudio";
+import { QuickListProductWizard } from "./QuickListProductWizard";
+import { createRanBazaarStarterDraft } from "@/lib/admin-quick-list";
 import { buildDefaultAdminArtworkPolicy, reconcileAdminArtworkPolicy } from "@/lib/admin-artwork-policy";
 import {
   ezpacIndustryCollectionCategorySlug,
@@ -31,8 +34,6 @@ import {
 } from "@/lib/ezpac-packaging-presets";
 import { listRanBazaarCategoryGroups } from "@/lib/ranbazaar-category-presets";
 import {
-  applyRanBazaarCustomizationStarterPolicy,
-  getRanBazaarCustomizationStarter,
   listRanBazaarCustomizationStarters,
 } from "@/lib/ranbazaar-customization-presets";
 import type { ProductArtworkPolicy } from "@/lib/types";
@@ -76,12 +77,14 @@ type EditingProduct = {
   productType: string;
   price: number;
   imageUrl: string;
+  hasUploadedPrimaryImage?: boolean;
   baseImages?: Record<string, ProductBaseImage>;
   material: string;
   sizes: string[];
   sizeDescription: string;
   features: string[];
   description: string;
+  status: string;
   customizable: boolean;
   published: boolean;
   allow2D: boolean;
@@ -173,6 +176,9 @@ export function ProductsPanel() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All categories");
   const [adding, setAdding] = useState(false);
+  const [quickAdding, setQuickAdding] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("All statuses");
+  const [visualizationOpen, setVisualizationOpen] = useState(false);
   const [categoryRecords, setCategoryRecords] = useState<CategoryRecord[]>([]);
   const [templateOptions, setTemplateOptions] = useState<TemplateOption[]>([]);
   const [productCategoryId, setProductCategoryId] = useState("");
@@ -332,6 +338,25 @@ export function ProductsPanel() {
     }
   }
 
+  async function reuseExistingPrimaryAsBase(surfaceId: string) {
+    if (!editingProduct) return;
+    setSaving(true); setError("");
+    try {
+      const response = await fetch("/api/admin/catalog/images/from-source", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: editingProduct.id, surfaceId, source: "primary" }),
+      });
+      const payload = await response.json().catch(() => null) as { data?: { asset?: ProductBaseImage }; error?: { message?: string } } | null;
+      const asset = payload?.data?.asset;
+      if (!response.ok || !asset) throw new Error(payload?.error?.message || "The product photo could not be reused.");
+      setSurfaceBaseImages((current) => ({ ...current, [surfaceId]: asset }));
+      setSurfaceBasePreviews((current) => ({ ...current, [surfaceId]: asset.url }));
+      await loadCatalog();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The product photo could not be reused.");
+    } finally { setSaving(false); }
+  }
+
   async function removeSurfaceBase(surfaceId: string) {
     const asset = surfaceBaseImages[surfaceId];
     if (!asset) {
@@ -421,9 +446,11 @@ export function ProductsPanel() {
     const needle = query.trim().toLowerCase();
     return catalog.filter((product) =>
       (!needle || [product.name, product.category, product.sku].some((value) => value.toLowerCase().includes(needle))) &&
-      (category === "All categories" || product.category === category),
+      // The API emits Active, Draft, and Archived; legacy static data can still include Low stock.
+      (category === "All categories" || product.category === category) &&
+      (statusFilter === "All statuses" || product.status === statusFilter),
     );
-  }, [catalog, query, category]);
+  }, [catalog, query, category, statusFilter]);
 
   async function createProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -515,7 +542,14 @@ export function ProductsPanel() {
         const patchPayload = await patchResponse.json();
         if (!patchResponse.ok) throw new Error(patchPayload.error?.message || "The uploaded images could not be attached.");
       }
-      await loadCatalog(); setAdding(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setArtworkUploadEnabled(false); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts();
+      await loadCatalog();
+      const shouldOpenVisualization = !editingProduct && data.get("openVisualization") === "on";
+      if (shouldOpenVisualization) {
+        setVisualizationOpen(true);
+        await editProduct(productId);
+        return;
+      }
+      setAdding(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setArtworkUploadEnabled(false); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts();
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not save product."); } finally { setSaving(false); }
   }
 
@@ -573,43 +607,23 @@ export function ProductsPanel() {
   }
 
   function applyRanBazaarCustomizationStarter(starterId: string) {
-    const starter = getRanBazaarCustomizationStarter(starterId);
+    const starter = createRanBazaarStarterDraft(starterId);
     if (!starter) return;
-    const nextFields = starter.fields.map((field, index) => ({
+    setConfigurationFields(starter.configurationFields.map((field, index) => ({
       ...emptyConfigurationField(`ranbazaar-${starter.id}-${index}`, field.key),
-      key: field.key,
-      label: field.label,
-      inputType: field.inputType,
-      required: field.required,
-      options: field.options?.map((option) => option.label).join(", ") ?? "",
-      minLength: field.minLength?.toString() ?? "",
-      maxLength: field.maxLength?.toString() ?? "",
-      allowedPattern: field.allowedPattern ?? "",
-      placeholder: field.placeholder ?? "",
-      helpText: field.helpText ?? (field.optionSource === "admin_configured"
-        ? "Configure supported choices, then enable this field for customers."
-        : ""),
-      defaultValue: field.defaultValue ?? "",
-      enabled: field.optionSource !== "admin_configured",
-      customerVisible: field.optionSource !== "admin_configured",
-    }));
-    const nextPrintAreas = starter.surfaces.map((surface) => ({
-      id: surface.id,
-      label: surface.label,
-      widthMm: "",
-      heightMm: "",
-      safeInsetMm: "",
-    }));
-    const nextArtworkTypes = [...starter.artworkUpload.acceptedMimeTypes];
-    const basePolicy = buildDefaultAdminArtworkPolicy(policyPrintAreas(nextPrintAreas), {
-      uploadsEnabled: starter.artworkUpload.enabled,
-      allowedMimeTypes: nextArtworkTypes,
-    });
-    setConfigurationFields(nextFields);
-    setPrintAreas(nextPrintAreas);
-    setArtworkUploadEnabled(starter.artworkUpload.enabled);
-    setAcceptedArtworkTypes(nextArtworkTypes);
-    setArtworkPolicy(applyRanBazaarCustomizationStarterPolicy(basePolicy, starter.id));
+      key: field.key, label: field.label, inputType: field.inputType, required: field.required,
+      options: field.options.map((option) => option.label).join(", "),
+      minLength: field.minLength?.toString() ?? "", maxLength: field.maxLength?.toString() ?? "",
+      allowedPattern: field.allowedPattern, placeholder: field.placeholder, helpText: field.helpText,
+      defaultValue: field.defaultValue, enabled: field.enabled, customerVisible: field.customerVisible,
+    })));
+    setPrintAreas(starter.printAreas.map((area) => ({
+      id: area.id, label: area.label, widthMm: area.widthMm?.toString() ?? "",
+      heightMm: area.heightMm?.toString() ?? "", safeInsetMm: area.safeInsetMm?.toString() ?? "",
+    })));
+    setArtworkUploadEnabled(starter.artworkUpload);
+    setAcceptedArtworkTypes(starter.acceptedArtworkTypes);
+    setArtworkPolicy(starter.artworkPolicy);
     setError("");
   }
 
@@ -732,6 +746,7 @@ export function ProductsPanel() {
         uploadsEnabled: product.artworkUpload,
         allowedMimeTypes: loadedArtworkTypes,
       }));
+      setVisualizationOpen((current) => current || product.previewTemplate.startsWith("visualization:"));
       setAdding(true);
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not load this product."); } finally { setSaving(false); }
   }
@@ -759,16 +774,26 @@ export function ProductsPanel() {
   const activeCount = catalog.filter((product) => product.status === "Active").length;
   const lowCount = catalog.filter((product) => product.status === "Low stock").length;
 
+  function exportFilteredProducts() {
+    const blob = new Blob([JSON.stringify(filtered, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url; link.download = "catalog-products.json";
+    document.body.append(link); link.click(); link.remove();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <>
       <PageHeader
         actions={
           <>
-            <button className={styles.buttonSecondary} type="button"><Download size={14} /> Export</button>
+            <button className={styles.buttonSecondary} onClick={exportFilteredProducts} type="button"><Download size={14} /> Export</button>
             <button className={styles.buttonSecondary} onClick={() => void addCategory(false)} type="button"><Plus size={14} /> Add category</button>
             <button className={styles.buttonSecondary} onClick={() => void addCategory(true)} type="button"><Plus size={14} /> Add subcategory</button>
             <button className={styles.buttonSecondary} onClick={() => { setError(""); setManagingCategories(true); }} type="button"><SlidersHorizontal size={14} /> Manage categories</button>
-            <button className={styles.buttonPrimary} onClick={() => { setError(""); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkUploadEnabled(false); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts(); setAdding(true); }} type="button"><Plus size={14} /> Add product</button>
+            <button className={styles.buttonSecondary} onClick={() => { setError(""); setQuickAdding(true); }} type="button"><Sparkles size={14} /> Quick add</button>
+            <button className={styles.buttonPrimary} onClick={() => { setError(""); setVisualizationOpen(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkUploadEnabled(false); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts(); setAdding(true); }} type="button"><Plus size={14} /> Add product</button>
           </>
         }
         description="Build a clean catalog, control inventory, and connect each personalized product to the right design experience."
@@ -793,8 +818,8 @@ export function ProductsPanel() {
             <option>All categories</option>
             {categories.map((option) => <option key={option}>{option}</option>)}
           </select>
-          <select aria-label="Product status" className={styles.select}><option>All statuses</option><option>Active</option><option>Draft</option><option>Low stock</option></select>
-          <button className={styles.buttonSecondary} type="button"><SlidersHorizontal size={13} /> Filters</button>
+          <select aria-label="Product status" className={styles.select} onChange={(event) => setStatusFilter(event.target.value)} value={statusFilter}><option>All statuses</option><option>Active</option><option>Draft</option><option>Archived</option><option>Low stock</option></select>
+          <button className={styles.buttonSecondary} onClick={() => setStatusFilter("All statuses")} type="button"><SlidersHorizontal size={13} /> Filters</button>
           <span className={styles.resultCount}>{filtered.length} products</span>
         </div>
 
@@ -809,11 +834,11 @@ export function ProductsPanel() {
                     <tr key={product.id}>
                       <td>
                         <div className={styles.productNameCell}>
-                          <span className={styles.productThumb} data-art={product.art} />
+                          <ProductListThumb art={product.art} imageUrl={product.imageUrl} name={product.name} />
                           <span className={styles.cellStack}><strong>{product.name}</strong><span>{product.category} · {product.sku}</span></span>
                         </div>
                       </td>
-                      <td><StatusBadge tone={statusTone(product.status)}>{product.status}</StatusBadge></td>
+                      <td><span className={styles.quickListChips}><StatusBadge tone={statusTone(product.status)}>{product.status}</StatusBadge>{product.has3DTemplate && <StatusBadge tone="success">3D ✓</StatusBadge>}</span></td>
                       <td>
                         <span className={styles.cellStack}><strong>{product.stock ? `${product.stock} in stock` : "Not tracked"}</strong>
                           <span className={`${styles.stockMeter} ${product.stock < 20 ? styles.stockLow : ""}`}><span style={{ width: `${stockWidth}%` }} /></span>
@@ -892,11 +917,11 @@ export function ProductsPanel() {
 
       {adding && (
         <>
-          <button aria-label="Close product form" className={styles.drawerBackdrop} onClick={() => { setAdding(false); setEditingProduct(null); clearImageDrafts(); }} type="button" />
+          <button aria-label="Close product form" className={styles.drawerBackdrop} onClick={() => { setAdding(false); setEditingProduct(null); setVisualizationOpen(false); clearImageDrafts(); }} type="button" />
           <aside aria-label="Add product" className={styles.drawer}>
             <div className={styles.drawerHeader}>
               <div><h3>{editingProduct ? "Configure product" : "Add a new product"}</h3><p>{editingProduct ? "Changes update the live product configuration without changing its product ID or URL." : "Start with the essentials. You can add variants next."}</p></div>
-              <button aria-label="Close" className={styles.iconButton} onClick={() => { setAdding(false); setEditingProduct(null); clearImageDrafts(); }} type="button"><X size={16} /></button>
+              <button aria-label="Close" className={styles.iconButton} onClick={() => { setAdding(false); setEditingProduct(null); setVisualizationOpen(false); clearImageDrafts(); }} type="button"><X size={16} /></button>
             </div>
             <form className={styles.drawerBody} key={editingProduct?.id ?? "new"} noValidate onSubmit={createProduct}>
               <div className={styles.personalizationCard}>
@@ -942,6 +967,7 @@ export function ProductsPanel() {
                         }
                       }} type="file" />
                       <small>{editingProduct ? "Uploads immediately and updates the product image URL." : "A selected file is uploaded after the initial product save, then attached as its primary image."}</small>
+                      {editingProduct && editingProduct.status !== "Active" && <small>Draft products&apos; images preview blank — they go live at /api/product-images once published.</small>}
                     </label>
                   </div>
                   <details className={styles.assetUrlFallback}>
@@ -1129,6 +1155,8 @@ export function ProductsPanel() {
                                 const isPersistedSurface = Boolean(editingProduct?.printAreas.some((surface) => surface.id === surfaceId));
                                 if (isPersistedSurface) void uploadExistingSurfaceBase(surfaceId, file);
                               }} type="file" />
+                              {!canUpload && <p className={styles.configHint}>Surface ID must be a-z, digits, '-' (≤80 chars) to upload a base image <button className={styles.buttonGhost} onClick={() => changePrintAreaId(index, safeKey(area.label, `surface-${index + 1}`))} type="button">Auto ID</button></p>}
+                              {editingProduct?.hasUploadedPrimaryImage && canUpload && <button className={styles.buttonGhost} disabled={saving} onClick={() => void reuseExistingPrimaryAsBase(surfaceId)} type="button">Use this product&apos;s photo</button>}
                               {(surfaceBaseImages[surfaceId] || pendingSurfaceBaseImages[surfaceId]) && <button className={styles.buttonGhost} disabled={saving} onClick={() => void removeSurfaceBase(surfaceId)} type="button"><Trash2 size={13} /> Remove</button>}
                             </div>
                           </div>;
@@ -1147,32 +1175,49 @@ export function ProductsPanel() {
                     </div>
                   </div>
                   <label className={styles.toggleRow}><span className={styles.toggleCopy}><strong>Publish on storefront</strong><span>Customers can see it immediately after saving.</span></span><input defaultChecked={editingProduct?.published} name="published" type="checkbox" /></label>
+                  {!editingProduct && <label className={styles.compactCheck}><input name="openVisualization" type="checkbox" /> Open visualization studio after save</label>}
                   {error && <p className={styles.formError} role="alert">{error}</p>}
                 </div>
               </div>
               <div className={styles.drawerFooter}>
-                <button className={styles.buttonSecondary} onClick={() => { setAdding(false); setEditingProduct(null); clearImageDrafts(); }} type="button">Cancel</button>
+                <button className={styles.buttonSecondary} onClick={() => { setAdding(false); setEditingProduct(null); setVisualizationOpen(false); clearImageDrafts(); }} type="button">Cancel</button>
                 <button className={styles.buttonPrimary} disabled={saving || !categoryRecords.length} type="submit"><Archive size={13} /> {saving ? "Saving…" : editingProduct ? "Save changes" : "Save product"}</button>
               </div>
             </form>
             {editingProduct && (
               <div className={styles.visualizationDrawerSlot}>
-                <ProductVisualizationStudio
-                  key={editingProduct.id}
-                  productId={editingProduct.id}
-                  productName={editingProduct.name}
-                  productType={productType || editingProduct.productType}
-                  surfaces={printAreas.map((area, index) => ({
-                    id: area.id || `surface-${index + 1}`,
-                    label: area.label.trim() || `Surface ${index + 1}`,
-                  }))}
-                  onTemplateStatusChange={refreshEditingProductPreviewState}
-                />
+                <details className={styles.visualizationDetails} onToggle={(event) => setVisualizationOpen(event.currentTarget.open)} open={visualizationOpen}>
+                  <summary><span>3D visualization studio</span><StatusBadge tone={editingProduct.previewTemplate.startsWith("visualization:") ? "success" : "muted"}>{editingProduct.previewTemplate.startsWith("visualization:") ? "3D published ✓" : "No 3D template yet"}</StatusBadge></summary>
+                  <ProductVisualizationStudio
+                    key={editingProduct.id}
+                    hasPrimaryImage={editingProduct.hasUploadedPrimaryImage === true}
+                    productId={editingProduct.id}
+                    productName={editingProduct.name}
+                    productType={productType || editingProduct.productType}
+                    surfaces={printAreas.map((area, index) => ({
+                      id: area.id || `surface-${index + 1}`,
+                      label: area.label.trim() || `Surface ${index + 1}`,
+                    }))}
+                    onTemplateStatusChange={refreshEditingProductPreviewState}
+                  />
+                </details>
               </div>
             )}
           </aside>
         </>
       )}
+
+      {quickAdding && <QuickListProductWizard
+        categories={categoryRecords}
+        onClose={() => setQuickAdding(false)}
+        onImportPackaging={() => importPackagingCategoryStarters(packagingCategoryStarters.map((starter) => starter.id), "all packaging groups")}
+        onImportRanBazaar={() => importRanBazaarCategoryStarters(ranBazaarCategoryStarters.map((starter) => starter.id), "all RanBazaar category groups")}
+        onSaved={async (productId) => {
+          setQuickAdding(false);
+          setVisualizationOpen(true);
+          await editProduct(productId);
+        }}
+      />}
     </>
   );
 }
