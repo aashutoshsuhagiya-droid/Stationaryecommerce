@@ -3,12 +3,16 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import {
   Archive,
+  Check,
   ChevronDown,
+  ChevronRight,
   ChevronUp,
   Download,
+  Folder,
   LayoutTemplate,
   MoreHorizontal,
   Package,
+  Pencil,
   Plus,
   Search,
   SlidersHorizontal,
@@ -42,6 +46,8 @@ import type { ProductArtworkPolicy } from "@/lib/types";
 import styles from "./admin.module.css";
 
 type CategoryRecord = { id: string; slug: string; name: string; parentId: string | null; description?: string | null; imageUrl?: string | null; isActive?: boolean; sortOrder: number };
+type CatalogProduct = AdminProduct & { categoryId?: string; categoryIds?: string[] };
+type CategoryTreeItem = CategoryRecord & { children: CategoryRecord[]; productCount: number };
 type ConfigurationFieldInput = {
   id: string;
   key: string;
@@ -71,7 +77,7 @@ type TemplateOption = { id: string; name: string; slug: string; theme: string; t
 type TemplateLinkInput = { templateId: string; isDefault: boolean; sortOrder?: number };
 type ProductBaseImage = { id: string; url: string; altText: string | null };
 type CatalogResponse = {
-  data?: { products?: AdminProduct[]; categories?: CategoryRecord[]; templates?: TemplateOption[] };
+  data?: { products?: CatalogProduct[]; categories?: CategoryRecord[]; templates?: TemplateOption[] };
   error?: { message?: string };
 };
 type EditingProduct = {
@@ -179,7 +185,7 @@ function categoryPath(category: CategoryRecord, records: CategoryRecord[]) {
 }
 
 export function ProductsPanel() {
-  const [catalog, setCatalog] = useState<AdminProduct[]>(initialProducts);
+  const [catalog, setCatalog] = useState<CatalogProduct[]>(initialProducts);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All categories");
   const [adding, setAdding] = useState(false);
@@ -214,6 +220,16 @@ export function ProductsPanel() {
   const [pendingProductId, setPendingProductId] = useState<string | null>(null);
   const objectUrls = useRef(new Set<string>());
   const [managingCategories, setManagingCategories] = useState(false);
+  const [categoryAddMode, setCategoryAddMode] = useState<"root" | "subcategory">("root");
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [newSubcategoryName, setNewSubcategoryName] = useState("");
+  const [expandedCategoryIds, setExpandedCategoryIds] = useState<string[]>([]);
+  const [subcategoryParentId, setSubcategoryParentId] = useState<string | null>(null);
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
+  const [categoryDeleteTarget, setCategoryDeleteTarget] = useState<CategoryRecord | null>(null);
+  const [categoryNotice, setCategoryNotice] = useState("");
+  const categoryRootInputRef = useRef<HTMLInputElement>(null);
+  const subcategoryInputRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [catalogLoading, setCatalogLoading] = useState(true);
@@ -724,19 +740,115 @@ export function ProductsPanel() {
     }
   }
 
-  async function addCategory(parentRequired = false) {
-    const name = window.prompt(parentRequired ? "Subcategory name" : "Top-level category name");
-    if (!name?.trim()) return;
-    const parentChoices = categoryRecords.filter((category) => !category.parentId);
-    const parentName = parentRequired
-      ? window.prompt(`Parent category (required). Available: ${parentChoices.map((category) => categoryPath(category, categoryRecords)).join(", ") || "none"}`)?.trim()
-      : undefined;
-    if (parentRequired && !parentName) { setError("Select a parent category before creating a subcategory."); return; }
-    const parentId = parentName ? parentChoices.find((category) => categoryPath(category, categoryRecords).toLowerCase() === parentName.toLowerCase())?.id : undefined;
-    if (parentName && !parentId) { setError("Parent category was not found. Create it first or leave the parent blank."); return; }
-    const response = await fetch("/api/admin/catalog", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "category", name: name.trim(), parentId }) });
-    const payload = await response.json().catch(() => null) as { error?: { message?: string } } | null;
-    if (response.ok) await loadCatalog(); else setError(payload?.error?.message || "Could not create the category.");
+  function focusRootCategoryInput() {
+    window.setTimeout(() => categoryRootInputRef.current?.focus(), 0);
+  }
+
+  function focusSubcategoryInput() {
+    window.setTimeout(() => subcategoryInputRef.current?.focus(), 0);
+  }
+
+  function setCategoryExpanded(categoryId: string, expanded: boolean) {
+    setExpandedCategoryIds((current) => expanded
+      ? current.includes(categoryId) ? current : [...current, categoryId]
+      : current.filter((id) => id !== categoryId));
+  }
+
+  function openSubcategoryCreator(parentId: string) {
+    setCategoryAddMode("subcategory");
+    setCategoryExpanded(parentId, true);
+    setSubcategoryParentId(parentId);
+    setNewSubcategoryName("");
+    focusSubcategoryInput();
+  }
+
+  function updateCategoryDraft(categoryId: string, patch: Partial<CategoryRecord>) {
+    setCategoryRecords((current) => current.map((item) => item.id === categoryId ? { ...item, ...patch } : item));
+  }
+
+  async function createCategoryRecord(name: string, parentId: string | null) {
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      setError(parentId ? "Enter a subcategory name." : "Enter a category name.");
+      return null;
+    }
+    setSaving(true);
+    setError("");
+    setCategoryNotice("");
+    try {
+      const response = await fetch("/api/admin/catalog", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "category", name: trimmedName, parentId }),
+      });
+      const payload = await response.json().catch(() => null) as {
+        data?: { id?: string; name?: string; category?: { id?: string; name?: string } };
+        error?: { message?: string };
+      } | null;
+      if (!response.ok) throw new Error(payload?.error?.message || "Could not create the category.");
+      const created = payload?.data?.category ?? payload?.data;
+      await loadCatalog();
+      setCategoryNotice(`${parentId ? "Subcategory" : "Category"} "${created?.name ?? trimmedName}" was created.`);
+      return typeof created?.id === "string" ? created.id : null;
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not create the category.");
+      return null;
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function createRootCategory(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const createdId = await createCategoryRecord(newCategoryName, null);
+    if (!createdId) return;
+    setNewCategoryName("");
+    setCategoryExpanded(createdId, true);
+    openSubcategoryCreator(createdId);
+  }
+
+  async function createSubcategory(event: FormEvent<HTMLFormElement>, parentId: string) {
+    event.preventDefault();
+    const createdId = await createCategoryRecord(newSubcategoryName, parentId);
+    if (!createdId) return;
+    setNewSubcategoryName("");
+    setSubcategoryParentId(parentId);
+    setCategoryExpanded(parentId, true);
+    focusSubcategoryInput();
+  }
+
+  function toggleCategoryEditor(category: CategoryRecord) {
+    setEditingCategoryId((current) => current === category.id ? null : category.id);
+    setCategoryExpanded(category.parentId ?? category.id, true);
+    setError("");
+    setCategoryNotice("");
+  }
+
+  function requestCategoryDelete(category: CategoryRecord) {
+    setCategoryDeleteTarget(category);
+    setError("");
+    setCategoryNotice("");
+  }
+
+  async function deleteCategory() {
+    const target = categoryDeleteTarget;
+    if (!target) return;
+    setSaving(true);
+    setError("");
+    try {
+      const response = await fetch(`/api/admin/catalog?type=category&categoryId=${encodeURIComponent(target.id)}`, { method: "DELETE" });
+      const payload = await response.json().catch(() => null) as { message?: string; error?: { message?: string } } | null;
+      if (!response.ok) throw new Error(payload?.error?.message || "Could not delete the category.");
+      await loadCatalog();
+      setCategoryDeleteTarget(null);
+      setEditingCategoryId((current) => current === target.id ? null : current);
+      setExpandedCategoryIds((current) => current.filter((id) => id !== target.id));
+      setCategoryNotice(payload?.message || `Category "${target.name}" was deleted.`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not delete the category.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function editProduct(productId: string) {
@@ -779,14 +891,37 @@ export function ProductsPanel() {
 
   async function saveCategory(category: CategoryRecord) {
     if (!category.name.trim()) { setError("Category names cannot be empty."); return; }
+    if (!category.slug.trim()) { setError("Category slugs cannot be empty."); return; }
     if (category.parentId === category.id) { setError("A category cannot be its own parent."); return; }
-    setSaving(true); setError("");
+    setSaving(true);
+    setError("");
+    setCategoryNotice("");
     try {
-      const response = await fetch("/api/admin/catalog", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "category", id: category.id, name: category.name.trim(), parentId: category.parentId, description: category.description?.trim() || null, imageUrl: category.imageUrl?.trim() || null, isActive: category.isActive !== false, sortOrder: category.sortOrder }) });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error?.message || "Could not update the category.");
+      const response = await fetch("/api/admin/catalog", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "category",
+          id: category.id,
+          name: category.name.trim(),
+          slug: category.slug.trim(),
+          parentId: category.parentId,
+          description: category.description?.trim() || null,
+          imageUrl: category.imageUrl?.trim() || null,
+          isActive: category.isActive !== false,
+          sortOrder: category.sortOrder,
+        }),
+      });
+      const payload = await response.json().catch(() => null) as { error?: { message?: string } } | null;
+      if (!response.ok) throw new Error(payload?.error?.message || "Could not update the category.");
       await loadCatalog();
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not update the category."); } finally { setSaving(false); }
+      setEditingCategoryId(null);
+      setCategoryNotice(`Category "${category.name.trim()}" was updated.`);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not update the category.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   const categories = Array.from(new Set(catalog.map((product) => product.category)));
@@ -797,6 +932,45 @@ export function ProductsPanel() {
     .map((record) => record.id));
   const primaryCategoryOptions = categoryOptions.filter((option) => !industryCollectionCategoryIds.has(option.id));
   const crossListingCategoryOptions = categoryOptions.filter((option) => option.id !== industryCollectionRoot?.id);
+  const categoryProductCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const product of catalog) {
+      const categoryIds = new Set(
+        [product.categoryId, ...(product.categoryIds ?? [])].filter((id): id is string => Boolean(id)),
+      );
+      for (const categoryId of categoryIds) {
+        counts.set(categoryId, (counts.get(categoryId) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }, [catalog]);
+
+  const categoryTree = useMemo<CategoryTreeItem[]>(() => {
+    const byParent = new Map<string, CategoryRecord[]>();
+    for (const record of categoryRecords) {
+      if (!record.parentId) continue;
+      const siblings = byParent.get(record.parentId) ?? [];
+      siblings.push(record);
+      byParent.set(record.parentId, siblings);
+    }
+    const byStorefrontOrder = (left: CategoryRecord, right: CategoryRecord) =>
+      left.sortOrder - right.sortOrder || left.name.localeCompare(right.name);
+    return categoryRecords
+      .filter((record) => !record.parentId)
+      .sort(byStorefrontOrder)
+      .map((root) => ({
+        ...root,
+        productCount: categoryProductCounts.get(root.id) ?? 0,
+        children: [...(byParent.get(root.id) ?? [])].sort(byStorefrontOrder),
+      }));
+  }, [categoryProductCounts, categoryRecords]);
+
+  const deleteTargetProductCount = categoryDeleteTarget
+    ? categoryProductCounts.get(categoryDeleteTarget.id) ?? 0
+    : 0;
+  const deleteTargetChildCount = categoryDeleteTarget
+    ? categoryRecords.filter((record) => record.parentId === categoryDeleteTarget.id).length
+    : 0;
   const activeCount = catalog.filter((product) => product.status === "Active").length;
   const lowCount = catalog.filter((product) => product.status === "Low stock").length;
   const catalogControlsAvailable = !catalogLoading && !catalogLoadError;
@@ -810,15 +984,51 @@ export function ProductsPanel() {
     URL.revokeObjectURL(url);
   }
 
+  function renderCategoryEditor(category: CategoryRecord) {
+    if (editingCategoryId !== category.id) return null;
+    return (
+      <form className={styles.categoryEditCard} onSubmit={(event) => { event.preventDefault(); void saveCategory(category); }}>
+        <div className={styles.categoryEditGrid}>
+          <label className={styles.fieldGroup}>
+            <span className={styles.fieldLabel}>Category name</span>
+            <input className={styles.input} onChange={(event) => updateCategoryDraft(category.id, { name: event.target.value })} value={category.name} />
+          </label>
+          <label className={styles.fieldGroup}>
+            <span className={styles.fieldLabel}>Slug</span>
+            <input className={styles.input} onChange={(event) => updateCategoryDraft(category.id, { slug: event.target.value })} placeholder="category-url-slug" value={category.slug} />
+          </label>
+          <label className={styles.fieldGroup}>
+            <span className={styles.fieldLabel}>Storefront order</span>
+            <input className={styles.input} min="0" onChange={(event) => updateCategoryDraft(category.id, { sortOrder: Math.max(0, Number(event.target.value) || 0) })} type="number" value={category.sortOrder} />
+          </label>
+          <label className={styles.fieldGroup}>
+            <span className={styles.fieldLabel}>Category image URL</span>
+            <input className={styles.input} onChange={(event) => updateCategoryDraft(category.id, { imageUrl: event.target.value })} placeholder="https://..." type="url" value={category.imageUrl ?? ""} />
+          </label>
+        </div>
+        <label className={styles.fieldGroup}>
+          <span className={styles.fieldLabel}>Description</span>
+          <textarea className={styles.textarea} onChange={(event) => updateCategoryDraft(category.id, { description: event.target.value })} value={category.description ?? ""} />
+        </label>
+        <label className={styles.compactCheck}>
+          <input checked={category.isActive !== false} onChange={(event) => updateCategoryDraft(category.id, { isActive: event.target.checked })} type="checkbox" />
+          Show this category on the storefront
+        </label>
+        <div className={styles.categoryEditActions}>
+          <button className={styles.buttonSecondary} disabled={saving} onClick={() => setEditingCategoryId(null)} type="button">Cancel</button>
+          <button className={styles.buttonPrimary} disabled={saving} type="submit">{saving ? "Saving..." : "Save changes"}</button>
+        </div>
+      </form>
+    );
+  }
+
   return (
     <>
       <PageHeader
         actions={
           <>
             <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={exportFilteredProducts} type="button"><Download size={14} /> Export</button>
-            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => void addCategory(false)} type="button"><Plus size={14} /> Add category</button>
-            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => void addCategory(true)} type="button"><Plus size={14} /> Add subcategory</button>
-            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setManagingCategories(true); }} type="button"><SlidersHorizontal size={14} /> Manage categories</button>
+            <button className={styles.buttonPrimary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setCategoryNotice(""); setCategoryAddMode("root"); setManagingCategories(true); focusRootCategoryInput(); }} type="button"><Plus size={14} /> Manage / Add Categories</button>
             <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setQuickAdding(true); }} type="button"><Sparkles size={14} /> Quick add</button>
             <button className={styles.buttonPrimary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setVisualizationOpen(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkUploadEnabled(false); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts(); setAdding(true); }} type="button"><Plus size={14} /> Add product</button>
           </>
@@ -900,57 +1110,146 @@ export function ProductsPanel() {
 
       {managingCategories && (
         <>
-          <button aria-label="Close category manager" className={styles.drawerBackdrop} onClick={() => setManagingCategories(false)} type="button" />
-          <aside aria-label="Manage categories" className={styles.drawer}>
-            <div className={styles.drawerHeader}><div><h3>Manage categories</h3><p>Rename, move, or hide categories and subcategories. Product IDs and existing orders stay unchanged.</p></div><button aria-label="Close" className={styles.iconButton} onClick={() => setManagingCategories(false)} type="button"><X size={16} /></button></div>
+          <button aria-label="Close category manager" className={styles.drawerBackdrop} onClick={() => { setManagingCategories(false); setCategoryDeleteTarget(null); }} type="button" />
+          <aside aria-label="Manage categories" className={`${styles.drawer} ${styles.categoryManagerDrawer}`}>
+            <div className={styles.drawerHeader}>
+              <div><h3>Manage categories</h3><p>Organize main categories and their subcategories without changing product IDs or order history.</p></div>
+              <button aria-label="Close" className={styles.iconButton} onClick={() => { setManagingCategories(false); setCategoryDeleteTarget(null); }} type="button"><X size={16} /></button>
+            </div>
             <div className={styles.drawerBody}>
-              <div className={styles.detailSection}>
-                <p className={styles.sectionCaption}>RanBazaar category starters</p>
-                <p className={styles.configHint}>Reuse known Naamly category names and URLs, then add only missing categories. Bulk Buy remains a browsing entrypoint and no products are copied.</p>
-                <button
-                  className={styles.buttonSecondary}
+              <form className={styles.categoryQuickAddBar} onSubmit={createRootCategory}>
+                <label className={styles.srOnly} htmlFor="new-root-category">New main category name</label>
+                <input
+                  className={styles.categoryQuickAddInput}
                   disabled={saving}
-                  onClick={() => void importRanBazaarCategoryStarters(ranBazaarCategoryStarters.map((starter) => starter.id), "all RanBazaar category groups")}
-                  type="button"
-                >
-                  Map / add all missing
-                </button>
-                <div className={styles.configList}>
-                  {ranBazaarCategoryStarters.map((starter) => <div className={styles.configCard} key={starter.id}><div className={styles.configCardHead}><strong>{starter.name}</strong><button className={styles.buttonSecondary} disabled={saving} onClick={() => void importRanBazaarCategoryStarters([starter.id], starter.name)} type="button">Map / add missing</button></div></div>)}
-                </div>
-              </div>
-              <div className={styles.detailSection}>
-                <p className={styles.sectionCaption}>Packaging category starters</p>
-                <p className={styles.configHint}>Add only the missing two-level packaging groups. This explicit action never creates products, changes existing records, or assigns prices.</p>
-                <button
-                  className={styles.buttonSecondary}
-                  disabled={saving}
-                  onClick={() => void importPackagingCategoryStarters(packagingCategoryStarters.map((starter) => starter.id), "all packaging groups")}
-                  type="button"
-                >
-                  Add all missing
-                </button>
-                <div className={styles.configList}>
-                  {packagingCategoryStarters.map((starter) => <div className={styles.configCard} key={starter.id}><div className={styles.configCardHead}><span><strong>{starter.name}</strong><small>{starter.subcategories.map((subcategory) => subcategory.name).join(" · ")}</small></span><button className={styles.buttonSecondary} disabled={saving} onClick={() => void importPackagingCategoryStarters([starter.id], starter.name)} type="button">Add missing</button></div></div>)}
-                </div>
-                {categoryImportMessage && <p className={styles.configHint} role="status">{categoryImportMessage}</p>}
-              </div>
-              <div className={styles.configList}>
-                {categoryRecords.map((category) => (
-                  <div className={styles.configCard} key={category.id}>
-                    <div className={styles.configCardHead}><strong>{categoryPath(category, categoryRecords)}</strong><button className={styles.buttonSecondary} disabled={saving} onClick={() => void saveCategory(category)} type="button">Save</button></div>
-                    <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Category name</span><input className={styles.input} value={category.name} onChange={(event) => setCategoryRecords((current) => current.map((item) => item.id === category.id ? { ...item, name: event.target.value } : item))} /></label>
-                    <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Parent category</span><select className={styles.select} value={category.parentId ?? ""} onChange={(event) => setCategoryRecords((current) => current.map((item) => item.id === category.id ? { ...item, parentId: event.target.value || null } : item))}><option value="">Top-level category</option>{categoryRecords.filter((option) => option.id !== category.id && !option.parentId).map((option) => <option key={option.id} value={option.id}>{categoryPath(option, categoryRecords)}</option>)}</select><small>Use one main category and one subcategory level so every item appears in the storefront menu.</small></label>
-                    <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Storefront order</span><input className={styles.input} min="0" type="number" value={category.sortOrder} onChange={(event) => setCategoryRecords((current) => current.map((item) => item.id === category.id ? { ...item, sortOrder: Math.max(0, Number(event.target.value) || 0) } : item))} /><small>Lower numbers appear first in the main category menu.</small></label>
-                    <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Customer / vendor description</span><textarea className={styles.textarea} value={category.description ?? ""} onChange={(event) => setCategoryRecords((current) => current.map((item) => item.id === category.id ? { ...item, description: event.target.value } : item))} /></label>
-                    <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Category image URL</span><input className={styles.input} placeholder="https://…" type="url" value={category.imageUrl ?? ""} onChange={(event) => setCategoryRecords((current) => current.map((item) => item.id === category.id ? { ...item, imageUrl: event.target.value } : item))} /></label>
-                    <label className={styles.compactCheck}><input checked={category.isActive !== false} onChange={(event) => setCategoryRecords((current) => current.map((item) => item.id === category.id ? { ...item, isActive: event.target.checked } : item))} type="checkbox" /> Show this category to customers and vendors</label>
-                  </div>
-                ))}
-              </div>
+                  id="new-root-category"
+                  onChange={(event) => setNewCategoryName(event.target.value)}
+                  placeholder="Enter new category name (e.g. Corporate Gifts)..."
+                  ref={categoryRootInputRef}
+                  value={newCategoryName}
+                />
+                <button className={styles.buttonPrimary} disabled={saving || !newCategoryName.trim()} type="submit"><Plus size={14} /> {saving && categoryAddMode === "root" ? "Creating..." : "Add category"}</button>
+              </form>
+              {categoryAddMode === "subcategory" && <p className={styles.categoryFlowHint}>A main category was added. Keep adding subcategories one at a time below.</p>}
               {error && <p className={styles.formError} role="alert">{error}</p>}
+              {categoryNotice && <p className={styles.categorySuccess} role="status"><Check size={14} /> {categoryNotice}</p>}
+
+              <section aria-label="Category tree" className={styles.categoryTreeContainer}>
+                <div className={styles.categoryTreeHeading}><span>Category tree</span><small>{categoryTree.length} main categor{categoryTree.length === 1 ? "y" : "ies"}</small></div>
+                {categoryTree.length ? categoryTree.map((root) => {
+                  const expanded = expandedCategoryIds.includes(root.id);
+                  const addingSubcategory = subcategoryParentId === root.id;
+                  return (
+                    <article className={styles.categoryRootCard} key={root.id}>
+                      <div className={styles.categoryRootHeader}>
+                        <button aria-expanded={expanded} aria-label={`${expanded ? "Collapse" : "Expand"} ${root.name}`} className={styles.categoryRootToggle} onClick={() => setCategoryExpanded(root.id, !expanded)} type="button">
+                          {expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                        </button>
+                        <div className={styles.categoryRootInfo}>
+                          <span aria-hidden="true" className={styles.categoryFolderIcon}><Folder size={17} /></span>
+                          <span className={styles.categoryRootCopy}><strong className={styles.categoryRootTitle}>{root.name}</strong><span className={styles.categoryBadge}>{root.productCount} product{root.productCount === 1 ? "" : "s"}</span></span>
+                          <span className={`${styles.categoryBadge} ${root.isActive !== false ? styles.categoryBadgeActive : styles.categoryBadgeInactive}`}>{root.isActive !== false ? "Active" : "Hidden"}</span>
+                        </div>
+                        <div className={styles.categoryActions}>
+                          <button className={styles.categoryActionButton} disabled={saving} onClick={() => openSubcategoryCreator(root.id)} type="button"><Plus size={13} /> Add subcategory</button>
+                          <button aria-label={`Edit ${root.name}`} className={styles.categoryActionButton} disabled={saving} onClick={() => toggleCategoryEditor(root)} type="button"><Pencil size={13} /> Edit</button>
+                          <button aria-label={`Delete ${root.name}`} className={styles.categoryDeleteBtn} disabled={saving} onClick={() => requestCategoryDelete(root)} type="button"><Trash2 size={14} /></button>
+                        </div>
+                      </div>
+                      {root.description && <p className={styles.categoryRootDescription}>{root.description}</p>}
+                      {renderCategoryEditor(root)}
+                      {expanded && (
+                        <div className={styles.categorySubList}>
+                          {root.children.map((child) => (
+                            <div className={styles.categorySubBranch} key={child.id}>
+                              <div className={styles.categorySubItem}>
+                                <div className={styles.categorySubItemLeft}>
+                                  <span aria-hidden="true" className={styles.categoryTreeBranchLine}>|-</span>
+                                  <span className={styles.categorySubCopy}><strong>{child.name}</strong>{child.description && <small>{child.description}</small>}</span>
+                                  <span className={styles.categoryBadge}>{categoryProductCounts.get(child.id) ?? 0} product{(categoryProductCounts.get(child.id) ?? 0) === 1 ? "" : "s"}</span>
+                                  <span className={`${styles.categoryBadge} ${child.isActive !== false ? styles.categoryBadgeActive : styles.categoryBadgeInactive}`}>{child.isActive !== false ? "Active" : "Hidden"}</span>
+                                </div>
+                                <div className={styles.categoryActions}>
+                                  <button aria-label={`Edit ${child.name}`} className={styles.categoryActionButton} disabled={saving} onClick={() => toggleCategoryEditor(child)} type="button"><Pencil size={13} /> Edit</button>
+                                  <button aria-label={`Delete ${child.name}`} className={styles.categoryDeleteBtn} disabled={saving} onClick={() => requestCategoryDelete(child)} type="button"><Trash2 size={14} /></button>
+                                </div>
+                              </div>
+                              {renderCategoryEditor(child)}
+                            </div>
+                          ))}
+                          {addingSubcategory ? (
+                            <form className={styles.categorySubAddRow} onSubmit={(event) => void createSubcategory(event, root.id)}>
+                              <label className={styles.srOnly} htmlFor={`new-subcategory-${root.id}`}>New subcategory name for {root.name}</label>
+                              <input
+                                className={styles.categoryQuickAddInput}
+                                disabled={saving}
+                                id={`new-subcategory-${root.id}`}
+                                onChange={(event) => setNewSubcategoryName(event.target.value)}
+                                placeholder="Subcategory name (e.g. Rigid Boxes)..."
+                                ref={subcategoryInputRef}
+                                value={newSubcategoryName}
+                              />
+                              <button className={styles.buttonPrimary} disabled={saving || !newSubcategoryName.trim()} type="submit">{saving ? "Adding..." : "Add"}</button>
+                              <button className={styles.buttonSecondary} disabled={saving} onClick={() => { setSubcategoryParentId(null); setNewSubcategoryName(""); setCategoryAddMode("root"); }} type="button">Cancel</button>
+                            </form>
+                          ) : (
+                            <button className={styles.categoryAddSubTrigger} disabled={saving} onClick={() => openSubcategoryCreator(root.id)} type="button"><Plus size={13} /> Add subcategory</button>
+                          )}
+                        </div>
+                      )}
+                    </article>
+                  );
+                }) : (
+                  <div className={styles.categoryTreeEmpty}><Folder size={18} /><p>No categories yet. Add a main category to begin building your storefront tree.</p></div>
+                )}
+              </section>
+
+              <details className={styles.categoryPresets}>
+                <summary><span>Starter category presets</span><small>Optional imports</small></summary>
+                <div className={styles.categoryPresetContent}>
+                  <section className={styles.categoryPresetSection}>
+                    <p className={styles.sectionCaption}>RanBazaar category starters</p>
+                    <p className={styles.configHint}>Reuse known category names and URLs, then add only missing categories. Bulk Buy remains a browsing entrypoint and no products are copied.</p>
+                    <button className={styles.buttonSecondary} disabled={saving} onClick={() => void importRanBazaarCategoryStarters(ranBazaarCategoryStarters.map((starter) => starter.id), "all RanBazaar category groups")} type="button">Map / add all missing</button>
+                    <div className={styles.categoryPresetList}>
+                      {ranBazaarCategoryStarters.map((starter) => <div className={styles.configCard} key={starter.id}><div className={styles.configCardHead}><strong>{starter.name}</strong><button className={styles.buttonSecondary} disabled={saving} onClick={() => void importRanBazaarCategoryStarters([starter.id], starter.name)} type="button">Map / add missing</button></div></div>)}
+                    </div>
+                  </section>
+                  <section className={styles.categoryPresetSection}>
+                    <p className={styles.sectionCaption}>Packaging category starters</p>
+                    <p className={styles.configHint}>Add only the missing two-level packaging groups. This action never creates products, changes existing records, or assigns prices.</p>
+                    <button className={styles.buttonSecondary} disabled={saving} onClick={() => void importPackagingCategoryStarters(packagingCategoryStarters.map((starter) => starter.id), "all packaging groups")} type="button">Add all missing</button>
+                    <div className={styles.categoryPresetList}>
+                      {packagingCategoryStarters.map((starter) => <div className={styles.configCard} key={starter.id}><div className={styles.configCardHead}><span><strong>{starter.name}</strong><small>{starter.subcategories.map((subcategory) => subcategory.name).join(" / ")}</small></span><button className={styles.buttonSecondary} disabled={saving} onClick={() => void importPackagingCategoryStarters([starter.id], starter.name)} type="button">Add missing</button></div></div>)}
+                    </div>
+                  </section>
+                  {categoryImportMessage && <p className={styles.categorySuccess} role="status"><Check size={14} /> {categoryImportMessage}</p>}
+                </div>
+              </details>
             </div>
           </aside>
+
+          {categoryDeleteTarget && (
+            <div className={styles.categoryDeleteDialogLayer}>
+              <button aria-label="Cancel category deletion" className={styles.categoryDeleteDialogBackdrop} onClick={() => setCategoryDeleteTarget(null)} type="button" />
+              <section aria-describedby="category-delete-detail" aria-labelledby="category-delete-title" aria-modal="true" className={styles.categoryDeleteDialog} role="dialog">
+                <p className={styles.categoryDeleteEyebrow}>Delete category</p>
+                <h4 id="category-delete-title">Delete "{categoryDeleteTarget.name}"?</h4>
+                <p id="category-delete-detail">This cannot be undone. The category is removed only when no primary products or subcategories remain.</p>
+                <ul className={styles.categoryDeleteFacts}>
+                  <li><strong>{deleteTargetProductCount}</strong> linked product{deleteTargetProductCount === 1 ? "" : "s"}</li>
+                  <li><strong>{deleteTargetChildCount}</strong> subcategor{deleteTargetChildCount === 1 ? "y" : "ies"}</li>
+                </ul>
+                {deleteTargetProductCount > 0 && <p className={styles.categoryDeleteWarning}>Reassign or delete the linked products before deleting this category.</p>}
+                {deleteTargetChildCount > 0 && <p className={styles.categoryDeleteWarning}>Delete or move the subcategories first.</p>}
+                {error && <p className={styles.formError} role="alert">{error}</p>}
+                <div className={styles.categoryDeleteActions}>
+                  <button className={styles.buttonSecondary} disabled={saving} onClick={() => setCategoryDeleteTarget(null)} type="button">Cancel</button>
+                  <button className={styles.buttonDanger} disabled={saving} onClick={() => void deleteCategory()} type="button"><Trash2 size={14} /> {saving ? "Deleting..." : "Delete forever"}</button>
+                </div>
+              </section>
+            </div>
+          )}
         </>
       )}
 

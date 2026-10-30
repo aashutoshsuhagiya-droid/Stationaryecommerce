@@ -53,7 +53,8 @@ const extraImagesField = z.array(z.object({
   width: z.number().int().positive().optional(),
   height: z.number().int().positive().optional(),
 })).max(5);
-const categorySchema = z.object({ type: z.literal("category"), name: z.string().trim().min(2).max(120), parentId: z.string().min(1).nullable().optional(), description: z.string().trim().max(1000).nullable().optional(), imageUrl: catalogImageUrlSchema.nullable().optional(), isActive: z.boolean().default(true), sortOrder: z.number().int().min(0).max(1_000_000).optional() });
+const categorySlugSchema = z.string().trim().min(1).max(140).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Use lowercase letters, numbers, and hyphens only.");
+const categorySchema = z.object({ type: z.literal("category"), name: z.string().trim().min(2).max(120), slug: categorySlugSchema.optional(), parentId: z.string().min(1).nullable().optional(), description: z.string().trim().max(1000).nullable().optional(), imageUrl: catalogImageUrlSchema.nullable().optional(), isActive: z.boolean().default(true), sortOrder: z.number().int().min(0).max(1_000_000).optional() });
 const optionSchema = z.object({ label: z.string().trim().min(1).max(120), value: z.string().trim().min(1).max(120), priceDelta: z.number().finite().min(-100_000).max(100_000).default(0) }).strict();
 const quantityTierSchema = z.object({ minimum: z.number().int().min(1).max(1000), priceDelta: z.number().finite().min(-100_000).max(100_000), label: z.string().trim().max(80).optional() }).strict();
 const productModelSchema = z.enum(["label-pack", "waterproof-sheet", "school-kit", "notebook", "bottle-label", "pencil-set", "tag", "geometry-box", "gift-ribbon", "keychain-duo", "bulk-grid", "rectangular-box", "square-box", "folding-carton", "mailer-box", "paper-bag", "stand-up-pouch", "product-sleeve"]);
@@ -574,10 +575,11 @@ export async function POST(request: Request) {
         if (!parent) return NextResponse.json({ error: { code: "CATEGORY_PARENT_NOT_FOUND", message: "The selected parent category was not found." } }, { status: 422 });
         if (parent.parentId) return NextResponse.json({ error: { code: "CATEGORY_DEPTH_INVALID", message: "Categories support one main category and one subcategory level." } }, { status: 422 });
       }
-      const slug = slugify(parsed.data.name);
+      const slug = parsed.data.slug ?? slugify(parsed.data.name);
+      if (!slug) return NextResponse.json({ error: { code: "CATEGORY_SLUG_INVALID", message: "Enter a category name that can be converted into a URL slug." } }, { status: 422 });
       const duplicate = await prisma.category.findUnique({ where: { slug }, select: { id: true } });
-      if (duplicate) return NextResponse.json({ error: { code: "CATEGORY_SLUG_EXISTS", message: "A category with this name already exists." } }, { status: 409 });
-      const category = await prisma.category.create({ data: { name: parsed.data.name, slug, parentId: parsed.data.parentId ?? null, description: parsed.data.description, imageUrl: parsed.data.imageUrl, isActive: parsed.data.isActive, sortOrder: parsed.data.sortOrder ?? await prisma.category.count() } });
+      if (duplicate) return NextResponse.json({ error: { code: "CATEGORY_SLUG_EXISTS", message: "A category with this slug already exists." } }, { status: 409 });
+      const category = await prisma.category.create({ data: { name: parsed.data.name, slug, parentId: parsed.data.parentId ?? null, description: parsed.data.description, imageUrl: parsed.data.imageUrl, isActive: parsed.data.isActive, sortOrder: parsed.data.sortOrder ?? await prisma.category.count({ where: { parentId: parsed.data.parentId ?? null } }) } });
       revalidatePath("/", "layout");
       return NextResponse.json({ data: category }, { status: 201 });
     }
@@ -655,6 +657,11 @@ export async function PATCH(request: Request) {
       const prisma = getPrisma();
       const currentCategory = await prisma.category.findUnique({ where: { id: id.data.id }, include: { children: { select: { id: true } } } });
       if (!currentCategory) return NextResponse.json({ error: { code: "CATEGORY_NOT_FOUND", message: "The requested category was not found." } }, { status: 404 });
+      const slug = categoryInput.data.slug ?? currentCategory.slug;
+      if (slug !== currentCategory.slug) {
+        const duplicate = await prisma.category.findUnique({ where: { slug }, select: { id: true } });
+        if (duplicate) return NextResponse.json({ error: { code: "CATEGORY_SLUG_EXISTS", message: "A category with this slug already exists." } }, { status: 409 });
+      }
       if (categoryInput.data.parentId) {
         let ancestorId: string | null = categoryInput.data.parentId;
         const parent = await prisma.category.findUnique({ where: { id: categoryInput.data.parentId }, select: { parentId: true } });
@@ -670,7 +677,7 @@ export async function PATCH(request: Request) {
       }
       const category = await prisma.category.update({
         where: { id: id.data.id },
-        data: { name: categoryInput.data.name, parentId: categoryInput.data.parentId ?? null, description: categoryInput.data.description, imageUrl: categoryInput.data.imageUrl, isActive: categoryInput.data.isActive, ...(categoryInput.data.sortOrder !== undefined ? { sortOrder: categoryInput.data.sortOrder } : {}) },
+        data: { name: categoryInput.data.name, slug, parentId: categoryInput.data.parentId ?? null, description: categoryInput.data.description, imageUrl: categoryInput.data.imageUrl, isActive: categoryInput.data.isActive, ...(categoryInput.data.sortOrder !== undefined ? { sortOrder: categoryInput.data.sortOrder } : {}) },
       });
       revalidatePath("/", "layout");
       return NextResponse.json({ data: category }, { headers: { "Cache-Control": "no-store" } });
@@ -728,5 +735,43 @@ export async function PATCH(request: Request) {
     });
     revalidatePath("/", "layout");
     return NextResponse.json({ data: { ...product, categoryIds } }, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) { return onboardingApiError(error); }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    assertSameOrigin(request);
+    await requireCatalogAdmin(request);
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get("type") ?? "category";
+    const categoryId = (searchParams.get("categoryId") ?? searchParams.get("id") ?? "").trim();
+    if (type !== "category" || !categoryId || categoryId.length > 100) {
+      return NextResponse.json({ error: { code: "CATEGORY_DELETE_INVALID", message: "Choose a category to delete." } }, { status: 400 });
+    }
+
+    const prisma = getPrisma();
+    await prisma.$transaction(async (tx) => {
+      const category = await tx.category.findUnique({
+        where: { id: categoryId },
+        include: {
+          children: { select: { id: true } },
+          _count: { select: { products: true, productLinks: true } },
+        },
+      });
+      if (!category) throw new CommerceError(404, "CATEGORY_NOT_FOUND", "The requested category was not found.");
+      if (category._count.products > 0) {
+        throw new CommerceError(409, "CATEGORY_HAS_PRODUCTS", "This category is assigned as the main category for existing products. Move those products before deleting it.", { productCount: category._count.products });
+      }
+      if (category.children.length > 0) {
+        throw new CommerceError(409, "CATEGORY_HAS_CHILDREN", "Delete or move this category's subcategories before deleting it.", { childCount: category.children.length });
+      }
+
+      await tx.productCategory.deleteMany({ where: { categoryId } });
+      await tx.couponCategory.deleteMany({ where: { categoryId } });
+      await tx.personalizationTemplate.updateMany({ where: { categoryId }, data: { categoryId: null } });
+      await tx.category.delete({ where: { id: categoryId } });
+    });
+    revalidatePath("/", "layout");
+    return NextResponse.json({ success: true, message: "Category deleted successfully.", data: { id: categoryId } }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) { return onboardingApiError(error); }
 }
