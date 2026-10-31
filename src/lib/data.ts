@@ -973,6 +973,12 @@ export const formatPrice = (amountInRupees: number) =>
     maximumFractionDigits: Number.isInteger(amountInRupees) ? 0 : 2,
   }).format(amountInRupees);
 
+export const discountPercent = (product: Pick<Product, "price" | "compareAtPrice">) => {
+  const compareAtPrice = product.compareAtPrice;
+  if (typeof compareAtPrice !== "number" || !Number.isFinite(compareAtPrice) || compareAtPrice <= 0) return 0;
+  return Math.max(0, Math.round((1 - product.price / compareAtPrice) * 100));
+};
+
 export const formatPaise = (amountInPaise: number) => formatPrice(amountInPaise / 100);
 
 export const sampleCart: Cart = {
