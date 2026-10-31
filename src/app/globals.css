@@ -1594,6 +1594,7 @@ body { overflow-x: clip; }
   border-radius: var(--radius-large);
   background: var(--surface-subtle);
 }
+.promoCarouselSlide[hidden] { display: none; }
 .promoCarouselCopy {
   min-width: 0;
   padding: 48px 42px 92px;
