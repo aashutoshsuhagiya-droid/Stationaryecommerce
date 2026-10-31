@@ -137,6 +137,10 @@ In `QuickListProductWizard.tsx` success card (~line 402) and
 3. New products' primary photo: the product row already shows a real thumbnail once
    published (existing `ProductListThumb` behavior); when draft, show the existing CSS
    fallback tile — no new work, just verify it doesn't render a broken `<img>`.
+   **Note: this step is already implemented and committed** (commit `4b382c5`,
+   "fix(catalog): prevent 404 on pending image drafts" — `ProductListThumb.tsx`
+   now renders the fallback tile for `/api/product-images/pending` URLs). Only
+   re-verify step 4's walkthrough if that commit is missing from your tree.
 
 ### E. Toolbar & table de-cluttering (presentation only)
 In `ProductsPanel.tsx`:

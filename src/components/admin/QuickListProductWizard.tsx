@@ -358,7 +358,11 @@ export function QuickListProductWizard({
         if (!created?.id || !created.slug) throw new Error("The saved product is missing its ID.");
         product = { id: created.id, slug: created.slug }; setSavedProduct(product); setSaveStatus("done");
       }
-      if (primaryFile || baseFile) {
+      // Keep the source-copy in the same retryable upload phase. A primary image may
+      // already have uploaded when its canvas-background copy fails, so a retry must
+      // repeat that copy before the final product PATCH can succeed.
+      const shouldReusePrimaryAsBase = Boolean(reusePhotoAsBase && primarySurface && (primaryFile || imageUrl));
+      if (primaryFile || baseFile || shouldReusePrimaryAsBase) {
         phase = "upload";
         setUploadStatus("working");
         let uploadedPrimaryThisSave = false;
@@ -371,7 +375,7 @@ export function QuickListProductWizard({
           await upload(product.id, "surface-base", baseFile, primarySurface.id);
           setBaseFile(null);
         }
-        if (reusePhotoAsBase && uploadedPrimaryThisSave && primarySurface) {
+        if (reusePhotoAsBase && primarySurface && (uploadedPrimaryThisSave || imageUrl)) {
           const baseImageUrl = await copyPrimaryToBase(product.id, primarySurface.id);
           if (baseImageUrl) setBasePreview(baseImageUrl);
           setBaseFile(null);
