@@ -10,7 +10,8 @@ export function ProductListThumb({ imageUrl, art, name }: {
   name: string;
 }) {
   const [imageFailed, setImageFailed] = useState(false);
-  if (imageUrl && !imageFailed) {
+  const isPending = Boolean(imageUrl && imageUrl.includes("/api/product-images/pending"));
+  if (imageUrl && !isPending && !imageFailed) {
     return <span className={`${styles.productThumb} ${styles.productThumbImage}`}>
       <img alt="" onError={() => setImageFailed(true)} src={imageUrl} />
     </span>;

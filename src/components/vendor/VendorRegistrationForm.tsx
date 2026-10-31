@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { FormEvent, useRef, useState } from "react";
 
-import { INDIA_CITIES, INDIA_STATES } from "@/lib/india-cities";
+import { citiesForState, INDIA_STATES } from "@/lib/india-cities";
 import { selectedCategoryActiveParent } from "@/lib/vendor-category-options";
 import type { VendorCategoryGroup } from "@/lib/vendor-category-options";
 
@@ -594,7 +594,9 @@ export default function VendorRegistrationForm({ categoryGroups, serviceOptions,
             </div>
             <div className={styles.field}>
               <label htmlFor="city">City <span aria-hidden="true">*</span></label>
-              <select id="city" name="city" autoComplete="address-level2" required disabled={!state} value={city} onChange={(event) => setCity(event.target.value)} aria-invalid={Boolean(fieldError("application.city"))} aria-describedby={describedBy("application.city")}><option value="" disabled>{state ? "Select your workshop city" : "Select state first"}</option>{INDIA_CITIES.filter(([, stateName]) => stateName === state).map(([cityName]) => <option key={cityName} value={cityName}>{cityName}</option>)}</select>
+              <input id="city" name="city" autoComplete="address-level2" required disabled={!state} list={state ? "workshop-city-suggestions" : undefined} maxLength={80} onChange={(event) => setCity(event.target.value)} placeholder={state ? "Start typing your workshop city" : "Select state first"} value={city} aria-invalid={Boolean(fieldError("application.city"))} aria-describedby={describedBy("application.city", "city-hint")} />
+              {state && <datalist id="workshop-city-suggestions">{citiesForState(state).map((cityName) => <option key={cityName} value={cityName} />)}</datalist>}
+              <small className={styles.hint} id="city-hint">All Indian cities are accepted. Common cities for {state || "your selected state"} appear as suggestions.</small>
               <FieldError id="application-city-error" message={fieldError("application.city")} />
             </div>
             <div className={styles.field}>

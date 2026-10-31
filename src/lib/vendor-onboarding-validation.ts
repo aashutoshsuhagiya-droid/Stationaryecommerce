@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { cityStateByCity } from "./india-cities";
+import { isCityCompatibleWithState, isIndiaState } from "./india-cities";
 
 const mobile = z.string().trim().transform((value) => value.replace(/[\s()-]/g, "")).refine(
   (value) => /^(?:\+?91)?[6-9]\d{9}$/.test(value),
@@ -33,7 +33,7 @@ const vendorApplicationFieldsBaseSchema = z.object({
   addressLine1: z.string().trim().min(5).max(160),
   addressLine2: z.string().trim().max(160).optional(),
   city: z.string().trim().min(2).max(80),
-  state: z.string().trim().min(2).max(80),
+  state: z.string().trim().refine(isIndiaState, "Select a valid Indian state or union territory"),
   postalCode,
   latitude: z.number().finite().min(-90).max(90).optional(),
   longitude: z.number().finite().min(-180).max(180).optional(),
@@ -47,9 +47,8 @@ const vendorApplicationFieldsBaseSchema = z.object({
 }).strict();
 
 export const vendorApplicationFieldsSchema = vendorApplicationFieldsBaseSchema.superRefine((value, context) => {
-  const expectedState = cityStateByCity.get(value.city);
-  if (!expectedState || value.state !== expectedState) {
-    context.addIssue({ code: "custom", path: ["city"], message: "Choose a city from the registration list." });
+  if (!isCityCompatibleWithState(value.city, value.state)) {
+    context.addIssue({ code: "custom", path: ["city"], message: "Choose the matching state for this city." });
   }
   if ((typeof value.latitude === "number") !== (typeof value.longitude === "number")) {
     context.addIssue({ code: "custom", path: ["latitude"], message: "Provide both latitude and longitude" });
@@ -97,9 +96,8 @@ export const vendorApplicationUpdateSchema = vendorApplicationFieldsBaseSchema
   .strict()
   .superRefine((value, context) => {
     if (value.city !== undefined || value.state !== undefined) {
-      const expectedState = value.city ? cityStateByCity.get(value.city) : undefined;
-      if (!expectedState || value.state !== expectedState) {
-        context.addIssue({ code: "custom", path: ["city"], message: "Choose a city from the registration list." });
+      if (!value.city || !value.state || !isCityCompatibleWithState(value.city, value.state)) {
+        context.addIssue({ code: "custom", path: ["city"], message: "Provide a city and its matching state together." });
       }
     }
     if (value.postalCode && value.servicePostalCodes && !value.servicePostalCodes.includes(value.postalCode)) {

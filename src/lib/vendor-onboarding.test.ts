@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { hashPassword, verifyPassword } from "./password";
+import { citiesForState, INDIA_STATES } from "./india-cities";
 import {
   canApplyVendorApplicationAction,
   vendorApplicationTransitionTargets,
@@ -83,6 +84,19 @@ test("vendor registration requires a city and at least one service category", ()
   }
 });
 
+test("vendor registration lists every Indian state and accepts cities beyond its suggestions", () => {
+  assert.equal(INDIA_STATES.length, 36);
+  assert.ok(INDIA_STATES.includes("Ladakh"));
+  assert.ok(INDIA_STATES.includes("Lakshadweep"));
+  assert.ok(INDIA_STATES.includes("Dadra and Nagar Haveli and Daman and Diu"));
+  assert.deepEqual(citiesForState("Ladakh"), ["Leh", "Kargil"]);
+
+  const parsed = vendorRegistrationSchema.safeParse({
+    ...validRegistration,
+    application: { ...validRegistration.application, city: "Muvattupuzha", state: "Kerala" },
+  });
+  assert.equal(parsed.success, true);
+});
 test("application workflow permits only reviewed status transitions", () => {
   assert.equal(canApplyVendorApplicationAction("SUBMITTED", "START_REVIEW"), true);
   assert.equal(canApplyVendorApplicationAction("UNDER_REVIEW", "APPROVE"), true);

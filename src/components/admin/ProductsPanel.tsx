@@ -232,6 +232,7 @@ export function ProductsPanel() {
   const subcategoryInputRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [quickAddNotice, setQuickAddNotice] = useState("");
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [catalogLoadError, setCatalogLoadError] = useState("");
   const [categoryImportMessage, setCategoryImportMessage] = useState("");
@@ -1028,9 +1029,9 @@ export function ProductsPanel() {
         actions={
           <>
             <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={exportFilteredProducts} type="button"><Download size={14} /> Export</button>
+            <button className={styles.buttonPrimary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setQuickAddNotice(""); setQuickAdding(true); }} type="button"><Sparkles size={14} /> Quick add</button>
             <button className={styles.buttonPrimary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setCategoryNotice(""); setCategoryAddMode("root"); setManagingCategories(true); focusRootCategoryInput(); }} type="button"><Plus size={14} /> Manage / Add Categories</button>
-            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setQuickAdding(true); }} type="button"><Sparkles size={14} /> Quick add</button>
-            <button className={styles.buttonPrimary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setVisualizationOpen(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkUploadEnabled(false); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts(); setAdding(true); }} type="button"><Plus size={14} /> Add product</button>
+            <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setVisualizationOpen(false); setEditingProduct(null); setProductCategoryId(""); setProductCategoryIds([]); setProductType(""); setTemplateLinks([]); setConfigurationFields([]); setPrintAreas(defaultPrintAreas); setQuantityTiers([]); setAcceptedArtworkTypes(["image/png", "image/jpeg"]); setArtworkUploadEnabled(false); setArtworkPolicy(buildDefaultAdminArtworkPolicy(policyPrintAreas(defaultPrintAreas), { uploadsEnabled: false, allowedMimeTypes: ["image/png", "image/jpeg"] })); clearImageDrafts(); setAdding(true); }} type="button"><Plus size={14} /> Add product (advanced)</button>
           </>
         }
         description="Build a clean catalog, control inventory, and connect each personalized product to the right design experience."
@@ -1054,6 +1055,7 @@ export function ProductsPanel() {
           <span className={styles.summaryItem}><strong>{lowCount}</strong> low stock</span>
           <span className={styles.summaryItem}><strong>{categories.length}</strong> categories</span>
         </div>
+        {quickAddNotice && <p aria-live="polite" className={styles.catalogSavedNotice}>{quickAddNotice}</p>}
         <div className={styles.toolbar}>
           <label className={styles.localSearch}>
             <span className={styles.srOnly}>Search products</span>
@@ -1068,6 +1070,7 @@ export function ProductsPanel() {
           <button className={styles.buttonSecondary} onClick={() => setStatusFilter("All statuses")} type="button"><SlidersHorizontal size={13} /> Filters</button>
           <span className={styles.resultCount}>{filtered.length} products</span>
         </div>
+        <p className={styles.catalogQuickAddHint}>New product? Use <strong>Quick add</strong> — it lists your product in under a minute. The advanced form still works for everything.</p>
 
         {filtered.length ? (
           <div className={styles.tableWrap}>
@@ -1093,10 +1096,10 @@ export function ProductsPanel() {
                       <td><strong>{inr(product.price)}</strong></td>
                       <td>{product.orders}</td>
                       <td>{product.personalized ? <StatusBadge tone="violet">Enabled</StatusBadge> : <StatusBadge>Standard</StatusBadge>}</td>
-                      <td><span className={styles.fullDetailsRowActions}>
-                        <button aria-label={`Open 3D and layout editor for ${product.name}`} className={styles.buttonGhost} onClick={() => setLayoutProductId(product.id)} type="button"><LayoutTemplate size={14} /> 3D &amp; Layout</button>
-                        <button aria-label={`Configure ${product.name}`} className={styles.buttonGhost} onClick={() => void editProduct(product.id)} type="button"><MoreHorizontal size={15} /></button>
-                      </span></td>
+                      <td><div className={styles.fullDetailsRowActions}>
+                        <button aria-label={`Configure ${product.name}`} className={styles.buttonGhost} onClick={() => void editProduct(product.id)} type="button"><Pencil size={14} /> Configure</button>
+                        <details className={styles.productRowMenu}><summary aria-label={`More actions for ${product.name}`}><MoreHorizontal size={15} /></summary><div><button aria-label={`Open 3D and layout editor for ${product.name}`} className={styles.buttonGhost} onClick={() => setLayoutProductId(product.id)} type="button"><LayoutTemplate size={14} /> 3D &amp; Layout</button></div></details>
+                      </div></td>
                     </tr>
                   );
                 })}
@@ -1547,13 +1550,20 @@ export function ProductsPanel() {
 
       {quickAdding && <QuickListProductWizard
         categories={categoryRecords}
-        onClose={() => setQuickAdding(false)}
+        onClose={() => { setQuickAdding(false); void loadCatalog(); }}
         onImportPackaging={() => importPackagingCategoryStarters(packagingCategoryStarters.map((starter) => starter.id), "all packaging groups")}
         onImportRanBazaar={() => importRanBazaarCategoryStarters(ranBazaarCategoryStarters.map((starter) => starter.id), "all RanBazaar category groups")}
-        onSaved={async (productId) => {
+        onSaved={async () => {
+          setQuickAdding(false);
+          await loadCatalog();
+          setQuickAddNotice("Product saved");
+        }}
+        onOpenStudio={async (productId) => {
           setQuickAdding(false);
           setVisualizationOpen(true);
+          await loadCatalog();
           await editProduct(productId);
+          setQuickAddNotice("Product saved");
         }}
       />}
       {layoutProductId && <ProductLayoutDrawer

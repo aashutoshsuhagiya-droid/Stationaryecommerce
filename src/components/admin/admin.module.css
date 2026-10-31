@@ -3048,3 +3048,29 @@ button.configCard:hover { border-color: var(--border-focus); background: var(--s
   .categorySubAddRow .categoryQuickAddInput { grid-column: 1 / -1; }
   .categoryEditGrid { grid-template-columns: 1fr; }
 }
+
+/* Quick product listing flow refinements. */
+.quickListStarterHeading,
+.quickListStarterHint { grid-column: 1 / -1; }
+.quickListStarterHeading h4,
+.quickListStarterHint { margin: 0; color: var(--text-heading); font-size: 12px; line-height: 1.5; }
+.quickListStarterHint { color: var(--text-secondary); font-size: 10px; }
+.quickListPackagingSearch { display: grid; gap: 4px; margin-top: 2px; color: var(--text-secondary); font-size: 9px; font-weight: 700; }
+.quickListAdvancedDetails { border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); background: var(--surface-main); }
+.quickListAdvancedDetails > summary { padding: 10px; color: var(--text-heading); font-size: 10px; font-weight: 700; cursor: pointer; }
+.quickListAdvancedDetails > .quickListSku { margin: 0 10px 10px; }
+.quickListReuseChoice,
+.quickListAutoCategory { display: flex; align-items: center; gap: 7px; color: var(--text-secondary); font-size: 10px; line-height: 1.4; }
+.quickListReuseChoice { padding: 9px 10px; border: 1px solid var(--border-default); border-radius: var(--admin-control-radius); background: var(--surface-subtle); color: var(--text-heading); font-weight: 700; }
+.quickListAutoCategory { margin-top: 6px; }
+.quickListAutoCategory .buttonGhost { min-height: auto; padding: 2px 4px; }
+.quickListSkipped { color: var(--text-muted); }
+.quickListSequenceSkipped { color: var(--text-muted); }
+.catalogQuickAddHint { margin: 0 0 10px; color: var(--text-secondary); font-size: 10px; line-height: 1.45; }
+.catalogQuickAddHint strong { color: var(--text-heading); }
+.catalogSavedNotice { margin: 0 0 10px; color: var(--success); font-size: 10px; font-weight: 700; }
+.productRowMenu { position: relative; }
+.productRowMenu > summary { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--border-default); border-radius: var(--admin-control-radius); color: var(--text-secondary); background: var(--surface-main); list-style: none; cursor: pointer; }
+.productRowMenu > summary::-webkit-details-marker { display: none; }
+.productRowMenu > div { position: absolute; z-index: 3; right: 0; top: calc(100% + 5px); min-width: 142px; padding: 5px; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); background: var(--surface-main); box-shadow: var(--shadow-menu); }
+.productRowMenu > div .buttonGhost { width: 100%; justify-content: flex-start; }
