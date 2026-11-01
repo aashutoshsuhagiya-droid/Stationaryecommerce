@@ -13,7 +13,6 @@ import {
 import { CategoryTile } from "@/components/commerce/CategoryTile";
 import { HomePromoCarousel, type CarouselSlide } from "@/components/commerce/HomePromoCarousel";
 import { TrendingCard } from "@/components/commerce/TrendingCard";
-import { CategoryDock } from "@/components/layout/CategoryDock";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { categories, featuredProducts } from "@/lib/data";
 
@@ -31,20 +30,15 @@ const faqs = [
   ["Can I order labels for a whole class or school?", "Yes. The bulk-order workflow accepts a list of names and validates each row. Larger or unusual projects can be sent for a tailored quote."],
 ];
 
-const categoryDockSpecs = [
+const categoryTileSpecs = [
   { slug: "customized-name-slips", label: "Name Slips", color: "var(--cat-1)" },
   { slug: "waterproof-stickers", label: "Stickers", color: "var(--cat-2)" },
   { slug: "personalized-pencils-pens", label: "Pencils & Pens", color: "var(--cat-3)" },
   { slug: "school-labels", label: "School Labels", color: "var(--cat-4)" },
   { slug: "personalized-notebooks", label: "Notebooks", color: "var(--cat-5)" },
-  { slug: "bottle-tiffin-labels", label: "Bottle & Tiffin Labels", color: "var(--cat-1)" },
-  { slug: "school-accessories", label: "School Accessories", color: "var(--cat-2)" },
-  { slug: "personalized-gifts", label: "Gifts", color: "var(--cat-3)" },
-  { slug: "name-plates-keychains", label: "Keychains", color: "var(--cat-4)" },
-  { slug: "bulk-orders", label: "Bulk Orders", color: "var(--cat-5)" },
 ] as const;
 
-const dockCategories = categoryDockSpecs.map((spec) => {
+const categoryTiles = categoryTileSpecs.map((spec) => {
   const category = categories.find((entry) => entry.slug === spec.slug);
   if (!category) throw new Error("Missing homepage category: " + spec.slug);
   return { ...spec, image: category.image, name: category.name };
@@ -105,7 +99,6 @@ export default function HomePage() {
 
   return (
     <>
-      <CategoryDock categories={dockCategories} />
       <ScrollReveal><HomePromoCarousel slides={promoSlides} /></ScrollReveal>
 
       <ScrollReveal>
@@ -130,7 +123,7 @@ export default function HomePage() {
               <Link className="myntraSeeAll" href="/products">See All <span aria-hidden="true">→</span></Link>
             </div>
             <div className="categoryTiles">
-              {dockCategories.slice(0, 5).map((category) => <CategoryTile category={category} key={category.slug} />)}
+              {categoryTiles.map((category) => <CategoryTile category={category} key={category.slug} />)}
             </div>
           </div>
         </section>

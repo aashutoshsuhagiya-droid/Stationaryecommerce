@@ -1,58 +1,261 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
-  ArrowRight,
-  BadgePercent,
-  BookOpen,
-  Droplets,
-  FileSpreadsheet,
-  Gift,
-  KeyRound,
-  Layers3,
-  PenLine,
-  Ruler,
-  School,
-  ShieldCheck,
-  Sparkles,
-  Tag,
-  type LucideIcon,
-} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type MutableRefObject,
+  type ReactNode,
+} from "react";
 import { categories as initialCategories } from "@/lib/data";
 import type { Category } from "@/lib/types";
 
-type QuickLink = { label: string; href: string; icon: LucideIcon };
+type GroupId = "labels" | "school" | "gifts" | "bulk";
+type RailId = "all" | GroupId;
 
-// Column 1: everyday labels · Column 2: school & writing · Column 3: gifts & keepsakes · Column 4: bulk
-const groupSlugs = [
-  ["customized-name-slips", "waterproof-stickers", "bottle-tiffin-labels"],
-  ["school-labels", "personalized-notebooks", "personalized-pencils-pens", "school-accessories"],
-  ["personalized-gifts", "name-plates-keychains"],
-  ["bulk-orders"],
+type RailItem = {
+  id: RailId;
+  label: string;
+  href: string;
+  accent: string;
+  groupOrder: GroupId[];
+};
+
+type MenuGroup = {
+  id: GroupId;
+  title: string;
+  accent: string;
+  slugs: readonly string[];
+  items: Category[];
+};
+
+type MegaMenuContextValue = {
+  activeGroup: RailId;
+  isDesktop: boolean;
+  isOpen: boolean;
+  railItems: readonly RailItem[];
+  railRefs: MutableRefObject<Array<HTMLAnchorElement | null>>;
+  closeNow: () => void;
+  handleRailKeyDown: (event: ReactKeyboardEvent<HTMLElement>) => void;
+  openGroup: (group: RailId) => void;
+};
+
+const CLOSE_DELAY_MS = 250;
+const DESKTOP_QUERY = "(min-width: 1024px)";
+const HOVER_DESKTOP_QUERY = "(min-width: 1024px) and (hover: hover)";
+
+const groupDefinitions = [
+  {
+    id: "labels",
+    title: "Label Essentials",
+    accent: "var(--mega-labels)",
+    slugs: ["customized-name-slips", "waterproof-stickers", "bottle-tiffin-labels"],
+  },
+  {
+    id: "school",
+    title: "School & Writing",
+    accent: "var(--mega-school)",
+    slugs: ["school-labels", "personalized-notebooks", "personalized-pencils-pens", "school-accessories"],
+  },
+  {
+    id: "gifts",
+    title: "Gifts & Keepsakes",
+    accent: "var(--mega-gifts)",
+    slugs: ["personalized-gifts", "name-plates-keychains"],
+  },
+  {
+    id: "bulk",
+    title: "Bulk & Institutional",
+    accent: "var(--mega-bulk)",
+    slugs: ["bulk-orders"],
+  },
 ] as const;
 
-const groupTitles = ["Label Essentials", "School & Writing", "Gifts & Keepsakes", "Bulk & Institutional"] as const;
-const groupIcons: LucideIcon[] = [Tag, School, Gift, FileSpreadsheet];
-const itemIcons: LucideIcon[] = [Tag, ShieldCheck, Droplets, School, BookOpen, PenLine, Sparkles, KeyRound, Ruler, BadgePercent];
+const railItems: RailItem[] = [
+  {
+    id: "all",
+    label: "All products",
+    href: "/products",
+    accent: "var(--mega-all)",
+    groupOrder: ["labels", "school", "gifts", "bulk"],
+  },
+  {
+    id: "labels",
+    label: "Labels",
+    href: "/products?category=customized-name-slips",
+    accent: "var(--mega-labels)",
+    groupOrder: ["labels", "school", "gifts"],
+  },
+  {
+    id: "school",
+    label: "School",
+    href: "/products?category=school-labels",
+    accent: "var(--mega-school)",
+    groupOrder: ["school", "labels", "gifts"],
+  },
+  {
+    id: "gifts",
+    label: "Gifts",
+    href: "/products?category=personalized-gifts",
+    accent: "var(--mega-gifts)",
+    groupOrder: ["gifts", "labels", "school"],
+  },
+  {
+    id: "bulk",
+    label: "Bulk",
+    href: "/products?category=bulk-orders",
+    accent: "var(--mega-bulk)",
+    groupOrder: ["bulk", "gifts", "school"],
+  },
+];
 
-export function CategoryMegaMenu() {
-  const [open, setOpen] = useState(false);
+const quickLinks = [
+  { label: "New arrivals", href: "/products?sort=newest" },
+  { label: "Custom size — request a quote", href: "/bulk-orders" },
+  { label: "Bulk Buy", href: "/bulk-orders" },
+  { label: "Sell with us", href: "/vendor/register" },
+];
+
+const MegaMenuContext = createContext<MegaMenuContextValue | null>(null);
+
+function useMegaMenu() {
+  const context = useContext(MegaMenuContext);
+  if (!context) throw new Error("CategoryRail must be rendered inside CategoryMegaMenu.");
+  return context;
+}
+
+export function CategoryRail() {
+  const {
+    activeGroup,
+    closeNow,
+    handleRailKeyDown,
+    isDesktop,
+    isOpen,
+    openGroup,
+    railItems: items,
+    railRefs,
+  } = useMegaMenu();
+
+  return (
+    <nav className="rail" aria-label="Shop product categories" onKeyDown={handleRailKeyDown}>
+      {items.map((item, index) => {
+        const isActive = isDesktop && isOpen && activeGroup === item.id;
+        return (
+          <Link
+            aria-expanded={isActive}
+            aria-haspopup="true"
+            className={"railItem railItem--" + item.id + (isActive ? " is-active" : "")}
+            href={item.href}
+            key={item.id}
+            onClick={closeNow}
+            onFocus={() => openGroup(item.id)}
+            onMouseEnter={() => openGroup(item.id)}
+            ref={(node) => { railRefs.current[index] = node; }}
+            style={{ "--rail-accent": item.accent } as CSSProperties}
+          >
+            {item.id === "all" && <span className="railGridChip" aria-hidden="true">⠿</span>}
+            <span>{item.label}</span>
+          </Link>
+        );
+      })}
+      <Link className="railNewLink" href="/products?sort=newest" onFocus={closeNow} onMouseEnter={closeNow}>
+        New arrivals <span>New</span>
+      </Link>
+    </nav>
+  );
+}
+
+export function CategoryMegaMenu({ children }: { children: ReactNode }) {
+  const [activeGroup, setActiveGroup] = useState<RailId>("all");
   const [categories, setCategories] = useState<Category[]>(initialCategories);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [canHover, setCanHover] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const closeTimer = useRef<number | null>(null);
+  const railRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const rootRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const clearCloseTimer = useCallback(() => {
+    if (closeTimer.current !== null) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  }, []);
+
+  const closeNow = useCallback(() => {
+    clearCloseTimer();
+    setIsOpen(false);
+  }, [clearCloseTimer]);
+
+  const closeAfterDelay = useCallback(() => {
+    if (!isDesktop) return;
+    clearCloseTimer();
+    closeTimer.current = window.setTimeout(() => {
+      setIsOpen(false);
+      closeTimer.current = null;
+    }, CLOSE_DELAY_MS);
+  }, [clearCloseTimer, isDesktop]);
+
+  const openGroup = useCallback((group: RailId) => {
+    if (!isDesktop) return;
+    clearCloseTimer();
+    setActiveGroup(group);
+    setIsOpen(true);
+  }, [clearCloseTimer, isDesktop]);
 
   useEffect(() => {
-    if (!open) return;
+    const desktopQuery = window.matchMedia(DESKTOP_QUERY);
+    const hoverQuery = window.matchMedia(HOVER_DESKTOP_QUERY);
+    const updateMedia = () => {
+      setIsDesktop(desktopQuery.matches);
+      setCanHover(hoverQuery.matches);
+      if (!desktopQuery.matches) {
+        clearCloseTimer();
+        setIsOpen(false);
+      }
+    };
+
+    updateMedia();
+    desktopQuery.addEventListener("change", updateMedia);
+    hoverQuery.addEventListener("change", updateMedia);
+    return () => {
+      desktopQuery.removeEventListener("change", updateMedia);
+      hoverQuery.removeEventListener("change", updateMedia);
+    };
+  }, [clearCloseTimer]);
+
+  useEffect(() => () => clearCloseTimer(), [clearCloseTimer]);
+
+  useEffect(() => {
+    fetch("/api/products?limit=1", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((payload) => {
+        if (Array.isArray(payload?.categories)) setCategories(payload.categories);
+      })
+      .catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen || !isDesktop) return;
+
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") closeNow();
     }
     function onPointerDown(event: MouseEvent) {
-      if (rootRef.current && !rootRef.current.contains(event.target as Node)) setOpen(false);
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) closeNow();
     }
     function onScroll() {
-      setOpen(false);
+      closeNow();
     }
+
     document.addEventListener("keydown", onKeyDown);
     document.addEventListener("mousedown", onPointerDown);
     window.addEventListener("scroll", onScroll, { passive: true, capture: true });
@@ -61,114 +264,122 @@ export function CategoryMegaMenu() {
       document.removeEventListener("mousedown", onPointerDown);
       window.removeEventListener("scroll", onScroll, true);
     };
-  }, [open]);
+  }, [closeNow, isDesktop, isOpen]);
 
-  useEffect(() => {
-    fetch("/api/products?limit=1", { cache: "no-store" })
-      .then((response) => response.ok ? response.json() : null)
-      .then((payload) => { if (Array.isArray(payload?.categories)) setCategories(payload.categories); })
-      .catch(() => undefined);
-  }, []);
+  const groups = useMemo<MenuGroup[]>(() => {
+    const categoryBySlug = new Map(categories.map((category) => [category.slug, category]));
+    const categoryById = new Map(categories.map((category) => [category.id, category]));
+    const knownSlugs = new Set<string>(groupDefinitions.flatMap((group) => group.slugs));
+    const resolvedGroups = groupDefinitions.map((definition) => ({
+      ...definition,
+      items: definition.slugs
+        .map((slug) => categoryBySlug.get(slug))
+        .filter((category): category is Category => Boolean(category)),
+    }));
 
-  useEffect(() => {
-    if (open) buttonRef.current?.focus();
-  }, [open]);
+    categories
+      .filter((category) => !knownSlugs.has(category.slug))
+      .forEach((category) => {
+        const parent = category.parentId ? categoryById.get(category.parentId) : undefined;
+        const parentGroupIndex = parent
+          ? groupDefinitions.findIndex((group) => (group.slugs as readonly string[]).includes(parent.slug))
+          : -1;
+        const targetGroupIndex = parentGroupIndex >= 0 ? parentGroupIndex : 0;
+        resolvedGroups[targetGroupIndex]?.items.push(category);
+      });
 
-  const staticGroups = groupSlugs.map((slugs, index) => ({
-    title: groupTitles[index],
-    Icon: groupIcons[index],
-    items: slugs
-      .map((slug) => categories.find((category) => category.slug === slug))
-      .filter((category): category is (typeof categories)[number] => Boolean(category))
-      .map((category, itemIndex) => ({
-        categorySlug: category.slug,
-        name: category.name,
-        productCount: category.productCount,
-        Icon: itemIcons[(index * 4 + itemIndex) % itemIcons.length],
-      })),
-  }));
-  const dynamicGroups = categories.filter((category) => !category.parentId).map((parent, index) => {
-    const children = categories.filter((category) => category.parentId === parent.id);
-    const items = children.length ? children : [parent];
-    return { title: parent.name, Icon: groupIcons[index % groupIcons.length], items: items.map((category, itemIndex) => ({ categorySlug: category.slug, name: category.name, productCount: category.productCount, Icon: itemIcons[(index * 4 + itemIndex) % itemIcons.length] })) };
-  });
-  const groups = categories.some((category) => category.parentId) ? dynamicGroups : staticGroups;
+    return resolvedGroups;
+  }, [categories]);
 
-  const quickLinks: QuickLink[] = [
-    { label: "New arrivals", href: "/products?sort=newest", icon: Sparkles },
-    { label: "Custom size — request a quote", href: "/bulk-orders", icon: Ruler },
-    { label: "Bulk Buy", href: "/bulk-orders", icon: FileSpreadsheet },
-    { label: "Sell with us", href: "/vendor/register", icon: BadgePercent },
-  ];
+  const activeRail = railItems.find((item) => item.id === activeGroup) ?? railItems[0]!;
+  const orderedGroups = activeRail.groupOrder
+    .map((groupId) => groups.find((group) => group.id === groupId))
+    .filter((group): group is MenuGroup => Boolean(group));
+
+  function handleRailKeyDown(event: ReactKeyboardEvent<HTMLElement>) {
+    if (!isDesktop) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeNow();
+      return;
+    }
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+
+    event.preventDefault();
+    const focusedIndex = railRefs.current.findIndex((item) => item === document.activeElement);
+    const currentIndex = focusedIndex >= 0 ? focusedIndex : railItems.findIndex((item) => item.id === activeGroup);
+    const direction = event.key === "ArrowRight" ? 1 : -1;
+    const nextIndex = (currentIndex + direction + railItems.length) % railItems.length;
+    const nextItem = railItems[nextIndex]!;
+    openGroup(nextItem.id);
+    railRefs.current[nextIndex]?.focus();
+  }
+
+  const contextValue: MegaMenuContextValue = {
+    activeGroup,
+    closeNow,
+    handleRailKeyDown,
+    isDesktop,
+    isOpen,
+    openGroup,
+    railItems,
+    railRefs,
+  };
 
   return (
-    <div className="mega-menu" ref={rootRef}>
-      <button
-        ref={buttonRef}
-        type="button"
-        className="all-products-link"
-        aria-haspopup="true"
-        aria-expanded={open}
-        onClick={() => setOpen((value) => !value)}
+    <MegaMenuContext.Provider value={contextValue}>
+      <div
+        className="megaMenu"
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) closeAfterDelay();
+        }}
+        onMouseEnter={clearCloseTimer}
+        onMouseLeave={() => {
+          if (canHover) closeAfterDelay();
+        }}
+        ref={rootRef}
       >
-        <span className="grid-dot-icon" aria-hidden="true">⠿</span>
-        All products
-        <ArrowRight size={15} className="mega-menu-caret" aria-hidden="true" />
-      </button>
-      {open && (
-        <div className="mega-menu-panel" role="region" aria-label="All product categories">
-          <div className="mega-menu-grid">
-            {groups.map((group) => (
-              <div className="mega-menu-col" key={group.title}>
-                <h3>
-                  <group.Icon aria-hidden="true" />
-                  {group.title}
-                </h3>
+        {children}
+        {isDesktop && isOpen && (
+          <section className="megaPanel" aria-label={activeRail.label + " product categories"}>
+            <div className={"megaPanelGrid" + (activeRail.id === "all" ? " megaPanelGrid--all" : "")}>
+              {orderedGroups.map((group) => (
+                <div
+                  className="megaPanelCol"
+                  key={group.id}
+                  style={{ "--mega-column-accent": group.accent } as CSSProperties}
+                >
+                  <h3>{group.title}</h3>
+                  <ul>
+                    {group.items.map((item) => (
+                      <li key={item.id}>
+                        <Link href={"/products?category=" + item.slug} onClick={closeNow}>{item.name}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+              <div
+                className="megaPanelCol megaPanelShortcuts"
+                style={{ "--mega-column-accent": activeRail.accent } as CSSProperties}
+              >
+                <h3>Shortcuts</h3>
                 <ul>
-                  {group.items.map((item) => (
-                    <li key={item.categorySlug}>
-                      <Link href={`/products?category=${item.categorySlug}`} onClick={() => setOpen(false)}>
-                        <item.Icon aria-hidden="true" />
-                        <span>{item.name}</span>
-                        {item.productCount > 0 && <small>{item.productCount}</small>}
-                      </Link>
+                  {quickLinks.map((link) => (
+                    <li key={link.href + "-" + link.label}>
+                      <Link href={link.href} onClick={closeNow}>{link.label}</Link>
                     </li>
                   ))}
                 </ul>
               </div>
-            ))}
-            <div className="mega-menu-col mega-menu-shortcuts">
-              <h3>
-                <Layers3 aria-hidden="true" />
-                Shortcuts
-              </h3>
-              <ul className="mega-menu-quick">
-                {quickLinks.map((link) => (
-                  <li key={`${link.href}-${link.label}`}>
-                    <Link href={link.href} onClick={() => setOpen(false)}>
-                      <link.icon aria-hidden="true" />
-                      <span>{link.label}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="mega-menu-feature">
-                <strong>Preview before you order</strong>
-                <p>Customize text, theme and size, then watch your design on the product in 3D.</p>
-                <Link href="/products" onClick={() => setOpen(false)} className="mega-menu-feature-link">
-                  Browse the collection <ArrowRight size={13} />
-                </Link>
-              </div>
             </div>
-          </div>
-          <div className="mega-menu-footer">
-            <Link href="/products" onClick={() => setOpen(false)}>
-              View all products <ArrowRight size={13} aria-hidden="true" />
-            </Link>
-            <p>Free artwork preflight check before anything reaches print.</p>
-          </div>
-        </div>
-      )}
-    </div>
+            <div className="megaPanelFooter">
+              <Link href="/products" onClick={closeNow}>View all products <ArrowRight size={13} aria-hidden="true" /></Link>
+              <p>Free artwork preflight check before anything reaches print.</p>
+            </div>
+          </section>
+        )}
+      </div>
+    </MegaMenuContext.Provider>
   );
 }

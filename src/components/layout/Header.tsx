@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CircleUserRound, Headphones, Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
-import { CategoryMegaMenu } from "@/components/layout/CategoryMegaMenu";
+import { CategoryMegaMenu, CategoryRail } from "@/components/layout/CategoryMegaMenu";
 import { useStore } from "@/components/store/StoreProvider";
 
 const navItems = [
@@ -64,6 +64,7 @@ export function Header() {
         <div className="header-main shell">
           <button className="icon-button mobile-menu-button" aria-label="Open menu" onClick={() => setMenuOpen(true)}><Menu /></button>
           <Logo />
+          <CategoryMegaMenu><CategoryRail /></CategoryMegaMenu>
           <form className="header-search" onSubmit={submitSearch} role="search">
             <Search size={19} aria-hidden="true" />
             <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search for products, brands and more" aria-label="Search products" />
@@ -78,11 +79,11 @@ export function Header() {
           </nav>
         </div>
         <div className="nav-row shell">
-          <CategoryMegaMenu />
+          <Link href="/products" className="mobile-all-products-link"><span aria-hidden="true">⠿</span> All products</Link>
           <nav className="primary-nav" aria-label="Primary navigation">
             {navItems.map((item) => <Link key={item.href} href={item.href}>{item.label}</Link>)}
           </nav>
-          <Link href="/products?sort=newest" className="new-link">New arrivals <span>New</span></Link>
+          <Link href="/products?sort=newest" className="new-link mobile-new-link">New arrivals <span>New</span></Link>
         </div>
       </header>
 
