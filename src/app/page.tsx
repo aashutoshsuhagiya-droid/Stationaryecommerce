@@ -1,11 +1,21 @@
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BadgeCheck, Box, ChevronRight, CircleCheck, Headphones, Paintbrush, PackageCheck, ShieldCheck, WandSparkles } from "lucide-react";
-import { categories, featuredProducts } from "@/lib/data";
-import { ProductCard } from "@/components/commerce/ProductCard";
-import { CategoryCard } from "@/components/commerce/CategoryCard";
+import Link from "next/link";
+import {
+  ArrowRight,
+  Box,
+  ChevronRight,
+  CircleCheck,
+  Paintbrush,
+  PackageCheck,
+  ShieldCheck,
+  WandSparkles,
+} from "lucide-react";
+import { CategoryTile } from "@/components/commerce/CategoryTile";
 import { HomePromoCarousel, type CarouselSlide } from "@/components/commerce/HomePromoCarousel";
+import { TrendingCard } from "@/components/commerce/TrendingCard";
+import { CategoryDock } from "@/components/layout/CategoryDock";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { categories, featuredProducts } from "@/lib/data";
 
 const process = [
   { number: "01", icon: PackageCheck, title: "Choose your product", text: "Pick the size, pack and material that fits your day." },
@@ -21,8 +31,26 @@ const faqs = [
   ["Can I order labels for a whole class or school?", "Yes. The bulk-order workflow accepts a list of names and validates each row. Larger or unusual projects can be sent for a tailored quote."],
 ];
 
+const categoryDockSpecs = [
+  { slug: "customized-name-slips", label: "Name Slips", color: "var(--cat-1)" },
+  { slug: "waterproof-stickers", label: "Stickers", color: "var(--cat-2)" },
+  { slug: "personalized-pencils-pens", label: "Pencils & Pens", color: "var(--cat-3)" },
+  { slug: "school-labels", label: "School Labels", color: "var(--cat-4)" },
+  { slug: "personalized-notebooks", label: "Notebooks", color: "var(--cat-5)" },
+  { slug: "bottle-tiffin-labels", label: "Bottle & Tiffin Labels", color: "var(--cat-1)" },
+  { slug: "school-accessories", label: "School Accessories", color: "var(--cat-2)" },
+  { slug: "personalized-gifts", label: "Gifts", color: "var(--cat-3)" },
+  { slug: "name-plates-keychains", label: "Keychains", color: "var(--cat-4)" },
+  { slug: "bulk-orders", label: "Bulk Orders", color: "var(--cat-5)" },
+] as const;
+
+const dockCategories = categoryDockSpecs.map((spec) => {
+  const category = categories.find((entry) => entry.slug === spec.slug);
+  if (!category) throw new Error("Missing homepage category: " + spec.slug);
+  return { ...spec, image: category.image, name: category.name };
+});
+
 export default function HomePage() {
-  const featuredCategories = categories.filter((category) => category.featured).slice(0, 4);
   const heroProduct = featuredProducts[0]!;
   const heroSecondary = featuredProducts[1] ?? heroProduct;
   const heroTertiary = featuredProducts[2] ?? heroSecondary;
@@ -77,42 +105,54 @@ export default function HomePage() {
 
   return (
     <>
-      <ScrollReveal>
-        <section className="reassuranceBand" aria-label="Store promises">
-          <div className="shell reassuranceBandGrid">
-            <article className="reassuranceBandItem"><WandSparkles aria-hidden="true" /><p><strong>Live preview</strong><small>See exactly what we’ll print before you order</small></p></article>
-            <article className="reassuranceBandItem"><PackageCheck aria-hidden="true" /><p><strong>Made to order</strong><small>Your design is produced only after you approve it</small></p></article>
-            <article className="reassuranceBandItem"><BadgeCheck aria-hidden="true" /><p><strong>Made in India</strong><small>Small batches, checked before dispatch</small></p></article>
-            <article className="reassuranceBandItem"><Headphones aria-hidden="true" /><p><strong>Human support</strong><small>Design help with your saved artwork in context</small></p></article>
-          </div>
-        </section>
-      </ScrollReveal>
-
+      <CategoryDock categories={dockCategories} />
       <ScrollReveal><HomePromoCarousel slides={promoSlides} /></ScrollReveal>
 
       <ScrollReveal>
-        <section className="section category-section">
+        <section className="section myntraSection myntraTrendingSection">
           <div className="shell">
-            <div className="section-header"><div><span className="eyebrow">Shop by category</span><h2>Made personal, for every day</h2><p>Start with what you need. Every customisable piece opens in a guided studio with a real-time preview.</p></div><Link className="text-link" href="/products">See all categories <ArrowRight size={16} /></Link></div>
-            <div className="category-grid category-grid--chips">{featuredCategories.map((category, index) => <CategoryCard key={category.id} category={category} index={index} />)}</div>
+            <div className="myntraSectionHeader">
+              <div><h2>Trending</h2><p>Trending and New Product Launches</p></div>
+              <Link className="myntraSeeAll" href="/products">See All <span aria-hidden="true">→</span></Link>
+            </div>
+            <div className="trendingRow">
+              {featuredProducts.slice(0, 4).map((product) => <TrendingCard key={product.id} product={product} />)}
+            </div>
           </div>
         </section>
       </ScrollReveal>
 
       <ScrollReveal>
-        <section className="section bestsellers-section section-soft">
+        <section className="section myntraSection myntraCategorySection">
           <div className="shell">
-            <div className="section-header"><div><span className="eyebrow">Customer favourites</span><h2>Trending now</h2><p>The picks our customers reorder — ready for your name.</p></div><Link className="text-link" href="/products">Shop the collection <ArrowRight size={16} /></Link></div>
-            <div className="product-grid trending-product-grid">{featuredProducts.slice(0, 4).map((product) => <ProductCard key={product.id} product={product} />)}</div>
+            <div className="myntraSectionHeader">
+              <h2>Shop by Category</h2>
+              <Link className="myntraSeeAll" href="/products">See All <span aria-hidden="true">→</span></Link>
+            </div>
+            <div className="categoryTiles">
+              {dockCategories.slice(0, 5).map((category) => <CategoryTile category={category} key={category.slug} />)}
+            </div>
           </div>
         </section>
       </ScrollReveal>
 
       <ScrollReveal>
-        <section className="section collection-section">
+        <section className="section collection-section myntraCampaignSection">
           <div className="shell collection-grid">
-            <article className="collection-card collection-school"><span>School-ready collection</span><h2>Small labels.<br />Much calmer mornings.</h2><p>Mixed-size packs for the things that leave home every day.</p><Link href="/products?category=customized-name-slips">Shop name labels <ArrowRight size={16} /></Link>{schoolCollection && <div className="collection-art"><Image className="collection-photo" src={schoolCollection.image} alt={schoolCollection.name} fill sizes="(max-width: 780px) 100vw, 260px" /></div>}</article>
-            <article className="collection-card collection-gift"><span>Make gifting meaningful</span><h2>Not just picked.<br />Made for them.</h2><p>Useful, joyful gifts with their name woven into the design.</p><Link href="/products?category=personalized-gifts">Explore gifts <ArrowRight size={16} /></Link>{giftCollection && <div className="collection-art"><Image className="collection-photo" src={giftCollection.image} alt={giftCollection.name} fill sizes="(max-width: 780px) 100vw, 260px" /></div>}</article>
+            <article className="collection-card collection-school">
+              <span>School-ready collection</span>
+              <h2>Small labels.<br />Much calmer mornings.</h2>
+              <p>Mixed-size packs for the things that leave home every day.</p>
+              <Link className="myPill campaignCta" href="/products?category=customized-name-slips">Shop Now <ArrowRight size={16} /></Link>
+              {schoolCollection && <div className="collection-art"><Image className="collection-photo" src={schoolCollection.image} alt={schoolCollection.name} fill sizes="(max-width: 780px) 100vw, 260px" /></div>}
+            </article>
+            <article className="collection-card collection-gift">
+              <span>Make gifting meaningful</span>
+              <h2>Not just picked.<br />Made for them.</h2>
+              <p>Useful, joyful gifts with their name woven into the design.</p>
+              <Link className="myPill campaignCta" href="/products?category=personalized-gifts">Explore Gifts <ArrowRight size={16} /></Link>
+              {giftCollection && <div className="collection-art"><Image className="collection-photo" src={giftCollection.image} alt={giftCollection.name} fill sizes="(max-width: 780px) 100vw, 260px" /></div>}
+            </article>
           </div>
         </section>
       </ScrollReveal>

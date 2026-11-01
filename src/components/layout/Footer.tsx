@@ -1,33 +1,79 @@
 import Link from "next/link";
-import { Mail, MapPin, MessageCircle, ShieldCheck } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
+import { NewsletterSignup } from "./NewsletterSignup";
 
 function InstagramIcon({ size = 16 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
     </svg>
   );
 }
-import { Logo } from "@/components/ui/Logo";
-import { NewsletterSignup } from "./NewsletterSignup";
 
 export function Footer() {
   const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL;
+
   return (
     <footer className="site-footer">
-      <div className="newsletter shell">
-        <div className="newsletter-copy"><span className="eyebrow light">The good-note club</span><h2>Fresh ideas, made personal.</h2><p>Occasional product news and practical gifting inspiration. No noisy inbox.</p></div>
-        <NewsletterSignup />
+      <div className="footerTrending shell">
+        <strong>Trending Searches</strong>
+        <div>
+          <Link href="/search?q=name+slips">Name slips</Link>
+          <Link href="/search?q=gifts">Gifts</Link>
+          <Link href="/search?q=notebook">Notebook</Link>
+          <Link href="/search?q=stickers">Stickers</Link>
+        </div>
       </div>
-      <div className="footer-main shell">
-        <div className="footer-brand"><Logo /><p>Personalised labels, school essentials and little gifts—thoughtfully designed and carefully produced in India.</p><div className="footer-contact"><a href="mailto:hello@naamly.in"><Mail size={17} /> hello@naamly.in</a><Link href="/contact"><MessageCircle size={17} /> Customer care</Link><span><MapPin size={17} /> Made in India</span></div></div>
-        <div><h3>Shop</h3><Link href="/products?category=customized-name-slips">Name labels</Link><Link href="/products?category=school-labels">School essentials</Link><Link href="/products?category=personalized-gifts">Personalised gifts</Link><Link href="/bulk-orders">Bulk orders</Link></div>
-        <div><h3>Help</h3><Link href="/faq">FAQs</Link><Link href="/track-order">Track an order</Link><Link href="/contact">Contact us</Link><Link href="/policies/shipping">Shipping</Link><Link href="/policies/returns">Returns & refunds</Link></div>
-        <div><h3>About</h3><Link href="/about">Our story</Link><Link href="/vendor/register">Become a vendor</Link><Link href="/policies/privacy">Privacy</Link><Link href="/policies/terms">Terms</Link><Link href="/admin">Store admin</Link>{instagramUrl && <a href={instagramUrl} rel="noreferrer" target="_blank"><InstagramIcon size={16} /> Instagram</a>}</div>
+
+      <div className="footer-main footerMainMyntra shell">
+        <div className="footerColumn">
+          <h3>Shop</h3>
+          <Link href="/products?category=customized-name-slips">Name Slips</Link>
+          <Link href="/products?category=waterproof-stickers">Stickers</Link>
+          <Link href="/products?category=personalized-pencils-pens">Pencils &amp; Pens</Link>
+          <Link href="/products?category=school-labels">School Labels</Link>
+          <Link href="/products?category=personalized-notebooks">Notebooks</Link>
+          <Link href="/products?category=personalized-gifts">Personalised gifts</Link>
+          <Link href="/bulk-orders">Bulk orders</Link>
+        </div>
+
+        <div className="footerColumn">
+          <h3>Company</h3>
+          <Link href="/about">About</Link>
+          <Link href="/faq">FAQ</Link>
+          <Link href="/contact">Contact</Link>
+          <Link href="/vendor/register">Become a vendor</Link>
+          <Link href="/admin">Store admin</Link>
+        </div>
+
+        <div className="footerColumn">
+          <h3>Help</h3>
+          <Link href="/track-order">Track</Link>
+          <Link href="/policies/shipping">Shipping</Link>
+          <Link href="/policies/returns">Returns</Link>
+        </div>
+
+        <div className="footerColumn">
+          <h3>Policies</h3>
+          <Link href="/policies/terms">Terms</Link>
+          <Link href="/policies/privacy">Privacy</Link>
+        </div>
+
+        <div className="footerColumn footerStay">
+          <h3>Stay in loop</h3>
+          <p>Fresh ideas, made personal.</p>
+          <NewsletterSignup />
+          <a href="mailto:hello@naamly.in"><Mail size={15} /> hello@naamly.in</a>
+          {instagramUrl && <a href={instagramUrl} rel="noreferrer" target="_blank"><InstagramIcon size={16} /> Instagram</a>}
+        </div>
       </div>
-      <div className="footer-bottom shell"><span>© {new Date().getFullYear()} Naamly. All rights reserved.</span><span><ShieldCheck size={16} /> Secure checkout · Transparent pricing</span></div>
+
+      <div className="footer-bottom footerBottomMyntra shell">
+        <span>© {new Date().getFullYear()} Naamly. All rights reserved.</span>
+        <span className="madeInIndia"><MapPin size={13} /> Made in India</span>
+      </div>
     </footer>
   );
 }

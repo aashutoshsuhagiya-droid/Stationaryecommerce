@@ -57,7 +57,7 @@ export function Header() {
   return (
     <>
       <div className="announcement">
-        <span>Thoughtfully personalised, carefully made</span>
+        <span>Every order includes free shipping · Live preview on every customisable product</span>
         <Link href="/track-order">Track your order <span aria-hidden="true">→</span></Link>
       </div>
       <header className="site-header">
@@ -66,15 +66,15 @@ export function Header() {
           <Logo />
           <form className="header-search" onSubmit={submitSearch} role="search">
             <Search size={19} aria-hidden="true" />
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search labels, gifts and school essentials" aria-label="Search products" />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search for products, brands and more" aria-label="Search products" />
             <kbd>Ctrl/⌘ K</kbd>
           </form>
           <nav className="header-actions" aria-label="Quick links">
-            <Link href="/contact" className="support-link"><Headphones /><span><small>Need help?</small>Talk to us</span></Link>
+            <Link href="/contact" className="support-link icon-button" aria-label="Contact support"><Headphones size={20} /><span><small>Need help?</small>Talk to us</span></Link>
             <button className="icon-button mobile-search-button" aria-label="Search" onClick={() => setSearchOpen(true)}><Search /></button>
-            <Link href="/login" className="icon-button" aria-label="Sign in or access your account"><CircleUserRound /></Link>
-            <Link href="/wishlist" className="icon-button count-button" aria-label={`Wishlist with ${wishlist.length} items`}><Heart /><span>{wishlist.length}</span></Link>
-            <Link href="/cart" className="icon-button count-button" aria-label={`Cart with ${cartCount} items`}><ShoppingBag /><span>{cartCount}</span></Link>
+            <Link href="/login" className="icon-button" aria-label="Sign in or access your account"><CircleUserRound size={20} /></Link>
+            <Link href="/wishlist" className="icon-button count-button" aria-label={`Wishlist with ${wishlist.length} items`}><Heart size={20} /><span>{wishlist.length}</span></Link>
+            <Link href="/cart" className="icon-button count-button" aria-label={`Cart with ${cartCount} items`}><ShoppingBag size={20} /><span>{cartCount}</span></Link>
           </nav>
         </div>
         <div className="nav-row shell">

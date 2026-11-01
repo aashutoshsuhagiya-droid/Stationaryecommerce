@@ -239,6 +239,7 @@ export const products: Product[] = [
     categorySlug: "customized-name-slips",
     category: "Customized Name Slips",
     price: 349,
+    compareAtPrice: 699,
     customizable: true,
     description:
       "A practical mixed-size set for books, pencil boxes and school supplies. Personalize the name, optional class details, font and original Naamly design theme before ordering.",
@@ -302,6 +303,7 @@ export const products: Product[] = [
     categorySlug: "waterproof-stickers",
     category: "Waterproof Stickers",
     price: 399,
+    compareAtPrice: 799,
     customizable: true,
     description:
       "A set of laminated name labels intended for smooth bottle and lunch-box surfaces. Customers can choose a theme and preview the personalized layout.",
@@ -360,6 +362,7 @@ export const products: Product[] = [
     categorySlug: "school-labels",
     category: "School Label Sets",
     price: 649,
+    compareAtPrice: 1199,
     customizable: true,
     description:
       "A coordinated set with slim pencil labels, medium book labels and larger bag labels. Each format uses the same saved personalization.",
@@ -408,6 +411,7 @@ export const products: Product[] = [
     categorySlug: "customized-name-slips",
     category: "Customized Name Slips",
     price: 499,
+    compareAtPrice: 999,
     customizable: true,
     badge: "Premium",
     description:

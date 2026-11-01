@@ -103,7 +103,7 @@ export function HomePromoCarousel({ slides }: { slides: readonly CarouselSlide[]
                 <span className="promoCarouselKicker">{slide.kicker}</span>
                 <Heading>{slide.title}</Heading>
                 {slide.description && <p>{slide.description}</p>}
-                <Link className="button button-primary promoCarouselCta" href={slide.href} tabIndex={isActive ? 0 : -1}>
+                <Link className="button myPill promoCarouselCta" href={slide.href} tabIndex={isActive ? 0 : -1}>
                   {slide.cta} <ArrowRight size={17} aria-hidden="true" />
                 </Link>
               </div>
