@@ -1957,9 +1957,13 @@ body { overflow-x: clip; }
 }
 .myntraSeeAll {
   flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  padding: 8px 0;
+  text-decoration: none;
   color: var(--my-pink);
   font-size: .8125rem;
   font-weight: 800;
