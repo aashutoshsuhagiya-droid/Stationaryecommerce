@@ -679,7 +679,7 @@ button:not(:disabled):active { transform: scale(.98); }
 .catalog-sidebar { min-width: 0; }
 .filter-heading { padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); }
 .filter-heading strong { color: var(--navy); font-size: .8125rem; letter-spacing: .08em; text-transform: uppercase; }
-.filter-heading button { min-height: 48px; border: 0; padding: 0 6px; color: var(--teal-dark); background: transparent; cursor: pointer; font-size: .75rem; font-weight: 750; }
+.filter-heading button { min-height: 48px; border: 0; padding: 0 6px; color: var(--my-pink); background: transparent; cursor: pointer; font-size: .75rem; font-weight: 750; }
 .filter-group { padding-block: 18px; border-bottom: 1px solid var(--line); }
 .filter-group h3 { margin: 0 0 8px; display: flex; align-items: center; justify-content: space-between; color: var(--navy); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
 .filter-group h3 svg { width: 14px; }
@@ -687,6 +687,34 @@ button:not(:disabled):active { transform: scale(.98); }
 .filter-options label { min-height: 48px; display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 9px; color: var(--grey-700); cursor: pointer; font-size: .8125rem; }
 .filter-options input { width: 18px; height: 18px; margin: 0; accent-color: var(--teal); }
 .filter-options small { color: var(--grey-300); }
+.filterTree { padding-block: 18px; border-bottom: 1px solid var(--my-line); }
+.filterTree > h3 { margin: 0 0 8px; color: var(--my-ink); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.filterTreeGroup { min-height: 44px; display: grid; grid-template-columns: 16px minmax(0, 1fr) auto 24px; align-items: center; gap: 8px; }
+.filterTreeGroupHead,
+.filterTreeChild input { margin: 0; appearance: none; position: relative; cursor: pointer; border: 1.5px solid var(--my-line); border-radius: 4px; background: var(--paper); }
+.filterTreeGroupHead { width: 16px; height: 16px; }
+.filterTreeGroupHead:checked,
+.filterTreeChild input:checked { border-color: var(--my-pink); background: var(--my-pink); }
+.filterTreeGroupHead:checked::after,
+.filterTreeChild input:checked::after { content: ""; position: absolute; width: 9px; height: 6px; top: 2px; left: 2px; border-right: 1.5px solid var(--paper); border-bottom: 1.5px solid var(--paper); transform: rotate(45deg); }
+.filterTreeGroupHead.is-partial,
+.filterTreeGroupHead.is-partial:checked { border: 2px solid var(--my-pink); background: var(--paper); }
+.filterTreeGroupHead.is-partial::after { display: none; }
+.filterTreeGroupLabel { min-width: 0; color: var(--my-ink); font-size: 13px; font-weight: 600; line-height: 1.35; }
+.filterTreeGroupLabel:hover,
+.filterTreeGroupLabel:focus-visible { text-decoration: underline; }
+.filterTreeGroupCount { justify-self: end; color: var(--my-faint); font-size: 11px; }
+.filterTreeChevron { width: 24px; height: 44px; display: grid; place-items: center; border: 0; padding: 0; color: var(--my-slate); background: transparent; cursor: pointer; transition: transform 160ms ease; }
+.filterTreeChevron svg { width: 14px; height: 14px; }
+.filterTreeChevron.is-collapsed { transform: rotate(-90deg); }
+.filterTreeChildren { grid-column: 1 / -1; padding-left: 28px; display: grid; gap: 2px; }
+.filterTreeChild { min-height: 36px; display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; align-items: center; gap: 8px; color: var(--my-ink); cursor: pointer; font-size: 12.5px; }
+.filterTreeChild input { width: 14px; height: 14px; }
+.filterTreeChild input:checked::after { width: 8px; height: 5px; top: 2px; left: 2px; }
+.filterTreeChild small { justify-self: end; color: var(--my-faint); font-size: 10.5px; }
+.filterTreeMore { width: fit-content; min-height: 28px; display: inline-flex; align-items: center; margin-top: 4px; color: var(--my-pink); font-size: 12px; font-weight: 600; }
+.filterTreeMore:hover,
+.filterTreeMore:focus-visible { text-decoration: underline; }
 .price-guide > div { height: 4px; position: relative; border-radius: 5px; background: var(--line); }
 .price-guide > div span { display: block; height: 100%; border-radius: inherit; background: var(--teal); }
 .price-guide > div::before, .price-guide > div::after { content: ""; position: absolute; width: 13px; height: 13px; top: -5px; border-radius: 50%; background: var(--paper); border: 2px solid var(--teal); }

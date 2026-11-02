@@ -38,6 +38,71 @@ export interface ProductQueryResult {
   };
 }
 
+export type FilterTreeGroup = {
+  id: string;
+  name: string;
+  slug: string;
+  count: number;
+  children: Array<{ id: string; name: string; slug: string; count: number }>;
+  moreChildren: number;
+};
+
+export function buildFilterTree(
+  categories: Category[],
+  options: { groupCap?: number } = {},
+): FilterTreeGroup[] {
+  const groupCap = Math.max(0, Math.floor(options.groupCap ?? 8));
+  const bySortOrderThenName = (left: Category, right: Category) =>
+    left.sortOrder - right.sortOrder || left.name.localeCompare(right.name, "en-IN");
+
+  return categories
+    .filter((category) => !category.parentId)
+    .sort(bySortOrderThenName)
+    .map((category) => {
+      const allChildren = categories
+        .filter((child) => child.parentId === category.id && child.productCount > 0)
+        .sort(bySortOrderThenName);
+      const visibleChildren = allChildren.slice(0, groupCap);
+
+      return {
+        id: category.id,
+        name: category.name,
+        slug: category.slug,
+        count: category.productCount,
+        children: visibleChildren.map((child) => ({
+          id: child.id,
+          name: child.name,
+          slug: child.slug,
+          count: child.productCount,
+        })),
+        moreChildren: allChildren.length - visibleChildren.length,
+      };
+    });
+}
+
+export function nextCategoryParam(
+  selected: ReadonlySet<string>,
+  group: FilterTreeGroup,
+): string | null {
+  if (selected.size === 0) return null;
+
+  const selectableChildSlugs = group.children
+    .filter((child) => child.count > 0)
+    .map((child) => child.slug);
+
+  if (selected.size === 1) {
+    const [onlySelected] = selected;
+    if (onlySelected === group.slug || selectableChildSlugs.includes(onlySelected)) return onlySelected;
+  }
+
+  const hasEveryChild = selectableChildSlugs.length > 0 && selectableChildSlugs.every((slug) => selected.has(slug));
+  if (selected.has(group.slug) && hasEveryChild && selected.size === selectableChildSlugs.length + 1) {
+    return group.slug;
+  }
+
+  return null;
+}
+
 const normalize = (value: string) =>
   value
     .normalize("NFKD")

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ChevronDown, ChevronRight, Filter, Search, SlidersHorizontal, X } from "lucide-react";
+import { buildFilterTree, nextCategoryParam } from "@/lib/catalog";
 import { categories as initialCategories, formatPrice, products as initialProducts } from "@/lib/data";
 import type { Category, Product } from "@/lib/types";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -64,7 +65,10 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
   const requestedSort = params.get("sort");
   const sortParam: SortOption = isSortOption(requestedSort) ? requestedSort : "recommended";
   const [query, setQuery] = useState(queryParam);
-  const [category, setCategory] = useState(categoryParam);
+  const [selectedCategories, setSelectedCategories] = useState<ReadonlySet<string>>(
+    () => categoryParam === "all" || categoryParam.startsWith("/") ? new Set() : new Set([categoryParam]),
+  );
+  const [expandedGroups, setExpandedGroups] = useState<ReadonlySet<string>>(new Set());
   const [sort, setSort] = useState<SortOption>(sortParam);
   const [customOnly, setCustomOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
@@ -87,17 +91,48 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
   const loadMoreAbortRef = useRef<AbortController | null>(null);
   const catalogReveal = useScrollReveal<HTMLElement>();
 
+  const filterTree = useMemo(() => buildFilterTree(categories), [categories]);
+  const activeFilterGroup = useMemo(() => {
+    const [firstSelected] = selectedCategories;
+    return filterTree.find((group) =>
+      group.slug === firstSelected || group.children.some((child) => child.slug === firstSelected),
+    ) ?? filterTree[0] ?? null;
+  }, [filterTree, selectedCategories]);
+  const categoryRequestParam = useMemo(
+    () => activeFilterGroup ? nextCategoryParam(selectedCategories, activeFilterGroup) : null,
+    [activeFilterGroup, selectedCategories],
+  );
+
+  const toggleCategorySelection = useCallback((slug: string) => {
+    setSelectedCategories((current) => {
+      const next = new Set(current);
+      if (next.has(slug)) next.delete(slug);
+      else next.add(slug);
+      return next;
+    });
+    setVisible(8);
+  }, []);
+
+  const toggleGroupExpansion = useCallback((groupId: string) => {
+    setExpandedGroups((current) => {
+      const next = new Set(current);
+      if (next.has(groupId)) next.delete(groupId);
+      else next.add(groupId);
+      return next;
+    });
+  }, []);
+
   const catalogQuery = useMemo(() => {
     const queryParams = new URLSearchParams({
       limit: String(catalogPageSize),
       sort: apiSort[sort],
     });
-    if (category !== "all") queryParams.set("category", category);
+    if (categoryRequestParam) queryParams.set("category", categoryRequestParam);
     if (query.trim()) queryParams.set("q", query.trim());
     if (customOnly) queryParams.set("customizable", "true");
     if (inStockOnly) queryParams.set("availability", "available");
     return queryParams.toString();
-  }, [category, customOnly, inStockOnly, query, sort]);
+  }, [categoryRequestParam, customOnly, inStockOnly, query, sort]);
   activeQueryRef.current = catalogQuery;
 
   useEffect(() => {
@@ -137,7 +172,7 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
 
   useEffect(() => {
     setQuery(queryParam);
-    setCategory(categoryParam);
+    setSelectedCategories(categoryParam === "all" || categoryParam.startsWith("/") ? new Set() : new Set([categoryParam]));
     setSort(sortParam);
     setVisible(8);
   }, [queryParam, categoryParam, sortParam]);
@@ -177,15 +212,17 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
   const results = useMemo(() => {
     return catalog.filter((product) => {
       const categorySlugs = product.categorySlugs?.length ? product.categorySlugs : [product.categorySlug];
-      const matchesCategory = category === "all" || categorySlugs.includes(category);
+      const matchesCategory = selectedCategories.size === 0 || categorySlugs.some((slug) => selectedCategories.has(slug));
       const matchesCustom = !customOnly || product.customizable;
       const matchesStock = !inStockOnly || product.stockStatus !== "out_of_stock";
       return matchesCategory && matchesCustom && matchesStock;
     });
-  }, [category, customOnly, inStockOnly, catalog]);
+  }, [catalog, customOnly, inStockOnly, selectedCategories]);
 
-  const selectedCategory = categories.find((item) => item.slug === category);
-  const reset = () => { setCategory("all"); setCustomOnly(false); setInStockOnly(false); setQuery(""); setVisible(8); };
+  const selectedCategory = selectedCategories.size === 1
+    ? categories.find((item) => selectedCategories.has(item.slug))
+    : undefined;
+  const reset = () => { setSelectedCategories(new Set()); setCustomOnly(false); setInStockOnly(false); setQuery(""); setVisible(8); };
   const queryIsLoaded = loadedQuery === catalogQuery;
   const totalResults = queryIsLoaded ? catalogMeta.total : results.length;
 
@@ -222,7 +259,70 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
 
   const filters = <>
     <div className="filter-heading"><strong>Filters</strong><button onClick={reset}>Clear all</button></div>
-    <div className="filter-group"><h3>Category <ChevronDown /></h3><div className="filter-options"><label><input type="radio" name="category" checked={category === "all"} onChange={() => setCategory("all")} /><span>All products</span><small>{totalResults}</small></label>{categories.filter((item) => item.productCount > 0).map((item) => <label key={item.id}><input type="radio" name="category" checked={category === item.slug} onChange={() => { setCategory(item.slug); setVisible(8); }} /><span>{item.shortName}</span><small>{item.productCount}</small></label>)}</div></div>
+    <div className="filterTree">
+      <h3>Categories</h3>
+      {filterTree.map((group) => {
+        const selectedChildCount = group.children.filter((child) => selectedCategories.has(child.slug)).length;
+        const hasChildren = group.children.length > 0;
+        const isExpanded = expandedGroups.has(group.id) || selectedChildCount > 0;
+        const isPartial = selectedChildCount > 0 && selectedChildCount < group.children.length;
+
+        return (
+          <div className="filterTreeGroup" key={group.id}>
+            <input
+              aria-label={`Filter ${group.name}`}
+              checked={selectedCategories.has(group.slug)}
+              className={"filterTreeGroupHead" + (isPartial ? " is-partial" : "")}
+              onChange={() => toggleCategorySelection(group.slug)}
+              type="checkbox"
+            />
+            <Link
+              className="filterTreeGroupLabel"
+              href={`/products?category=${group.slug}`}
+              onClick={() => { setSelectedCategories(new Set()); setVisible(8); }}
+            >
+              {group.name}
+            </Link>
+            <span className="filterTreeGroupCount">({group.count})</span>
+            {hasChildren ? (
+              <button
+                aria-expanded={isExpanded}
+                aria-label={`${isExpanded ? "Collapse" : "Expand"} ${group.name} categories`}
+                className={"filterTreeChevron" + (isExpanded ? "" : " is-collapsed")}
+                onClick={() => toggleGroupExpansion(group.id)}
+                type="button"
+              >
+                <ChevronDown aria-hidden="true" />
+              </button>
+            ) : <span aria-hidden="true" />}
+            {hasChildren && isExpanded && (
+              <div className="filterTreeChildren">
+                {group.children.map((child) => (
+                  <label className="filterTreeChild" key={child.id}>
+                    <input
+                      checked={selectedCategories.has(child.slug)}
+                      onChange={() => toggleCategorySelection(child.slug)}
+                      type="checkbox"
+                    />
+                    <span>{child.name}</span>
+                    <small>({child.count})</small>
+                  </label>
+                ))}
+                {group.moreChildren > 0 && (
+                  <Link
+                    className="filterTreeMore"
+                    href={`/products?category=${group.slug}`}
+                    onClick={() => { setSelectedCategories(new Set()); setVisible(8); }}
+                  >
+                    +{group.moreChildren} more →
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
     <div className="filter-group"><h3>Shopping options <ChevronDown /></h3><div className="filter-options"><label><input type="checkbox" checked={customOnly} onChange={(event) => setCustomOnly(event.target.checked)} /><span>Personalised only</span></label><label><input type="checkbox" checked={inStockOnly} onChange={(event) => setInStockOnly(event.target.checked)} /><span>Available to order</span></label></div></div>
     <div className="filter-group"><h3>Current price range <ChevronDown /></h3><div className="price-guide"><div><span style={{ width: "100%" }} /></div><p><span>{formatPrice(catalogPriceRange.min)}</span><span>{formatPrice(catalogPriceRange.max)}</span></p></div></div>
     <div className="filter-help"><SlidersHorizontal /><strong>Can’t find the right format?</strong><p>Tell us what you need and we’ll point you in the right direction.</p><Link href="/contact">Ask customer care →</Link></div>
@@ -245,8 +345,11 @@ export function ProductCatalog({ searchMode = false }: { searchMode?: boolean })
         <aside className="catalog-sidebar">{filters}</aside>
         <div className="catalog-results" aria-busy={loadingCatalog}>
           <div className="catalog-toolbar">
-            <button ref={filterButtonRef} className="mobile-filter" onClick={() => setFiltersOpen(true)}><Filter /> Filters{(category !== "all" || customOnly || inStockOnly) && <span />}</button>
-            <div className="active-filters">{category !== "all" && <button onClick={() => setCategory("all")}>{selectedCategory?.shortName} <X /></button>}{customOnly && <button onClick={() => setCustomOnly(false)}>Personalised <X /></button>}{inStockOnly && <button onClick={() => setInStockOnly(false)}>Available <X /></button>}</div>
+            <button ref={filterButtonRef} className="mobile-filter" onClick={() => setFiltersOpen(true)}><Filter /> Filters{(selectedCategories.size > 0 || customOnly || inStockOnly) && <span />}</button>
+            <div className="active-filters">{[...selectedCategories].map((slug) => {
+              const selected = categories.find((item) => item.slug === slug);
+              return <button key={slug} onClick={() => toggleCategorySelection(slug)}>{selected?.shortName || selected?.name || slug} <X /></button>;
+            })}{customOnly && <button onClick={() => setCustomOnly(false)}>Personalised <X /></button>}{inStockOnly && <button onClick={() => setInStockOnly(false)}>Available <X /></button>}</div>
             <label className="sort-control"><span>Sort by</span><select value={sort} onChange={(event) => setSort(event.target.value as SortOption)}><option value="recommended">Recommended</option><option value="newest">New arrivals</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select><ChevronDown /></label>
           </div>
           {catalogError ? (
