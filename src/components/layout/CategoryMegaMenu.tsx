@@ -16,6 +16,7 @@ import {
   type ReactNode,
 } from "react";
 import { categories as initialCategories } from "@/lib/data";
+import { MAX_MENU_ITEMS, truncateMenuItems } from "@/lib/menu-truncation";
 import type { Category } from "@/lib/types";
 
 type GroupId = "labels" | "school" | "gifts" | "bulk";
@@ -284,8 +285,15 @@ export function CategoryMegaMenu({ children }: { children: ReactNode }) {
         const parentGroupIndex = parent
           ? groupDefinitions.findIndex((group) => (group.slugs as readonly string[]).includes(parent.slug))
           : -1;
-        const targetGroupIndex = parentGroupIndex >= 0 ? parentGroupIndex : 0;
-        resolvedGroups[targetGroupIndex]?.items.push(category);
+        if (parentGroupIndex >= 0) {
+          resolvedGroups[parentGroupIndex]?.items.push(category);
+          return;
+        }
+
+        // Keep uncategorized additions discoverable without allowing them to make the default column unbounded.
+        if ((resolvedGroups[0]?.items.length ?? 0) < MAX_MENU_ITEMS) {
+          resolvedGroups[0]?.items.push(category);
+        }
       });
 
     return resolvedGroups;
@@ -343,22 +351,33 @@ export function CategoryMegaMenu({ children }: { children: ReactNode }) {
         {isDesktop && isOpen && (
           <section className="megaPanel" aria-label={activeRail.label + " product categories"}>
             <div className={"megaPanelGrid" + (activeRail.id === "all" ? " megaPanelGrid--all" : "")}>
-              {orderedGroups.map((group) => (
-                <div
-                  className="megaPanelCol"
-                  key={group.id}
-                  style={{ "--mega-column-accent": group.accent } as CSSProperties}
-                >
-                  <h3>{group.title}</h3>
-                  <ul>
-                    {group.items.map((item) => (
-                      <li key={item.id}>
-                        <Link href={"/products?category=" + item.slug} onClick={closeNow}>{item.name}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              {orderedGroups.map((group) => {
+                const { visible, moreCount } = truncateMenuItems(group.items);
+
+                return (
+                  <div
+                    className="megaPanelCol"
+                    key={group.id}
+                    style={{ "--mega-column-accent": group.accent } as CSSProperties}
+                  >
+                    <h3>{group.title}</h3>
+                    <ul>
+                      {visible.map((item) => (
+                        <li key={item.id}>
+                          <Link href={"/products?category=" + item.slug} onClick={closeNow}>{item.name}</Link>
+                        </li>
+                      ))}
+                      {moreCount > 0 && (
+                        <li>
+                          <Link className="megaPanelMore" href="/products" onClick={closeNow}>
+                            +{moreCount} more {group.title} →
+                          </Link>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                );
+              })}
               <div
                 className="megaPanelCol megaPanelShortcuts"
                 style={{ "--mega-column-accent": activeRail.accent } as CSSProperties}

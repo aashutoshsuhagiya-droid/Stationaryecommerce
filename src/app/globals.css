@@ -2359,7 +2359,7 @@ body { overflow-x: clip; }
   .header-main {
     min-height: 72px;
     height: 72px;
-    position: relative;
+    position: static;
     display: flex;
     align-items: center;
     gap: 0;
@@ -2454,11 +2454,14 @@ body { overflow-x: clip; }
 }
 
 .megaPanel {
-  width: 100%;
   position: absolute;
   z-index: 75;
   top: 100%;
-  left: 0;
+  left: max(24px, calc((100vw - 1180px) / 2));
+  width: min(1180px, calc(100vw - 48px));
+  max-height: calc(100dvh - 118px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 28px 32px 0;
   border: 1px solid var(--my-line);
   border-radius: 0 0 16px 16px;
@@ -2505,6 +2508,12 @@ body { overflow-x: clip; }
 .megaPanelCol li a:focus-visible {
   color: var(--mega-column-accent);
   text-decoration: underline;
+}
+.megaPanelMore {
+  color: var(--mega-column-accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
 }
 .megaPanelFooter {
   margin-top: 20px;
