@@ -1,0 +1,76 @@
+{
+  "url": "https://ranbazaar.com/product/evil-eye-feng-shui-plant-for-gift",
+  "product": {
+    "id": "68b2a7ac395bdf013d60525c",
+    "name": "Evil Eye Feng Shui Plant – Lucky Artificial Tree for Home & Office.",
+    "slug": "evil-eye-feng-shui-plant-for-gift",
+    "sku": "447",
+    "attributes": [],
+    "description": "<p><strong>Dimensions</strong>: 21 x 22 x 11 cm</p><p><strong>Weight</strong>: 220 gm</p><p>&nbsp;<strong>Material</strong>: Polyresin and Crystal</p><p><strong>Evil Eye Beads</strong> – Colorful flowers with Evil Eye beads at the center, resting on a large glass Evil Eye base — known to offer protection and ward off negative energy.</p><p><strong>Symbol of Good Luck &amp; Protection</strong> – Though commonly referred to as \"evil eyes,\" these beads are actually ancient talismans for <strong>luck, protection from jealousy, and spiritual safety</strong>.</p><p><strong>Empowering Energy</strong> – Radiates positive energy, warmth, and joy. Known to enhance <strong>motivation, endurance, leadership, and courage</strong>.</p><p><strong>Feng Shui Benefits</strong> – Acts as an energy purifier. Neutralizes negative vibes, <strong>balances emotions</strong>, and creates an atmosphere of <strong>peace and harmony</strong>.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1499,
+    "sale": 1199,
+    "weight": 220,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756715439324-689435320.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756715406433-913462451.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756715406516-684568048.webp"
+    ],
+    "metaTitle": "Protect Your Space with Style – Feng Shui Evil Eye Tree for Home Decor.",
+    "metaDescription": "Elegant Evil Eye Tree made of polyresin and crystal. A Feng Shui showpiece for good fortune, positivity, and emotional balance.",
+    "metaTags": "evil eye tree, feng shui plant, artificial flower tree, good luck plant, home decor showpiece, feng shui decor, evil eye decor, handmade evil eye tree, lucky tree with vase, protection tree, spiritual home decor, vastu plant, positive energy decor, evil eye gift, wealth attraction decor, crystal feng shui tree, artificial plant for home, evil eye crystal tree, feng shui good luck charm, decorative lucky tree",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 7,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-08-30T07:26:36.561Z",
+    "updatedAt": "2025-09-01T08:39:35.251Z"
+  }
+}

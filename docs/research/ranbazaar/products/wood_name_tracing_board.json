@@ -1,0 +1,167 @@
+{
+  "url": "https://ranbazaar.com/product/wood_name_tracing_board",
+  "product": {
+    "id": "66f6312119442dcb767d345b",
+    "name": "WOOD NAME TRACING BOARD",
+    "slug": "wood_name_tracing_board",
+    "sku": "198",
+    "attributes": [],
+    "description": "<p><strong>This is Handmade Product it will delivered within 10 to 15days.</strong><br>These name boards are personalized to represent a child’s name for free play and sensory exploration. Each name board is curated with love and care because we understand how valuable it is to know one’s identity. And we want to instill this thought in the little minds from early on. It comes with a wooden tracing pen suitable for kids to hold.<br><br>Materials to use with:<br>1. wooden stick for tracing<br>2. play dough<br>3. grains or other sensory materials from kitchen<br><br>Skill set:<br>This is helpful in practicing fine motor skills involved in tracing with a stick or rolling playdough to make alphabets or stamping with playdough. Even smaller muscles are used when kids place chickpeas or kidney beans in the alphabet grooves.<br><br>Also used as sensory toy where the child can practice its own name with any material like beads, marbles or sand.<br>This is a simple yet most effective way for the kid to learn, memorize and form his own name with this toy.<br><br>Get Creative:<br>We custom paint these boards as per the child’s interest. Be it Peppa pig or sailor theme or rainbow shades. This makes it useful as a décor in kid’ rooms.<br><br>Dimensions: made as per the number of letters in a name. size : 3.5*9 inches<br>Child safety Features: natural wood, rounded edges, non-toxic paints.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c723af6c4e3092c5129ce7",
+      "name": "Tracing Name Board",
+      "description": "Customizable name tracing board for kids to practice writing names and letters.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060941271-93080585.webp",
+      "slug": "tracing_name_board",
+      "orderby": 13,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1999,
+    "sale": 1549,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Wood Name Tracing Board| Ranbazaar",
+    "metaDescription": "Personalized Name Tracing Board – A great gift for kids learning to write. Montessori-friendly and designed for early childhood education.",
+    "metaTags": "personalized tracing board, wooden learning board for kids, pre-writing skills board, eco-friendly wooden name tracing board.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936621351-886321761.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#643b02",
+              "fontSize": "48",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " Your Name ",
+            "width": "517px",
+            "height": "",
+            "x": 28,
+            "y": 259,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "16",
+            "name": "Enter Your Name ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6717309d0de4d9d6996f675b"
+          }
+        ],
+        "_id": "6717309d0de4d9d6996f675a"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936621657-229147294.webp",
+        "inputFields": [],
+        "_id": "66f6323f19442dcb767d45c2"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936622016-74792241.webp",
+        "inputFields": [],
+        "_id": "67a06bcd620bf1d07f7ca919"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936622247-674943867.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#643a0b",
+              "fontSize": "48",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " Your Name ",
+            "width": "462px",
+            "height": "",
+            "x": 60,
+            "y": 273,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "16",
+            "name": "Enter Your Name ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671730a20de4d9d6996f67a8"
+          }
+        ],
+        "_id": "671730a20de4d9d6996f67a7"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-27T04:14:25.605Z",
+    "updatedAt": "2025-04-04T07:05:47.029Z"
+  }
+}

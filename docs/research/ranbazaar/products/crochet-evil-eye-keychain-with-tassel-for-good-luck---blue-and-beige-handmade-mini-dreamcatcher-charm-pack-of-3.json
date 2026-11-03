@@ -1,0 +1,76 @@
+{
+  "url": "https://ranbazaar.com/product/crochet-evil-eye-keychain-with-tassel-for-good-luck---blue-and-beige-handmade-mini-dreamcatcher-charm-pack-of-3",
+  "product": {
+    "id": "67691671ae97d8fe2ff354ab",
+    "name": "Crochet Evil Eye Keychain with Tassel for Good Luck - Blue and Beige Handmade Mini Dreamcatcher Charm (Pack of 3)",
+    "slug": "crochet-evil-eye-keychain-with-tassel-for-good-luck---blue-and-beige-handmade-mini-dreamcatcher-charm-pack-of-3",
+    "sku": "318",
+    "attributes": [],
+    "description": "<p><strong>Color:</strong> Blue and Beige&nbsp;</p><p><strong>Brand:</strong> Ranbazaar</p><p><strong>Material:</strong> Wool</p><p><strong>Net Quantity (N): 3</strong></p><p><strong>Shape:&nbsp;</strong>Round</p><p><strong>Theme:</strong> Evil Eye (for protection and good luck)</p><p><strong>Handcrafted Accessory:</strong> This stylish keychain is meticulously handcrafted with vibrant yarn crocheted into an eye-catching circular design.</p><p><strong>Stylish Accessory:</strong> A beautiful addition to your keys, handbags, backpacks, or luggage.</p><p><strong>Compact Size:</strong> The keychain appears lightweight and portable, ideal for everyday use.</p><p><strong>Occasions:</strong> Christmas, New Year, Thanksgiving, Homecoming.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "6763fb6a53254059363eda41",
+      "name": "Key Chain",
+      "description": "Keyrings are small, portable accessories designed to hold and organize keys.Whether you're looking for a functional keyring for everyday use or a personalized keychain as a thoughtful gift, our collection has something for everyone.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1735028985737-277413267.webp",
+      "slug": "key_chain",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 898,
+    "sale": 599,
+    "weight": 100,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936847968-236331070.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936848192-146895913.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936848446-988975512.webp"
+    ],
+    "metaTitle": "Handcrafted Evil Eye keychain- Unique Designs for Every Style.",
+    "metaDescription": "Add a personal touch to your keys with our handmade crochet keychains. Each piece is crafted with love, offering personalized and stylish options for any occasion or gift-giving. Shop our colorful and stylish designs!",
+    "metaTags": "Blue and beige crochet keychains/Colorful crochet keychains/Handmade keychains/Crochet gifts/Unique crochet keychains.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 1,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-12-23T07:51:13.989Z",
+    "updatedAt": "2025-04-04T07:05:56.864Z"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "url": "https://ranbazaar.com/product/design-elegant-custom-gift-slips-for-any-occasion",
+  "product": {
+    "id": "66e95f99adafe07b18df1a6d",
+    "name": "Design Elegant Custom Gift Slips for Any Occasion (Pack of 36pcs)",
+    "slug": "design-elegant-custom-gift-slips-for-any-occasion",
+    "sku": "75",
+    "attributes": [],
+    "description": "<p>HD Printing.3x2.5 inches self adhesive high quality paper scratch proof. Personalized Name stickers for Gifts&nbsp;come with excellent features &amp; quality. Name Slip for Gifts.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71dd26c4e3092c5129b7b",
+      "name": "Gift Slip for Gifts",
+      "description": "Add a personal touch to your gifts with our customizable gift slips—unique, memorable, and thoughtful.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060358689-638317095.webp",
+      "slug": "gift_slip_for_gifts",
+      "orderby": 11,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 299,
+    "sale": 249,
+    "weight": 50,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Design Custom Gift Slips – Add a Personal Touch to Gifts.",
+    "metaDescription": "Add a special touch to any gift with elegant custom gift slips. Personalize with names, messages, and designs for a unique and thoughtful presentation.",
+    "metaTags": "custom gift slips, personalized gift slips, elegant gift slips, unique gift slips, customized gift notes, gift message cards, printed gift slips, bespoke gift slips, stylish gift slips, decorative gift slips, gift slips for any occasion, wedding gift slips, birthday gift slips, holiday gift slips, thank you gift slips, custom message slips, personalized gift tags, premium gift slips.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936496838-463881950.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#cc6838",
+              "fontSize": "32",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "437px",
+            "height": "",
+            "x": 85,
+            "y": 307,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "22",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671733a5a712a8766e2c7e0a"
+          }
+        ],
+        "_id": "671733a5a712a8766e2c7e09"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936497094-132702716.webp",
+        "inputFields": [],
+        "_id": "66e95fb1adafe07b18df1a92"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936497375-454178707.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#cc6838",
+              "fontSize": "32",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "445px",
+            "height": "",
+            "x": 76,
+            "y": 195,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "22",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671733aa0de4d9d6996ff06a"
+          }
+        ],
+        "_id": "671733aa0de4d9d6996ff069"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-17T10:53:13.772Z",
+    "updatedAt": "2025-04-04T07:05:41.052Z"
+  }
+}

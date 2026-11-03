@@ -1,0 +1,158 @@
+{
+  "url": "https://ranbazaar.com/product/customized-gift-slips-to-make-your-gifts-shine",
+  "product": {
+    "id": "66e963faadafe07b18df2779",
+    "name": "Customized Gift Slips to Make Your Gifts Shine (Pack of 36pcs)",
+    "slug": "customized-gift-slips-to-make-your-gifts-shine",
+    "sku": "76",
+    "attributes": [],
+    "description": "<p>HD Printing.3x2.5 inches self adhesive high quality paper scratch proof. Personalized Name stickers for Gifts&nbsp;come with excellent features &amp; quality. Name Slip for Gifts.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71dd26c4e3092c5129b7b",
+      "name": "Gift Slip for Gifts",
+      "description": "Add a personal touch to your gifts with our customizable gift slips—unique, memorable, and thoughtful.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060358689-638317095.webp",
+      "slug": "gift_slip_for_gifts",
+      "orderby": 11,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 299,
+    "sale": 249,
+    "weight": 50,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Ranbazaar Unique Customized Gift Slips for Every Occasion.",
+    "metaDescription": "Elevate your gifting with personalized gift slips. Add names, messages, and stylish designs to make your presents more meaningful and unique.",
+    "metaTags": " custom gift slips, personalized gift slips, unique gift slips, custom gift tags, personalized gift tags, gift slips for any occasion, custom gift messages, unique gift wrapping, personalized gift accessories, special occasion gift slips, custom gift ideas.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936497990-545804962.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ea0f22",
+              "fontSize": "30",
+              "fontFamily": "Aleo Regular",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "uppercase"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "308px",
+            "height": "",
+            "x": 143,
+            "y": 366,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "16",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6718dc63cb84722690e20170"
+          }
+        ],
+        "_id": "6718dc63cb84722690e2016f"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936498259-493899644.webp",
+        "inputFields": [],
+        "_id": "66e965b4adafe07b18df2882"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936498582-69059955.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ea0f22",
+              "fontSize": "30",
+              "fontFamily": "Aleo Regular",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "uppercase"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "311px",
+            "height": "",
+            "x": 153,
+            "y": 261,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "16",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6718dc5dcb84722690e20145"
+          }
+        ],
+        "_id": "6718dc5dcb84722690e20144"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-17T11:11:54.077Z",
+    "updatedAt": "2025-04-04T07:05:41.113Z"
+  }
+}

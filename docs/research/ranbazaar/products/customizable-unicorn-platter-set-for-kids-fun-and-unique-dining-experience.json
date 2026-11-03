@@ -1,0 +1,139 @@
+{
+  "url": "https://ranbazaar.com/product/customizable-unicorn-platter-set-for-kids-fun-and-unique-dining-experience",
+  "product": {
+    "id": "6711e729266ba5c175e6e953",
+    "name": "Customizable Unicorn Platter Set for Kids: Fun and Unique Dining Experience",
+    "slug": "customizable-unicorn-platter-set-for-kids-fun-and-unique-dining-experience",
+    "sku": "299",
+    "attributes": [],
+    "description": "<p>Make mealtime magical with our handcrafted unicorn melamine dinnerware set! This delightful collection includes a 6-inch plate, a 350 ml bowl, a 350 ml mug, a spoon, and a fork, perfect for kids.</p><p><strong>Key Features:</strong></p><ul><li><strong>Plate Size:</strong> 6 inches for snacks and meals</li><li><strong>Bowl Capacity:</strong> 350 ml for cereals or soups</li><li><strong>Mug Capacity:</strong> 350 ml for drinks</li><li><strong>Materials:</strong> Durable, lightweight, and dishwasher-safe</li><li><strong>Customization:</strong> Personalize with your child’s name and unicorn designs</li><li><strong>Ergonomic Utensils:</strong> Designed for small hands</li><li><strong>Safety:</strong> BPA-free and food-safe</li></ul><p>Ideal for birthdays and everyday use, this charming set makes mealtime fun. Order your custom unicorn dinnerware set today!</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1449,
+    "sale": 1350,
+    "weight": 70,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Kids’ Unicorn Platter Set – Cute, Fun & Unique.",
+    "metaDescription": "Make every meal exciting with a custom unicorn platter set for kids. Personalize with names, colors, and fun designs. Perfect for little unicorn lovers.",
+    "metaTags": "custom unicorn platter, personalized unicorn platter set, kids unicorn dining set, unicorn-themed dinnerware, custom kids platter, fun kids dining set, personalized kids meal set, unicorn plate and bowl set, custom name unicorn platter, magical kids dinnerware, unicorn feeding set, toddler unicorn plate.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 4,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936824569-920927165.webp",
+        "inputFields": [],
+        "_id": "671773530de4d9d699753901"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936824777-525114943.webp",
+        "inputFields": [],
+        "_id": "6717735c0de4d9d699753921"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936825009-566982924.webp",
+        "inputFields": [],
+        "_id": "671773660de4d9d699753945"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936825215-235075136.webp",
+        "inputFields": [],
+        "_id": "6717738b0de4d9d699753ab4"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936825460-410753818.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "36",
+              "fontFamily": "Arial, sans-serif",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " YOUR NAME",
+            "width": "399px",
+            "height": "",
+            "x": 104,
+            "y": 522,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671773ce0de4d9d699755efa"
+          }
+        ],
+        "_id": "671773ce0de4d9d699755ef9"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-18T04:42:17.202Z",
+    "updatedAt": "2025-06-20T10:11:21.454Z"
+  }
+}

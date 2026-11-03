@@ -1,0 +1,123 @@
+{
+  "url": "https://ranbazaar.com/product/ranbazaar_printed_sipper_bottle_for_boys_and_girls",
+  "product": {
+    "id": "67b832728a3862c80aaf970e",
+    "name": "Ranbazaar Water Bottle for Boys and Girls | Designer Sipper Bottles | Sipper Bottle for Kids, Sports, Gym Activities | Printed Sipper Bottle - [360 ml, Multicolor]",
+    "slug": "ranbazaar_printed_sipper_bottle_for_boys_and_girls",
+    "sku": "350",
+    "attributes": [],
+    "description": "<p><strong>About this item</strong></p><ul><li><strong>High Quality Material: Take your drinks everywhere with this white aluminum sipper bottle, which is a perfect container to keep your cold beverages, when you are out of your house. It is the perfect companion for your outdoor activities.</strong></li><li><strong>Great Gift Idea: Carry your sipper bottle with style. Perfect for both right and left handed users, Gift On Occasion of Diwali To Staff, friend, family.</strong></li><li><strong>CAP: Standard cap; Carbiner clip also included. You will be always available to carry your drinks everywhere; and prevent from spill them on your clothes or bags.</strong></li><li>&nbsp;</li></ul><figure class=\"table\"><table><tbody><tr><td><strong>Brand</strong></td><td><strong>Ranbazaar</strong></td></tr><tr><td><strong>Material</strong></td><td><strong>Aluminum</strong></td></tr><tr><td><strong>Bottle Type</strong></td><td><strong>standard bottle</strong></td></tr><tr><td><strong>Colour</strong></td><td><strong>Blue</strong></td></tr><tr><td><strong>Capacity</strong></td><td><strong>360 ML</strong></td></tr></tbody></table></figure><p>&nbsp;</p><ul><li><br>&nbsp;</li></ul><p>&nbsp;</p><ul><li>&nbsp;</li></ul><p>&nbsp;</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "67a9a0e3b0d1728b0951d45f",
+      "name": "Customize Bottles",
+      "description": "Personalize your child's daily essentials with our customizable kids' bottle .",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1739170019433-574520033.webp",
+      "slug": "kids_customize_bottles",
+      "orderby": 20,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 998,
+    "sale": 799,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Ranbazaar Stainless Steel Kid Bottle Keep Hot/Cool 360ML",
+    "metaDescription": "Durable and stylish, the Ranbazaar 360ML Stainless Steel Kid Bottle keeps drinks at the right temperature. Ideal for school, sports, or outdoor activities.",
+    "metaTags": "Stainless Steel Water Bottle, Kids Water Bottle, Personalized Kids Bottle, Durable Kid Bottle, Eco-friendly Water Bottle, Custom Kid Bottle, Kids Stainless Steel Bottle, Insulated Water Bottle",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 3,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1740125801014-162525034.webp",
+            "width": "133px",
+            "height": "261px",
+            "x": 231,
+            "y": 283.00001525878906,
+            "name": "image1",
+            "_id": "67b83a81add0f0e9b4fb1b53"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740125801280-675539544.webp",
+        "inputFields": [],
+        "_id": "67b83a81add0f0e9b4fb1b52"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740125827413-81749030.webp",
+        "inputFields": [],
+        "_id": "67b836837735d639cbcc0443"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740125847983-966445960.webp",
+        "inputFields": [],
+        "_id": "67b836987735d639cbcc0791"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1740125801014-162525034.webp",
+            "width": "130px",
+            "height": "265px",
+            "x": 231,
+            "y": 282.9999542236328,
+            "name": "image1",
+            "_id": "67b83a8924687badc21346d3"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740125863055-293394286.webp",
+        "inputFields": [],
+        "_id": "67b83a8924687badc21346d2"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-02-21T07:59:46.821Z",
+    "updatedAt": "2025-09-22T08:22:04.704Z"
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "url": "https://ranbazaar.com/product/personalized-mouse-pads--make-your-desk-unique-with-custom-designs",
+  "product": {
+    "id": "66e018c9607390bf03e1beae",
+    "name": "Personalized Mouse Pads – Make Your Desk Unique with Custom Designs",
+    "slug": "personalized-mouse-pads--make-your-desk-unique-with-custom-designs",
+    "sku": "63",
+    "attributes": [],
+    "description": "<ul><li>Fully customizable with your own images, text, or logos.</li><li>High-quality materials ensure smooth and accurate mouse movement.</li><li>Available in various sizes to fit your desk or gaming setup.</li><li>Durable, non-slip rubber backing for stability during use.</li><li>Perfect for personal use, corporate branding, or gifting.</li><li>Easy to design with our user-friendly customization tool.</li><li>Vibrant, long-lasting prints that won’t fade over time.</li><li>Great for promoting businesses, events, or personal creativity</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c720c06c4e3092c5129c22",
+      "name": "Mouse Pad ",
+      "description": "Elevate your workspace with personalized mouse pads, combining style and functionality for any desk.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060449084-661081007.webp",
+      "slug": "mouse_pad",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 319,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Custom Personalized Mouse Pads – Unique Designs for Your Desk.",
+    "metaDescription": "Make your desk stand out with a custom mouse pad. Personalize with your favorite photos, patterns, or text for a stylish and practical touch.",
+    "metaTags": "personalized mouse pad, custom mouse pad, printed mouse pad, office mouse pad, custom photo mouse pad.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936449776-145144850.webp",
+            "width": "227px",
+            "height": "275px",
+            "x": 15,
+            "y": 271.9999694824219,
+            "name": "image1",
+            "_id": "67d15352e9e2658d7c912463"
+          }
+        ],
+        "productbgColor": "#1f4525",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936449350-85278649.webp",
+        "inputFields": [],
+        "_id": "67d15352e9e2658d7c912462"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936450764-588795428.webp",
+            "width": "223px",
+            "height": "253px",
+            "x": 28,
+            "y": 293,
+            "name": "image1",
+            "_id": "66e01f60607390bf03e1d21e"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936450262-729868000.webp",
+        "inputFields": [],
+        "_id": "66e01f60607390bf03e1d21d"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936451669-54936925.webp",
+            "width": "223px",
+            "height": "275px",
+            "x": 10,
+            "y": 180.99998474121094,
+            "name": "image1",
+            "_id": "66ea6a5a551bb8b70d35941c"
+          }
+        ],
+        "productbgColor": "#29692d",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936451300-794290531.webp",
+        "inputFields": [],
+        "_id": "66ea6a5a551bb8b70d35941b"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-10T10:00:41.224Z",
+    "updatedAt": "2025-04-04T07:05:39.140Z"
+  }
+}

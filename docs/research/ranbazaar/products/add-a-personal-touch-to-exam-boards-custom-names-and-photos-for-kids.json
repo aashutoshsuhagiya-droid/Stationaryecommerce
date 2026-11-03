@@ -1,0 +1,107 @@
+{
+  "url": "https://ranbazaar.com/product/add-a-personal-touch-to-exam-boards-custom-names-and-photos-for-kids",
+  "product": {
+    "id": "66e814eb28149fa9a49ebfc9",
+    "name": "Add a Personal Touch to Exam Boards: Custom Names and Photos for Kids",
+    "slug": "add-a-personal-touch-to-exam-boards-custom-names-and-photos-for-kids",
+    "sku": "55",
+    "attributes": [],
+    "description": "<p>High quality paper scratch proof. Personalize Exam Boards with your Photos ,Text, Design and more at ranbazaar.com The examination board is made up of MDF Wood and the photo printing is done via HD Heat Transfer technique. Perfect size designed for kids, measuring 12x9 inches, providing enough space for writing and drawing.</p><p>Specifications:<br>Dimensions: 12 x 9 Inches ″ (Approx.)<br>Material: MDF Wood</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71b1d6c4e3092c5129b20",
+      "name": "Exam Board ",
+      "description": "CustomisePersonalize your exam board with custom designs, ensuring a unique, organized, and easily identifiable study tool for your exams.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060301606-960697074.webp",
+      "slug": "exam_board",
+      "orderby": 4,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 389,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Create Unique Exam Boards for Kids – Personalize with Names and Photos.",
+    "metaDescription": "Create a custom exam board for your child with their name and photo. Make study time fun and motivating with a personalized, unique board. Shop now.",
+    "metaTags": "personalized exam boards for kids, custom exam boards, kids study boards with names, custom learning boards, exam boards with photos, personalized study tools, kids motivational exam boards, custom educational boards, fun exam boards for kids, exam prep boards with names, custom photo exam boards, personalized kids' learning boards, unique exam boards for kids, custom kids study tools.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936479906-222950906.webp",
+            "width": "424px",
+            "height": "601px",
+            "x": 89,
+            "y": 0,
+            "name": "image1",
+            "_id": "6a5f45d35d3507cc5d1d0f47"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936479519-126739876.webp",
+        "inputFields": [],
+        "_id": "6a5f45d35d3507cc5d1d0f46"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936479906-222950906.webp",
+            "width": "424px",
+            "height": "601px",
+            "x": 89,
+            "y": 0,
+            "name": "image1",
+            "_id": "6a436888c25842b63661f132"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936479519-126739876.webp",
+        "inputFields": [],
+        "_id": "6a5f45cb5d3507cc5d1d0ec9"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-16T11:22:19.103Z",
+    "updatedAt": "2026-07-21T10:11:31.440Z"
+  }
+}

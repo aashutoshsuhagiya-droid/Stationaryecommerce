@@ -1,0 +1,276 @@
+{
+  "url": "https://ranbazaar.com/product/customized-print-round-neck-white-polyester-unisex-t-shirts",
+  "product": {
+    "id": "66f4eabfde94c331a39fe389",
+    "name": "Customized Print Round Neck White Polyester Unisex T-Shirts",
+    "slug": "customized-print-round-neck-white-polyester-unisex-t-shirts",
+    "sku": "188",
+    "attributes": [
+      {
+        "attributeid": {
+          "id": "66fba20d2a27e0bc8456a4d6",
+          "name": "18 Kids"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de2e"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2252a27e0bc8456a4df",
+          "name": "20 Kids"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de2f"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2342a27e0bc8456a4e5",
+          "name": "22 Kids"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de30"
+      },
+      {
+        "attributeid": {
+          "id": "66fba24d2a27e0bc8456a4eb",
+          "name": "24 Kids"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de31"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2ad2a27e0bc8456aa50",
+          "name": "26 Kids"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de32"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2be2a27e0bc8456aa56",
+          "name": "28 Kids"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de33"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2ce2a27e0bc8456aa5c",
+          "name": "30 Kids"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de34"
+      },
+      {
+        "attributeid": {
+          "id": "66fba5c52a27e0bc8456b002",
+          "name": "32 Kids"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de35"
+      },
+      {
+        "attributeid": {
+          "id": "66fba5dc2a27e0bc8456b453",
+          "name": "34 Kids"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de36"
+      },
+      {
+        "attributeid": {
+          "id": "66fba64d2a27e0bc8456b474",
+          "name": "36 (S) Adults"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de37"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6652a27e0bc8456b47d",
+          "name": "38 (M) Adults"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de38"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6822a27e0bc8456b486",
+          "name": "40 (L) Adults"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de39"
+      },
+      {
+        "attributeid": {
+          "id": "66fba69d2a27e0bc8456b492",
+          "name": "42 (XL) Adults"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de3a"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6b32a27e0bc8456b49b",
+          "name": "44 (XXL) Adults"
+        },
+        "value": "269",
+        "_id": "67da5044daedd7fc4a40de3b"
+      }
+    ],
+    "description": "<p><strong>Print Your Photo, Any Design And Text Fit Type: Regular Fit; Collar Style: Round Collar Occasion Type: Sports; Sleeve Type: Half Sleeve</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71c786c4e3092c5129b54",
+      "name": "T-shirts ",
+      "description": "Create your own style with our customizable T-shirts, offering high-quality prints and endless design options for a personalized touch that stands out.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060688470-642832490.webp",
+      "slug": "t_shirts",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 269,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Custom Print White Polyester Round Neck Unisex T-Shirts – Stylish & Comfy.",
+    "metaDescription": "Get creative with customized round neck white polyester t-shirts for men and women. Comfortable, versatile, and ideal for unique prints that reflect your style.",
+    "metaTags": "Customized t-shirts, personalized t-shirts, custom print shirts, round neck t-shirts, white polyester t-shirts, unisex t-shirts, custom design shirts, printed polyester t-shirts.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 4,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936605477-790887054.webp",
+            "width": "188px",
+            "height": "178px",
+            "x": 222,
+            "y": 251,
+            "name": "image1",
+            "_id": "671b4f19fcf37ab605001580"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936605228-941461449.webp",
+        "inputFields": [],
+        "_id": "671b4f19fcf37ab60500157f"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936605996-727185096.webp",
+            "width": "176px",
+            "height": "161px",
+            "x": 226,
+            "y": 288,
+            "name": "image1",
+            "_id": "66f5194d6f961fcb22a086b8"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936605729-774780987.webp",
+        "inputFields": [],
+        "_id": "66f5194d6f961fcb22a086b7"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936606528-953382356.webp",
+            "width": "134px",
+            "height": "177px",
+            "x": 222,
+            "y": 239,
+            "name": "image1",
+            "_id": "66f519906f961fcb22a086dc"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936606212-585869421.webp",
+        "inputFields": [],
+        "_id": "66f519906f961fcb22a086db"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936607149-296614422.webp",
+            "width": "141px",
+            "height": "188px",
+            "x": 276,
+            "y": 251,
+            "name": "image1",
+            "_id": "66f519b06f961fcb22a08703"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936606779-638857574.webp",
+        "inputFields": [],
+        "_id": "66f519b06f961fcb22a08702"
+      },
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936607777-98576921.webp",
+            "width": "156px",
+            "height": "166px",
+            "x": 229,
+            "y": 257,
+            "name": "image1",
+            "_id": "670113f727ec21dac2de394a"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936607468-468219235.webp",
+        "inputFields": [],
+        "_id": "670113f727ec21dac2de3949"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-26T05:01:51.801Z",
+    "updatedAt": "2025-04-04T07:05:46.047Z"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "url": "https://ranbazaar.com/product/custom-fridge-magnet-for-the-loveliest-women-in-your-life",
+  "product": {
+    "id": "6711e510266ba5c175e67b7d",
+    "name": "Custom Fridge Magnet for the Loveliest Women in Your Life",
+    "slug": "custom-fridge-magnet-for-the-loveliest-women-in-your-life",
+    "sku": "298",
+    "attributes": [
+      {
+        "attributeid": {
+          "id": "671228f436cf4d12c0eb6016",
+          "name": "Best Mother"
+        },
+        "value": "430",
+        "_id": "699950b73aaf121ff5fbf9f1"
+      },
+      {
+        "attributeid": {
+          "id": "6712291f36cf4d12c0eb68aa",
+          "name": "Best Aunt"
+        },
+        "value": "430",
+        "_id": "699950b73aaf121ff5fbf9f2"
+      },
+      {
+        "attributeid": {
+          "id": "6712294636cf4d12c0eb6a9e",
+          "name": "Best Grandmother "
+        },
+        "value": "430",
+        "_id": "699950b73aaf121ff5fbf9f3"
+      },
+      {
+        "attributeid": {
+          "id": "671228d736cf4d12c0eb600e",
+          "name": "Teacher "
+        },
+        "value": "430",
+        "_id": "699950b73aaf121ff5fbf9f4"
+      }
+    ],
+    "description": "<p>Honor the remarkable women in your life with our custom fridge magnet, expertly crafted for mothers, grandmothers (Nani), aunts (Masi), teachers, and more. Made from premium air-dry clay and mounted on a durable MDF base, this unique piece adds a personal touch to any kitchen or office decor.</p><ul><li><strong>Quality Craftsmanship</strong>: Each magnet is lovingly handcrafted, ensuring a one-of-a-kind gift.</li><li><strong>Personalization</strong>: Tailor your magnet with names, colors, and custom designs to create a heartfelt keepsake.</li><li><strong>Perfect for Any Occasion</strong>: An ideal gift for birthdays, holidays, or simply to express appreciation.</li><li><strong>Order Today</strong>: Keep the special women in your life close to your heart with this charming, personalized magnet!</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 599,
+    "sale": 480,
+    "weight": 70,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Custom Fridge Magnet – A Unique Gift for the Loveliest Women.",
+    "metaDescription": "Show your love with a beautifully crafted custom fridge magnet! Personalize it with names, quotes, or special designs to make every moment memorable.",
+    "metaTags": "custom fridge magnet, personalized fridge magnet, unique fridge magnet, gift for women, custom magnet for her, fridge magnet for mom, fridge magnet for wife, thoughtful gift for women, personalized kitchen decor, custom name fridge magnet, fridge magnet with message, meaningful gifts for women, decorative fridge magnet.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936823612-184590777.webp",
+        "inputFields": [],
+        "_id": "67124e7c36cf4d12c0f17d68"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936823850-18650990.webp",
+        "inputFields": [],
+        "_id": "6712481e36cf4d12c0f09a79"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936824085-79773933.webp",
+        "inputFields": [],
+        "_id": "699950c03aaf121ff5fbfa18"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-18T04:33:20.555Z",
+    "updatedAt": "2026-02-21T06:29:20.554Z"
+  }
+}

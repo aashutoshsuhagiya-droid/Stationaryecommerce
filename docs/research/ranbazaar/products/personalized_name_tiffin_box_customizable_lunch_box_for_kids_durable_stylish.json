@@ -1,0 +1,167 @@
+{
+  "url": "https://ranbazaar.com/product/personalized_name_tiffin_box_customizable_lunch_box_for_kids_durable_stylish",
+  "product": {
+    "id": "66f666ae69f216aabb788742",
+    "name": "Personalized Name Tiffin Box – Customizable Lunch Box for Kids | Durable & Stylish",
+    "slug": "personalized_name_tiffin_box_customizable_lunch_box_for_kids_durable_stylish",
+    "sku": "206",
+    "attributes": [],
+    "description": "<ul><li><strong>Personalized Design:</strong> Create a unique tiffin box with your name or a special message.</li><li><strong>Durable Material:</strong> Made from high-quality, food-grade plastic for long-lasting use.</li><li><strong>Leak-Proof:</strong> Secure, airtight lids prevent spills and keep food fresh.</li><li><strong>Easy to Clean:</strong> Dishwasher-safe for convenient cleaning.</li><li><strong>Compact &amp; Portable:</strong> Perfect size for school, office, or travel.</li><li><strong>Vibrant Colors:</strong> Available in multiple color options to suit your style.</li><li><strong>Eco-Friendly:</strong> Reusable and BPA-free, promoting a sustainable lifestyle.</li><li><strong>Gift-Ready:</strong> Ideal for personalized gifting, suitable for all ages.</li><li><strong>Customizable Sections:</strong> Includes dividers for easy meal organization.</li><li><strong>Kid-Friendly:</strong> Lightweight and easy to open, perfect for little hands.</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71a316c4e3092c5129b04",
+      "name": "Kids Bottle & Tiffin Box",
+      "description": "Personalize your child's daily essentials with our customizable kids' bottle and tiffin box, perfect for adding a unique touch to lunchtime.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060379665-585763086.webp",
+      "slug": "kids_bottle_tiffin_box",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1199,
+    "sale": 875,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Tiffin Box for Kids – Custom Lunch Box with Name.",
+    "metaDescription": "Personalized Name Tiffin Box for kids – Custom lunch box with their name. Perfect for school lunches, sports, and gifting. Make every meal special.",
+    "metaTags": "personalized name tiffin box, personalized tiffin box, kids custom tiffin box. ",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936633597-110468574.webp",
+        "inputFields": [
+          {
+            "style": {
+              "textType": "",
+              "letterSpacing": "",
+              "color": "#453f35",
+              "fontSize": "34",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "308px",
+            "height": "",
+            "x": 141.99998474121094,
+            "y": 228.00000762939453,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "670119ec27ec21dac2de94b2"
+          }
+        ],
+        "_id": "670119ec27ec21dac2de94b1"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936633890-904681705.webp",
+        "inputFields": [],
+        "_id": "66fe2d8fe88c328780b76728"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936634162-343394956.webp",
+        "inputFields": [],
+        "_id": "66fe2d98e88c328780b7673e"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936634461-271552439.webp",
+        "inputFields": [
+          {
+            "style": {
+              "textType": "",
+              "letterSpacing": "",
+              "color": "#453f35",
+              "fontSize": "34",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "326px",
+            "height": "",
+            "x": 141,
+            "y": 231,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "670119f527ec21dac2de94d5"
+          }
+        ],
+        "_id": "670119f527ec21dac2de94d4"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-27T08:02:54.529Z",
+    "updatedAt": "2025-09-22T08:24:19.632Z"
+  }
+}

@@ -1,0 +1,750 @@
+{
+  "url": "https://ranbazaar.com/product/ranbazaar_laser_personalized_name_pencils_box_set_of_10_pcs_1_eraser_sharpener_free_",
+  "product": {
+    "id": "66f2b6ae69d4c7ffae5b1df9",
+    "name": "RANBAZAAR LASER PERSONALIZED NAME PENCILS BOX SET OF 10 PCS (1 ERASER & SHARPENER FREE)",
+    "slug": "ranbazaar_laser_personalized_name_pencils_box_set_of_10_pcs_1_eraser_sharpener_free_",
+    "sku": "159",
+    "attributes": [],
+    "description": "<ul><li><strong>Personalized for Kids</strong>: Add your child’s name or favorite design to each pencil, making school supplies unique and fun.</li><li><strong>Bright &amp; Fun Designs</strong>: Choose from a variety of colorful themes, perfect for sparking creativity and excitement in kids.</li><li><strong>High-Quality &amp; Durable</strong>: Made from premium materials, these pencils are built to last through all school activities.</li><li><strong>Perfect for Gifting</strong>: Ideal for birthdays, party favors, or back-to-school presents, making kids feel special with personalized items.</li><li><strong>Comfortable Grip</strong>: Designed for small hands, these pencils ensure a smooth and easy writing experience for children.</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7343ded2943f8aa3a01f1",
+      "name": "Tax (0%)",
+      "percentage": "0",
+      "status": true
+    },
+    "categories": {
+      "id": "66c718b4cde888fde5bf23c7",
+      "name": "Pen/Pencil Custom",
+      "description": "Explore our premium collection of custom pens and pencils, offering personalized elegance and precision for every writing or drawing need.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060702235-226985760.webp",
+      "slug": "pen_pencil_custom",
+      "orderby": 3,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66ab7d9fc45708247ca4df3c",
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": true,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {
+      "1": "235",
+      "2": "155",
+      "5": "120",
+      "10": "100",
+      "20": "90"
+    },
+    "mrp": 399,
+    "sale": 235,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": 58,
+    "images": [],
+    "metaTitle": "Personalize Your Name Pencils |  Customize Pencil - Ranbazaar",
+    "metaDescription": "Ranbazaar offers affordable customize pencils. Design your high-quality custom name pencils—the perfect personalize pencils for a unique school touch.\n",
+    "metaTags": "Custom pencils for kids, Personalized pencils for children, Customizable school pencils, Kids custom pencils, School Pencil ,Personalized kids pencils, Fun pencils for kids, Unique pencils for children, Kids pencil sets, Customizable Pencil India, Name Pencil for Kids ",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936586167-495601799.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 190,
+            "y": 57,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bca"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1728545493424,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 185,
+            "y": 311,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bcb"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1728545494385,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 185,
+            "y": 366,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bcc"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1728545495129,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 193,
+            "y": 416,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bcd"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1728545496716,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 191,
+            "y": 468,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bce"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1728545498281,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 185,
+            "y": 515,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bcf"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1728545522873,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 187,
+            "y": 163,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bd0"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1728545523377,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 190,
+            "y": 212,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bd1"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1728545524329,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 186,
+            "y": 264,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bd2"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1728545538121,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 186,
+            "y": 109,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6763bfd67df8327de2740bd3"
+          }
+        ],
+        "_id": "6763bfd67df8327de2740bc9"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1741855686159-502337056.webp",
+        "inputFields": [],
+        "_id": "67d29bc6ded1d935a271e7e2"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936586754-429350870.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 188,
+            "y": 57,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cbc"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1728545493424,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 185,
+            "y": 311,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cbd"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1728545494385,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 185,
+            "y": 366,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cbe"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1728545495129,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 193,
+            "y": 416,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cbf"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1728545496716,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 191,
+            "y": 468,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cc0"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1728545498281,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 185,
+            "y": 515,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cc1"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1728545522873,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 187,
+            "y": 163,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cc2"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1728545523377,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 190,
+            "y": 212,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cc3"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1728545524329,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 186,
+            "y": 263,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cc4"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1728545538121,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200px",
+            "height": "",
+            "x": 186,
+            "y": 109,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67d14482e9e2658d7c844cc5"
+          }
+        ],
+        "_id": "67d14482e9e2658d7c844cbb"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936586494-215386347.webp",
+        "inputFields": [],
+        "_id": "67d29ba8ded1d935a271d5a6"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 20,
+    "totalReview": 4,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": true,
+    "createdAt": "2024-09-24T12:55:10.443Z",
+    "updatedAt": "2026-09-25T05:26:24.329Z"
+  }
+}

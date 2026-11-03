@@ -1,0 +1,77 @@
+{
+  "url": "https://ranbazaar.com/product/royal-goldenbaby%20buddha%20on-goldenpeacock",
+  "product": {
+    "id": "68b9702d9b0423c7576d4b35",
+    "name": "Royal Baby Buddha on Peacock Idol",
+    "slug": "royal-goldenbaby buddha on-goldenpeacock",
+    "sku": "462",
+    "attributes": [],
+    "description": "<p><br><strong>Dimensions: </strong>22 × 18 × 12 cm<br><strong>Weight: </strong>709 gms<br><strong>Material: </strong>Often made of polyresin or brass<br><strong>Suitable for: </strong>Home décor, office desks, puja rooms, or as a gift</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 2299,
+    "sale": 2099,
+    "weight": 430,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756985000365-924399650.10",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756985000366-55926320.10",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756985000367-885990143.10",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756985000375-970989833.10"
+    ],
+    "metaTitle": "Royal Baby Buddha Monk on Peacock | Spiritual Statue & Showpiece",
+    "metaDescription": "Royal Baby Buddha Monk on Peacock statue – handcrafted in polyresin or brass, perfect for home decor, meditation, puja rooms, or gifting",
+    "metaTags": "Baby Buddha Monk statue, Buddha on peacock figurine, polyresin Buddha statue, brass Buddha showpiece, spiritual home décor, meditation décor, Buddha figurine for gift, office desk Buddha statue, puja room décor, peaceful Buddha statue, handcrafted Buddha figurine, Baby Buddha statue online, royal Buddha figurine",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 6,
+    "defaultImage": 1,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-09-04T10:55:41.311Z",
+    "updatedAt": "2025-09-05T07:22:03.800Z"
+  }
+}

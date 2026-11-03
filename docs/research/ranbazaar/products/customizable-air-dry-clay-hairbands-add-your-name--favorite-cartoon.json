@@ -1,0 +1,156 @@
+{
+  "url": "https://ranbazaar.com/product/customizable-air-dry-clay-hairbands-add-your-name--favorite-cartoon",
+  "product": {
+    "id": "670f8ae5ec089d6179b4617b",
+    "name": "Customizable Air Dry Clay Hairbands: Add Your Name & Favorite Cartoon",
+    "slug": "customizable-air-dry-clay-hairbands-add-your-name--favorite-cartoon",
+    "sku": "291",
+    "attributes": [
+      {
+        "attributeid": {
+          "id": "6729d13c563b4c20b7143422",
+          "name": "Rainbow Hairband "
+        },
+        "value": "250",
+        "_id": "685533a5d88959c8bf9ded14"
+      },
+      {
+        "attributeid": {
+          "id": "6729d15781bf75fe2a5e0f27",
+          "name": "Doll Hairband "
+        },
+        "value": "250",
+        "_id": "685533a5d88959c8bf9ded15"
+      }
+    ],
+    "description": "<p>Elevate your accessory collection with our customizable hairbands, made from premium air dry clay. Each hairband is uniquely crafted to feature your name alongside a favorite cartoon character, adding a personal touch to any look.</p><p>Perfect for both kids and adults, these lightweight and durable hairbands are suitable for everyday wear or special occasions. Handcrafted with care, they make wonderful gifts for birthdays, holidays, or just to show someone you care!</p><p><strong>Key Features:</strong></p><ul><li><strong>Customizable:</strong> Personalize with your name and favorite cartoon character.</li><li><strong>Handmade Quality:</strong> Each band is one-of-a-kind, crafted from high-quality materials.</li><li><strong>Versatile Design:</strong> Ideal for all ages and occasions.</li></ul><p>Make a statement with a hairband that’s uniquely you! Order yours today and let your personality shine!</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 300,
+    "sale": 250,
+    "weight": 70,
+    "productType": "customize",
+    "quantity": 0,
+    "images": [],
+    "metaTitle": "Ranbazaar Personalized Hairbands – Custom Air Dry Clay Designs.",
+    "metaDescription": "Express your style with Ranbazaar’s handmade air dry clay hairbands. Customize with names, favorite cartoons, and creative designs.",
+    "metaTags": "custom hairbands, personalized hairbands, air dry clay hairbands, custom air dry clay hairbands, handmade hairbands, unique hairbands, custom name hairbands, cartoon hairbands, kids hair accessories, personalized gifts, custom gifts for kids, stylish hairbands, fun hair accessories, custom clay hairbands, creative hairband designs, Ranbazaar personalized gifts.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 4,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936817663-675115933.webp",
+        "inputFields": [],
+        "_id": "671215bd47ddfe49c0c40cff"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936817888-296120946.webp",
+        "inputFields": [],
+        "_id": "6729d1c0563b4c20b71446d0"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936818110-654290587.webp",
+        "inputFields": [],
+        "_id": "6729d18481bf75fe2a5e1045"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936818313-961711538.webp",
+        "inputFields": [],
+        "_id": "6729d1953e8a1cbfe8d2bd5c"
+      },
+      {
+        "name": "Sample_5",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936818558-229046037.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "38",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "",
+            "width": "469px",
+            "height": "",
+            "x": 75,
+            "y": 503,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67121b41d1f21c0aff62217e"
+          }
+        ],
+        "_id": "6729d1963e8a1cbfe8d2bd71"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-16T09:44:05.094Z",
+    "updatedAt": "2025-06-20T10:10:45.582Z"
+  }
+}

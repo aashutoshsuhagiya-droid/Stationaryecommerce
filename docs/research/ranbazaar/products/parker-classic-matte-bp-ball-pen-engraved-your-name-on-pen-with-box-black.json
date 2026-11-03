@@ -1,0 +1,160 @@
+{
+  "url": "https://ranbazaar.com/product/parker-classic-matte-bp-ball-pen-engraved-your-name-on-pen-with-box-black",
+  "product": {
+    "id": "66f15e5d8f22210629691177",
+    "name": "PARKER Classic Matte BP Ball Pen Engraved Your Name On Pen with Box (Black)",
+    "slug": "parker-classic-matte-bp-ball-pen-engraved-your-name-on-pen-with-box-black",
+    "sku": "161",
+    "attributes": [],
+    "description": "<ul><li><strong>Personalized Design</strong>: Customize pens with your name, logo, or message for a unique touch.</li><li><strong>Perfect for Branding</strong>: Ideal for businesses, promotional events, or corporate gifts.</li><li><strong>Variety of Styles</strong>: Available in various colors, designs, and materials to suit your needs.</li><li><strong>Durable and High-Quality</strong>: Made with premium materials to ensure smooth writing and long-lasting use.</li><li><strong>Great for Gifting</strong>: A perfect gift for colleagues, clients, or special occasions like weddings and graduations.</li><li><strong>Affordable Customization</strong>: Get stylish and practical customized pens at a great price.</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7343ded2943f8aa3a01f1",
+      "name": "Tax (0%)",
+      "percentage": "0",
+      "status": true
+    },
+    "categories": {
+      "id": "66c718b4cde888fde5bf23c7",
+      "name": "Pen/Pencil Custom",
+      "description": "Explore our premium collection of custom pens and pencils, offering personalized elegance and precision for every writing or drawing need.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060702235-226985760.webp",
+      "slug": "pen_pencil_custom",
+      "orderby": 3,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66ab7d9fc45708247ca4df3c",
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": true,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1049,
+    "sale": 869,
+    "weight": 50,
+    "productType": "customize",
+    "quantity": 0,
+    "images": [],
+    "metaTitle": "PARKER Classic Matte BP Ball Pen – Personalized with Your Name.",
+    "metaDescription": "Add a personal touch to your writing with the PARKER Classic Matte BP Ball Pen. Engraved with your name and presented in a stylish box – perfect for gifting.",
+    "metaTags": "custom pen, personalized pen, engraved pen, custom ball pen, custom writing pen, personalized ball pen, engraved writing pen, custom gift pen, custom Parker pen.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 96,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936567429-278565514.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#fad000",
+              "fontSize": "24",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "200",
+            "height": "",
+            "x": 342,
+            "y": 285,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "13",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6971b0d253943c72222196dd"
+          }
+        ],
+        "_id": "6971b0d253943c72222196dc"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936567701-773533765.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#fad000",
+              "fontSize": "24",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME ",
+            "width": "210px",
+            "height": "",
+            "x": 336,
+            "y": 285,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "13",
+            "name": "YOUR NAME ",
+            "slug": "your_name",
+            "required": true,
+            "_id": "6715f3252261a2b32386ea21"
+          }
+        ],
+        "_id": "6715f3252261a2b32386ea20"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "inputFields": [],
+        "_id": "6971b0cf53943c72222196c4"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-23T12:26:05.090Z",
+    "updatedAt": "2026-01-22T05:08:34.490Z"
+  }
+}

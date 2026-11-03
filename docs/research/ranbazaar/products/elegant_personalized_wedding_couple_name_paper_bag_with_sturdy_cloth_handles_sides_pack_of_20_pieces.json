@@ -1,0 +1,167 @@
+{
+  "url": "https://ranbazaar.com/product/elegant_personalized_wedding_couple_name_paper_bag_with_sturdy_cloth_handles_sides_pack_of_20_pieces",
+  "product": {
+    "id": "66fe33d1e43d7548dc0ec045",
+    "name": "Elegant Personalized Wedding Couple Name Paper Bag with Sturdy Cloth Handles & Sides-Pack of 20 Pieces",
+    "slug": "elegant_personalized_wedding_couple_name_paper_bag_with_sturdy_cloth_handles_sides_pack_of_20_pieces",
+    "sku": "214",
+    "attributes": [],
+    "description": "<ul><li><strong>Unique Design</strong>: Crafted with love, this personalized paper bag features the wedding couple's name, adding a special touch to your celebrations.</li><li><strong>Premium Quality</strong>: The bag is made from high-quality paper with durable cloth handles and sides, ensuring it can carry gifts or wedding favors with ease.</li><li><strong>Versatile Use</strong>: Perfect for wedding gifts, bridal shower favors, or any wedding-related event, adding an elegant touch to your special day.</li><li><strong>Eco-Friendly</strong>: Designed with sustainability in mind, this bag is reusable and eco-conscious, making it a thoughtful choice for the environment.</li><li><strong>Customization Available</strong>: Personalize with the couple's name and wedding date for a unique and memorable keepsake.</li><li><strong>Perfect Size</strong>: Spacious enough to hold a variety of items, yet compact and easy to carry, making it ideal for wedding needs</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71b956c4e3092c5129b3a",
+      "name": "Paper Bag ",
+      "description": "Elegant custom paper bag with sturdy cloth sides and handle—perfect for personalized gifting and making your day special.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060590468-432387341.webp",
+      "slug": "paper_bag",
+      "orderby": 14,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1999,
+    "sale": 1400,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Wedding Couple Name Paper Bag | Elegant & Durable Cloth Handles.",
+    "metaDescription": "Personalized wedding paper bags for the couple with sturdy cloth handles. Elegant design for weddings, gifts, and special celebrations.",
+    "metaTags": "Personalized wedding bags, wedding bags.Durable custom wedding bags, ",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936646873-615012179.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#d22020",
+              "fontSize": "16",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "116px",
+            "height": "",
+            "x": 252,
+            "y": 434,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "12",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671730bd0de4d9d6996f6a28"
+          }
+        ],
+        "_id": "671730bd0de4d9d6996f6a27"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936647127-628720759.webp",
+        "inputFields": [],
+        "_id": "66fe42591a299e4e3c70f45f"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936647465-34475514.webp",
+        "inputFields": [],
+        "_id": "66fe42671a299e4e3c70f4a4"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936647766-284127357.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#d22020",
+              "fontSize": "18",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "155px",
+            "height": "32px",
+            "x": 121.99992370605469,
+            "y": 444.0000801086426,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "12",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671730d10de4d9d6996f73f3"
+          }
+        ],
+        "_id": "671730d10de4d9d6996f73f2"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T06:04:01.248Z",
+    "updatedAt": "2025-04-04T07:05:48.089Z"
+  }
+}

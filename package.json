@@ -11,6 +11,8 @@
     "test:domain": "tsx --conditions=react-server --test src/lib/*.test.ts src/components/configurator/*.test.ts",
     "typecheck": "tsc --noEmit",
     "typecheck:scripts": "tsc --noEmit -p tsconfig.prisma.json",
+    "import:external-catalog": "tsx scripts/import-external-catalog/import.ts",
+    "test:external-catalog": "tsx --test scripts/import-external-catalog/*.test.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push && tsx prisma/install-marketplace-runtime.ts",
     "db:seed": "tsx prisma/seed.ts",

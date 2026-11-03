@@ -1,0 +1,149 @@
+{
+  "url": "https://ranbazaar.com/product/unique-kids-notebooks-design-your-own-for-endless-fun---pack-of-5",
+  "product": {
+    "id": "66ebf3c8d8c3626361b207bd",
+    "name": "Unique Kids Notebooks: Design Your Own for Endless Fun - Pack of 5",
+    "slug": "unique-kids-notebooks-design-your-own-for-endless-fun---pack-of-5",
+    "sku": "113",
+    "attributes": [],
+    "description": "<p>Size 7 x 9.5 inches (Standard Notebook Size) 300 gms over laminated inside 124 pages ruled on 64 gms very good quality paper.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7343ded2943f8aa3a01f1",
+      "name": "Tax (0%)",
+      "percentage": "0",
+      "status": true
+    },
+    "categories": {
+      "id": "66c727346c4e3092c5129e04",
+      "name": "Note Books",
+      "description": "Customizable notebook: Personalize with names, designs, and colors for unique, daily use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1735028884566-102522106.webp",
+      "slug": "note_books",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 640,
+    "sale": 499,
+    "weight": 300,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Notebook With Pictures - Journal Cover Design",
+    "metaDescription": "Notebook With Pictures, decorate copy cover, journal cover design, notebook photo cover, notebook photo print, beautiful copy cover design, photo notebook gift",
+    "metaTags": "Custom Notebook, Personalized Journal, Photo Notebook, Customizable Notebook, Picture Journal, Unique Notebook Design, Personalized Cover, Photo Cover Notebook, Custom Journal.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936545622-412977412.webp",
+        "inputFields": [],
+        "_id": "66ebf492d8c3626361b207ce"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936545889-478645647.webp",
+        "inputFields": [],
+        "_id": "66ebf49fd8c3626361b207e8"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936546173-405226523.webp",
+        "inputFields": [],
+        "_id": "66ebf4a9d8c3626361b20806"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936546866-122862640.webp",
+            "width": "298px",
+            "height": "275px",
+            "x": 301,
+            "y": 0,
+            "name": "image1",
+            "_id": "66ed161159c7ae3e8b694866"
+          },
+          {
+            "id": 2,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936547177-521004010.webp",
+            "width": "89px",
+            "height": "252px",
+            "x": 5,
+            "y": 49,
+            "name": "image2",
+            "_id": "66ed161159c7ae3e8b694867"
+          },
+          {
+            "id": 3,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936547487-198152263.webp",
+            "width": "106px",
+            "height": "283px",
+            "x": 92,
+            "y": 44,
+            "name": "image3",
+            "_id": "66ed161159c7ae3e8b694868"
+          },
+          {
+            "id": 4,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936547813-662053719.webp",
+            "width": "79px",
+            "height": "237px",
+            "x": 198,
+            "y": 64,
+            "name": "image4",
+            "_id": "66ed161159c7ae3e8b694869"
+          }
+        ],
+        "productbgColor": "#eb0d6c",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936546556-991018638.webp",
+        "inputFields": [],
+        "_id": "66ed161159c7ae3e8b694865"
+      },
+      {
+        "name": "Sample_5",
+        "customerImg": [],
+        "inputFields": [],
+        "_id": "67ac90f332945a030d1904bf"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-19T09:50:00.923Z",
+    "updatedAt": "2025-09-22T08:18:31.132Z"
+  }
+}

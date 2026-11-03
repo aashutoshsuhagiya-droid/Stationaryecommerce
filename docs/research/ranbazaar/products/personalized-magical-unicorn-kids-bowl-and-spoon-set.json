@@ -1,0 +1,146 @@
+{
+  "url": "https://ranbazaar.com/product/personalized-magical-unicorn-kids-bowl-and-spoon-set",
+  "product": {
+    "id": "67b8518e923d8571bb5ad60c",
+    "name": "Personalized Magical Unicorn Kids' Bowl and Spoon Set.",
+    "slug": "personalized-magical-unicorn-kids-bowl-and-spoon-set",
+    "sku": "351",
+    "attributes": [],
+    "description": "<p><strong>Make mealtime exciting with our Custom Unicorn Name bowl and spoon Set! This vibrant melamine dinnerware collection is perfect for kids and includes:</strong></p><p><strong>Personalized: </strong>Customize with your child’s name for a special touch.<br><strong>Complete Set:</strong> Includes a 350 ml bowl and spoon set ideal for little hands.<br><strong>Durable &amp; Lightweight:</strong> Crafted from high-quality melamine for everyday use.<br><strong>Engaging Design: </strong>Unicorn-themed cartoon designs that inspire creativity.<br><strong>Perfect Gift</strong>: An ideal choice for birthdays, holidays, and special occasions.<br><strong>Transform mealtime into an adventure with this delightful, personalized dinnerware set that&nbsp;kids&nbsp;will&nbsp;love!</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 999,
+    "sale": 750,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Make Mealtime Magical with a Custom Unicorn Kids' Bowl & Spoon Set.",
+    "metaDescription": "Create a magical mealtime with a Personalized Unicorn Kids’ Bowl & Spoon Set! Customizable and fun, this set adds a whimsical touch to every meal.",
+    "metaTags": "personalized kids bowl, kids unicorn bowl, custom kids dinnerware, kids bowl, spoon set, personalized kids cutlery, fun kids dining set, custom kids meal set, toddler bowl and spoon, kids cartoon dinnerware, customized baby feeding set.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 4,
+    "defaultImage": 0,
+    "defaultSample": 5,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740132863068-613656406.webp",
+        "inputFields": [],
+        "_id": "67b851ff923d8571bb5b20fe"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740132900892-280066740.webp",
+        "inputFields": [],
+        "_id": "67b85225923d8571bb5b41e4"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740132924442-476316051.webp",
+        "inputFields": [],
+        "_id": "67b8523c923d8571bb5b4869"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740132950320-762776098.webp",
+        "inputFields": [],
+        "_id": "67b85256923d8571bb5b57c0"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740132962553-766643680.webp",
+        "inputFields": [],
+        "_id": "67b85262923d8571bb5b5d75"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740132981180-930159137.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "28",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "text",
+            "value": " YOUR NAME",
+            "width": "256px",
+            "height": "31px",
+            "x": 190,
+            "y": 426.00001525878906,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67b85428923d8571bb5c67b8"
+          }
+        ],
+        "_id": "67b85428923d8571bb5c67b7"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-02-21T10:12:30.068Z",
+    "updatedAt": "2025-06-20T10:10:22.210Z"
+  }
+}

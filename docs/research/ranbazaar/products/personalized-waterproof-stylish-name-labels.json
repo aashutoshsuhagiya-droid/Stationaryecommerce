@@ -1,0 +1,168 @@
+{
+  "url": "https://ranbazaar.com/product/personalized-waterproof-stylish-name-labels",
+  "product": {
+    "id": "6811caa7d1d4dccc56f5afbb",
+    "name": "Custom Waterproof Name Labels – Perfect for Every Surface & Style (Pack of 88pcs)",
+    "slug": "personalized-waterproof-stylish-name-labels",
+    "sku": "417",
+    "attributes": [],
+    "description": "<p><strong>Color:</strong> Bright colors that make your labels pop.&nbsp;<br><strong>Size: </strong>2x1 inches<br><strong>Brand: </strong>Ranbazaar<br><strong>Material:</strong> High-Quality Vinyl – Flexible, durable, and long-lasting.<br><strong>Waterproof &amp; Weather-Resistant: </strong>Provides superior protection against water, heat, and sun exposure.<br><strong>Perfect for: </strong>School supplies, water bottles, personal items, sports gear, and more.<br><strong>Customizable &amp; Easy to Apply: </strong>Quickly personalize items and apply without hassle.<br><strong>* NOTE: </strong>Avoid using chemicals or scrubbing the sticker, as this may cause the color to fade over time, especially with repeated washing.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "67d9155455456fa85ab5a069",
+      "name": "Waterproof Stickers",
+      "description": "Personalized waterproof stickers.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1742290320810-5455200.webp",
+      "slug": "waterproof_stickers",
+      "orderby": 8,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66b1f00567fd78d70099654f",
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": true
+    },
+    "price": {},
+    "mrp": 399,
+    "sale": 290,
+    "weight": 10,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Ranbazaar Custom Stickers – Waterproof, Stylish & Built to Last (Pack of 88pcs)",
+    "metaDescription": "Discover Ranbazaar personalized waterproof stickers - Durable, versatile, and perfect for everyday use. Create your custom design now (Pack of 88pcs)",
+    "metaTags": "custom waterproof stickers, personalized waterproof stickers, durable stickers, versatile stickers, stylish waterproof decals, Ranbazaar stickers, custom vinyl stickers, waterproof labels, waterproof designs, personalized decals, durable custom stickers, waterproof stickers for laptops, custom stickers for bottles, multipurpose waterproof stickers, custom name stickers, custom logo stickers.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 23,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1745996776160-87993272.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#fff700",
+              "fontSize": "106",
+              "fontFamily": "Roundkey Medium",
+              "fontWeight": "normal",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "uppercase",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER NAME",
+            "width": "588px",
+            "height": "",
+            "x": 8,
+            "y": 216,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "14",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6815c6fbf0e537ec565ad561"
+          }
+        ],
+        "_id": "6815c6fbf0e537ec565ad560"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1745996795248-801445366.webp",
+        "inputFields": [],
+        "_id": "6811cbfb8fe8658a0ff4d56d"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1745996806109-744660782.webp",
+        "inputFields": [],
+        "_id": "6811cc068fe8658a0ff4d5ae"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1745996822756-514986865.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#fff700",
+              "fontSize": "106",
+              "fontFamily": "Roundkey Medium",
+              "fontWeight": "normal",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "uppercase",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER NAME",
+            "width": "592px",
+            "height": "",
+            "x": 5,
+            "y": 35,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "14",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6815c71cf0e537ec565add2f"
+          }
+        ],
+        "_id": "6815c71cf0e537ec565add2e"
+      }
+    ],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-04-30T07:00:55.948Z",
+    "updatedAt": "2025-05-09T04:58:44.360Z"
+  }
+}

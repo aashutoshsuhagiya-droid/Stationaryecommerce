@@ -1,0 +1,76 @@
+{
+  "url": "https://ranbazaar.com/product/handmade-crochet-blue-evil-eye-wool-keychain-with-tassel--unique-charm-for-style--protection-pack-of-3",
+  "product": {
+    "id": "676541b990aa4490c637586d",
+    "name": "Handmade Crochet Blue Evil Eye wool Keychain with Tassel – Unique Charm for Style & Protection (Pack of 3)",
+    "slug": "handmade-crochet-blue-evil-eye-wool-keychain-with-tassel--unique-charm-for-style--protection-pack-of-3",
+    "sku": "309",
+    "attributes": [],
+    "description": "<p><strong>Color</strong>: Blue</p><p><strong>Brand:</strong> Ranbazaar</p><p><strong>Material:</strong> Wool</p><p><strong>Shape:&nbsp;</strong>Round</p><p><strong>Theme:</strong> Evil Eye (for protection and good luck)</p><p><strong>Stylish Accessory:</strong> A beautiful addition to your keys, handbags, backpacks, or luggage.</p><p><strong>Compact Size:</strong> The keychain appears lightweight and portable, ideal for everyday use.</p><p><strong>Occasions:</strong> Christmas, New Year, Thanksgiving, Homecoming.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "6763fb6a53254059363eda41",
+      "name": "Key Chain",
+      "description": "Keyrings are small, portable accessories designed to hold and organize keys.Whether you're looking for a functional keyring for everyday use or a personalized keychain as a thoughtful gift, our collection has something for everyone.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1735028985737-277413267.webp",
+      "slug": "key_chain",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 898,
+    "sale": 599,
+    "weight": 10,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936838320-148918736.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936838519-171154086.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936838808-145840545.webp"
+    ],
+    "metaTitle": "Handmade Keychains |Ran bazaar",
+    "metaDescription": "Explore a beautiful collection of unique evil eye handmade keychains. Crafted with love and attention to detail. Perfect for gifts or personal use. Shop now!",
+    "metaTags": "Keychains/Handmade keychains/crochet keychain/ Cute keychains/ Keychains for gifts/Best keychains/ protection keychain.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 2,
+    "defaultImage": 1,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-12-20T10:06:49.682Z",
+    "updatedAt": "2025-04-04T07:05:56.436Z"
+  }
+}

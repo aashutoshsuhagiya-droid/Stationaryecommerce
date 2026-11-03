@@ -1,0 +1,291 @@
+{
+  "url": "https://ranbazaar.com/product/custom-nursery-luggage-tag--personalized-name--number-bag-tag-for-kids--star-shape-travel-tag",
+  "product": {
+    "id": "6926cf094bb9216e16353925",
+    "name": "Custom Nursery Luggage Tag – Personalized Name & Number Bag Tag for Kids | luggage tag",
+    "slug": "custom-nursery-luggage-tag--personalized-name--number-bag-tag-for-kids--star-shape-travel-tag",
+    "sku": "806",
+    "attributes": [],
+    "description": "<p>Give your child’s travel bag a unique identity with this <strong>personalized nursery luggage tag</strong>. this custom bag tag includes your child’s <strong>name and contact number</strong> for easy identification and safety. Perfect for school, nursery, vacation travel, daycare, and trolley bags. Made from durable material with clear printing, this tag ensures your luggage is always recognizable.</p><p><strong>Ideal for:</strong> Kids’ travel bags, nursery bags, school luggage, suitcases, gifting.</p><p>Custom bag tag for kids</p><p>Personalized name tag</p><p>Star shape luggage tag</p><p>Kids travel bag tag</p><p>Custom school bag tag</p><p>Printed name label for kids</p><p>Personalized suitcase tag<br><br><strong>Washable luggage tag</strong><br><br><strong>Unbreakable tag for kids bags</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "6926acfde88f6dab8864f48e",
+      "name": "Bag/Luggage Tag",
+      "description": "",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1764142333523-676842001.png",
+      "slug": "luggage_tag",
+      "orderby": 5,
+      "showinmenu": {},
+      "warehouse": "66c71867cde888fde5bf23b9",
+      "settings": [
+        "66b49bd3e1d32978eca11154",
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {
+      "2": "175"
+    },
+    "mrp": 299,
+    "sale": 230,
+    "weight": 50,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Cartoon Luggage Tag for Kids – Custom Name & Number Nursery Bag Tag | Red Travel Tag",
+    "metaDescription": "Make your child’s luggage stand out with this cute cartoon-shaped personalized luggage tag. Featuring a bold red design and custom printing of your child’s name and phone number, this tag helps keep bags safe and easily identifiable. Perfect for nursery bags, school trips, airport luggage, daycare bags, and trolley suitcases. Strong, lightweight, and stylish—ideal for kids.",
+    "metaTags": "Kids cartoon luggage tag, Personalized nursery bag tag, Custom name and number tag, Red cartoon travel tag, Kids suitcase tag, School bag name label, Child luggage identifier, Custom printed bag tags",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1764151191558-948509550.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "40",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "text",
+            "value": "LAVISH",
+            "width": "282px",
+            "height": "38px",
+            "x": 131,
+            "y": 280.0000228881836,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "11",
+            "name": "Enter Name",
+            "slug": "enter_name",
+            "required": true,
+            "_id": "6926cfba4bb9216e1635395e"
+          },
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "40",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1764151121058,
+            "type": "customize",
+            "value": "NURSERY",
+            "width": "282px",
+            "height": "38px",
+            "x": 131,
+            "y": 319.0000228881836,
+            "label": {
+              "id": "66f2713b8f22210629699501",
+              "name": "Address ",
+              "slug": "address",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "11",
+            "name": "Enter Address",
+            "slug": "enter_address",
+            "required": true,
+            "_id": "6926cfba4bb9216e1635395f"
+          },
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "40",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1764151165525,
+            "type": "customize",
+            "value": "9100000000",
+            "width": "282px",
+            "height": "38px",
+            "x": 128,
+            "y": 360.0000228881836,
+            "label": {
+              "id": "66eab1c64fef32e735f9e203",
+              "name": "Customer Name 2 ",
+              "slug": "customer_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "10",
+            "name": "Enter Address",
+            "slug": "enter_address",
+            "required": true,
+            "_id": "6926cfba4bb9216e16353960"
+          }
+        ],
+        "_id": "6926cfba4bb9216e1635395d"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1764151251220-988808070.webp",
+        "inputFields": [],
+        "_id": "6926cfd3d766d9cb7c273c06"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1764151275476-705562434.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "40",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "Enter Name",
+            "width": "282px",
+            "height": "38px",
+            "x": 110,
+            "y": 280.0000228881836,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "14",
+            "name": "Enter Name",
+            "slug": "enter_name",
+            "required": true,
+            "_id": "69d392850a638b2e9c408beb"
+          },
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "40",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1764151121058,
+            "type": "customize",
+            "value": "City/Schol",
+            "width": "282px",
+            "height": "38px",
+            "x": 110,
+            "y": 322.0000228881836,
+            "label": {
+              "id": "66f2713b8f22210629699501",
+              "name": "Address ",
+              "slug": "address",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "11",
+            "name": "Enter City or School",
+            "slug": "enter_city_or_school",
+            "required": true,
+            "_id": "69d392850a638b2e9c408bec"
+          },
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "40",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1764151165525,
+            "type": "customize",
+            "value": "Class/Phn",
+            "width": "282px",
+            "height": "38px",
+            "x": 109,
+            "y": 366.0000228881836,
+            "label": {
+              "id": "66eab1c64fef32e735f9e203",
+              "name": "Customer Name 2 ",
+              "slug": "customer_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "10",
+            "name": "Enter Class or Phone",
+            "slug": "enter_class_or_phone",
+            "required": true,
+            "_id": "69d392850a638b2e9c408bed"
+          }
+        ],
+        "_id": "69d392850a638b2e9c408bea"
+      }
+    ],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-11-26T09:57:29.829Z",
+    "updatedAt": "2026-04-06T11:01:25.158Z"
+  }
+}

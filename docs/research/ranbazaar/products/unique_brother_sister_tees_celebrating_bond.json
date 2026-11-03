@@ -1,0 +1,187 @@
+{
+  "url": "https://ranbazaar.com/product/unique_brother_sister_tees_celebrating_bond",
+  "product": {
+    "id": "66f52753e0d085ec8efe6bda",
+    "name": "Unique Brother Sister Tees Celebrating Bond",
+    "slug": "unique_brother_sister_tees_celebrating_bond",
+    "sku": "190",
+    "attributes": [
+      {
+        "attributeid": {
+          "id": "66fba20d2a27e0bc8456a4d6",
+          "name": "18 Kids"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325dd"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2252a27e0bc8456a4df",
+          "name": "20 Kids"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325de"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2342a27e0bc8456a4e5",
+          "name": "22 Kids"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325df"
+      },
+      {
+        "attributeid": {
+          "id": "66fba24d2a27e0bc8456a4eb",
+          "name": "24 Kids"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e0"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2ad2a27e0bc8456aa50",
+          "name": "26 Kids"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e1"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2be2a27e0bc8456aa56",
+          "name": "28 Kids"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e2"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2ce2a27e0bc8456aa5c",
+          "name": "30 Kids"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e3"
+      },
+      {
+        "attributeid": {
+          "id": "66fba5c52a27e0bc8456b002",
+          "name": "32 Kids"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e4"
+      },
+      {
+        "attributeid": {
+          "id": "66fba5dc2a27e0bc8456b453",
+          "name": "34 Kids"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e5"
+      },
+      {
+        "attributeid": {
+          "id": "66fba64d2a27e0bc8456b474",
+          "name": "36 (S) Adults"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e6"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6652a27e0bc8456b47d",
+          "name": "38 (M) Adults"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e7"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6822a27e0bc8456b486",
+          "name": "40 (L) Adults"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e8"
+      },
+      {
+        "attributeid": {
+          "id": "66fba69d2a27e0bc8456b492",
+          "name": "42 (XL) Adults"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325e9"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6b32a27e0bc8456b49b",
+          "name": "44 (XXL) Adults"
+        },
+        "value": "299",
+        "_id": "67adbec963f5ecdbf9e325ea"
+      }
+    ],
+    "description": "<p><strong>Print Your Photo, Any Design And Text Fit Type: Regular Fit; Collar Style: Round Collar Occasion Type: Sports; Sleeve Type: Half Sleeve</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71c786c4e3092c5129b54",
+      "name": "T-shirts ",
+      "description": "Create your own style with our customizable T-shirts, offering high-quality prints and endless design options for a personalized touch that stands out.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060688470-642832490.webp",
+      "slug": "t_shirts",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 299,
+    "weight": 100,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936609125-789337588.webp"
+    ],
+    "metaTitle": "Custom Brother-Sister Tees – Celebrate Your Sibling Relationship in Style.",
+    "metaDescription": "Celebrate your sibling bond with custom brother-sister tees. Unique designs to express love and create lasting memories. Shop now for personalized shirts.",
+    "metaTags": "customized brother-sister tees, personalized sibling t-shirts, matching sibling t-shirts, brother-sister bond shirts, unique family tees, personalized shirts for siblings, sibling matching t-shirts, custom family apparel, custom brother-sister shirts, brother-sister t-shirt designs, fun sibling matching tees, personalized family t-shirts, unique brother sister gifts, custom sibling matching shirts, brother-sister t-shirts for family, personalized sibling clothing.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-26T09:20:19.958Z",
+    "updatedAt": "2025-04-04T07:05:46.179Z"
+  }
+}

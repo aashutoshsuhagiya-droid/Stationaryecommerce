@@ -1,0 +1,70 @@
+{
+  "url": "https://ranbazaar.com/product/crochet-pattern-handmade-blue-and-white-penguin-keychain-cute-compact-washable-and-lovable-gift-for-penguin-loving-kids-pack-of-3",
+  "product": {
+    "id": "676a40dc538c8765e027320d",
+    "name": "Crochet Pattern Handmade Blue and White Penguin Keychain– Cute, Compact, Washable and Lovable Gift for Penguin-Loving Kids (Pack of 3)",
+    "slug": "crochet-pattern-handmade-blue-and-white-penguin-keychain-cute-compact-washable-and-lovable-gift-for-penguin-loving-kids-pack-of-3",
+    "sku": "321",
+    "attributes": [],
+    "description": "<p><strong>Colour:</strong> Blue and White</p><p><strong>Material:</strong> Wool Thread</p><p><strong>Brand:&nbsp;</strong>Ranbazaar</p><p><strong>Key Holder:&nbsp;</strong>Attach it to your keys for a cute and functional accessory that makes it easy to find your keys.</p><p><strong>Gift:&nbsp;</strong>A charming and thoughtful gift for penguin lovers, children, or anyone who appreciates handmade accessories.</p><p><strong>Washable:</strong> Easy to maintain—Simply hand wash or gently clean your crochet penguin keychain to keep it looking fresh and cute for years to come.</p>",
+    "showsimilarproductions": true,
+    "categories": {
+      "id": "6763fb6a53254059363eda41",
+      "name": "Key Chain",
+      "description": "Keyrings are small, portable accessories designed to hold and organize keys.Whether you're looking for a functional keyring for everyday use or a personalized keychain as a thoughtful gift, our collection has something for everyone.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1735028985737-277413267.webp",
+      "slug": "key_chain",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "mrp": 823,
+    "sale": 549,
+    "weight": 50,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936851165-772947073.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936851386-272580428.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936851588-289673303.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936851812-353083293.webp"
+    ],
+    "metaTitle": "Handmade Crochet Penguin Keychain – Cute and Ideal Accessory for Animal Lovers.",
+    "metaDescription": "Add some whimsy to your accessories with our crochet handmade penguin keychain. Soft, durable, and the perfect for purse, luggage as a playful decoration.",
+    "metaTags": "Crochet penguin keychain/ Creative animal-themed keychain/ Unique crochet keyring/ Animal lover gifts/ Durable handmade keychain charm/ Fun crochet accessory.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 1,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-12-24T05:04:28.283Z",
+    "updatedAt": "2025-04-04T07:05:57.044Z"
+  }
+}

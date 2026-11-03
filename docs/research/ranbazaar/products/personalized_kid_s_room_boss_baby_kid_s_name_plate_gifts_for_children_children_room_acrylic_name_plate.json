@@ -1,0 +1,160 @@
+{
+  "url": "https://ranbazaar.com/product/personalized_kid_s_room_boss_baby_kid_s_name_plate_gifts_for_children_children_room_acrylic_name_plate",
+  "product": {
+    "id": "66fe50c15ca1e522b1b04b42",
+    "name": "Personalized Kid’s Room Boss Baby | Kid’s Name Plate | Gifts For Children | Children Room Acrylic Name Plate",
+    "slug": "personalized_kid_s_room_boss_baby_kid_s_name_plate_gifts_for_children_children_room_acrylic_name_plate",
+    "sku": "218",
+    "attributes": [],
+    "description": "<ul><li><strong>Unique Design</strong>: Crafted with love, this personalized paper bag features the wedding couple's name, adding a special touch to your celebrations.</li><li><strong>Premium Quality</strong>: The bag is made from high-quality paper with durable cloth handles and sides, ensuring it can carry gifts or wedding favors with ease.</li><li><strong>Versatile Use</strong>: Perfect for wedding gifts, bridal shower favors, or any wedding-related event, adding an elegant touch to your special day.</li><li><strong>Eco-Friendly</strong>: Designed with sustainability in mind, this bag is reusable and eco-conscious, making it a thoughtful choice for the environment.</li><li><strong>Customization Available</strong>: Personalize with the couple's name and wedding date for a unique and memorable keepsake.</li><li><strong>Perfect Size</strong>: Spacious enough to hold a variety of items, yet compact and easy to carry, making it ideal for wedding needs</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c721066c4e3092c5129c2f",
+      "name": "Name Plate ",
+      "description": "Add a personal touch with our customizable name plates—perfect for any home or office decor!",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060488398-750878361.webp",
+      "slug": "name_plate",
+      "orderby": 11,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 3999,
+    "sale": 1598,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Unique Name Plate Designs: Personalized Name Plates.",
+    "metaDescription": "Shop Now - RANBAZAAR custom name plates with unique name plate designs. Our personalized name plates add personal touch to your home or office.",
+    "metaTags": "Name Plate Design, Name Plate, Custom Name Plates, Personalized Name Plate, Office Name Plates, House Name Plate.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936674509-584065101.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#f8fafb",
+              "fontSize": "86",
+              "fontFamily": "Allura-Regular",
+              "fontWeight": "bolder",
+              "textAlignment": "right",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "Your Name",
+            "width": "389px",
+            "height": "",
+            "x": 193.99990844726562,
+            "y": 332,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "9",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6710ea824fc93a719076291f"
+          }
+        ],
+        "_id": "6710ea824fc93a719076291e"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936674772-649914354.webp",
+        "inputFields": [],
+        "_id": "6710c88bc2b39b7e557d51a9"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936674980-563576298.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#f8fafb",
+              "fontSize": "86",
+              "fontFamily": "Allura-Regular",
+              "fontWeight": "bolder",
+              "textAlignment": "right",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "Your Name",
+            "width": "389px",
+            "height": "",
+            "x": 193.99990844726562,
+            "y": 332,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "9",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6710ea8a994887b89cc1058d"
+          }
+        ],
+        "_id": "6710ea8a994887b89cc1058c"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T08:07:29.848Z",
+    "updatedAt": "2025-04-04T07:05:50.716Z"
+  }
+}

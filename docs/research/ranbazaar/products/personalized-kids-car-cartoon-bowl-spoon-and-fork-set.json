@@ -1,0 +1,139 @@
+{
+  "url": "https://ranbazaar.com/product/personalized-kids-car-cartoon-bowl-spoon-and-fork-set",
+  "product": {
+    "id": "6711ed9788c8918a7e1ffed9",
+    "name": "Personalized Kids' Car Cartoon Bowl, Spoon, and Fork Set",
+    "slug": "personalized-kids-car-cartoon-bowl-spoon-and-fork-set",
+    "sku": "301",
+    "attributes": [],
+    "description": "<p><strong>Make mealtime exciting with our Custom Name and Car Cartoon Platter Set! This vibrant melamine dinnerware collection is perfect for kids and includes:</strong></p><p><strong>Personalized: </strong>Customize with your child’s name for a special touch.<br><strong>Complete Set:</strong> Includes a 350 ml bowl, a spoon, and a fork, ideal for little hands.<br><strong>Durable &amp; Lightweight:</strong> Crafted from high-quality melamine for everyday use.<br><strong>Engaging Design: </strong>Fun car-themed cartoon designs that inspire creativity.<br><strong>Perfect Gift</strong>: An ideal choice for birthdays, holidays, and special occasions.<br><strong>Transform mealtime into an adventure with this delightful, personalized dinnerware set that&nbsp;kids&nbsp;will&nbsp;love!</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 999,
+    "sale": 750,
+    "weight": 70,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Kids' Car Cartoon Dining Set – Bowl, Spoon & Fork.",
+    "metaDescription": "Make mealtime exciting with a personalized kids' car cartoon bowl, spoon, and fork set. Customizable, fun, and perfect for little ones. Order yours today.",
+    "metaTags": "personalized kids bowl, kids car cartoon bowl, custom kids dinnerware, kids spoon and fork set, personalized kids cutlery, fun kids dining set, custom kids meal set, toddler bowl and spoon, kids cartoon dinnerware, customized baby feeding set.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 4,
+    "customizeDetails": [
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936825912-440228361.webp",
+        "inputFields": [],
+        "_id": "671768e90de4d9d6997424b6"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936826117-607850016.webp",
+        "inputFields": [],
+        "_id": "6717694c0de4d9d699742552"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936826355-196312052.webp",
+        "inputFields": [],
+        "_id": "671768f70de4d9d699742502"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936826591-626086120.webp",
+        "inputFields": [],
+        "_id": "671768f90de4d9d699742517"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936826794-885046058.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "35",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "text",
+            "value": " YOUR NAME",
+            "width": "415px",
+            "height": "45px",
+            "x": 105,
+            "y": 534,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67176a130de4d9d6997441a9"
+          }
+        ],
+        "_id": "67176a130de4d9d6997441a8"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-18T05:09:43.975Z",
+    "updatedAt": "2025-06-20T10:11:10.090Z"
+  }
+}

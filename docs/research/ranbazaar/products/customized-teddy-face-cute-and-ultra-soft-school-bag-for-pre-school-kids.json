@@ -1,0 +1,116 @@
+{
+  "url": "https://ranbazaar.com/product/customized-teddy-face-cute-and-ultra-soft-school-bag-for-pre-school-kids",
+  "product": {
+    "id": "679c71fa361dea7a95fe7657",
+    "name": "Customized Teddy Face Cute and Ultra Soft School Bag for Pre-School Kids.",
+    "slug": "customized-teddy-face-cute-and-ultra-soft-school-bag-for-pre-school-kids",
+    "sku": "335",
+    "attributes": [],
+    "description": "<p><strong>Material- Valvet</strong></p><p><strong>Color- Pink (Base)</strong></p><p><strong>Size- 12*14 inches</strong></p><p><strong>Usage/Application- Pre School Bag</strong></p><p><strong>Pattern- Plain with Photo</strong></p><p><strong>Gender- Unisex</strong></p><p><strong>Closure Type- Zipper</strong></p><p><strong>Style- Shoulder Bag</strong></p><p><strong>Number of Strap- 2</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71efd6c4e3092c5129b95",
+      "name": "Kids School Bag & Kit ",
+      "description": "Personalize kids' school bags with our customizable options, perfect for adding fun and functionality to school days.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060561709-223082933.webp",
+      "slug": "kids_school_bag_kit",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 999,
+    "sale": 549,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Ranbazaar Teddy Face Backpack – Ultra Soft & Adorable for Pre-School Kids.",
+    "metaDescription": "Make your child’s school days special with Ranbazaar’s ultra-soft Teddy Face Bag. Lightweight, cute & comfy—Perfect for pre-school kids.",
+    "metaTags": "Teddy bear backpack for kids, Custom teddy, Soft, cute backpacks for kids Soft school backpack, Pre-school bags, bear backpack.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 4,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1738309887242-546816798.webp",
+            "width": "209px",
+            "height": "185px",
+            "x": 197,
+            "y": 305,
+            "name": "image1",
+            "_id": "679c8369e8316bc38aa71cff"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1738309074649-918647889.webp",
+        "inputFields": [],
+        "_id": "679c8369e8316bc38aa71cfe"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1738309090125-433796675.webp",
+        "inputFields": [],
+        "_id": "679c7e59e8316bc38aa5771b"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1738309932471-438657226.webp",
+            "width": "189px",
+            "height": "166px",
+            "x": 204,
+            "y": 193.00001525878906,
+            "name": "image1",
+            "_id": "679c82e7e8316bc38aa71135"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1738309178112-52824261.webp",
+        "inputFields": [],
+        "_id": "679c82e7e8316bc38aa71134"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-01-31T06:47:22.454Z",
+    "updatedAt": "2025-04-04T07:05:57.793Z"
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "url": "https://ranbazaar.com/product/superman-theme-customized-school-name-slip",
+  "product": {
+    "id": "6949292b7e5cb28eefceccbf",
+    "name": "Superman Theme Customized School Name Slip",
+    "slug": "superman-theme-customized-school-name-slip",
+    "sku": "768",
+    "attributes": [],
+    "description": "<p>Personalize your child’s school notebooks with this Superman-themed customized name slip. Specially designed with fields for <strong>Name, Photo as well as School</strong>, this name slip adds a fun superhero touch while keeping school items organized. Perfect for notebooks, practical files, and project work. Ideal for kids who love superheroes and want a unique, personalized school accessory.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7278d6c4e3092c5129e2b",
+      "name": "Name Slips Customize",
+      "description": "Personalize kids' books with customizable name slips, tags, and stickers for easy identification.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060262509-929529809.webp",
+      "slug": "name_slips_customize",
+      "orderby": 2,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66a2386a3a663c2108070634",
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": true,
+      "banner": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/category/1738661895043-778638111.png",
+      "mblbanner": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/category/1738661895045-467228450.png",
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 299,
+    "sale": 219,
+    "weight": 50,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Customized Superman School Name Slip | Personalized Notebook Name Label",
+    "metaDescription": "Order a customized Superman theme school name slip with student details. Personalized, colorful, and perfect for notebooks, practical files, and kids’ school use.",
+    "metaTags": "customized name slip, personalized school name slip, Superman name slip, kids customized notebook label, school name sticker, superhero name slip, personalized file name slip, children school stationery",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 7,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1766402550891-103080447.webp",
+            "width": "189px",
+            "height": "252px",
+            "x": 385.99993896484375,
+            "y": 120.00000762939453,
+            "name": "image1",
+            "_id": "694a8132fb825455e54675d2"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1766402551048-986669029.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#e21f37",
+              "fontSize": "25",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "left",
+              "rotation": null,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "Enter Your Name",
+            "width": "310px",
+            "height": "40px",
+            "x": 67,
+            "y": 162.0000228881836,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "20",
+            "name": "Enter Your Name",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "694a8132fb825455e54675d3"
+          },
+          {
+            "style": {
+              "color": "#e21f37",
+              "fontSize": "25",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "left",
+              "rotation": null,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "Enter Your School Name",
+            "width": "385px",
+            "height": "40px",
+            "x": 63,
+            "y": 344,
+            "label": {
+              "id": "66c85da95182e1dca469d5b2",
+              "name": "School Name",
+              "slug": "school_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "26",
+            "name": "Enter Your School Name",
+            "slug": "enter_your_school_name",
+            "required": true,
+            "_id": "694a8132fb825455e54675d4"
+          }
+        ],
+        "_id": "694a8132fb825455e54675d1"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1766402550891-103080447.webp",
+            "width": "189px",
+            "height": "252px",
+            "x": 385.99993896484375,
+            "y": 120.00000762939453,
+            "name": "image1",
+            "_id": "69492acdfb825455e5443484"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1766402764787-634625960.webp",
+        "inputFields": [],
+        "_id": "69492acdfb825455e5443483"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1766402550891-103080447.webp",
+            "width": "189px",
+            "height": "252px",
+            "x": 385.99993896484375,
+            "y": 120.00000762939453,
+            "name": "image1",
+            "_id": "69492ad783f1bfd5218b4bd6"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1766402775296-632681931.webp",
+        "inputFields": [],
+        "_id": "69492ad783f1bfd5218b4bd5"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1766402550891-103080447.webp",
+            "width": "185px",
+            "height": "244px",
+            "x": 385.99993896484375,
+            "y": 8,
+            "name": "image1",
+            "_id": "694a8505fb825455e546ad68"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1766402814106-944465590.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#e21f37",
+              "fontSize": "25",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "left",
+              "rotation": null,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "Enter Your Name",
+            "width": "310px",
+            "height": "40px",
+            "x": 65,
+            "y": 53.000022888183594,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "20",
+            "name": "Enter Your Name",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "694a8505fb825455e546ad69"
+          },
+          {
+            "style": {
+              "color": "#e21f37",
+              "fontSize": "25",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "left",
+              "rotation": 0,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "Enter Your School Name",
+            "width": "385px",
+            "height": "40px",
+            "x": 51,
+            "y": 239,
+            "label": {
+              "id": "66c85da95182e1dca469d5b2",
+              "name": "School Name",
+              "slug": "school_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "26",
+            "name": "Enter Your School Name",
+            "slug": "enter_your_school_name",
+            "required": true,
+            "_id": "694a8505fb825455e546ad6a"
+          }
+        ],
+        "_id": "694a8505fb825455e546ad67"
+      }
+    ],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-12-22T11:19:07.763Z",
+    "updatedAt": "2025-12-23T12:03:17.939Z"
+  }
+}

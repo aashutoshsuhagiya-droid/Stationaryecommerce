@@ -1,0 +1,158 @@
+{
+  "url": "https://ranbazaar.com/product/creative-ideas-for-custom-gift-slips-that-wow",
+  "product": {
+    "id": "66ea60eec3ebf6b2c74a048e",
+    "name": "Creative Ideas for Custom Gift Slips That Wow (Pack of 36pcs)",
+    "slug": "creative-ideas-for-custom-gift-slips-that-wow",
+    "sku": "81",
+    "attributes": [],
+    "description": "<p>HD Printing.3x2.5 inches self adhesive high quality paper scratch proof. Personalized Name stickers for Gifts&nbsp;come with excellent features &amp; quality. Name Slip for Gifts.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71dd26c4e3092c5129b7b",
+      "name": "Gift Slip for Gifts",
+      "description": "Add a personal touch to your gifts with our customizable gift slips—unique, memorable, and thoughtful.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060358689-638317095.webp",
+      "slug": "gift_slip_for_gifts",
+      "orderby": 11,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 299,
+    "sale": 249,
+    "weight": 50,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Top Creative Custom Gift Slip Ideas for Unique Presents",
+    "metaDescription": "Add a personal touch to your gifts with custom gift slip ideas. Thoughtful messages and designs make every gift more memorable, perfect for any celebration.",
+    "metaTags": "custom gift slips, personalized gift slips, unique gift slips, customized gift tags, bespoke gift notes, printed gift slips, elegant gift slips, creative gift slips, special occasion gift slips, thoughtful gift slips, decorative gift slips, custom message slips, personalized gift message, gift slips for birthdays, wedding gift slips.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936503404-341390924.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#774c1b",
+              "fontSize": "38",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME ",
+            "width": "483px",
+            "height": "",
+            "x": 67,
+            "y": 269,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "33",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671733b50de4d9d6996ff0b9"
+          }
+        ],
+        "_id": "671733b50de4d9d6996ff0b8"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936503676-499737941.webp",
+        "inputFields": [],
+        "_id": "66ea6168c3ebf6b2c74a076d"
+      },
+      {
+        "name": "Sample_5",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936503901-766597577.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#774c1b",
+              "fontSize": "38",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME ",
+            "width": "449px",
+            "height": "",
+            "x": 58,
+            "y": 139,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "33",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671733b0a712a8766e2c7e39"
+          }
+        ],
+        "_id": "671733b0a712a8766e2c7e38"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-18T05:11:10.740Z",
+    "updatedAt": "2025-04-04T07:05:41.428Z"
+  }
+}

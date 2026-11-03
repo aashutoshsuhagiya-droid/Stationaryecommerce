@@ -1,0 +1,77 @@
+{
+  "url": "https://ranbazaar.com/product/golden-ram-darbar-candle-stand-antique-spiritual-figurine",
+  "product": {
+    "id": "68b6a4ea4a98e03e5d1c1b37",
+    "name": "Golden Ram Darbar Candle Stand | Antique Spiritual Figurine.",
+    "slug": "golden-ram-darbar-candle-stand-antique-spiritual-figurine",
+    "sku": "457",
+    "attributes": [],
+    "description": "<p><strong>Dimensions:</strong> 18 x 23 x 17 cm</p><p><strong>Weight:</strong> 840 gm</p><p><strong>Material:</strong> Wood and polyresin.</p><p><strong>Design:</strong> Handcrafted Ram Darbar figurine with an elegant antique golden finish.</p><p><strong>Symbolism:</strong> Represents the complete self – body, mind, intellect, and soul.</p><p><strong>Spiritual Meaning:</strong> Highlights the divine soul as the unifying force within us.</p><p><strong>Craftsmanship:</strong> Intricate detailing that reflects traditional art and devotion.</p><p><strong>Purpose:</strong> Ideal for home temples, meditation spaces, or spiritual decor.</p><p><strong>Gift Idea:</strong> A meaningful and artistic gift for Diwali, housewarmings, or religious occasions.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1699,
+    "sale": 1399,
+    "weight": 840,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756811349239-763511107.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756811349239-183249263.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756811349536-632176750.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756811349537-626153484.webp"
+    ],
+    "metaTitle": "Decorative Ram Darbar Figurine | Wooden & Polyresin Candle Holder.",
+    "metaDescription": "Beautiful wooden and polyresin Ram Darbar candle stand. Antique gold finish adds a spiritual touch to your home, temple, or meditation space.",
+    "metaTags": "Ram Darbar candle stand, handcrafted Ram Darbar idol, antique golden Ram Darbar, wooden polyresin figurine, spiritual home decor, Ram Darbar showpiece, religious candle holder, Ram Darbar idol for puja, Diwali gift item, antique finish Ram Darbar, Ram Darbar home temple decor, traditional Indian decor, Ram Darbar spiritual gift, handmade Ram Darbar statue.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 12,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-09-02T08:03:54.203Z",
+    "updatedAt": "2025-09-02T11:11:31.221Z"
+  }
+}

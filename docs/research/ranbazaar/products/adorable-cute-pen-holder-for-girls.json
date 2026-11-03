@@ -1,0 +1,78 @@
+{
+  "url": "https://ranbazaar.com/product/adorable-cute-pen-holder-for-girls",
+  "product": {
+    "id": "68b155d27e9eb632e571f3c8",
+    "name": "Adorable Little Girl Pen Holder – Cute Desk Organizer for Kids.",
+    "slug": "adorable-cute-pen-holder-for-girls",
+    "sku": "439",
+    "attributes": [],
+    "description": "<p><strong>Adorable Design</strong>: Features a cute little girl figurine with bright colors and charming details – a delightful addition to any child’s desk.</p><p><strong>Dimensions</strong> : 18*14*09 cm</p><p><strong>Materials</strong>: Made from durable, non-toxic, and safe materials – perfect for kids’ use.</p><p><strong>Functional Organizer</strong>: Holds pens, pencils, crayons, markers, and other small stationery items to keep the workspace tidy and organized.</p><p><strong>Decorative &amp; Fun</strong>: Doubles as a playful room decor piece – adds character to study tables, art desks, or bedside shelves.</p><p><strong>Encourages Creativity</strong>: Makes organization fun and encourages kids to keep their study space neat and cute.</p><p><br>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1499,
+    "sale": 1299,
+    "weight": 400,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756453053808-356206962.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756453053810-61264757.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756453053812-811134411.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756453053836-181833855.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756453053908-724721115.webp"
+    ],
+    "metaTitle": "Kawaii Girl Desk Holder – For Stylish Young Writers.",
+    "metaDescription": "Keep your child’s desk tidy with a cute little girl pen holder – A fun, decorative organizer perfect for school supplies and creative workspaces.",
+    "metaTags": "little girl pen holder, cute pen holder for girls, adorable pen stand, girl desk organizer, kids stationery holder, kawaii pen holder, pen holder for girls’ desk, girl-themed pen stand, child pen holder, cute desk accessories, kids room decor, desk pen holder for kids, pencil holder for girls, cartoon girl pen holder, girly desk organizer",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 2,
+    "defaultImage": 1,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-08-29T07:25:06.938Z",
+    "updatedAt": "2025-08-29T10:00:54.697Z"
+  }
+}

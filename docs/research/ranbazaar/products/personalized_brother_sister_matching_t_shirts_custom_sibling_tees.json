@@ -1,0 +1,195 @@
+{
+  "url": "https://ranbazaar.com/product/personalized_brother_sister_matching_t_shirts_custom_sibling_tees",
+  "product": {
+    "id": "66f5266ae0d085ec8efe65a0",
+    "name": "Personalized Brother-Sister Matching T-Shirts – Custom Sibling Tees",
+    "slug": "personalized_brother_sister_matching_t_shirts_custom_sibling_tees",
+    "sku": "189",
+    "attributes": [
+      {
+        "attributeid": {
+          "id": "66fba20d2a27e0bc8456a4d6",
+          "name": "18 Kids"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd50527"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2252a27e0bc8456a4df",
+          "name": "20 Kids"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd50528"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2342a27e0bc8456a4e5",
+          "name": "22 Kids"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd50529"
+      },
+      {
+        "attributeid": {
+          "id": "66fba24d2a27e0bc8456a4eb",
+          "name": "24 Kids"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd5052a"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2ad2a27e0bc8456aa50",
+          "name": "26 Kids"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd5052b"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2be2a27e0bc8456aa56",
+          "name": "28 Kids"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd5052c"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2ce2a27e0bc8456aa5c",
+          "name": "30 Kids"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd5052d"
+      },
+      {
+        "attributeid": {
+          "id": "66fba5c52a27e0bc8456b002",
+          "name": "32 Kids"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd5052e"
+      },
+      {
+        "attributeid": {
+          "id": "66fba5dc2a27e0bc8456b453",
+          "name": "34 Kids"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd5052f"
+      },
+      {
+        "attributeid": {
+          "id": "66fba64d2a27e0bc8456b474",
+          "name": "36 (S) Adults"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd50530"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6652a27e0bc8456b47d",
+          "name": "38 (M) Adults"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd50531"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6822a27e0bc8456b486",
+          "name": "40 (L) Adults"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd50532"
+      },
+      {
+        "attributeid": {
+          "id": "66fba69d2a27e0bc8456b492",
+          "name": "42 (XL) Adults"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd50533"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6b32a27e0bc8456b49b",
+          "name": "44 (XXL) Adults"
+        },
+        "value": "299",
+        "_id": "67aed38f65452450dcd50534"
+      }
+    ],
+    "description": "<p><strong>Print Your Photo, Any Design And Text Fit Type: Regular Fit; Collar Style: Round Collar Occasion Type: Sports; Sleeve Type: Half Sleeve</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71c786c4e3092c5129b54",
+      "name": "T-shirts ",
+      "description": "Create your own style with our customizable T-shirts, offering high-quality prints and endless design options for a personalized touch that stands out.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060688470-642832490.webp",
+      "slug": "t_shirts",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 299,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936608306-561382995.webp"
+    ],
+    "metaTitle": "Customizable Brother-Sister Matching T-Shirts – Perfect for Siblings.",
+    "metaDescription": "Create your own personalized brother-sister matching t-shirts. Custom sibling tees that are stylish, fun, and perfect for any occasion.",
+    "metaTags": "custom brother sister matching t-shirts, personalized sibling t-shirts, brother-sister matching tees, custom family matching t-shirts, personalized sibling gifts, matching brother sister tees, unique sibling t-shirts, custom sibling outfits, personalized family t-shirts, sibling matching shirts, custom sibling apparel, matching shirts for brothers and sisters, personalized sibling clothing, custom t-shirts for brothers and sisters, fun sibling t-shirts, custom brother sister gifts.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936608590-872028028.webp",
+        "inputFields": [],
+        "_id": "66f5268de0d085ec8efe65c7"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-26T09:16:26.698Z",
+    "updatedAt": "2025-04-04T07:05:46.113Z"
+  }
+}

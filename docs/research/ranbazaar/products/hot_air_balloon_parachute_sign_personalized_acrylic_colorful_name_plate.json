@@ -1,0 +1,224 @@
+{
+  "url": "https://ranbazaar.com/product/hot_air_balloon_parachute_sign_personalized_acrylic_colorful_name_plate",
+  "product": {
+    "id": "66fe6a1d67e0d9a1755129a4",
+    "name": "Hot Air Balloon, Parachute Sign, Personalized Acrylic Colorful Name Plate",
+    "slug": "hot_air_balloon_parachute_sign_personalized_acrylic_colorful_name_plate",
+    "sku": "223",
+    "attributes": [],
+    "description": "<ul><li><strong>Unique Design</strong>: Crafted with love, this personalized paper bag features the wedding couple's name, adding a special touch to your celebrations.</li><li><strong>Premium Quality</strong>: The bag is made from high-quality paper with durable cloth handles and sides, ensuring it can carry gifts or wedding favors with ease.</li><li><strong>Versatile Use</strong>: Perfect for wedding gifts, bridal shower favors, or any wedding-related event, adding an elegant touch to your special day.</li><li><strong>Eco-Friendly</strong>: Designed with sustainability in mind, this bag is reusable and eco-conscious, making it a thoughtful choice for the environment.</li><li><strong>Customization Available</strong>: Personalize with the couple's name and wedding date for a unique and memorable keepsake.</li><li><strong>Perfect Size</strong>: Spacious enough to hold a variety of items, yet compact and easy to carry, making it ideal for wedding needs</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c721066c4e3092c5129c2f",
+      "name": "Name Plate ",
+      "description": "Add a personal touch with our customizable name plates—perfect for any home or office decor!",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060488398-750878361.webp",
+      "slug": "name_plate",
+      "orderby": 11,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 3999,
+    "sale": 1598,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Hot Air Balloon & Parachute Sign – Personalized Acrylic Colorful Name Plate.",
+    "metaDescription": "Custom acrylic name plate with a hot air balloon and parachute. Colorful, durable, and perfect for personalizing kids’ rooms or giving as a unique gift.",
+    "metaTags": "personalized acrylic name plate, hot air balloon sign, parachute design name plate, colorful name plate, custom acrylic sign, kids room decor, nursery name plate, personalized gift, kids decor, custom name plate, vibrant acrylic sign, unique name plate, hot air balloon decor, custom gift ideas, colorful home decor, personalized kids sign.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936679294-263391218.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ef6262",
+              "fontSize": "70",
+              "fontFamily": "Allura-Regular",
+              "fontWeight": "bold",
+              "textAlignment": "left",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "Your Name",
+            "width": "296px",
+            "height": "",
+            "x": 37,
+            "y": 271.00006103515625,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "9",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6710ee6f30d5e1b399fa2402"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#214551",
+              "fontSize": "70",
+              "fontFamily": "Allura-Regular",
+              "fontWeight": "bold",
+              "textAlignment": "right",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "Your Name",
+            "width": "337px",
+            "height": "84px",
+            "x": 229.00003051757812,
+            "y": 189,
+            "label": {
+              "id": "66eab1c64fef32e735f9e203",
+              "name": "Customer Name 2 ",
+              "slug": "customer_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "9",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6710ee6f30d5e1b399fa2403"
+          }
+        ],
+        "_id": "6710ee6f30d5e1b399fa2401"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936679570-717993906.webp",
+        "inputFields": [],
+        "_id": "6710d88eea8b73a6ee245fb0"
+      },
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936679905-926872265.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ef6262",
+              "fontSize": "70",
+              "fontFamily": "Allura-Regular",
+              "fontWeight": "bold",
+              "textAlignment": "left",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "Your Name",
+            "width": "360px",
+            "height": "",
+            "x": 31,
+            "y": 271.00006103515625,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "9",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6710ee5830d5e1b399fa23a8"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#214551",
+              "fontSize": "70",
+              "fontFamily": "Allura-Regular",
+              "fontWeight": "bold",
+              "textAlignment": "right",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "Your Name",
+            "width": "342px",
+            "height": "",
+            "x": 204,
+            "y": 187.99996948242188,
+            "label": {
+              "id": "66eab1c64fef32e735f9e203",
+              "name": "Customer Name 2 ",
+              "slug": "customer_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "9",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6710ee5830d5e1b399fa23a9"
+          }
+        ],
+        "_id": "6710ee5830d5e1b399fa23a7"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T09:55:41.128Z",
+    "updatedAt": "2025-04-04T07:05:51.046Z"
+  }
+}

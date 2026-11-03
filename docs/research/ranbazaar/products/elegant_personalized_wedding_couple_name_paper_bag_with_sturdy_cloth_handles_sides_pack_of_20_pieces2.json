@@ -1,0 +1,231 @@
+{
+  "url": "https://ranbazaar.com/product/elegant_personalized_wedding_couple_name_paper_bag_with_sturdy_cloth_handles_sides_pack_of_20_pieces2",
+  "product": {
+    "id": "66fe46ba31f87d18f252ce40",
+    "name": "Elegant Personalized Wedding Couple Name Paper Bag with Sturdy Cloth Handles & Sides-Pack of 20 Pieces",
+    "slug": "elegant_personalized_wedding_couple_name_paper_bag_with_sturdy_cloth_handles_sides_pack_of_20_pieces2",
+    "sku": "215",
+    "attributes": [],
+    "description": "<ul><li><strong>Unique Design</strong>: Crafted with love, this personalized paper bag features the wedding couple's name, adding a special touch to your celebrations.</li><li><strong>Premium Quality</strong>: The bag is made from high-quality paper with durable cloth handles and sides, ensuring it can carry gifts or wedding favors with ease.</li><li><strong>Versatile Use</strong>: Perfect for wedding gifts, bridal shower favors, or any wedding-related event, adding an elegant touch to your special day.</li><li><strong>Eco-Friendly</strong>: Designed with sustainability in mind, this bag is reusable and eco-conscious, making it a thoughtful choice for the environment.</li><li><strong>Customization Available</strong>: Personalize with the couple's name and wedding date for a unique and memorable keepsake.</li><li><strong>Perfect Size</strong>: Spacious enough to hold a variety of items, yet compact and easy to carry, making it ideal for wedding needs</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71b956c4e3092c5129b3a",
+      "name": "Paper Bag ",
+      "description": "Elegant custom paper bag with sturdy cloth sides and handle—perfect for personalized gifting and making your day special.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060590468-432387341.webp",
+      "slug": "paper_bag",
+      "orderby": 14,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1999,
+    "sale": 1400,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Wedding Gift Bag – Elegant Paper Bag with Cloth Handles.",
+    "metaDescription": "Make your wedding gifts extra special with a custom couple name paper bag. Designed with sturdy cloth handles and durable sides for a sophisticated touch.\n\n",
+    "metaTags": "Personalized wedding paper bag, Custom wedding gift packaging, couple name gift bag, Printed wedding bag.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936669703-312224255.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "22",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "155px",
+            "height": "",
+            "x": 231,
+            "y": 318,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "10",
+            "name": "YOUR NAME",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67724f04be26f7d04d17b8df"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "22",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "147px",
+            "height": "",
+            "x": 234,
+            "y": 356,
+            "label": {
+              "id": "66eab1c64fef32e735f9e203",
+              "name": "Customer Name 2 ",
+              "slug": "customer_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "10",
+            "name": "YOUR NAME",
+            "slug": "your_name",
+            "required": true,
+            "_id": "67724f04be26f7d04d17b8e0"
+          }
+        ],
+        "_id": "67724f04be26f7d04d17b8de"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936670002-283103333.webp",
+        "inputFields": [],
+        "_id": "66fe46d731f87d18f252ce53"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936670313-366100711.webp",
+        "inputFields": [],
+        "_id": "66fe46e1904738ad62137bcb"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936670603-177069571.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "27",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "200",
+            "height": "",
+            "x": 126,
+            "y": 354,
+            "label": {
+              "id": "66eab1c64fef32e735f9e203",
+              "name": "Customer Name 2 ",
+              "slug": "customer_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "10",
+            "name": "YOUR NAME",
+            "slug": "your_name",
+            "required": true,
+            "_id": "671730dc0de4d9d6996f74a6"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "27",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "200",
+            "height": "",
+            "x": 122,
+            "y": 274,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "10",
+            "name": "YOUR NAME",
+            "slug": "your_name",
+            "required": true,
+            "_id": "671730dc0de4d9d6996f74a7"
+          }
+        ],
+        "_id": "671730dc0de4d9d6996f74a5"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T07:24:42.647Z",
+    "updatedAt": "2025-04-04T07:05:50.518Z"
+  }
+}

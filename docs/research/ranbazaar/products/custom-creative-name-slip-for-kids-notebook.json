@@ -1,0 +1,257 @@
+{
+  "url": "https://ranbazaar.com/product/custom-creative-name-slip-for-kids-notebook",
+  "product": {
+    "id": "67c14bb802d0919e7ca38b2f",
+    "name": "Creative Personalized Premium Shapes Name Slips for Kids Notebooks (Pack of 24pcs)",
+    "slug": "custom-creative-name-slip-for-kids-notebook",
+    "sku": "368",
+    "attributes": [],
+    "description": "<ul><li><strong>Shape:</strong> Premium shapes.</li><li><strong>Material:</strong>&nbsp;Crafted from self-adhesive, high-quality, scratch-proof paper.</li><li><strong>Features:</strong>&nbsp;Delightfully personalized name stickers designed for books and notebooks.</li><li><strong>Quality:</strong>&nbsp;Exceptional durability ensures long-lasting adherence.</li><li><strong>Use:</strong>&nbsp;Perfect for adding a personal touch to your cherished books and notebooks.</li></ul><p><strong>Transform Your Collection Today with Our Premium Shapes Name Stickers!</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "6798ba464d47c06783c8784f",
+      "name": "Premium Name Slips",
+      "description": "",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1744798907466-663659340.webp",
+      "slug": "premium_name_slips_customize",
+      "orderby": 1,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "6798b291ba3102566bee3cc9",
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": true,
+      "banner": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/category/1740717419488-327994686.png",
+      "mblbanner": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/category/1740717419490-845153737.png",
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 599,
+    "sale": 290,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Ranbazaar Custom Creative and Fun Name Slips for Kids' Notebooks (Pack of 24pcs)",
+    "metaDescription": "Make your child's notebook special with personalized special name slips from Ranbazaar. Fun and colorful designs (Pack of 24pcs)",
+    "metaTags": "childrens name labels, name slips, name slip design, name stickers, notebook stickers, school labels, school labels childrens, name labels, custom stickers, name tags sticker labels, labels and stickers book, labels printed stickers, custom sticker printing, photo stickers, sticker printing.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 19,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1740722300463-529078148.webp",
+            "width": "204px",
+            "height": "162px",
+            "x": 79,
+            "y": 221.00001525878906,
+            "name": "image1",
+            "_id": "67ea35b3102f7dca936a4226"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740722300606-631466306.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#c01616",
+              "fontSize": "22",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "NAME",
+            "width": "168px",
+            "height": "33px",
+            "x": 335,
+            "y": 244,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "12",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67ea35b3102f7dca936a4227"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "Enter School Name",
+            "width": "353px",
+            "height": "",
+            "x": 121,
+            "y": 335.00001525878906,
+            "label": {
+              "id": "66c85da95182e1dca469d5b2",
+              "name": "School Name",
+              "slug": "school_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "30",
+            "name": "ENTER YOUR SCHOOL NAME",
+            "slug": "enter_your_school_name",
+            "required": true,
+            "_id": "67ea35b3102f7dca936a4228"
+          }
+        ],
+        "_id": "67ea35b3102f7dca936a4225"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740722431182-537912167.webp",
+        "inputFields": [],
+        "_id": "67c150ffd19aff46611b7551"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740722446456-450117023.webp",
+        "inputFields": [],
+        "_id": "67c1510e87e711d4940ccd9e"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1740722300463-529078148.webp",
+            "width": "226px",
+            "height": "176px",
+            "x": 55,
+            "y": 101.00004577636719,
+            "name": "image1",
+            "_id": "67f8e1d123e5c40e6ce571d7"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740722502774-120877808.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#c01616",
+              "fontSize": "22",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "NAME",
+            "width": "175px",
+            "height": "33px",
+            "x": 346,
+            "y": 126,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "12",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67f8e1d123e5c40e6ce571d8"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "22",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "",
+            "width": "397px",
+            "height": "",
+            "x": 94,
+            "y": 229.00003051757812,
+            "label": {
+              "id": "66c85da95182e1dca469d5b2",
+              "name": "School Name",
+              "slug": "school_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "30",
+            "name": "ENTER YOUR SCHOOL NAME",
+            "slug": "enter_your_school_name",
+            "required": false,
+            "_id": "67f8e1d123e5c40e6ce571d9"
+          }
+        ],
+        "_id": "67f8e1d123e5c40e6ce571d6"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "qr": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productqr/1740721487450-44745875.jpg",
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-02-28T05:38:00.640Z",
+    "updatedAt": "2025-04-11T09:33:05.272Z"
+  }
+}

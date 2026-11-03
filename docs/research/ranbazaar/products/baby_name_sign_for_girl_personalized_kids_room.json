@@ -1,0 +1,160 @@
+{
+  "url": "https://ranbazaar.com/product/baby_name_sign_for_girl_personalized_kids_room",
+  "product": {
+    "id": "66fe694405b65afce0cad348",
+    "name": "Baby Name Sign For Girl, Personalized Kids Room",
+    "slug": "baby_name_sign_for_girl_personalized_kids_room",
+    "sku": "221",
+    "attributes": [],
+    "description": "<ul><li><strong>Unique Design</strong>: Crafted with love, this personalized paper bag features the wedding couple's name, adding a special touch to your celebrations.</li><li><strong>Premium Quality</strong>: The bag is made from high-quality paper with durable cloth handles and sides, ensuring it can carry gifts or wedding favors with ease.</li><li><strong>Versatile Use</strong>: Perfect for wedding gifts, bridal shower favors, or any wedding-related event, adding an elegant touch to your special day.</li><li><strong>Eco-Friendly</strong>: Designed with sustainability in mind, this bag is reusable and eco-conscious, making it a thoughtful choice for the environment.</li><li><strong>Customization Available</strong>: Personalize with the couple's name and wedding date for a unique and memorable keepsake.</li><li><strong>Perfect Size</strong>: Spacious enough to hold a variety of items, yet compact and easy to carry, making it ideal for wedding needs</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c721066c4e3092c5129c2f",
+      "name": "Name Plate ",
+      "description": "Add a personal touch with our customizable name plates—perfect for any home or office decor!",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060488398-750878361.webp",
+      "slug": "name_plate",
+      "orderby": 11,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 3999,
+    "sale": 1598,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Custom Name Plates: Unique Personalized Name Plate Designs",
+    "metaDescription": "Shop Now - RANBAZAAR custom name plates with unique name plate designs. Our personalized name plates add personal touch to your home or office.\t\t",
+    "metaTags": "Name Plate Design, Name Plate, Custom Name Plates, Personalized Name Plate, Office Name Plates, House Name Plate.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936677314-379734722.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#064589",
+              "fontSize": "80",
+              "fontFamily": "Allura-Regular",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "name",
+            "width": "362px",
+            "height": "",
+            "x": 117,
+            "y": 309,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "8",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6710ed5f994887b89cc13086"
+          }
+        ],
+        "_id": "6710ed5f994887b89cc13085"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936677523-60306354.webp",
+        "inputFields": [],
+        "_id": "6710d5563f32a9d7d47cf2f4"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936677785-743479110.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#064589",
+              "fontSize": "80",
+              "fontFamily": "Allura-Regular",
+              "fontWeight": "bolder",
+              "textAlignment": "left",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "your name",
+            "width": "362px",
+            "height": "",
+            "x": 117,
+            "y": 309,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "8",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6710e706652476696fd0eaca"
+          }
+        ],
+        "_id": "6710e706652476696fd0eac9"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T09:52:04.345Z",
+    "updatedAt": "2025-04-04T07:05:50.914Z"
+  }
+}

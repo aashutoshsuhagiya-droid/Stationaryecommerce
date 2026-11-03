@@ -1,0 +1,182 @@
+{
+  "url": "https://ranbazaar.com/product/customizable-exam-boards-for-kids-add-your-childs-name-and-photo",
+  "product": {
+    "id": "66e808c128149fa9a49e9d92",
+    "name": "Customizable Exam Boards for Kids: Add Your Child’s Name and Photo",
+    "slug": "customizable-exam-boards-for-kids-add-your-childs-name-and-photo",
+    "sku": "50",
+    "attributes": [],
+    "description": "<p>High quality paper scratch proof. Personalize Exam Boards with your Photos ,Text, Design and more at ranbazaar.com The examination board is made up of MDF Wood and the photo printing is done via HD Heat Transfer technique. Perfect size designed for kids, measuring 12x9 inches, providing enough space for writing and drawing.</p><p>Specifications:<br>Dimensions: 12 x 9 Inches ″ (Approx.)<br>Material: MDF Wood</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71b1d6c4e3092c5129b20",
+      "name": "Exam Board ",
+      "description": "CustomisePersonalize your exam board with custom designs, ensuring a unique, organized, and easily identifiable study tool for your exams.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060301606-960697074.webp",
+      "slug": "exam_board",
+      "orderby": 4,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 389,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Ultimate Hulk Themed Customized Exam Board & Personalized Clipboard",
+    "metaDescription": "Boost your study game with a Hulk-themed Customized Exam Board. Our personalized student exam boards and custom clipboards offer style, durability, and organization.",
+    "metaTags": "Customized Exam Board,Student Exam Board, Exam Clipboard, Exam Board, Personalized Exam Board, Custom Exam Board",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936464924-842994150.webp",
+            "width": "227px",
+            "height": "322px",
+            "x": 119,
+            "y": 40,
+            "name": "image1",
+            "_id": "67172ac506827c50aacef06b"
+          }
+        ],
+        "productbgColor": "#ccb24c",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936464654-985634695.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#45423a",
+              "fontSize": "24",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "215px",
+            "height": "",
+            "x": 91,
+            "y": 361,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "16",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67172ac506827c50aacef06c"
+          }
+        ],
+        "_id": "67172ac506827c50aacef06a"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936465131-739338349.webp",
+        "inputFields": [],
+        "_id": "672ca0ddc8db9ad4a14368e4"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936465873-299529321.webp",
+            "width": "225px",
+            "height": "303px",
+            "x": 32,
+            "y": 53,
+            "name": "image1",
+            "_id": "672c9bf76cd7579b2d32ba61"
+          }
+        ],
+        "productbgColor": "#cab34d",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936465466-993936608.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#45423a",
+              "fontSize": "24",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "215px",
+            "height": "",
+            "x": 2,
+            "y": 358,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "16",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "672c9bf76cd7579b2d32ba62"
+          }
+        ],
+        "_id": "672c9bf76cd7579b2d32ba60"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-16T10:30:25.476Z",
+    "updatedAt": "2026-06-30T06:58:10.726Z"
+  }
+}

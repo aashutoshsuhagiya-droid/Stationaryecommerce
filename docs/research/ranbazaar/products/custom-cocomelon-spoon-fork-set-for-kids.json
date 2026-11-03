@@ -1,0 +1,151 @@
+{
+  "url": "https://ranbazaar.com/product/custom-cocomelon-spoon-fork-set-for-kids",
+  "product": {
+    "id": "67c69db7bc8d0acdc0e0fb0b",
+    "name": "Customized Cocomelon Spoon and Fork Set for Kids - Personalize with Name.",
+    "slug": "custom-cocomelon-spoon-fork-set-for-kids",
+    "sku": "374",
+    "attributes": [],
+    "description": "<p><strong>Durable Stainless Steel</strong>: High-quality spoon and fork for everyday use.</p><p><strong>Customizable</strong>: Personalize with your child’s name on both utensils.</p><p><strong>Vibrant Pikachu Design</strong>: Handcrafted artwork with a cocomelon theme.</p><p><strong>Ideal Gift</strong>: Perfect for birthdays, holidays, and special occasions.</p><p><strong>Encourages Fun Eating</strong>: Engaging designs to make mealtime exciting.</p><p><strong>Lightweight</strong>: Easy for small hands to grip and use.</p><p>Make mealtime enjoyable with our customizable cocomelon spoon and fork set!</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 450,
+    "sale": 350,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Make Mealtime Special with Cocomelon Spoon and Fork Set for Kids | Ranbazaar",
+    "metaDescription": "Make mealtime enjoyable with Ranbazaar’s Customized Cocomelon Spoon and Fork Set for Kids. Personalize with your child’s name for a fun touch.",
+    "metaTags": "Personalized cocomelon spoon and fork set, custom cocomelon utensils, unique spoon and fork, engraved kids cutlery, personalized kids utensils, custom name cutlery set, cute kids spoon and fork, custom engraved utensils, unique kids mealtime set, personalized gift, fun kids cutlery.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 13,
+    "defaultImage": 0,
+    "defaultSample": 1,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1741070117913-40456524.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ce1c52",
+              "fontSize": "30",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " YOUR NAME",
+            "width": "268px",
+            "height": "",
+            "x": 207,
+            "y": 380,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67d27621d90a8515aa4c73bb"
+          }
+        ],
+        "_id": "67d27621d90a8515aa4c73ba"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1741070117913-40456524.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ce1c52",
+              "fontSize": "30",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " YOUR NAME",
+            "width": "268px",
+            "height": "",
+            "x": 187,
+            "y": 382,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67d2762ad90a8515aa4c7cc5"
+          }
+        ],
+        "_id": "67d2762ad90a8515aa4c7cc4"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-03-04T06:29:11.361Z",
+    "updatedAt": "2025-06-20T10:08:50.891Z"
+  }
+}

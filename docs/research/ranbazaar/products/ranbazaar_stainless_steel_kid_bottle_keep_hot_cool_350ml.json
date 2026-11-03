@@ -1,0 +1,116 @@
+{
+  "url": "https://ranbazaar.com/product/ranbazaar_stainless_steel_kid_bottle_keep_hot_cool_350ml",
+  "product": {
+    "id": "66fe2f2fe88c328780b77f5c",
+    "name": "Ranbazaar Stainless Steel Kid Bottle Keep Hot/Cool 350ML",
+    "slug": "ranbazaar_stainless_steel_kid_bottle_keep_hot_cool_350ml",
+    "sku": "211",
+    "attributes": [],
+    "description": "<figure class=\"table\"><table><tbody><tr><th>Brand</th><td>Ranbazaar<br>&nbsp;</td></tr><tr><th>Material</th><td>‎Stainless Steel/Plastic</td></tr><tr><th>Bottle Type</th><td>‎standard bottle</td></tr><tr><th>Colour</th><td>‎Blue/Pink</td></tr><tr><th>Capacity</th><td>‎350ML</td></tr><tr><th>Age Range (Description)</th><td>‎Kid</td></tr><tr><th>Product Care Instructions</th><td>‎Easy Hand Wash Only</td></tr><tr><th>Recommended Uses For Product</th><td>‎school</td></tr><tr><th>Number of Items</th><td>‎1</td></tr><tr><th>Reusability</th><td>‎Reusable</td></tr><tr><th>Shape</th><td>‎Round</td></tr><tr><th>Material Type Free</th><td>‎bpa free</td></tr><tr><th>Net Quantity</th><td>‎1.0 count</td></tr><tr><th>Package Information</th><td>‎bottle</td></tr></tbody></table></figure><figure class=\"table\"><table><tbody><tr><th>Item Weight</th><td>340 g</td></tr><tr><th>Item Dimensions LxWxH</th><td>7 x 7 x 21.5 Centimeters</td></tr><tr><th>Net Quantity</th><td>1.0 count</td></tr></tbody></table></figure>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "67a9a0e3b0d1728b0951d45f",
+      "name": "Customize Bottles",
+      "description": "Personalize your child's daily essentials with our customizable kids' bottle .",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1739170019433-574520033.webp",
+      "slug": "kids_customize_bottles",
+      "orderby": 20,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 999,
+    "sale": 399,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": 1,
+    "images": [],
+    "metaTitle": "Ranbazaar Water Bottle for Boys and Girls | Designer Sipper Bottles | Sipper Bottle for Kids, Sports, Gym Activities | Printed Sipper Bottle - [750 ml, Multicolor]",
+    "metaDescription": "About this item High Quality Material: Take your drinks everywhere with this white aluminum sipper bottle, which is a perfect container to keep your cold beverages, when you are out of your house. It is the perfect companion for your outdoor activities Great Gift Idea: Carry your sipper bottle with style. Perfect for both right and left handed users, Gift On Occasion of Diwali To Staff, friend, family CAP: Standard cap; Carbiner clip also included. You will be always available to carry your drinks everywhere; and prevent from spill them on your clothes or bags Brand Ranbazaar Material Aluminum Bottle Type standard bottle Colour White Capacity 750 Milligrams",
+    "metaTags": "sipper bottle for kids, designer sipper bottle, multicolor sipper bottle, printed water bottle for kids, 750 ml water bottle, sports sipper bottle, gym sipper bottle, water bottle for boys and girls, kids sports water bottle, stylish sipper bottle for kids, durable sipper bottle, kids hydration bottle.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936642501-964743553.webp",
+            "width": "162px",
+            "height": "313px",
+            "x": 219,
+            "y": 256,
+            "name": "image1",
+            "_id": "67724e0fbe26f7d04d17b16f"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936642238-126594049.webp",
+        "inputFields": [],
+        "_id": "67724e0fbe26f7d04d17b16e"
+      },
+      {
+        "name": "Sample_5",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936642779-611467754.webp",
+        "inputFields": [],
+        "_id": "66ff9aa5c75d29134ddc971a"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936643452-870887475.webp",
+            "width": "162px",
+            "height": "313px",
+            "x": 219,
+            "y": 256,
+            "name": "image1",
+            "_id": "66ff9a37c75d29134ddc8c71"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936643094-879616087.webp",
+        "inputFields": [],
+        "_id": "66ff9a3e7391b67bf4110df9"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T05:44:15.262Z",
+    "updatedAt": "2025-09-22T08:22:20.405Z"
+  }
+}

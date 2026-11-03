@@ -1,0 +1,260 @@
+{
+  "url": "https://ranbazaar.com/product/pikachu-custom-name-slips-for-kids",
+  "product": {
+    "id": "67ab25453ecfeccbad56545d",
+    "name": "Personalized Pikachu Name Slips for Kids’ Notebooks (Pack of 36pcs)",
+    "slug": "pikachu-custom-name-slips-for-kids",
+    "sku": "339",
+    "attributes": [],
+    "description": "<ul><li><strong>Size:</strong>&nbsp;3x2.5 inches</li><li><strong>Material:</strong>&nbsp;Crafted from self-adhesive, high-quality, scratch-proof paper</li><li><strong>Features:</strong>&nbsp;Delightfully personalized name stickers designed for books and notebooks</li><li><strong>Quality:</strong>&nbsp;Exceptional durability ensures long-lasting adherence</li><li><strong>Use:</strong>&nbsp;Perfect for adding a personal touch to your cherished books and notebooks</li></ul><p><strong>Transform Your Collection Today with Our Premium Name Stickers!</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7278d6c4e3092c5129e2b",
+      "name": "Name Slips Customize",
+      "description": "Personalize kids' books with customizable name slips, tags, and stickers for easy identification.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060262509-929529809.webp",
+      "slug": "name_slips_customize",
+      "orderby": 2,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66a2386a3a663c2108070634",
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": true,
+      "banner": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/category/1738661895043-778638111.png",
+      "mblbanner": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/category/1738661895045-467228450.png",
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 299,
+    "sale": 219,
+    "weight": 10,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Power Up Your Designs with Custom Pikachu Name Slips| Ranbazaar",
+    "metaDescription": "Brighten up your child’s school supplies with personalized Pikachu name slips for notebooks. Customizable, fun, and perfect for organizing with a Pokémon twist.",
+    "metaTags": "Pikachu name labels, Pokémon slips, name slip design, name stickers, notebook stickers, school labels, school labels childrens, name labels, custom stickers, name tags, labels printed stickers, custom sticker printing, photo stickers, sticker printing, kids school product, birthday return gift, vinyl sticker, customize product.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 14,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1739270953035-884945910.webp",
+            "width": "181px",
+            "height": "189px",
+            "x": 368,
+            "y": 146.00003051757812,
+            "name": "image1",
+            "_id": "6858e82a2c59aa68c5ed4734"
+          }
+        ],
+        "productbgColor": "#fed880",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1739271994355-80542013.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#0a659e",
+              "fontSize": "26",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "Enter Your School Name",
+            "width": "408px",
+            "height": "40px",
+            "x": 23.6256103515625,
+            "y": 390.43975830078125,
+            "label": {
+              "id": "66c85da95182e1dca469d5b2",
+              "name": "School Name",
+              "slug": "school_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "28",
+            "name": "ENTER YOUR SCHOOL NAME",
+            "slug": "enter_your_school_name",
+            "required": true,
+            "_id": "6858e82a2c59aa68c5ed4735"
+          },
+          {
+            "style": {
+              "color": "#0a659e",
+              "fontSize": "28",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "left",
+              "rotation": 0,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "281px",
+            "height": "",
+            "x": 95,
+            "y": 168.00001525878906,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6858e82a2c59aa68c5ed4736"
+          }
+        ],
+        "_id": "6858e82a2c59aa68c5ed4733"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productbgColor": "#fed880",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1739270989528-205770592.webp",
+        "inputFields": [],
+        "_id": "67ab2b4d3ecfeccbad5bf1ed"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productbgColor": "#fed880",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1739271005465-182103392.webp",
+        "inputFields": [],
+        "_id": "67ab2b5d3ecfeccbad5bf5c6"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1739271331849-967481670.webp",
+            "width": "180px",
+            "height": "182px",
+            "x": 367,
+            "y": 44.999969482421875,
+            "name": "image1",
+            "_id": "67f9faa3340b7fd2b99969da"
+          }
+        ],
+        "productbgColor": "#fed880",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1739272034002-393058715.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#0a659e",
+              "fontSize": "28",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "left",
+              "rotation": null,
+              "textType": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "272px",
+            "height": "",
+            "x": 101,
+            "y": 56,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "ENETR YOUR NAME",
+            "slug": "enetr_your_name",
+            "required": true,
+            "_id": "67f9faa3340b7fd2b99969db"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#0a659e",
+              "fontSize": "26",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "",
+            "width": "409px",
+            "height": "35px",
+            "x": 26.3743896484375,
+            "y": 279,
+            "label": {
+              "id": "66c85da95182e1dca469d5b2",
+              "name": "School Name",
+              "slug": "school_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "28",
+            "name": "ENETR YOUR SCHOOL NAME",
+            "slug": "enetr_your_school_name",
+            "required": false,
+            "_id": "67f9faa3340b7fd2b99969dc"
+          }
+        ],
+        "_id": "67f9faa3340b7fd2b99969d9"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-02-11T10:24:05.069Z",
+    "updatedAt": "2025-06-23T05:37:46.984Z"
+  }
+}

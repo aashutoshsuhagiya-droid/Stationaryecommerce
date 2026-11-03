@@ -1,0 +1,78 @@
+{
+  "url": "https://ranbazaar.com/product/mini-dairy-keychain--cute-colorful-compact--functional-keychain-for-dairy-lovers-gifting-or-daily-notes-pack-of-5",
+  "product": {
+    "id": "6768f58721541340e09d7831",
+    "name": "Mini Dairy Keychain -Cute, Colorful, Compact & Functional Keychain for Dairy Lovers, Gifting or Daily Notes (Pack of 5)",
+    "slug": "mini-dairy-keychain--cute-colorful-compact--functional-keychain-for-dairy-lovers-gifting-or-daily-notes-pack-of-5",
+    "sku": "316",
+    "attributes": [],
+    "description": "<p><strong>Colour:&nbsp;</strong>Multicolor.</p><p><strong>Compact and Portable:</strong> Our mini diaries are small enough to attach to your keychain, making them easy to carry around without the bulk. Perfect for quick notes and on-the-go journaling.</p><p><strong>Unique Design Options:</strong> Choose from a variety of stylish and colorful mini diary keychains, with colorful covers that suit your personality and style.</p><p><strong>Ideal for Gifting:</strong> These mini diary keychains make a thoughtful and unique gift for anyone who loves writing, journaling, or staying organized.</p><p><strong>Perfect for Travel &amp; Organization:</strong> Whether you're a busy professional, a student, or a traveler, our mini diary keychains are an excellent tool for staying on top of your schedule, jotting down quick ideas, or documenting special moments.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "6763fb6a53254059363eda41",
+      "name": "Key Chain",
+      "description": "Keyrings are small, portable accessories designed to hold and organize keys.Whether you're looking for a functional keyring for everyday use or a personalized keychain as a thoughtful gift, our collection has something for everyone.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1735028985737-277413267.webp",
+      "slug": "key_chain",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1350,
+    "sale": 900,
+    "weight": 100,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936845446-473512932.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936845674-596059306.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936845952-372378319.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936846156-277821720.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936846484-90439767.webp"
+    ],
+    "metaTitle": "Mini diary- Unique and multipurpose diary with keychain.",
+    "metaDescription": "Carry your memories in style with our mini diary keychains, these cute, compact and perfect for personal use or as a unique gift. Explore our collection now! ",
+    "metaTags": "Mini Diary Keychain/ Unique Keychain/kids keychains/multipurpose mini diary/ cute pocket dairy / Compact Mini Diary Keychain/ keychain for gift.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-12-23T05:30:47.012Z",
+    "updatedAt": "2025-04-04T07:05:56.740Z"
+  }
+}

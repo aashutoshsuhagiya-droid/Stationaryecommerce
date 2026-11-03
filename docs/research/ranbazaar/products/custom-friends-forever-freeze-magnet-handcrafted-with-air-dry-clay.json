@@ -1,0 +1,182 @@
+{
+  "url": "https://ranbazaar.com/product/custom-friends-forever-freeze-magnet-handcrafted-with-air-dry-clay",
+  "product": {
+    "id": "6710bf1b0728b2f0041f2cdd",
+    "name": "Custom Friends Forever Freeze Magnet: Handcrafted with Air-Dry Clay",
+    "slug": "custom-friends-forever-freeze-magnet-handcrafted-with-air-dry-clay",
+    "sku": "296",
+    "attributes": [],
+    "description": "<ul><li><strong>Unique Design:</strong> Handcrafted air-dry clay figure with a \"Friends Forever\" theme.</li><li><strong>MDF Base:</strong> Durable, lightweight MDF for stability and style.</li><li><strong>Materials:</strong><ul><li><strong>Figure:</strong> High-quality air-dry clay.</li><li><strong>Base:</strong> MDF for easy display.</li><li><strong>Magnetic Backing:</strong> Strong magnet for secure attachment.</li></ul></li><li><strong>Personalization:</strong> Customize with names for a heartfelt touch.</li><li><strong>Perfect Gift:</strong> Ideal for birthdays, anniversaries, or thoughtful surprises.</li><li><strong>Easy to Use:</strong> Lightweight and attaches easily to fridges or boards.</li></ul><p>Celebrate your friendships with this charming, customizable freeze magnet featuring your name!</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 349,
+    "weight": 70,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Handcrafted Friends Freeze Magnet – Custom Air-Dry Clay Gift.",
+    "metaDescription": "Gift a meaningful token of friendship with a handmade Friends Forever freeze magnet. Customizable air-dry clay design for a truly personal touch.",
+    "metaTags": "custom friends forever magnet, handcrafted friendship magnet, air-dry clay magnet, personalized friendship gift, best friend fridge magnet, unique friendship keepsake, custom clay magnet, handmade best friend gift.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 1,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936822201-953435226.webp",
+        "inputFields": [],
+        "_id": "6717822a6e7e3e041b299023"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936822420-631897215.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "135px",
+            "height": "",
+            "x": 106,
+            "y": 477,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67188bffcb84722690d5bac0"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1729594652931,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "135px",
+            "height": "",
+            "x": 229,
+            "y": 498,
+            "label": {
+              "id": "67188aa5eefc96913070f185",
+              "name": "Kid Name 2",
+              "slug": "kid_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Kid Name 2"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME 2",
+            "slug": "enter_your_name_2",
+            "required": true,
+            "_id": "67188bffcb84722690d5bac1"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1729594677323,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "135px",
+            "height": "",
+            "x": 370,
+            "y": 488,
+            "label": {
+              "id": "67188ab6eefc96913070f18d",
+              "name": "Kid Name 3",
+              "slug": "kid_name_3",
+              "status": true,
+              "softdelete": false,
+              "type": "Kid Name 3"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME 3",
+            "slug": "enter_your_name_3",
+            "required": true,
+            "_id": "67188bffcb84722690d5bac2"
+          }
+        ],
+        "_id": "67188bffcb84722690d5babf"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-17T07:39:07.906Z",
+    "updatedAt": "2025-06-20T10:12:39.051Z"
+  }
+}

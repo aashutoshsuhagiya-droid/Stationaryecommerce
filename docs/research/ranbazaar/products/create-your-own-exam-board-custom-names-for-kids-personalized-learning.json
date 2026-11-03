@@ -1,0 +1,158 @@
+{
+  "url": "https://ranbazaar.com/product/create-your-own-exam-board-custom-names-for-kids-personalized-learning",
+  "product": {
+    "id": "66e81e2928149fa9a49ed382",
+    "name": "Create Your Own Exam Board: Custom Names for Kids' Personalized Learning",
+    "slug": "create-your-own-exam-board-custom-names-for-kids-personalized-learning",
+    "sku": "60",
+    "attributes": [],
+    "description": "<p>High quality paper scratch proof. Personalize Exam Boards with your Photos ,Text, Design and more at ranbazaar.com The examination board is made up of MDF Wood and the photo printing is done via HD Heat Transfer technique. Perfect size designed for kids, measuring 12x9 inches, providing enough space for writing and drawing.</p><p>Specifications:<br>Dimensions: 12 x 9 Inches ″ (Approx.)<br>Material: MDF Wood</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71b1d6c4e3092c5129b20",
+      "name": "Exam Board ",
+      "description": "CustomisePersonalize your exam board with custom designs, ensuring a unique, organized, and easily identifiable study tool for your exams.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060301606-960697074.webp",
+      "slug": "exam_board",
+      "orderby": 4,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 389,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": 1,
+    "images": [],
+    "metaTitle": "Customized Exam Board | Personalized Student Exam Board & Custom Exam Clipboard.",
+    "metaDescription": "Discover RANBAZAAR's customized exam boards, student exam boards, and exam clipboards. Ideal for staying organized and focused, perfect for exam prep and personalized use.",
+    "metaTags": "Customized Exam Board Student Exam Board Exam Clipboard Exam Board Personalized Exam Board Custom Exam Board.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936478443-451842860.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "textType": "",
+              "color": "#04471d",
+              "fontSize": "48",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": -48
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "512px",
+            "height": "",
+            "x": 46,
+            "y": 263,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "19",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67064a981e809bfe96fb8e4b"
+          }
+        ],
+        "_id": "67064a981e809bfe96fb8e4a"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936478752-855744053.webp",
+        "inputFields": [],
+        "_id": "672ca1e77a8e7b9e6753d43c"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936479014-847981983.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#04471d",
+              "fontSize": "48",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": -48,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "545px",
+            "height": "77px",
+            "x": -68,
+            "y": 221,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "19",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "672ca3eec8db9ad4a1439b8d"
+          }
+        ],
+        "_id": "672ca3eec8db9ad4a1439b8c"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-16T12:01:45.172Z",
+    "updatedAt": "2026-06-30T06:54:01.175Z"
+  }
+}

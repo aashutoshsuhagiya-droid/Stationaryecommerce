@@ -1,0 +1,120 @@
+{
+  "url": "https://ranbazaar.com/product/xpress-your-style-with-customized-gift-wrapping-paper",
+  "product": {
+    "id": "66eacbc64fef32e735faa2f7",
+    "name": "Personalized Glossy Gift Wrapping Paper – Custom Gift Wrap Pack (10 Sheets)",
+    "slug": "xpress-your-style-with-customized-gift-wrapping-paper",
+    "sku": "107",
+    "attributes": [],
+    "description": "<p>Enhance your gift presentation with our <strong>Premium Gift Packing Paper Pack of 10</strong>. These high-quality <strong>12×18 inch gift wrapping sheets</strong> are printed on <strong>130 GSM glossy paper</strong>, offering a smooth finish and vibrant appearance. Perfect for <strong>birthdays, weddings, Diwali celebrations, parties, and special occasions</strong>, these wrapping sheets help make every gift look elegant and attractive.</p><p>&nbsp;</p><p>Each pack includes <strong>10 durable glossy sheets</strong>, ideal for wrapping small to medium-sized gifts with ease. The premium paper quality ensures a stylish and professional look while adding charm to your presents.</p><p>&nbsp;</p><p>Whether you are preparing gifts for <strong>festivals, celebrations, or special moments</strong>, these <strong>multi-occasion gift wrapping papers</strong> provide the perfect finishing touch.</p><p>&nbsp;</p><p><strong>Product Details</strong></p><p>&nbsp;</p><p>Pack of 10 Gift Wrapping Sheets</p><p>Size: 12 × 18 Inches</p><p>Paper Quality: 130 GSM Premium Glossy Paper</p><p>Suitable for Birthday, Diwali, Wedding, Party &amp; Festive Gifts</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c721576c4e3092c5129c69",
+      "name": "Wrapping Paper ",
+      "description": "Personalize your presents with our customizable wrapping paper, featuring unique designs for every occasion.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060997299-297644612.webp",
+      "slug": "wrapping_paper",
+      "orderby": 20,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 599,
+    "sale": 299,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Unique Gift Wrapping Paper – Express Your Style with Custom Prints.",
+    "metaDescription": "Show your personal touch with customized gift wrapping paper. Design unique prints, add names, and messages for a special, personalized look.",
+    "metaTags": "custom gift wrapping paper, personalized gift wrap, unique gift wrapping paper, custom gift wrap designs, personalized wrapping paper, custom name gift wrap, stylish gift wrapping, creative gift wrap, custom printed wrapping paper.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 1,
+    "customizeDetails": [
+      {
+        "name": "Sample_5",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936532947-582350485.webp",
+        "inputFields": [],
+        "_id": "66eacbd34fef32e735faa302"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936533333-151474450.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#0a5856",
+              "fontSize": "35",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "584px",
+            "height": "",
+            "x": 7,
+            "y": 308,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "30",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671732430de4d9d6996fbbf0"
+          }
+        ],
+        "_id": "671732430de4d9d6996fbbef"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-18T12:47:02.933Z",
+    "updatedAt": "2026-03-16T10:24:21.011Z"
+  }
+}

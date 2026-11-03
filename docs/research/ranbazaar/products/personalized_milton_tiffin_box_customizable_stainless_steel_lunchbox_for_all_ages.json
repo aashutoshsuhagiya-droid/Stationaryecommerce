@@ -1,0 +1,167 @@
+{
+  "url": "https://ranbazaar.com/product/personalized_milton_tiffin_box_customizable_stainless_steel_lunchbox_for_all_ages",
+  "product": {
+    "id": "66f6647f69f216aabb787d6e",
+    "name": "Personalized Milton Tiffin Box - Customizable Stainless Steel Lunchbox for All Ages",
+    "slug": "personalized_milton_tiffin_box_customizable_stainless_steel_lunchbox_for_all_ages",
+    "sku": "205",
+    "attributes": [],
+    "description": "<ul><li><strong>Personalized Design:</strong> Customize your Milton tiffin box with your name or logo, making it uniquely yours.</li><li><strong>Durable Stainless Steel:</strong> Crafted from high-quality stainless steel for long-lasting use and durability.</li><li><strong>Leak-Proof and Secure:</strong> Features secure locking clips to prevent spills and keep your food fresh.</li><li><strong>Ideal for All Ages:</strong> Suitable for kids, students, and adults, perfect for school, work, or travel.</li><li><strong>Compact and Portable:</strong> Lightweight and easy to carry, fitting easily into bags or backpacks.</li><li><strong>Easy to Clean:</strong> Designed for easy cleaning, with smooth surfaces that resist stains.</li><li><strong>Eco-Friendly Choice:</strong> Reusable and environmentally friendly, reducing the need for disposable containers.</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71a316c4e3092c5129b04",
+      "name": "Kids Bottle & Tiffin Box",
+      "description": "Personalize your child's daily essentials with our customizable kids' bottle and tiffin box, perfect for adding a unique touch to lunchtime.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060379665-585763086.webp",
+      "slug": "kids_bottle_tiffin_box",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1249,
+    "sale": 1025,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Ranbazaar Personalized Milton Tiffin Box – Custom Stainless Steel Lunchbox.",
+    "metaDescription": "Create a unique look with a Personalized Milton Tiffin Box. Custom stainless steel lunchbox for all ages, ideal for school, office, and as a thoughtful gift.",
+    "metaTags": "custom Milton tiffin box, personalized lunchbox,  stainless steel lunchbox.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936632130-385147418.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "textType": "",
+              "color": "#504f4e",
+              "fontSize": "28",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " YOUR NAME",
+            "width": "331px",
+            "height": "",
+            "x": 116,
+            "y": 185,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "670119bb27ec21dac2de8d59"
+          }
+        ],
+        "_id": "670119bb27ec21dac2de8d58"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936632445-330009487.webp",
+        "inputFields": [],
+        "_id": "66f6657669f216aabb787eab"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936632838-346458606.webp",
+        "inputFields": [],
+        "_id": "67a0925fbbfb3392d8005f82"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936633086-830796343.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#504f4e",
+              "fontSize": "28",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " YOUR NAME",
+            "width": "340px",
+            "height": "",
+            "x": 106,
+            "y": 185,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "15",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67e1041699f03a4cd0ec7d70"
+          }
+        ],
+        "_id": "67e1041699f03a4cd0ec7d6f"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-27T07:53:35.682Z",
+    "updatedAt": "2025-09-22T08:24:13.125Z"
+  }
+}

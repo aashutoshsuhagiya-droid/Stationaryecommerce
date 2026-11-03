@@ -1,0 +1,151 @@
+{
+  "url": "https://ranbazaar.com/product/personalized-spoon-and-fork-set-with-name-and-pikachu-design",
+  "product": {
+    "id": "670f8d271ffa3feb8b2cbf3e",
+    "name": "Personalized Spoon and Fork Set with Name and Pikachu Design",
+    "slug": "personalized-spoon-and-fork-set-with-name-and-pikachu-design",
+    "sku": "293",
+    "attributes": [],
+    "description": "<p><strong>Durable Stainless Steel</strong>: High-quality spoon and fork for everyday use.</p><p><strong>Customizable</strong>: Personalize with your child’s name on both utensils.</p><p><strong>Vibrant Pikachu Design</strong>: Handcrafted artwork with a fun Pikachu theme.</p><p><strong>Ideal Gift</strong>: Perfect for birthdays, holidays, and special occasions.</p><p><strong>Encourages Fun Eating</strong>: Engaging designs to make mealtime exciting.</p><p><strong>Lightweight</strong>: Easy for small hands to grip and use.</p><p>Make mealtime enjoyable with our customizable Pikachu spoon and fork set!</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 450,
+    "sale": 350,
+    "weight": 70,
+    "productType": "customize",
+    "quantity": 1,
+    "images": [],
+    "metaTitle": "Personalized Pikachu Spoon & Fork Set – Cute & Custom for Kids.",
+    "metaDescription": "Add a touch of Pokémon magic to every meal with a personalized Pikachu spoon and fork set. Customizable with your name, making it a perfect gift for fans.",
+    "metaTags": "personalized spoon and fork set, custom Pikachu utensils, Pikachu spoon and fork, engraved kids cutlery, personalized kids utensils, custom name cutlery set, Pokémon-themed dining set, Pikachu dining accessories, cute kids spoon and fork, custom engraved utensils, unique kids mealtime set, personalized Pikachu gift, fun kids cutlery.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 1,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936820793-401858694.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#093377",
+              "fontSize": "28",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "text",
+            "value": " YOUR NAME",
+            "width": "224px",
+            "height": "42px",
+            "x": 202,
+            "y": 338.0000305175781,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67c6acc2da7f672fb7d7a521"
+          }
+        ],
+        "_id": "67c6acc2da7f672fb7d7a520"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936821019-668888897.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#093377",
+              "fontSize": "28",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "text",
+            "value": " YOUR NAME",
+            "width": "256px",
+            "height": "41px",
+            "x": 203,
+            "y": 346.00001525878906,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67c6acf1da7f672fb7d7e5d4"
+          }
+        ],
+        "_id": "67c6acf1da7f672fb7d7e5d3"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-16T09:53:43.116Z",
+    "updatedAt": "2025-06-20T10:12:09.818Z"
+  }
+}

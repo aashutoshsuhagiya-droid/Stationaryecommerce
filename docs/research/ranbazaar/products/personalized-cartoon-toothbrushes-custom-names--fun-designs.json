@@ -1,0 +1,171 @@
+{
+  "url": "https://ranbazaar.com/product/personalized-cartoon-toothbrushes-custom-names--fun-designs",
+  "product": {
+    "id": "670f8c19bac2ac8e28055bfd",
+    "name": "Personalized Cartoon Toothbrushes: Custom Names & Fun Designs!",
+    "slug": "personalized-cartoon-toothbrushes-custom-names--fun-designs",
+    "sku": "292",
+    "attributes": [
+      {
+        "attributeid": {
+          "id": "6729ae6ed12f8f98c01f05ab",
+          "name": "Unicorn Toothbrush (Pink)"
+        },
+        "value": "260",
+        "_id": "685533d6d88959c8bf9df7ab"
+      },
+      {
+        "attributeid": {
+          "id": "6729ae487ca4867c1542b400",
+          "name": "Spider Man Toothbrush (Blue)"
+        },
+        "value": "260",
+        "_id": "685533d6d88959c8bf9df7ac"
+      },
+      {
+        "attributeid": {
+          "id": "6729ae2f97d615a9eca83017",
+          "name": "Captain America Toothbrush (Blue)"
+        },
+        "value": "260",
+        "_id": "685533d6d88959c8bf9df7ad"
+      }
+    ],
+    "description": "<p>Transform your daily dental routine with our <strong>customized toothbrushes</strong>, featuring your name and a charming cartoon character, all handcrafted from durable air dry clay. These unique toothbrushes add a fun and personal touch to oral hygiene, making brushing more enjoyable for kids and adults alike.</p><p><strong>Key Features:</strong></p><ul><li><strong>Personalized Design:</strong> Customize with your name and favorite cartoon character for a one-of-a-kind toothbrush.</li><li><strong>Handcrafted Quality:</strong> Made from premium air dry clay, ensuring durability and a unique aesthetic.</li><li><strong>Fun for Everyone:</strong> Perfect for children to encourage good brushing habits, or as a playful gift for friends and family.</li></ul><p>Make brushing teeth a delightful experience! Order your personalized toothbrush today and bring a smile to your routine!</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 350,
+    "sale": 260,
+    "weight": 70,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Custom Name Cartoon Toothbrush – Fun & Playful for Kids.",
+    "metaDescription": "Add a personal touch to oral care with a custom cartoon toothbrush. Personalize with names and colorful designs to make brushing fun for kids.\n",
+    "metaTags": "personalized kids toothbrush, custom cartoon toothbrush, engraved name toothbrush, fun toothbrush for toddlers, custom toothbrush for boys, custom toothbrush for girls colorful personalized toothbrush, themed toothbrush for kids, playful dental care, unique toothbrush gift.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 5,
+    "customizeDetails": [
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936819014-659887718.webp",
+        "inputFields": [],
+        "_id": "6712176e60419bde04b9d302"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936819286-314305992.webp",
+        "inputFields": [],
+        "_id": "671b4fc5fcf37ab605004af6"
+      },
+      {
+        "name": "Sample_5",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936819517-132221323.webp",
+        "inputFields": [],
+        "_id": "6729add897d615a9eca82f93"
+      },
+      {
+        "name": "Sample_6",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936819768-142834107.webp",
+        "inputFields": [],
+        "_id": "6729adae97d615a9eca82f73"
+      },
+      {
+        "name": "Sample_6",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936820097-393235491.webp",
+        "inputFields": [],
+        "_id": "6729adb497d615a9eca82f83"
+      },
+      {
+        "name": "Sample_9",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936820331-51895058.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "38",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "your name",
+            "width": "469px",
+            "height": "",
+            "x": 72,
+            "y": 533,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6729adef68fd870f77acd9fa"
+          }
+        ],
+        "_id": "6729adef68fd870f77acd9f9"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-16T09:49:13.297Z",
+    "updatedAt": "2025-06-20T10:11:34.899Z"
+  }
+}

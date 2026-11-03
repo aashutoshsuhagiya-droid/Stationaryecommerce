@@ -1,0 +1,96 @@
+{
+  "url": "https://ranbazaar.com/product/versatile-traditional-male-and-female-bowl-set-ideal-for-serving-decorating-and-more",
+  "product": {
+    "id": "67177da80de4d9d699766e94",
+    "name": "Versatile Traditional Male and Female Bowl Set: Ideal for Serving, Decorating, and More",
+    "slug": "versatile-traditional-male-and-female-bowl-set-ideal-for-serving-decorating-and-more",
+    "sku": "302",
+    "attributes": [],
+    "description": "<p><strong>Artisan Quality: </strong>Each bowl is meticulously handmade from air dry clay, featuring traditional male and female designs.<br><strong>Versatile Use:</strong> Perfect for serving dry fruits, snacks, or as decorative accents in your home.<br><strong>Colorful Variety:</strong> Available in a range of vibrant colors to complement any decor style.<br><strong>Thoughtful Gift Option:</strong> Ideal for weddings, festivals, housewarmings, and special occasions.<br><strong>Durable &amp; Lightweight: </strong>Made from quality air dry clay for lasting beauty and easy handling.<br><strong>Enhance your decor and gifting experience with these unique, handmade traditional&nbsp;bowls!</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1399,
+    "sale": 1299,
+    "weight": 70,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936827254-543567275.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936827533-311076659.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936827732-655652331.webp"
+    ],
+    "metaTitle": "Versatile Traditional Male & Female Bowl Set – Perfect for Serving & Decor.",
+    "metaDescription": "Elevate your dining and décor with a versatile traditional male and female bowl set. Ideal for serving, decorating, gifting, and special occasions. Order now.",
+    "metaTags": "traditional bowl set, male and female bowl set, versatile bowl set, handcrafted bowls, decorative bowls, serving bowls, home decor bowls, unique bowl set, traditional kitchenware, elegant serving bowls, multipurpose bowls, cultural bowl set, gift bowl set, antique-style bowls, artisan bowl set, handcrafted kitchenware, stylish serving bowls, decorative kitchen accessories.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 2,
+    "defaultSample": 0,
+    "customizeDetails": [
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936827972-381515925.webp",
+        "inputFields": [],
+        "_id": "67178b9f0de4d9d69977c540"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936828189-228809713.webp",
+        "inputFields": [],
+        "_id": "67178c480de4d9d69977dc90"
+      },
+      {
+        "name": "Sample_5",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936828420-900763719.webp",
+        "inputFields": [],
+        "_id": "67178c5c0de4d9d69977ea82"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-22T10:25:44.404Z",
+    "updatedAt": "2025-06-20T10:10:57.806Z"
+  }
+}

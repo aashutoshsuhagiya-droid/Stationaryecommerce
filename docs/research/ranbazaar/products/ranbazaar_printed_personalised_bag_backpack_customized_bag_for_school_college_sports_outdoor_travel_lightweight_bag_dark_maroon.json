@@ -1,0 +1,116 @@
+{
+  "url": "https://ranbazaar.com/product/ranbazaar_printed_personalised_bag_backpack_customized_bag_for_school_college_sports_outdoor_travel_lightweight_bag_dark_maroon",
+  "product": {
+    "id": "66f53ed21357cfe1b85b1e17",
+    "name": "Ranbazaar Printed Personalised Bag Backpack, Customized Bag for School, College, Sports, Outdoor Travel Lightweight Bag- Dark Maroon",
+    "slug": "ranbazaar_printed_personalised_bag_backpack_customized_bag_for_school_college_sports_outdoor_travel_lightweight_bag_dark_maroon",
+    "sku": "192",
+    "attributes": [],
+    "description": "<p><strong>Material- Matty Color- dark maroon</strong><br><strong>Usage/Application- 3-15 Years Kids School Bag&nbsp;</strong><br><strong>Pattern- Plain with Photo&nbsp;</strong><br><strong>Gender- Unisex Closure</strong><br><strong>Type- Zipper Style- Shoulder Bag Number Of Strap- 2</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71efd6c4e3092c5129b95",
+      "name": "Kids School Bag & Kit ",
+      "description": "Personalize kids' school bags with our customizable options, perfect for adding fun and functionality to school days.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060561709-223082933.webp",
+      "slug": "kids_school_bag_kit",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1199,
+    "sale": 899,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Shop Ranbazaar Printed Personalized Backpack – Customized Lightweight Bag for School, College & Travel.",
+    "metaDescription": "Shop custom printed backpacks for school, sports, and travel. Lightweight personalized bags make the perfect kids’ gift for a special one.",
+    "metaTags": "printed personalized backpack, customized school backpack, personalized college bag, custom sports backpacks, outdoor travel lightweight bag, custom printed backpacks, personalized bags for school, lightweight travel backpacks, custom backpacks for college, printed custom bags, kids custom backpacks,kids special gift.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1740460496246-308077572.webp",
+            "width": "254px",
+            "height": "319px",
+            "x": 185,
+            "y": 149.00001525878906,
+            "name": "image1",
+            "_id": "67bd524f44dba23b4ca63851"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740460495939-923366653.webp",
+        "inputFields": [],
+        "_id": "67bd524f44dba23b4ca63850"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740460506162-545561690.webp",
+        "inputFields": [],
+        "_id": "67bd51da44dba23b4ca5e715"
+      },
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1740460926107-381959646.webp",
+            "width": "318px",
+            "height": "390px",
+            "x": 146,
+            "y": 117.00001525878906,
+            "name": "image1",
+            "_id": "67bd53ac44dba23b4ca74cb3"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740460529143-58742617.webp",
+        "inputFields": [],
+        "_id": "67bd53ac44dba23b4ca74cb2"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-26T11:00:34.637Z",
+    "updatedAt": "2025-04-04T07:05:46.300Z"
+  }
+}

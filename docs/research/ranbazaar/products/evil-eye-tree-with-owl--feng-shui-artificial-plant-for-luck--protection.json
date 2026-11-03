@@ -1,0 +1,77 @@
+{
+  "url": "https://ranbazaar.com/product/evil-eye-tree-with-owl--feng-shui-artificial-plant-for-luck--protection",
+  "product": {
+    "id": "68b2b0f58ded3c529e6a08e4",
+    "name": "Evil Eye Tree with Owl – Feng Shui Artificial Plant for Luck & Protection.",
+    "slug": "evil-eye-tree-with-owl--feng-shui-artificial-plant-for-luck--protection",
+    "sku": "448",
+    "attributes": [],
+    "description": "<p><strong>Dimensions</strong>: 26 x 28 x 16 cm</p><p>&nbsp;<strong>Weight</strong>: 450 grams</p><p><strong>Material</strong>: Polyresin and Crystal</p><p><strong>Elegant Design</strong> – Features cream-colored artificial flowers with Evil Eye beads, a golden pot, and a symbolic owl figurine for added spiritual meaning.</p><p><strong>Symbol of Protection</strong> – The Evil Eye is a powerful talisman believed to <strong>ward off negativity, jealousy, and evil spirits</strong>, bringing good luck and safety.</p><p><strong>Energy Enhancer</strong> – Emits uplifting energy that promotes <strong>motivation, endurance, leadership, and courage</strong>.</p><p><strong>Perfect Gift</strong> – A thoughtful gift for <strong>Feng Shui enthusiasts, art lovers</strong>, or anyone who values <strong>protection, love, and spiritual wellness</strong>.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1699,
+    "sale": 1399,
+    "weight": 450,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756715587905-303415304.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756715588193-418875639.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756715588324-519267396.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756715588600-353001679.webp"
+    ],
+    "metaTitle": "Bring Good Vibes Home – Elegant Feng Shui Evil Eye Tree with Owl Figurine.",
+    "metaDescription": "Enhance your space with this handcrafted Evil Eye Flowers Tree featuring a protective owl. Made from polyresin and crystal, it brings luck, peace, and positive energy.",
+    "metaTags": "evil eye tree, feng shui plant, artificial flower tree, evil eye tree with owl, feng shui owl decor, good luck plant, protection tree, feng shui home decor, spiritual plant, handmade feng shui tree, positive energy decor, owl figurine plant, lucky feng shui tree, evil eye protection, crystal feng shui tree, feng shui gift, home decor plant, artificial feng shui tree, evil eye flower tree, feng shui showpiece",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 8,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-08-30T08:06:13.844Z",
+    "updatedAt": "2025-09-01T08:43:55.031Z"
+  }
+}

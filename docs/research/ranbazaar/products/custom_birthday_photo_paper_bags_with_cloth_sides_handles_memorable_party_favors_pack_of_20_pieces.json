@@ -1,0 +1,123 @@
+{
+  "url": "https://ranbazaar.com/product/custom_birthday_photo_paper_bags_with_cloth_sides_handles_memorable_party_favors_pack_of_20_pieces",
+  "product": {
+    "id": "66fe4e3d2fc84ed283136df5",
+    "name": "Custom Birthday Photo Paper Bags with Cloth Sides & Handles – Memorable Party Favors-Pack of 20 Pieces",
+    "slug": "custom_birthday_photo_paper_bags_with_cloth_sides_handles_memorable_party_favors_pack_of_20_pieces",
+    "sku": "216",
+    "attributes": [],
+    "description": "<ul><li><strong>Unique Design</strong>: Crafted with love, this personalized paper bag features the wedding couple's name, adding a special touch to your celebrations.</li><li><strong>Premium Quality</strong>: The bag is made from high-quality paper with durable cloth handles and sides, ensuring it can carry gifts or wedding favors with ease.</li><li><strong>Versatile Use</strong>: Perfect for wedding gifts, bridal shower favors, or any wedding-related event, adding an elegant touch to your special day.</li><li><strong>Eco-Friendly</strong>: Designed with sustainability in mind, this bag is reusable and eco-conscious, making it a thoughtful choice for the environment.</li><li><strong>Customization Available</strong>: Personalize with the couple's name and wedding date for a unique and memorable keepsake.</li><li><strong>Perfect Size</strong>: Spacious enough to hold a variety of items, yet compact and easy to carry, making it ideal for wedding needs</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71b956c4e3092c5129b3a",
+      "name": "Paper Bag ",
+      "description": "Elegant custom paper bag with sturdy cloth sides and handle—perfect for personalized gifting and making your day special.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060590468-432387341.webp",
+      "slug": "paper_bag",
+      "orderby": 14,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1999,
+    "sale": 1400,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Custom Birthday Favor Bags with Photos – Elegant & Reusable.",
+    "metaDescription": "Personalized birthday gift bags with your favorite photo. Durable paper bags with cloth handles & sides-—ideal for adding a personal touch to party favors.",
+    "metaTags": "custom birthday photo paper bags, personalized birthday gift bags, birthday favor bags with photos, custom photo party bags, birthday paper bags with cloth handles, unique birthday gift bags, custom printed birthday bags, personalized party favor bags, birthday return gift bags, high-quality birthday photo bags, customized birthday keepsake bags, durable birthday gift bags, stylish birthday paper bags, reusable custom birthday bags, Ranbazaar birthday paper bags.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936672894-596454974.webp",
+            "width": "182px",
+            "height": "210px",
+            "x": 212.00009155273438,
+            "y": 299,
+            "name": "image1",
+            "_id": "66ffbae5439f72c6a8ee9300"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936672689-296362528.webp",
+        "inputFields": [],
+        "_id": "66ffbae5439f72c6a8ee92ff"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936673196-893837597.webp",
+        "inputFields": [],
+        "_id": "66fe4e66d1d4d332eb83c047"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936673475-794942107.webp",
+        "inputFields": [],
+        "_id": "66fe4e71d1d4d332eb83c057"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936674000-952483231.webp",
+            "width": "268px",
+            "height": "299px",
+            "x": 65.99995422363281,
+            "y": 244.00001525878906,
+            "name": "image1",
+            "_id": "66fe678867e0d9a17551157c"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936673734-293879317.webp",
+        "inputFields": [],
+        "_id": "66fe678867e0d9a17551157b"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T07:56:45.733Z",
+    "updatedAt": "2025-04-04T07:05:50.654Z"
+  }
+}

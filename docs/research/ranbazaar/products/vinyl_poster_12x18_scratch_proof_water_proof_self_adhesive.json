@@ -1,0 +1,123 @@
+{
+  "url": "https://ranbazaar.com/product/vinyl_poster_12x18_scratch_proof_water_proof_self_adhesive",
+  "product": {
+    "id": "66fe6c19a436c566ac192908",
+    "name": "vinyl poster 12x18 scratch proof water proof self adhesive",
+    "slug": "vinyl_poster_12x18_scratch_proof_water_proof_self_adhesive",
+    "sku": "226",
+    "attributes": [],
+    "description": "<p><strong>vinyl poster 12x18 scratch proof water proof self adhesive</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71c206c4e3092c5129b47",
+      "name": "Vinyl Poster ",
+      "description": "Create a vibrant and durable customized vinyl poster to showcase your unique style or special message, perfect for any space or event.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060964495-636326380.webp",
+      "slug": "vinyl_poster",
+      "orderby": 10,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 399,
+    "sale": 189,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Durable Vinyl Poster 12x18 – Scratch Resistant, Waterproof & Self-Adhesive.",
+    "metaDescription": "Transform your space with a self-adhesive 12x18 vinyl poster. Scratch proof, waterproof, and durable-perfect for effortless and lasting decoration.",
+    "metaTags": "waterproof vinyl poster, self-adhesive vinyl poster, durable wall art, waterproof wall poster, scratch resistant poster, self-adhesive decor, 12x18 wall poster, vinyl wall decor, easy apply vinyl poster, long-lasting poster, waterproof adhesive poster, scratch proof wall art, home office vinyl poster, adhesive poster.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936682643-384148352.webp",
+            "width": "186px",
+            "height": "261px",
+            "x": 179,
+            "y": 20,
+            "name": "image1",
+            "_id": "6710c5f6f2dace18bfe5c2af"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936682342-467025530.webp",
+        "inputFields": [],
+        "_id": "6710c5f6f2dace18bfe5c2ae"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936682880-786290152.webp",
+        "inputFields": [],
+        "_id": "6710c62f822daa3e5dacb1fa"
+      },
+      {
+        "name": "Sample_5",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936683073-966244741.webp",
+        "inputFields": [],
+        "_id": "6710c7c4f2dace18bfe5d8f5"
+      },
+      {
+        "name": "Sample_6",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936683518-724863064.webp",
+            "width": "381px",
+            "height": "577px",
+            "x": -1,
+            "y": 12,
+            "name": "image1",
+            "_id": "6710c7d1822daa3e5dacc117"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936683307-342514326.webp",
+        "inputFields": [],
+        "_id": "6710c7d1822daa3e5dacc116"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T10:04:09.102Z",
+    "updatedAt": "2025-04-04T07:05:51.237Z"
+  }
+}

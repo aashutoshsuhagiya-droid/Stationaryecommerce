@@ -1,0 +1,116 @@
+{
+  "url": "https://ranbazaar.com/product/ranbazaar_printed_personalised_bag_customized_backpack_for_kids_4_to_8_year_old_school_bag_boys_girls_picnic_nursery",
+  "product": {
+    "id": "66f540af1357cfe1b85b2c04",
+    "name": "Ranbazaar Printed Personalised Bag, Customized Backpack For Kids 4 to 8 year Old | School Bag/Boys/Girls, Picnic, Nursery",
+    "slug": "ranbazaar_printed_personalised_bag_customized_backpack_for_kids_4_to_8_year_old_school_bag_boys_girls_picnic_nursery",
+    "sku": "193",
+    "attributes": [],
+    "description": "<p><strong>Material- Matty Color- dark maroon</strong><br><strong>Usage/Application- School Bag&nbsp;</strong><br><strong>Pattern- Plain with Photo</strong><br><strong>Gender- Unisex Closure</strong><br><strong>Type- Zipper Style- Shoulder Bag Number Of Strap- 2</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71efd6c4e3092c5129b95",
+      "name": "Kids School Bag & Kit ",
+      "description": "Personalize kids' school bags with our customizable options, perfect for adding fun and functionality to school days.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060561709-223082933.webp",
+      "slug": "kids_school_bag_kit",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 999,
+    "sale": 699,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "",
+    "metaDescription": "Personalized Ranbazaar backpacks for kids aged 4-8. Custom school bags for boys and girls, perfect for school, picnics, and nursery activities.",
+    "metaTags": "\"customized kids backpack, Ranbazaar printed backpacks, personalized school backpacks for kids,Ranbazaar kids bags,personalized picnic backpacks.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936612085-971581881.webp",
+            "width": "220px",
+            "height": "295px",
+            "x": 183,
+            "y": 164,
+            "name": "image1",
+            "_id": "66f5457e1357cfe1b85b4110"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936611759-599993540.webp",
+        "inputFields": [],
+        "_id": "66f5457e1357cfe1b85b410f"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936612457-306808852.webp",
+        "inputFields": [],
+        "_id": "66f5443b1357cfe1b85b33af"
+      },
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936613027-152228772.webp",
+            "width": "303px",
+            "height": "394px",
+            "x": 150,
+            "y": 136,
+            "name": "image1",
+            "_id": "66f5457b1357cfe1b85b40f2"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936612728-89394525.webp",
+        "inputFields": [],
+        "_id": "66f5457b1357cfe1b85b40f1"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-26T11:08:31.240Z",
+    "updatedAt": "2025-04-04T07:05:46.726Z"
+  }
+}

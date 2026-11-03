@@ -1,0 +1,132 @@
+{
+  "url": "https://ranbazaar.com/product/personalized_name_keychain_with_mirror_work_perfect_return_gift_for_kitty_parties_kids_birthdays_farewells_more",
+  "product": {
+    "id": "66fe824fa436c566ac1a3f3c",
+    "name": "Personalized Name Keychain with Mirror Work | Perfect Return Gift for Kitty Parties, Kids' Birthdays, Farewells & More",
+    "slug": "personalized_name_keychain_with_mirror_work_perfect_return_gift_for_kitty_parties_kids_birthdays_farewells_more",
+    "sku": "231",
+    "attributes": [],
+    "description": "<ul><li>Customized for You: Personalize with any name, making it a unique keepsake.</li><li>Elegant Mirror Work: Features intricate mirror work on the back, adding a touch of elegance.</li><li>Versatile Gift: Ideal for various occasions, including kitty parties, kids' birthdays, and farewell parties.</li><li>Handmade Craftsmanship: Each keychain is meticulously handmade, ensuring high quality.</li><li>Compact and Stylish: Convenient size, perfect for keys, bags, or as a decorative accessory.</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 399,
+    "sale": 220,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Name Keychain with Mirror Work – Ideal for Birthdays & Parties.",
+    "metaDescription": "Add a personal touch to any event with a customized name keychain with mirror work. Perfect for kitty parties, birthdays, farewells.",
+    "metaTags": "personalized name keychain, mirror work keychain, custom name keychain, return gifts for parties, kitty party gifts, birthday return gifts, kids' birthday gifts, farewell gifts, personalized gifts, custom keychains, stylish keychains, mirror work gifts, unique party favors, personalized party gifts, mirror work keychain gift, return gift ideas, thoughtful gifts for parties, kids' party return gifts, customized keychains.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 14,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936688314-559112621.webp",
+        "inputFields": [],
+        "_id": "66fe82fea436c566ac1a3f53"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936688649-723337095.webp",
+        "inputFields": [],
+        "_id": "66fe82f342c197fdd03882dd"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936688942-639773081.webp",
+        "inputFields": [],
+        "_id": "66fe8305a436c566ac1a3f62"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1748928814977-202134531.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#ffffff",
+              "fontSize": "50",
+              "fontFamily": "Roboto",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "uppercase",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "337px",
+            "height": "58px",
+            "x": 201,
+            "y": 235,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "9",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "683e89c22a5d511e6c4fd9d1"
+          }
+        ],
+        "_id": "683e89c22a5d511e6c4fd9d0"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T11:38:55.900Z",
+    "updatedAt": "2025-06-20T10:07:40.809Z"
+  }
+}

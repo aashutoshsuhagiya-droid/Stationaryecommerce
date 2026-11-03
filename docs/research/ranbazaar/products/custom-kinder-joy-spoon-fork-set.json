@@ -1,0 +1,118 @@
+{
+  "url": "https://ranbazaar.com/product/custom-kinder-joy-spoon-fork-set",
+  "product": {
+    "id": "684001ed9dcf89f9f28c6660",
+    "name": "Personalized Kinder Joy Spoon and Fork Set for Kids – Custom with Name.",
+    "slug": "custom-kinder-joy-spoon-fork-set",
+    "sku": "438",
+    "attributes": [],
+    "description": "<p><strong>Durable Stainless Steel</strong>: High-quality spoon and fork for everyday use.</p><p><strong>Customizable</strong>: Personalize with your child’s name on both utensils.</p><p><strong>Vibrant Pikachu Design</strong>: Handcrafted artwork with a fun Kinder Joy theme.</p><p><strong>Ideal Gift</strong>: Perfect for birthdays, holidays, and special occasions.</p><p><strong>Encourages Fun Eating</strong>: Engaging designs to make mealtime exciting.</p><p><strong>Lightweight</strong>: Easy for small hands to grip and use.</p><p>Make mealtime enjoyable with our customizable Kinder Joy spoon and fork set!<br>&nbsp;</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 450,
+    "sale": 350,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Spoon & Fork Set for Toddlers – Custom Kinder Joy Gift.",
+    "metaDescription": "Make mealtime fun with this personalized Kinder Joy spoon and fork set. Custom engraved with your child's name – a perfect gift for birthdays or special occasions.\n",
+    "metaTags": "personalized spoon and fork set, custom name cutlery for kids, Kinder Joy spoon and fork, kids utensils with name, engraved kids cutlery, custom baby utensils, personalized gift for kids, toddler spoon and fork set, custom kids utensils, name engraved cutlery set.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 7,
+    "defaultImage": 0,
+    "defaultSample": 1,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1749025476068-802122674.webp",
+        "inputFields": [],
+        "_id": "684002c4e95dfe390776fd2a"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1749025476068-802122674.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#c01616",
+              "fontSize": "60",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " NAME",
+            "width": "407px",
+            "height": "71px",
+            "x": 97,
+            "y": 388,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "7",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6840063b575896d270ee3b89"
+          }
+        ],
+        "_id": "6840063b575896d270ee3b88"
+      }
+    ],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": true,
+    "moreinputs": false,
+    "createdAt": "2025-06-04T08:21:01.100Z",
+    "updatedAt": "2025-06-20T10:10:09.148Z"
+  }
+}

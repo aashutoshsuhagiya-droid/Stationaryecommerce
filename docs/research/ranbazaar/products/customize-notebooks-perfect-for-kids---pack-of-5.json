@@ -1,0 +1,123 @@
+{
+  "url": "https://ranbazaar.com/product/customize-notebooks-perfect-for-kids---pack-of-5",
+  "product": {
+    "id": "66ec19d0d8c3626361b28336",
+    "name": "Customize Notebooks Perfect for Kids - Pack Of 5",
+    "slug": "customize-notebooks-perfect-for-kids---pack-of-5",
+    "sku": "119",
+    "attributes": [],
+    "description": "<p>Size 7 x 9.5 inches (Standard Notebook Size) 300 gms over laminated inside 124 pages ruled on 64 gms very good quality paper.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7343ded2943f8aa3a01f1",
+      "name": "Tax (0%)",
+      "percentage": "0",
+      "status": true
+    },
+    "categories": {
+      "id": "66c727346c4e3092c5129e04",
+      "name": "Note Books",
+      "description": "Customizable notebook: Personalize with names, designs, and colors for unique, daily use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1735028884566-102522106.webp",
+      "slug": "note_books",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 640,
+    "sale": 499,
+    "weight": 300,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Notebook Photo Print - Beautiful Notebook Cover Design",
+    "metaDescription": "Transform ordinary notebook photo print. Get a notebook for photos with stunning photo prints on notebook. Elevate style with our Beautiful Notebook Cover Design.",
+    "metaTags": "Ranbazaar Notebook, Customizable Notebook, Design Your Own Notebook, Personalized Notebook, Custom Notebooks Pack, Personalized Stationery, Personalized Gifts, Unique Notebook Designs, Customizable Notebooks Set.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936558557-113073863.webp",
+        "inputFields": [],
+        "_id": "66ec19ead8c3626361b28347"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936558797-243231557.webp",
+        "inputFields": [],
+        "_id": "66ec1ac7d8c3626361b28365"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936559063-136622071.webp",
+        "inputFields": [],
+        "_id": "66ec1ad2d8c3626361b28383"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936559582-566061817.webp",
+            "width": "298px",
+            "height": "373px",
+            "x": 1,
+            "y": 12,
+            "name": "image1",
+            "_id": "6707b727a3e287a158006c29"
+          },
+          {
+            "id": 2,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936559879-152122939.webp",
+            "width": "299px",
+            "height": "388px",
+            "x": 301,
+            "y": 2,
+            "name": "image2",
+            "_id": "6707b727a3e287a158006c2a"
+          }
+        ],
+        "productbgColor": "#340d4f",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936559370-9842052.webp",
+        "inputFields": [],
+        "_id": "6707b727a3e287a158006c28"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-19T12:32:16.712Z",
+    "updatedAt": "2025-09-22T08:19:10.504Z"
+  }
+}

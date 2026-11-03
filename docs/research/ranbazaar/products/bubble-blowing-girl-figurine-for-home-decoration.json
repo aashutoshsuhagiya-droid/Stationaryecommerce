@@ -1,0 +1,78 @@
+{
+  "url": "https://ranbazaar.com/product/bubble-blowing-girl-figurine-for-home-decoration",
+  "product": {
+    "id": "68b181ee7e9eb632e57424b9",
+    "name": "Bubble Blowing Girl Resin Figurine – Cute Home Decor.",
+    "slug": "bubble-blowing-girl-figurine-for-home-decoration",
+    "sku": "443",
+    "attributes": [],
+    "description": "<p><strong>Material</strong>: Crafted from high-quality, durable resin with a smooth, refined finish.</p><p><strong>Weight</strong>: 231gm</p><p><strong>Dimensions</strong>: 19*10*10 cm</p><p><strong>Design</strong>: Features a charming little girl blowing bubbles, adding a touch of innocence and whimsy to your space.</p><p><strong>Purpose:</strong></p><p>*Ideal as a decorative accent for home interiors, including living rooms, bedrooms, and hallways.</p><p>*Enhances the aesthetic of bookshelves, desks, coffee tables, or display cabinets.</p><p>*Makes a unique and thoughtful gift for birthdays, housewarmings, or special occasions.</p><p><strong>Decor Style Compatibility</strong>: Complements modern, minimalist, vintage, or eclectic home decor styles.</p><p><strong>Maintenance</strong>: Easy to clean with a soft cloth; long-lasting color and detail retention.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1999,
+    "sale": 1499,
+    "weight": 231,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756463807051-634848867.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756463807051-211676503.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756463807650-613699798.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756463807849-796739266.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756463807850-136690671.webp"
+    ],
+    "metaTitle": "Decorative Bubble Blowing Girl – Resin Art Figurine.",
+    "metaDescription": "Cute and artistic resin girl figurine blowing bubbles – a lovely decorative accent and a great gift idea for any space or celebration.",
+    "metaTags": "bubble blowing girl figurine, resin girl statue, little girl resin figurine, bubble girl sculpture, decorative resin figurine, whimsical girl decor, resin bubble blowing girl, cute girl resin ornament, girl blowing bubbles showpiece, artistic resin girl figurine, resin girl home decor, handcrafted girl figurine, resin table decor girl, bubble blowing resin art, resin girl sculpture.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 3,
+    "defaultImage": 1,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-08-29T10:33:18.348Z",
+    "updatedAt": "2025-08-29T10:40:11.644Z"
+  }
+}

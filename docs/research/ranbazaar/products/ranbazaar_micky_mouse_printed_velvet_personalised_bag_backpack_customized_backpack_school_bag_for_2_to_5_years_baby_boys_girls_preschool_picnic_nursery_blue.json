@@ -1,0 +1,116 @@
+{
+  "url": "https://ranbazaar.com/product/ranbazaar_micky_mouse_printed_velvet_personalised_bag_backpack_customized_backpack_school_bag_for_2_to_5_years_baby_boys_girls_preschool_picnic_nursery_blue",
+  "product": {
+    "id": "66f5428b1357cfe1b85b3074",
+    "name": "Ranbazaar Micky Mouse Printed Velvet Personalised Bag Backpack | Customized Backpack School Bag for 2 to 5 Years Baby/Boys/Girls Preschool, Picnic, Nursery- Blue",
+    "slug": "ranbazaar_micky_mouse_printed_velvet_personalised_bag_backpack_customized_backpack_school_bag_for_2_to_5_years_baby_boys_girls_preschool_picnic_nursery_blue",
+    "sku": "194",
+    "attributes": [],
+    "description": "<p><strong>Material- Matty Color- Blue (Base)</strong><br><strong>Usage/Application- Pre School</strong><br><strong>Bag Pattern- Plain with Photo</strong><br><strong>Type Of Bag pack- Mickey Mouse</strong><br><strong>Gender- Unisex Closure</strong><br><strong>Type- Zipper Style- Shoulder Bag Number Of Strap- 2</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7345ded2943f8aa3a01fd",
+      "name": "Tax (5%)",
+      "percentage": "5",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71efd6c4e3092c5129b95",
+      "name": "Kids School Bag & Kit ",
+      "description": "Personalize kids' school bags with our customizable options, perfect for adding fun and functionality to school days.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060561709-223082933.webp",
+      "slug": "kids_school_bag_kit",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 999,
+    "sale": 549,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Ranbazaar Personalized Micky Mouse Velvet Backpack – Custom Backpack for 2-5 Years Kids, Boys & Girls, School, Picnic & Nursery.",
+    "metaDescription": "Shop Ranbazaar Micky Mouse velvet backpack in blue. Personalized custom school bag for boys, girls, and babies – perfect for preschool, nursery, and picnics.",
+    "metaTags": "custom Micky Mouse velvet backpack, personalized kids backpacks 2 to 5 years, school bags for preschoolers, custom velvet backpacks for boys and girls, Ranbazaar kids custom backpack, preschool school bag personalized, custom picnic backpacks for toddlers, Micky Mouse personalized school bags, velvet custom backpacks for kids.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936614212-378499704.webp",
+            "width": "264px",
+            "height": "141px",
+            "x": 172,
+            "y": 181,
+            "name": "image1",
+            "_id": "67724cbbbe26f7d04d17acae"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936613846-886731604.webp",
+        "inputFields": [],
+        "_id": "67724cbbbe26f7d04d17acad"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936614498-45979086.webp",
+        "inputFields": [],
+        "_id": "66f5441b1357cfe1b85b3218"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1740461562274-511449512.webp",
+            "width": "272px",
+            "height": "215px",
+            "x": 164,
+            "y": 127.00001525878906,
+            "name": "image1",
+            "_id": "67bd561e44dba23b4ca84dd6"
+          }
+        ],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1740461207004-751884897.webp",
+        "inputFields": [],
+        "_id": "67bd561e44dba23b4ca84dd5"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-26T11:16:27.661Z",
+    "updatedAt": "2025-04-04T07:05:46.786Z"
+  }
+}

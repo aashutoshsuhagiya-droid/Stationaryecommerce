@@ -1,0 +1,165 @@
+{
+  "url": "https://ranbazaar.com/product/personalized_geometry_box_customizable_school_stationery_set_with_name_engraving",
+  "product": {
+    "id": "66fe2fd3e43d7548dc0e9438",
+    "name": "Personalized Geometry Box - Customizable School Stationery Set with Name Engraving",
+    "slug": "personalized_geometry_box_customizable_school_stationery_set_with_name_engraving",
+    "sku": "212",
+    "attributes": [],
+    "description": "<ul><li><strong>Customizable Design:</strong> Personalize your geometry box with a name or unique message, making it a special and identifiable item.</li><li><strong>Durable and Sturdy Construction:</strong> Made from high-quality materials to withstand daily use and last throughout the school year.</li><li><strong>Complete Geometry Set:</strong> Includes all essential tools like a compass, protractor, ruler, and set squares, perfect for students of all ages.</li><li><strong>Secure Storage:</strong> Features a secure latch to keep all tools safely in place, preventing loss or damage.</li><li><strong>Compact and Portable:</strong> Easy to carry in a school bag or backpack, ideal for both classroom and home use.</li><li><strong>Smooth Finish:</strong> Designed with a smooth, scratch-resistant surface that maintains its look over time.</li><li><strong>Ideal Gift Option:</strong> A thoughtful and practical gift for students, with the added touch of personalization.</li><li><strong>Eco-Friendly Choice:</strong> Reusable and reduces the need for multiple purchases, contributing to a more sustainable lifestyle.</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71d6b6c4e3092c5129b6e",
+      "name": "Geometry Box ",
+      "description": "Personalize your school essentials with our customizable geometry box, designed for students who want style and function in one place",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060343573-708532056.webp",
+      "slug": "geometry_box",
+      "orderby": 16,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 399,
+    "sale": 299,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Geometry Box – Custom School Kit for Students & Gifts.",
+    "metaDescription": "Personalized Geometry Box for students – Customizable with your child's name. Perfect for school, gifting, and ensuring their stationery is uniquely theirs.",
+    "metaTags": "custom geometry box, unique geometry box gift,  personalized geometry set.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936644065-314469509.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "textType": "",
+              "color": "#dfe2e2",
+              "fontSize": "22",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "228px",
+            "height": "",
+            "x": 165,
+            "y": 263,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "18",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "670755f2e34d4e4402668416"
+          }
+        ],
+        "_id": "670755f2e34d4e4402668415"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936644458-944529831.webp",
+        "inputFields": [],
+        "_id": "66fe3054e43d7548dc0e9ae7"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936644798-329420561.webp",
+        "inputFields": [],
+        "_id": "66fe3060e88c328780b793e6"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936645018-233843162.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#dfe2e2",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "216px",
+            "height": "",
+            "x": 172.99998474121094,
+            "y": 264.00000762939453,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "18",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6715f95f15d3682880e9a571"
+          }
+        ],
+        "_id": "6715f95f15d3682880e9a570"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-03T05:46:59.660Z",
+    "updatedAt": "2025-04-04T07:05:47.962Z"
+  }
+}

@@ -1,0 +1,186 @@
+{
+  "url": "https://ranbazaar.com/product/black_combed_cotton_customized_half_sleeve_men_s_collar_t_shirt_pack_of_1000pcs",
+  "product": {
+    "id": "66f6444d69f216aabb75d2a0",
+    "name": "Black Combed cotton Customized Half Sleeve Men's Collar T-Shirt Pack of 1000pcs",
+    "slug": "black_combed_cotton_customized_half_sleeve_men_s_collar_t_shirt_pack_of_1000pcs",
+    "sku": "186",
+    "attributes": [
+      {
+        "attributeid": {
+          "id": "66fba20d2a27e0bc8456a4d6",
+          "name": "18 Kids"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbd5"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2252a27e0bc8456a4df",
+          "name": "20 Kids"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbd6"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2342a27e0bc8456a4e5",
+          "name": "22 Kids"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbd7"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2ad2a27e0bc8456aa50",
+          "name": "26 Kids"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbd8"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2be2a27e0bc8456aa56",
+          "name": "28 Kids"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbd9"
+      },
+      {
+        "attributeid": {
+          "id": "66fba2ce2a27e0bc8456aa5c",
+          "name": "30 Kids"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbda"
+      },
+      {
+        "attributeid": {
+          "id": "66fba5c52a27e0bc8456b002",
+          "name": "32 Kids"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbdb"
+      },
+      {
+        "attributeid": {
+          "id": "66fba5dc2a27e0bc8456b453",
+          "name": "34 Kids"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbdc"
+      },
+      {
+        "attributeid": {
+          "id": "66fba64d2a27e0bc8456b474",
+          "name": "36 (S) Adults"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbdd"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6652a27e0bc8456b47d",
+          "name": "38 (M) Adults"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbde"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6822a27e0bc8456b486",
+          "name": "40 (L) Adults"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbdf"
+      },
+      {
+        "attributeid": {
+          "id": "66fba69d2a27e0bc8456b492",
+          "name": "42 (XL) Adults"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbe0"
+      },
+      {
+        "attributeid": {
+          "id": "66fba6b32a27e0bc8456b49b",
+          "name": "44 (XXL) Adults"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbe1"
+      },
+      {
+        "attributeid": {
+          "id": "66fba24d2a27e0bc8456a4eb",
+          "name": "24 Kids"
+        },
+        "value": "185000",
+        "_id": "67a06e9b620bf1d07f7ecbe2"
+      }
+    ],
+    "description": "<p><strong>Black Combed cotton Customized Half Sleeve Men's Collar T-Shirt</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "6715e66558e1a98975adca36",
+      "name": "Bulk Buy ",
+      "description": "",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729488554892-317161343.webp",
+      "slug": "bulk_buy",
+      "orderby": 25,
+      "showinmenu": {},
+      "warehouse": "66c71867cde888fde5bf23b9",
+      "settings": [],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 195000,
+    "sale": 185000,
+    "weight": 100,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936622747-936008133.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936623016-721814750.webp"
+    ],
+    "metaTitle": "Black Half Sleeve Collar T-Shirt – Ranbazaar Custom Design & Fit.",
+    "metaDescription": "Personalized Black Combed Cotton T-Shirt by Ranbazaar – Stylish, breathable, and perfect for casual or semi-formal wear. Get yours customized today.",
+    "metaTags": "personalized men’s collar t-shirt, soft combed cotton t-shirt,  half sleeve black t-shirt, custom printing t-shirt",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-27T05:36:13.643Z",
+    "updatedAt": "2025-04-04T07:05:47.089Z"
+  }
+}

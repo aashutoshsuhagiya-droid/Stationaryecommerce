@@ -1,0 +1,77 @@
+{
+  "url": "https://ranbazaar.com/product/crystal-glass-candle-stand-for-home-decoration",
+  "product": {
+    "id": "68b683b4f04cee4f5459f273",
+    "name": "Crystal Glass Candle Stand - Elegant Golden Home Decor",
+    "slug": "crystal-glass-candle-stand-for-home-decoration",
+    "sku": "452",
+    "attributes": [],
+    "description": "<p><br><strong>Material:</strong> Crystal and Metal.</p><p><strong>Dimensions:</strong> 10 x 11 x 11 cm&nbsp;</p><p><strong>Elegant Design:</strong> Adds a touch of sophistication to your home décor with its intricate crystal and glass detailing.</p><p><strong>Perfect Centerpiece:</strong> Ideal for romantic dinners, festive celebrations, or serene evenings at home.</p><p><strong>Great Gift Choice:</strong> Makes a thoughtful gift for housewarmings, weddings, or special occasions.</p><p><strong>Durable Build:</strong> Made from high-quality crystal and metal for lasting elegance.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1499,
+    "sale": 1199,
+    "weight": 201,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756791852869-505374458.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756791852869-279106599.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756791852968-900121108.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756791853068-726655138.webp"
+    ],
+    "metaTitle": "Elegant Golden Crystal Candle Stand | Ranbazaar Modern Home Accent.",
+    "metaDescription": "Luxury crystal glass candle stand in gold – perfect for romantic dinners, festive décor, or as a premium gift item.",
+    "metaTags": "crystal glass candle stand, golden candle holder, luxury home décor, decorative candle stand, glass and metal candle holder, elegant candle centerpiece, gold candle stand, crystal candle holder, home decoration accessory, candle stand for gifting.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 4,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-09-02T05:42:12.522Z",
+    "updatedAt": "2025-09-02T05:44:47.267Z"
+  }
+}

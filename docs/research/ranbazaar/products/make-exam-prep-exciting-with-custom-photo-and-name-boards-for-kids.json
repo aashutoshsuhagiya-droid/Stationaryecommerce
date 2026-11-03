@@ -1,0 +1,182 @@
+{
+  "url": "https://ranbazaar.com/product/make-exam-prep-exciting-with-custom-photo-and-name-boards-for-kids",
+  "product": {
+    "id": "66e7e7606efb775ac109817d",
+    "name": "Make Exam Prep Exciting with Custom Photo and Name Boards for Kids",
+    "slug": "make-exam-prep-exciting-with-custom-photo-and-name-boards-for-kids",
+    "sku": "46",
+    "attributes": [],
+    "description": "<p>High quality paper scratch proof. Personalize Exam Boards with your Photos ,Text, Design and more at ranbazaar.com The examination board is made up of MDF Wood and the photo printing is done via HD Heat Transfer technique. Perfect size designed for kids, measuring 12x9 inches, providing enough space for writing and drawing.</p><p>Specifications:<br>Dimensions: 12 x 9 Inches ″ (Approx.)<br>Material: MDF Wood</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c71b1d6c4e3092c5129b20",
+      "name": "Exam Board ",
+      "description": "CustomisePersonalize your exam board with custom designs, ensuring a unique, organized, and easily identifiable study tool for your exams.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060301606-960697074.webp",
+      "slug": "exam_board",
+      "orderby": 4,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 389,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Engaging Exam Prep with Personalized Photo & Name Boards.",
+    "metaDescription": "Make exam prep exciting with a personalized study board! Add your kid’s name and photo for a unique, interactive, and effective learning experience.",
+    "metaTags": "personalized exam boards for kids, custom exam boards, kids study boards with names, custom learning boards, exam boards with photos, personalized study tools, kids motivational exam boards, custom educational boards, fun exam boards for kids, exam prep boards with names, custom photo exam boards, personalized kids' learning boards, unique exam boards for kids.",
+    "metaSchema": "",
+    "hotSelling": true,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_5",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936458543-348963772.webp",
+            "width": "228px",
+            "height": "316px",
+            "x": 279,
+            "y": 63,
+            "name": "image1",
+            "_id": "67172c38fff2eaf6b7b3ded2"
+          }
+        ],
+        "productbgColor": "#ffda37",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936458272-13331311.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#212773",
+              "fontSize": "25",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "224px",
+            "height": "",
+            "x": 94,
+            "y": 91.99993896484375,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "16",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67172c38fff2eaf6b7b3ded3"
+          }
+        ],
+        "_id": "67172c38fff2eaf6b7b3ded1"
+      },
+      {
+        "name": "Sample_6",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936458779-801408004.webp",
+        "inputFields": [],
+        "_id": "672ca1f6d8fcb23ac395a1e4"
+      },
+      {
+        "name": "Sample_7",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936459347-730721244.webp",
+            "width": "234px",
+            "height": "315px",
+            "x": 184,
+            "y": 60,
+            "name": "image1",
+            "_id": "672ca420c8db9ad4a1439bb3"
+          }
+        ],
+        "productbgColor": "#feda37",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936459026-396209591.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#212773",
+              "fontSize": "25",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME",
+            "width": "225px",
+            "height": "",
+            "x": 3,
+            "y": 93,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "16",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "672ca420c8db9ad4a1439bb4"
+          }
+        ],
+        "_id": "672ca420c8db9ad4a1439bb2"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-16T08:08:00.161Z",
+    "updatedAt": "2026-06-30T06:59:38.101Z"
+  }
+}

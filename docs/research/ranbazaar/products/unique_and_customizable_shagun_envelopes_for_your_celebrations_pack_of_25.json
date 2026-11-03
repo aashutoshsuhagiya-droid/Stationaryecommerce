@@ -1,0 +1,196 @@
+{
+  "url": "https://ranbazaar.com/product/unique_and_customizable_shagun_envelopes_for_your_celebrations_pack_of_25",
+  "product": {
+    "id": "66f39ad390bc0a4af5e72515",
+    "name": "Unique and Customizable Shagun Envelopes for Your Celebrations-Pack Of 25",
+    "slug": "unique_and_customizable_shagun_envelopes_for_your_celebrations_pack_of_25",
+    "sku": "180",
+    "attributes": [],
+    "description": "<p><strong>Customize Your Shagun Envelopes – Elevate Your Celebrations</strong></p><p>Discover our beautifully designed customizable shagun envelopes, perfect for weddings, festivals, and special occasions. Crafted from high-quality materials, these envelopes allow you to personalize messages, colors, and designs to match your unique style. Whether you’re gifting money, sweets, or tokens of love, our shagun envelopes add a personal touch to your heartfelt gestures.</p><p><strong>Features:</strong></p><ul><li><strong>Personalization Options:</strong> Choose from various designs, colors, and sizes.</li><li><strong>Premium Quality:</strong> Made from durable materials to ensure elegance and longevity.</li><li><strong>Versatile Use:</strong> Ideal for weddings, Diwali, birthdays, and other celebrations.</li><li><strong>Fast Shipping:</strong> Quick turnaround to ensure timely delivery for your events.</li></ul><p>Make your celebrations unforgettable with our custom shagun envelopes. Order now and add a touch of elegance to your gifting!</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c720576c4e3092c5129bdd",
+      "name": "Shagun Envelopes",
+      "description": "Elegant personalized Shagun envelope, perfect for gifting with custom names and designs.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060637086-56400818.webp",
+      "slug": "shagun_envelopes",
+      "orderby": 10,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [],
+      "showOnHome": true,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 749,
+    "sale": 625,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Shagun Envelopes for Special Occasions| Ranbazaar",
+    "metaDescription": "Add a personal touch to your celebrations with unique and customizable Shagun envelopes. Ideal for weddings, festivals, and special gifting moments.",
+    "metaTags": "Shagun envelopes, Personalized Shagun envelopes, Custom Shagun envelopes, Unique gift envelopes.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936591825-997758634.webp",
+        "inputFields": [],
+        "_id": "66f39ae390bc0a4af5e72526"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936592110-860384393.webp",
+        "inputFields": [],
+        "_id": "66f39aff90bc0a4af5e7257e"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936592343-528687911.webp",
+        "inputFields": [],
+        "_id": "66f39b0590bc0a4af5e72593"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936592566-173525985.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#554c3b",
+              "fontSize": "18",
+              "fontFamily": "Aleo Regular",
+              "fontWeight": "lighter",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "With Best Wishes From:",
+            "width": "593px",
+            "height": "",
+            "x": 3,
+            "y": 22,
+            "label": {
+              "id": "66f27641e77c52b36f03a456",
+              "name": "Wishes",
+              "slug": "wishes",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "35",
+            "name": "Wishes",
+            "slug": "wishes",
+            "required": false,
+            "_id": "671739190de4d9d699702f85"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#554c3b",
+              "fontSize": "18",
+              "fontFamily": "Aleo Regular",
+              "fontWeight": "lighter",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "Your Name",
+            "width": "578px",
+            "height": "",
+            "x": 11,
+            "y": 44,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "30",
+            "name": "Your Name",
+            "slug": "your_name",
+            "required": true,
+            "_id": "671739190de4d9d699702f86"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#554c3b",
+              "fontSize": "18",
+              "fontFamily": "Aleo Regular",
+              "fontWeight": "lighter",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 3,
+            "type": "customize",
+            "value": "Address",
+            "width": "596px",
+            "height": "",
+            "x": 2,
+            "y": 66,
+            "label": {
+              "id": "66f2713b8f22210629699501",
+              "name": "Address ",
+              "slug": "address",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "38",
+            "name": "Address",
+            "slug": "address",
+            "required": true,
+            "_id": "671739190de4d9d699702f87"
+          }
+        ],
+        "_id": "671739190de4d9d699702f84"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-25T05:08:35.739Z",
+    "updatedAt": "2025-04-04T07:05:45.536Z"
+  }
+}

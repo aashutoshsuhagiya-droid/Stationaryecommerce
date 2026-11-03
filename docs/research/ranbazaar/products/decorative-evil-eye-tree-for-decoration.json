@@ -1,0 +1,76 @@
+{
+  "url": "https://ranbazaar.com/product/decorative-evil-eye-tree-for-decoration",
+  "product": {
+    "id": "68b569b1b20af48885af4f88",
+    "name": "Decorative Evil Eye Tree – Owl Feng Shui Plant for Prosperity.",
+    "slug": "decorative-evil-eye-tree-for-decoration",
+    "sku": "450",
+    "attributes": [],
+    "description": "<p><strong>Weight</strong>: 450 g</p><p><strong>Dimensions</strong>: 26 x 28 x 16 cm</p><p><strong>Material</strong>: High-quality polyresin and crystal.</p><p><strong>Color</strong>: Cream flowers with golden pot and Evil Eye accents.</p><p><strong>Enchanting Design</strong>: Each flower has a vibrant Evil Eye bead at its center, while the base features a large glass Evil Eye – making it a unique and eye-catching piece.</p><p><strong>Symbol of Protection</strong>: Often mistaken as negative, the Evil Eye is actually a symbol of good luck.</p><p><strong>Energy &amp; Empowermen</strong>t: This piece is known to bring bold, positive energy, promoting motivation, leadership, endurance, and courage.</p><p><strong>Feng Shui Benefits</strong>: Acts as a powerful energy neutralizer – balancing emotions, calming the environment, and bringing harmony, peace, and protection to your home or workspace.</p><p><strong>Thoughtful Gift Idea</strong>: A meaningful gift for art lovers, spiritual seekers, or anyone you wish to bless with love, protection, and positivity.</p><p><strong>Feng Shui Evil Eye Tree with Owl </strong>: Handmade Crystal Decor.</p><p><br>&nbsp;</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1699,
+    "sale": 1399,
+    "weight": 450,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756726701246-901032778.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756726701400-878128501.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756726701846-22761108.webp"
+    ],
+    "metaTitle": "Feng Shui Evil Eye Tree with Owl – Handmade Crystal Decor.",
+    "metaDescription": "Bring protection and positive energy to your space with this handmade Evil Eye Tree with Owl. A perfect Feng Shui decor gift for home, office, or loved ones.\n",
+    "metaTags": "evil eye tree, feng shui evil eye tree, evil eye decor, artificial feng shui plant, feng shui home decor, evil eye protection tree, owl evil eye tree, handmade feng shui tree, evil eye crystal tree, feng shui tree for positive energy, evil eye gifts, vastu evil eye tree, spiritual home decor, positive energy decor, good luck charm, evil eye ornament, feng shui decoration item, owl decor for protection, home decor with evil eye, evil eye tree gift.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 6,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-09-01T09:38:57.176Z",
+    "updatedAt": "2025-09-01T11:42:18.815Z"
+  }
+}

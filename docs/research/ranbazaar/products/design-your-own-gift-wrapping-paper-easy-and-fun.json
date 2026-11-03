@@ -1,0 +1,152 @@
+{
+  "url": "https://ranbazaar.com/product/design-your-own-gift-wrapping-paper-easy-and-fun",
+  "product": {
+    "id": "66eabc494fef32e735fa123c",
+    "name": "Custom Photo Gift Wrapping Paper – Personalized Gift Wrap Pack of 10",
+    "slug": "design-your-own-gift-wrapping-paper-easy-and-fun",
+    "sku": "103",
+    "attributes": [],
+    "description": "<p>Enhance your gift presentation with our <strong>Premium Gift Packing Paper Pack of 10</strong>. These high-quality <strong>12×18 inch gift wrapping sheets</strong> are printed on <strong>130 GSM glossy paper</strong>, offering a smooth finish and vibrant appearance. Perfect for <strong>birthdays, weddings, Diwali celebrations, parties, and special occasions</strong>, these wrapping sheets help make every gift look elegant and attractive.</p><p>&nbsp;</p><p>Each pack includes <strong>10 durable glossy sheets</strong>, ideal for wrapping small to medium-sized gifts with ease. The premium paper quality ensures a stylish and professional look while adding charm to your presents.</p><p>&nbsp;</p><p>Whether you are preparing gifts for <strong>festivals, celebrations, or special moments</strong>, these <strong>multi-occasion gift wrapping papers</strong> provide the perfect finishing touch.</p><p>&nbsp;</p><p><strong>Product Details</strong></p><p>&nbsp;</p><p>Pack of 10 Gift Wrapping Sheets</p><p>Size: 12 × 18 Inches</p><p>Paper Quality: 130 GSM Premium Glossy Paper</p><p>Suitable for Birthday, Diwali, Wedding, Party &amp; Festive Gifts</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c721576c4e3092c5129c69",
+      "name": "Wrapping Paper ",
+      "description": "Personalize your presents with our customizable wrapping paper, featuring unique designs for every occasion.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060997299-297644612.webp",
+      "slug": "wrapping_paper",
+      "orderby": 20,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 599,
+    "sale": 299,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Make Your Own Gift Wrap – Unique & Creative Designs.",
+    "metaDescription": "Make every gift unforgettable with personalized wrapping paper. Design unique patterns, add text or photos, and create a special touch for any occasion.",
+    "metaTags": "custom gift wrapping paper, personalized wrapping paper, design your own gift wrap, custom printed wrapping paper, unique gift wrap, DIY wrapping paper, customized gift wrap, gift wrap with photos, personalized holiday wrapping paper, create your own wrapping paper, custom birthday wrapping paper, fun gift wrapping ideas, photo gift wrapping paper, bespoke wrapping paper, custom name wrapping paper.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 1,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936528284-991864481.webp",
+        "inputFields": [],
+        "_id": "66eabc784fef32e735fa1250"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936528746-686905777.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#48075a",
+              "fontSize": "27",
+              "fontFamily": "Roboto",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME ",
+            "width": "305px",
+            "height": "",
+            "x": 144,
+            "y": 239,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "20",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6717322d0de4d9d6996fbb35"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#48075a",
+              "fontSize": "27",
+              "fontFamily": "Roboto",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "ENTER YOUR NAME ",
+            "width": "331px",
+            "height": "",
+            "x": 132,
+            "y": 321,
+            "label": {
+              "id": "66eab1c64fef32e735f9e203",
+              "name": "Customer Name 2 ",
+              "slug": "customer_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "20",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6717322d0de4d9d6996fbb36"
+          }
+        ],
+        "_id": "6717322d0de4d9d6996fbb34"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-18T11:40:57.833Z",
+    "updatedAt": "2026-03-16T10:22:45.602Z"
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "url": "https://ranbazaar.com/product/customize-name-slips-for-child",
+  "product": {
+    "id": "67078dcfc638b44330dca7bc",
+    "name": "Customize Name Slips: Unique Designs for Every Child (Pack of 36pcs)",
+    "slug": "customize-name-slips-for-child",
+    "sku": "286",
+    "attributes": [],
+    "description": "<p><strong>Product Description:</strong></p><ul><li><strong>Size:</strong> 3x2.5 inches</li><li><strong>Material:</strong> Crafted from self-adhesive, high-quality, scratch-proof paper</li><li><strong>Features:</strong> Delightfully personalized name stickers designed for books and notebooks</li><li><strong>Quality:</strong> Exceptional durability ensures long-lasting adherence</li><li><strong>Use:</strong> Perfect for adding a personal touch to your cherished books and notebooks</li></ul><p><strong>Transform Your Collection Today with Our Premium Name Stickers!</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7278d6c4e3092c5129e2b",
+      "name": "Name Slips Customize",
+      "description": "Personalize kids' books with customizable name slips, tags, and stickers for easy identification.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060262509-929529809.webp",
+      "slug": "name_slips_customize",
+      "orderby": 2,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66a2386a3a663c2108070634",
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": true,
+      "banner": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/category/1738661895043-778638111.png",
+      "mblbanner": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/category/1738661895045-467228450.png",
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 299,
+    "sale": 219,
+    "weight": 70,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Salute Independence: Custom Name Slips Inspired by the Indian Flag.",
+    "metaDescription": "Celebrate India's spirit of freedom with our custom name slips, meticulously designed to reflect the essence of Independence. Ideal for school books, notebooks, or personal items, each slip is crafted with precision and pride. Size: 3x2.5 inches Material: Self-adhesive, high-quality, scratch-proof paper. Patriotic Design: Featuring a striking Indian flag theme. Personalized Touch: Customize with your name for a unique identity. High-Quality Material: Durable and scratch-resistant for long-lasting use. Versatile Use: Perfect for school, office, or personal belongings. Symbol of Pride: Embrace the pride of our nation with every use. Great Gift Idea: Perfect for gifting on Independence Day or any patriotic occasion. Easy Application: Self-adhesive backing for effortless attachment. Exclusive Offer: Buy Any 2 Products & Get Extra 10% Off. Buy Any 3 Products & Get Extra 15% Off. Bulk Buy Any 10 Products & Get Extra 25% Off. Add a patriotic touch to your essentials and commemorate the spirit of independence with these meaningful and versatile name slips.",
+    "metaTags": "childrens name labels, name slips, name slip design, name stickers, notebook stickers, school labels, school labels childrens, name labels, custom stickers, name tags sticker labels, labels and stickers book, labels printed stickers, custom sticker printing, photo stickers, sticker printing",
+    "metaSchema": "",
+    "hotSelling": true,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 89,
+    "defaultImage": 0,
+    "defaultSample": 4,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936806941-655852584.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "textType": "",
+              "color": "#ffffff",
+              "fontSize": "30",
+              "fontFamily": "Elmessiri bold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0
+            },
+            "id": 1,
+            "type": "text",
+            "value": "ENTER YOUR NAME ",
+            "width": "570px",
+            "height": "67px",
+            "x": 19,
+            "y": 403,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "30",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67078e2fc638b44330dca807"
+          }
+        ],
+        "_id": "67078e2fc638b44330dca806"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1763543441404-923605726.webp",
+        "inputFields": [],
+        "_id": "691d89911a9080ec126c5770"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936807487-281083561.webp",
+        "inputFields": [],
+        "_id": "67078df6c638b44330dca7f6"
+      },
+      {
+        "name": "Sample_4",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936807764-155841149.webp",
+        "inputFields": [],
+        "_id": "67078dfdb9510d1b3686474c"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936807985-928020782.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffffff",
+              "fontSize": "30",
+              "fontFamily": "Elmessiri bold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "ENTER YOUR NAME ",
+            "width": "570px",
+            "height": "",
+            "x": 17,
+            "y": 298,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "30",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "671636c8756fcc9a25467991"
+          }
+        ],
+        "_id": "671636c8756fcc9a25467990"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-10T08:18:23.530Z",
+    "updatedAt": "2025-11-19T09:10:41.530Z"
+  }
+}

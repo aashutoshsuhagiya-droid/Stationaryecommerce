@@ -1,0 +1,72 @@
+{
+  "url": "https://ranbazaar.com/product/creative-gold-glitter-cake-topper-ideas",
+  "product": {
+    "id": "66ed639f6b4bed1b496e8004",
+    "name": "Creative Gold Glitter Cake Topper Ideas",
+    "slug": "creative-gold-glitter-cake-topper-ideas",
+    "sku": "140",
+    "attributes": [],
+    "description": "<p>Cake toppers are made of high-quality acrylic, durable and reusable. ❤ Wide Occasions: acrylic cake toppers are suitable for decorating many cakes, cupcakes, ice cream, and deserts, they are perfect for birthday party</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c726d16c4e3092c5129df7",
+      "name": "Cake Topper ",
+      "description": "Elegant cake topper for any celebration—adds a touch of charm to your dessert.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060108172-484937445.webp",
+      "slug": "cake_topper",
+      "orderby": 23,
+      "showinmenu": {},
+      "warehouse": "670e06d1fc748f51d4ee2672",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": false,
+      "status": false,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 399,
+    "sale": 169,
+    "weight": 100,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936658393-543266831.webp"
+    ],
+    "metaTitle": "Gold Glitter Cake Topper Ideas – Sparkling Designs for Your Cake.",
+    "metaDescription": "Make your cake shine with creative gold glitter cake topper ideas. Stunning, unique designs perfect for any occasion. Explore our collection now.",
+    "metaTags": "Cake Topper, Unique Cake Decor, Unique Cake Topper, Dazzling Cake Toppers, Luxury Cake Topper, elegant cake toppers, cake toppers for weddings, anniversary cake toppers, stylish cake toppers, customizable cake toppers, special occasion cake toppers.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-20T11:59:27.303Z",
+    "updatedAt": "2025-04-04T07:05:49.245Z"
+  }
+}

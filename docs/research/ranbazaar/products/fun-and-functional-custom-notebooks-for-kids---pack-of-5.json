@@ -1,0 +1,116 @@
+{
+  "url": "https://ranbazaar.com/product/fun-and-functional-custom-notebooks-for-kids---pack-of-5",
+  "product": {
+    "id": "66ebcd8fd8c3626361b160c9",
+    "name": "Fun and Functional: Custom Notebooks for Kids - Pack of 5",
+    "slug": "fun-and-functional-custom-notebooks-for-kids---pack-of-5",
+    "sku": "111",
+    "attributes": [],
+    "description": "<p>Size 7 x 9.5 inches (Standard Notebook Size) 300 gms over laminated inside 124 pages ruled on 64 gms very good quality paper.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7343ded2943f8aa3a01f1",
+      "name": "Tax (0%)",
+      "percentage": "0",
+      "status": true
+    },
+    "categories": {
+      "id": "66c727346c4e3092c5129e04",
+      "name": "Note Books",
+      "description": "Customizable notebook: Personalize with names, designs, and colors for unique, daily use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1735028884566-102522106.webp",
+      "slug": "note_books",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 640,
+    "sale": 499,
+    "weight": 300,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Photo Print Notebook - Decor Notebook Cover - Custom Diary",
+    "metaDescription": "Unleash attractive notebook cover design handmade. Elevate style with an attractive Decor Notebook Cover. Personalize your journey with a unique Custom Diary.",
+    "metaTags": "",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936540738-611889246.webp",
+        "inputFields": [],
+        "_id": "66ebcddfd8c3626361b162ef"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936541022-495788043.webp",
+        "inputFields": [],
+        "_id": "66ebcde8d8c3626361b16309"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936541538-567764506.webp",
+            "width": "291px",
+            "height": "337px",
+            "x": 1,
+            "y": 20,
+            "name": "image1",
+            "_id": "66ed159159c7ae3e8b6944a6"
+          },
+          {
+            "id": 2,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936541801-203277906.webp",
+            "width": "305px",
+            "height": "345px",
+            "x": 296,
+            "y": 19,
+            "name": "image2",
+            "_id": "66ed159159c7ae3e8b6944a7"
+          }
+        ],
+        "productbgColor": "#f38ca4",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936541258-60668102.webp",
+        "inputFields": [],
+        "_id": "66ed159159c7ae3e8b6944a5"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-19T07:06:55.568Z",
+    "updatedAt": "2025-09-22T08:19:23.503Z"
+  }
+}

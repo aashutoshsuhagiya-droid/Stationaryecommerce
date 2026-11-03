@@ -1,0 +1,118 @@
+{
+  "url": "https://ranbazaar.com/product/make-your-own-custom-mouse-pad-for-kids--add-personalized-images",
+  "product": {
+    "id": "66e92557adafe07b18de3474",
+    "name": "Make Your Own Custom Mouse Pad for Kids – Add Personalized Images",
+    "slug": "make-your-own-custom-mouse-pad-for-kids--add-personalized-images",
+    "sku": "66",
+    "attributes": [],
+    "description": "<ul><li>Fully customizable with your own images, text, or logos.</li><li>High-quality materials ensure smooth and accurate mouse movement.</li><li>Available in various sizes to fit your desk or gaming setup.</li><li>Durable, non-slip rubber backing for stability during use.</li><li>Perfect for personal use, corporate branding, or gifting.</li><li>Easy to design with our user-friendly customization tool.</li><li>Vibrant, long-lasting prints that won’t fade over time.</li><li>Great for promoting businesses, events, or personal creativity</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c720c06c4e3092c5129c22",
+      "name": "Mouse Pad ",
+      "description": "Elevate your workspace with personalized mouse pads, combining style and functionality for any desk.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060449084-661081007.webp",
+      "slug": "mouse_pad",
+      "orderby": 9,
+      "showinmenu": {},
+      "warehouse": "670e06f6fc748f51d4ee267b",
+      "settings": [
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 499,
+    "sale": 319,
+    "weight": 100,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Make a Personalized Mouse Pad for Kids – Fun & Unique.",
+    "metaDescription": "Design a custom mouse pad that kids will love. Personalize with images, text, or their favorite characters to make learning and gaming more fun.",
+    "metaTags": "personalized exam boards for kids, custom exam boards, kids study boards with names, custom learning boards, exam boards with photos, personalized study tools, kids motivational exam boards, custom educational boards, fun exam boards for kids, exam prep boards with names, custom photo exam boards, personalized kids' learning boards, unique exam boards for kids.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1741781377328-303011167.webp",
+            "width": "240px",
+            "height": "261px",
+            "x": 49,
+            "y": 158,
+            "name": "image1",
+            "_id": "67d1798195ed4242d9d8abc7"
+          }
+        ],
+        "productbgColor": "#e3ded3",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936486291-816558028.webp",
+        "inputFields": [],
+        "_id": "67d1798195ed4242d9d8abc6"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936486876-733408170.webp",
+        "inputFields": [],
+        "_id": "66e9272cadafe07b18de5949"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1741781419050-212863301.webp",
+            "width": "233px",
+            "height": "253px",
+            "x": 41,
+            "y": 105,
+            "name": "image1",
+            "_id": "67d179ef95ed4242d9d92cc7"
+          }
+        ],
+        "productbgColor": "#e0d9d1",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936487393-403005728.webp",
+        "inputFields": [],
+        "_id": "67d179ef95ed4242d9d92cc6"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-17T06:44:39.288Z",
+    "updatedAt": "2025-04-04T07:05:40.544Z"
+  }
+}

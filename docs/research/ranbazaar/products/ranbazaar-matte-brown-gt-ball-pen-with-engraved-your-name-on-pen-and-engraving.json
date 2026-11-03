@@ -1,0 +1,168 @@
+{
+  "url": "https://ranbazaar.com/product/ranbazaar-matte-brown-gt-ball-pen-with-engraved-your-name-on-pen-and-engraving",
+  "product": {
+    "id": "6707aa29dd10703c6c354589",
+    "name": "RANBAZAAR Matte Brown GT Ball Pen with Engraved Your Name on Pen and Engraving.",
+    "slug": "ranbazaar-matte-brown-gt-ball-pen-with-engraved-your-name-on-pen-and-engraving",
+    "sku": "162",
+    "attributes": [],
+    "description": "<ul><li><strong>Personalized Design</strong>: Customize pens with your name, logo, or message for a unique touch.</li><li><strong>Perfect for Branding</strong>: Ideal for businesses, promotional events, or corporate gifts.</li><li><strong>Variety of Styles</strong>: Available in various colors, designs, and materials to suit your needs.</li><li><strong>Durable and High-Quality</strong>: Made with premium materials to ensure smooth writing and long-lasting use.</li><li><strong>Great for Gifting</strong>: A perfect gift for colleagues, clients, or special occasions like weddings and graduations.</li><li><strong>Affordable Customization</strong>: Get stylish and practical customized pens at a great price.</li></ul>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c7343ded2943f8aa3a01f1",
+      "name": "Tax (0%)",
+      "percentage": "0",
+      "status": true
+    },
+    "categories": {
+      "id": "66c718b4cde888fde5bf23c7",
+      "name": "Pen/Pencil Custom",
+      "description": "Explore our premium collection of custom pens and pencils, offering personalized elegance and precision for every writing or drawing need.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729060702235-226985760.webp",
+      "slug": "pen_pencil_custom",
+      "orderby": 3,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66ab7d9fc45708247ca4df3c",
+        "66b49bd3e1d32978eca11154"
+      ],
+      "showOnHome": true,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 529,
+    "sale": 379,
+    "weight": 50,
+    "productType": "customize",
+    "quantity": 0,
+    "images": [],
+    "metaTitle": "Ranbazaar Matte Brown GT Ball Pen – Personalized Engraved Pen.",
+    "metaDescription": "Add a personal touch with the Ranbazaar Matte Brown GT Ball Pen. Engraved with your name, this sleek pen is perfect for gifts or everyday use, combining style and elegance.",
+    "metaTags": "custom pen, personalized pen, engraved pen, custom ball pen, custom writing pen, personalized ball pen, engraved writing pen, custom gift pen,",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 98,
+    "defaultImage": 0,
+    "defaultSample": 3,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1742971595109-668025669.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#ffd452",
+              "fontSize": "23",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " YOUR NAME",
+            "width": "194px",
+            "height": "",
+            "x": 339,
+            "y": 243.00003051757812,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "14",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67e3a45801c0215989eca7be"
+          }
+        ],
+        "_id": "67e3a45801c0215989eca7bd"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1742971605626-844131214.webp",
+        "inputFields": [],
+        "_id": "67e3a2d55ae9139462759d19"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1742971620756-285805054.webp",
+        "inputFields": [],
+        "_id": "67e3a2e401c0215989eb506b"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1742971651345-554418637.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#fed65d",
+              "fontSize": "23",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": " YOUR NAME",
+            "width": "193px",
+            "height": "",
+            "x": 340,
+            "y": 244,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "14",
+            "name": "ENTER YOUR NAME",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67e3a45f01c0215989ecaeac"
+          }
+        ],
+        "_id": "67e3a45f01c0215989ecaeab"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": true,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-10T10:19:21.803Z",
+    "updatedAt": "2025-09-22T08:20:21.742Z"
+  }
+}

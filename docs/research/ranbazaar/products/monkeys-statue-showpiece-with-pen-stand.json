@@ -1,0 +1,77 @@
+{
+  "url": "https://ranbazaar.com/product/monkeys-statue-showpiece-with-pen-stand",
+  "product": {
+    "id": "68b16f187e9eb632e57301dd",
+    "name": "Wise Monkeys Statue Showpiece with Pen Stand – Decorative Desk Organizer for Home & Office.",
+    "slug": "monkeys-statue-showpiece-with-pen-stand",
+    "sku": "441",
+    "attributes": [],
+    "description": "<p><strong>Dimensions</strong>: 15*10*6 cm</p><p><strong>Material</strong>: Made of durable polyresin with intricate detailing.</p><p><strong>Versatile Display</strong>: Ideal for living rooms, bedrooms, study tables, or office desks.</p><p><strong>Utility &amp; Decor</strong>: Combines a pen stand with a symbolic Wise Monkeys showpiece.</p><p><strong>Perfect Gift</strong>: Suitable for birthdays, housewarmings, office events, and festive occasions.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1049,
+    "sale": 849,
+    "weight": 400,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756461245638-374648894.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756461245650-499617974.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756461077350-132105491.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756461077352-918201302.webp"
+    ],
+    "metaTitle": "Decorative Wise Monkeys Pen Stand – Stylish Showpiece for Workspaces.",
+    "metaDescription": "\nWise Monkeys Showpiece with Pen Stand – unique decor for office desks or study tables. Great gift for colleagues, friends, and family.",
+    "metaTags": "Wise Monkeys Statue, 3 Wise Monkeys Showpiece, Wise Monkeys Pen Stand, 3 Monkeys Pen Holder, See No Evil Hear No Evil Speak No Evil Statue, Monkey Showpiece with Pen Stand, Decorative Pen Stand, Desk Showpiece, Home Decor Pen Holder, Office Table Decoration, Spiritual Desk Decor, Unique Table Showpiece,Best Gift for Office Desk, Corporate Gift Idea.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 4,
+    "defaultImage": 2,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-08-29T09:12:56.948Z",
+    "updatedAt": "2025-08-29T10:06:00.738Z"
+  }
+}

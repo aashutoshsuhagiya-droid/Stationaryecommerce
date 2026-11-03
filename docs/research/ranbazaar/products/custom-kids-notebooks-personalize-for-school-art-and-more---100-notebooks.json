@@ -1,0 +1,178 @@
+{
+  "url": "https://ranbazaar.com/product/custom-kids-notebooks-personalize-for-school-art-and-more---100-notebooks",
+  "product": {
+    "id": "66ed0c2359c7ae3e8b6912c8",
+    "name": "Custom Kids Notebooks: Personalize for School, Art, and More! - 100 Notebooks",
+    "slug": "custom-kids-notebooks-personalize-for-school-art-and-more---100-notebooks",
+    "sku": "121",
+    "attributes": [],
+    "description": "<p>Size 7 x 9.5 inches (Standard Notebook Size) 300 gms over laminated inside 124 pages ruled on 64 gms very good quality paper.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "6715e66558e1a98975adca36",
+      "name": "Bulk Buy ",
+      "description": "",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729488554892-317161343.webp",
+      "slug": "bulk_buy",
+      "orderby": 25,
+      "showinmenu": {},
+      "warehouse": "66c71867cde888fde5bf23b9",
+      "settings": [],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 15999,
+    "sale": 7000,
+    "weight": 300,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Kids Personalized Notebooks – Perfect for School & Creativity.",
+    "metaDescription": "Custom kids notebooks with personalized names, fun themes & vibrant colors. Great for school, creativity, and special gifts.",
+    "metaTags": "Custom Kids Notebooks, Colorful Notebooks, Personalized Notebooks,  Kids Name Notebooks.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 1,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936562231-420705627.webp",
+        "inputFields": [],
+        "_id": "66ed0cca59c7ae3e8b6913fc"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [
+          {
+            "id": 1,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936562698-136990088.webp",
+            "width": "146px",
+            "height": "142px",
+            "x": 69,
+            "y": 128,
+            "name": "image1",
+            "_id": "671f6dc0dadd4b48d42f6686"
+          },
+          {
+            "id": 2,
+            "imageUrl": "https://ranbazartesting.s3.ap-south-1.amazonaws.com/productimages/1736936563104-610244849.webp",
+            "width": "132px",
+            "height": "130px",
+            "x": 383,
+            "y": 45,
+            "name": "image2",
+            "_id": "671f6dc0dadd4b48d42f6687"
+          }
+        ],
+        "productbgColor": "#fec64b",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936562445-432369674.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "SCHOOL NAME ",
+            "width": "270px",
+            "height": "",
+            "x": 6,
+            "y": 245,
+            "label": {
+              "id": "66c85da95182e1dca469d5b2",
+              "name": "School Name",
+              "slug": "school_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "35",
+            "name": "SCHOOL NAME ",
+            "slug": "school_name",
+            "required": true,
+            "_id": "671f6dc0dadd4b48d42f6688"
+          },
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "20",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": ""
+            },
+            "id": 1728106061012,
+            "type": "customize",
+            "value": "SCHOOL NAME ",
+            "width": "270px",
+            "height": "",
+            "x": 314,
+            "y": 157,
+            "label": {
+              "id": "66c85da95182e1dca469d5b2",
+              "name": "School Name",
+              "slug": "school_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "35",
+            "name": "SCHOOL NAME ",
+            "slug": "school_name",
+            "required": true,
+            "_id": "671f6dc0dadd4b48d42f6689"
+          }
+        ],
+        "_id": "671f6dc0dadd4b48d42f6685"
+      },
+      {
+        "name": "Sample_3",
+        "customerImg": [],
+        "inputFields": [],
+        "_id": "67a1a20fbbfb3392d86ffb15"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66c81fe01205048518e65c6a",
+      "name": "Exam Board ",
+      "length": 30,
+      "width": 20,
+      "height": 40,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-09-20T05:46:11.179Z",
+    "updatedAt": "2025-04-04T07:05:43.990Z"
+  }
+}

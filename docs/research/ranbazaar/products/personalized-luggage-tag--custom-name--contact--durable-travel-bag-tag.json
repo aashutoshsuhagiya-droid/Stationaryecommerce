@@ -1,0 +1,294 @@
+{
+  "url": "https://ranbazaar.com/product/personalized-luggage-tag--custom-name--contact--durable-travel-bag-tag",
+  "product": {
+    "id": "6926afcfd766d9cb7c26e807",
+    "name": "Personalized Luggage Tag – Custom Name & Contact | Durable Travel Bag Tag",
+    "slug": "personalized-luggage-tag--custom-name--contact--durable-travel-bag-tag",
+    "sku": "801",
+    "attributes": [],
+    "description": "<p>Upgrade your travel experience with our <strong>Personalized Luggage Tag</strong>, designed to keep your bags safe, stylish, and easy to identify. Whether you're at the airport, railway station, or hotel check-in, this custom tag ensures your luggage stands out instantly.</p><p>Crafted from <strong>high-quality, waterproof, and scratch-resistant material</strong>, the tag is built to handle rough travel conditions. You can customize it with <strong>your name, initials, contact number, or even your profession</strong>, making it ideal for both personal and professional use.</p><p>The strong buckle strap keeps the tag securely attached to any suitcase, backpack, or duffle bag. Its bold color and clean typography make spotting your luggage effortless.</p><h3>⭐ <strong>Key Features</strong></h3><p>Personalized with your <strong>Name, Phone Number, or ID</strong></p><p>Waterproof, durable &amp; long-lasting material</p><p>Strong strap for secure attachment</p><p>Perfect for suitcases, cabin bags, backpacks &amp; office travel bags</p><p>Helps avoid lost luggage and makes identification quick</p><p>Suitable for <strong>frequent travelers, doctors, students, and business professionals</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "6926acfde88f6dab8864f48e",
+      "name": "Bag/Luggage Tag",
+      "description": "",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1764142333523-676842001.png",
+      "slug": "luggage_tag",
+      "orderby": 5,
+      "showinmenu": {},
+      "warehouse": "66c71867cde888fde5bf23b9",
+      "settings": [
+        "66b49bd3e1d32978eca11154",
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": false,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {
+      "2": "175"
+    },
+    "mrp": 299,
+    "sale": 230,
+    "weight": 50,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Luggage Tag – Custom Name & Contact | Durable Travel Bag Tag",
+    "metaDescription": "Upgrade your travel experience with our Personalized Luggage Tag, designed to keep your bags safe, stylish, and easy to identify. Whether you're at the airport, railway station, or hotel check-in, this custom tag ensures your luggage stands out instantly.",
+    "metaTags": "personalized luggage tag,  custom travel bag tag,  suitcase name tag,  engraved luggage ID tag,  travel accessories,  custom airport luggage tag,  bag identifier tag",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 2,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productbgColor": "#f8fafb",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1764143893309-335511468.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "45",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "Rekha",
+            "width": "285px",
+            "height": "38px",
+            "x": 161.74169921875,
+            "y": 308.0000228881836,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "11",
+            "name": "Enter Name",
+            "slug": "enter_name",
+            "required": true,
+            "_id": "6926b63bd766d9cb7c26f56a"
+          },
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "45",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "",
+              "letterSpacing": ""
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "Delhi",
+            "width": "286px",
+            "height": "35px",
+            "x": 159.88339233398438,
+            "y": 358.99996185302734,
+            "label": {
+              "id": "66f2713b8f22210629699501",
+              "name": "Address ",
+              "slug": "address",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "11",
+            "name": "Enter Address",
+            "slug": "enter_address",
+            "required": true,
+            "_id": "6926b63bd766d9cb7c26f56b"
+          },
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "45",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "",
+              "letterSpacing": ""
+            },
+            "id": 3,
+            "type": "customize",
+            "value": "9830000000",
+            "width": "284px",
+            "height": "43px",
+            "x": 157.99996948242188,
+            "y": 405.99996185302734,
+            "label": {
+              "id": "66eab1c64fef32e735f9e203",
+              "name": "Customer Name 2 ",
+              "slug": "customer_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "10",
+            "name": "Enter Phone",
+            "slug": "enter_phone",
+            "required": true,
+            "_id": "6926b63bd766d9cb7c26f56c"
+          }
+        ],
+        "_id": "6926b63bd766d9cb7c26f569"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productbgColor": "#f8fafb",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1764144278260-44326517.webp",
+        "inputFields": [],
+        "_id": "6926b496e88f6dab88650ac5"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productbgColor": "#f8fafb",
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1764144300808-344156204.webp",
+        "inputFields": [
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "45",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "Name",
+            "width": "285px",
+            "height": "38px",
+            "x": 160.74169921875,
+            "y": 307.0000228881836,
+            "label": {
+              "id": "66eab19d4fef32e735f9e1fa",
+              "name": "Customer Name 1",
+              "slug": "customer_name_1",
+              "status": true,
+              "softdelete": false,
+              "type": "Text "
+            },
+            "maxLength": "11",
+            "name": "Enter Name",
+            "slug": "enter_name",
+            "required": true,
+            "_id": "6926dabcd766d9cb7c275b2f"
+          },
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "45",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 2,
+            "type": "customize",
+            "value": "City/Sch",
+            "width": "286px",
+            "height": "35px",
+            "x": 158.88339233398438,
+            "y": 358.99996185302734,
+            "label": {
+              "id": "66f2713b8f22210629699501",
+              "name": "Address ",
+              "slug": "address",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "11",
+            "name": "Enter City or School",
+            "slug": "enter_city_or_school",
+            "required": true,
+            "_id": "6926dabcd766d9cb7c275b30"
+          },
+          {
+            "style": {
+              "color": "#f8fafb",
+              "fontSize": "45",
+              "fontFamily": "Roboto",
+              "fontWeight": "bold",
+              "textAlignment": "center",
+              "rotation": null,
+              "textType": "capitalize",
+              "letterSpacing": ""
+            },
+            "id": 3,
+            "type": "customize",
+            "value": "Phone/Cls",
+            "width": "284px",
+            "height": "43px",
+            "x": 158.99996948242188,
+            "y": 410.99996185302734,
+            "label": {
+              "id": "66eab1c64fef32e735f9e203",
+              "name": "Customer Name 2 ",
+              "slug": "customer_name_2",
+              "status": true,
+              "softdelete": false,
+              "type": "Text"
+            },
+            "maxLength": "10",
+            "name": "Enter Class or phone",
+            "slug": "enter_class_or_phone",
+            "required": true,
+            "_id": "6926dabcd766d9cb7c275b31"
+          }
+        ],
+        "_id": "6926dabcd766d9cb7c275b2e"
+      }
+    ],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-11-26T07:44:15.216Z",
+    "updatedAt": "2025-11-26T10:47:24.465Z"
+  }
+}

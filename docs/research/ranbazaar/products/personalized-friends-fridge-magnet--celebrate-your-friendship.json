@@ -1,0 +1,151 @@
+{
+  "url": "https://ranbazaar.com/product/personalized-friends-fridge-magnet--celebrate-your-friendship",
+  "product": {
+    "id": "6711e3ebc87b1d0506d2c497",
+    "name": "Personalized Friends Fridge Magnet – Celebrate Your Friendship",
+    "slug": "personalized-friends-fridge-magnet--celebrate-your-friendship",
+    "sku": "297",
+    "attributes": [],
+    "description": "<p>Celebrate the beautiful bond of friendship with our custom \"Forever Friends\" fridge magnet. Each magnet is meticulously handcrafted from high-quality air-dry clay and set on a sturdy MDF base, making it a delightful addition to your kitchen decor while honoring the special connections in your life.</p><h4>Product Details:</h4><ul><li><strong>Materials:</strong> Air-dry clay and MDF base</li><li><strong>Customization:</strong> Personalize with names, colors, and designs to create a heartfelt tribute to your friendship.</li></ul><p>This charming magnet is not just a decoration; it's a thoughtful gift for birthdays, holidays, or simply to express your appreciation for those dear to you. Each piece is unique, filled with love and memories.</p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "66c7260d6c4e3092c5129dea",
+      "name": "Kids Utilities",
+      "description": "Customizable key chains with unique designs—perfect for gifts or personal use.",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1729147311657-353538113.webp",
+      "slug": "kids_utilities",
+      "orderby": 22,
+      "showinmenu": {},
+      "warehouse": "670e074ffc748f51d4ee2684",
+      "settings": [],
+      "showOnHome": false,
+      "bannerstatus": true,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 550,
+    "sale": 430,
+    "weight": 70,
+    "productType": "customize",
+    "quantity": -1,
+    "images": [],
+    "metaTitle": "Personalized Friendship Fridge Magnet – A Special Gift for Best Friends.",
+    "metaDescription": "Celebrate your bond with a custom friends fridge magnet. Add names, memorable quotes, or fun designs to make it a perfect friendship gift.",
+    "metaTags": "personalized friends fridge magnet, custom friendship magnet, best friend fridge magnet, unique friendship gift,  best friends gift idea, customized fridge magnet, friendship quote magnet.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 1,
+    "defaultImage": 0,
+    "defaultSample": 1,
+    "customizeDetails": [
+      {
+        "name": "Sample_1",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936822922-465637104.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "34",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "381px",
+            "height": "",
+            "x": 118,
+            "y": 523,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "67125196116b3314a719b68b"
+          }
+        ],
+        "_id": "67125196116b3314a719b68a"
+      },
+      {
+        "name": "Sample_2",
+        "customerImg": [],
+        "productImg": "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1736936823142-951648253.webp",
+        "inputFields": [
+          {
+            "style": {
+              "letterSpacing": "",
+              "color": "#000000",
+              "fontSize": "34",
+              "fontFamily": "Gilroy Extrabold",
+              "fontWeight": "bolder",
+              "textAlignment": "center",
+              "rotation": 0,
+              "textType": "capitalize"
+            },
+            "id": 1,
+            "type": "customize",
+            "value": "YOUR NAME",
+            "width": "389px",
+            "height": "",
+            "x": 107,
+            "y": 529,
+            "label": {
+              "id": "66c85d9a5182e1dca469d5a9",
+              "name": "Kid Name",
+              "slug": "kid_name",
+              "status": true,
+              "softdelete": false,
+              "type": "text"
+            },
+            "maxLength": "10",
+            "name": "ENTER YOUR NAME ",
+            "slug": "enter_your_name",
+            "required": true,
+            "_id": "6712519b116b3314a719b7c0"
+          }
+        ],
+        "_id": "6712519b116b3314a719b7bf"
+      }
+    ],
+    "avgRating": 5,
+    "totalStars": 5,
+    "totalReview": 1,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2024-10-18T04:28:27.072Z",
+    "updatedAt": "2025-06-20T10:11:57.591Z"
+  }
+}

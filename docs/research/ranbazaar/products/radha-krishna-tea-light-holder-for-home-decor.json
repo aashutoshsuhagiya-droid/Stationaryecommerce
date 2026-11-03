@@ -1,0 +1,76 @@
+{
+  "url": "https://ranbazaar.com/product/radha-krishna-tea-light-holder-for-home-decor",
+  "product": {
+    "id": "68b69ed74a98e03e5d1bf378",
+    "name": "Radha Krishna Tea Light Holder – Wooden Spiritual Candle Decor.",
+    "slug": "radha-krishna-tea-light-holder-for-home-decor",
+    "sku": "456",
+    "attributes": [],
+    "description": "<p><strong>Size: </strong>27 x 19 x 10 cm</p><p><strong>Weight: </strong>660 g</p><p><strong>Material: </strong>Wooden with golden finish</p><p><strong>Radha Krishna showpiece with lotus-shaped tea-light holder.</strong></p><p><strong>Adds spiritual charm to any space.</strong></p><p><strong>Ideal for temples, meditation, living rooms.</strong></p><p><strong>Great gift for Diwali or housewarmings.</strong></p>",
+    "showsimilarproductions": true,
+    "tax_class": {
+      "id": "66c73498ed2943f8aa3a0215",
+      "name": "Tax (18%)",
+      "percentage": "18",
+      "status": true
+    },
+    "categories": {
+      "id": "68b173c47e9eb632e573363e",
+      "name": "Decorative Items",
+      "description": "Birthday Gifts",
+      "image": "https://dyuh5x5qbqu9p.cloudfront.net/category/1756713520792-494942733.png",
+      "slug": "birthday_gifts",
+      "orderby": 7,
+      "showinmenu": {},
+      "warehouse": "670e0684fc748f51d4ee2669",
+      "settings": [
+        "66e2a3cdce2eda5fd74e0970"
+      ],
+      "showOnHome": true,
+      "bannerstatus": false,
+      "status": true,
+      "autoFontSize": false
+    },
+    "price": {},
+    "mrp": 1499,
+    "sale": 1199,
+    "weight": 660,
+    "productType": "normal",
+    "quantity": -1,
+    "images": [
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756811276836-959655420.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756811276837-931312213.webp",
+      "https://dyuh5x5qbqu9p.cloudfront.net/productimages/1756811277238-802372079.webp"
+    ],
+    "metaTitle": "Wooden Radha Krishna Tea Light Candle Holder – Enhance Your Space.",
+    "metaDescription": "Beautiful Radha Krishna wooden tea light candle holder with lotus shape, perfect for meditation corners, temples, and festive gifting like housewarmings.",
+    "metaTags": "radha Krishna tea light holder, wooden tea light candle holder, spiritual home decor, Radha Krishna decor, lotus tea light holder, meditation candle holder, Diwali gift ideas, housewarming gifts, handmade wooden candle holder, religious candle holder, Radha Krishna showpiece, spiritual candle stand, temple decor, wooden candle holder, radha Krishna gift item.",
+    "metaSchema": "",
+    "hotSelling": false,
+    "softDelete": false,
+    "status": true,
+    "backordering": true,
+    "orderby": 11,
+    "defaultImage": 0,
+    "defaultSample": 0,
+    "customizeDetails": [],
+    "avgRating": null,
+    "totalStars": 0,
+    "totalReview": 0,
+    "vendor": "66c732b9ed2943f8aa3a01da",
+    "showOnHome": false,
+    "package": {
+      "id": "66cc0c83ba51cc6a6b919054",
+      "name": "Customize Cap ",
+      "length": 14,
+      "width": 13,
+      "height": 16,
+      "status": true,
+      "softdelete": false
+    },
+    "rotate": false,
+    "moreinputs": false,
+    "createdAt": "2025-09-02T07:37:59.903Z",
+    "updatedAt": "2025-09-02T11:11:15.766Z"
+  }
+}
