@@ -16,6 +16,7 @@ import {
 import {
   EZPAC_SHOPIFY_PRODUCT_MAPPING,
 } from "../../src/lib/ezpac-product-mapping";
+import { EZPAC_FEATURE_BULLET_LABELS } from "../../src/lib/ezpac-feature-bullets";
 import {
   findRanBazaarCategoryMatch,
   flattenRanBazaarTaxonomy,
@@ -67,12 +68,73 @@ interface ProbeFinding {
   details: string[];
 }
 
+interface PriceFloorMismatch {
+  handle: string;
+  mappingPriceRupees: number;
+  livePricePaise: number;
+}
+
 interface SourceResult {
   source: ExternalCatalogSource;
   products: ImportedExternalProduct[];
   failures: FetchFailure[];
   probe: ProbeFinding;
   unmappedEzpacHandles: string[];
+  priceFloorMismatches?: PriceFloorMismatch[];
+}
+
+/**
+ * Applies the one-time EzPac mapping prefills (structured copy, material, feature
+ * labels) to a mapped product. Price prefills are sanity-checked only — the live
+ * price always wins (0 means quote-only on the source site).
+ */
+function applyEzpacPrefills(product: ImportedExternalProduct): PriceFloorMismatch | null {
+  const mapping = EZPAC_SHOPIFY_PRODUCT_MAPPING.find((entry) => entry.shopifyHandle === product.sourceHandle);
+  if (!mapping) return null;
+  const prefills = mapping.prefills;
+  if (prefills.materialHint) product.material = prefills.materialHint;
+  const structured = {
+    ...(prefills.intro ? { intro: prefills.intro } : {}),
+    ...(prefills.bestFor?.length ? { bestFor: [...prefills.bestFor] } : {}),
+    ...(prefills.featureBullets?.length ? { featureBullets: [...prefills.featureBullets] } : {}),
+  };
+  if (Object.keys(structured).length) product.structuredDescription = structured;
+  if (prefills.featureBullets?.length) {
+    product.features = prefills.featureBullets
+      .map((bullet) => EZPAC_FEATURE_BULLET_LABELS[bullet])
+      .filter((label): label is string => Boolean(label));
+  }
+  // The source's whole value proposition for packaging types is custom branding.
+  if (mapping.presetId) product.customizable = true;
+  return prefills.priceRupees > 0 && product.basePricePaise === 0
+    ? { handle: mapping.shopifyHandle, mappingPriceRupees: prefills.priceRupees, livePricePaise: product.basePricePaise }
+    : null;
+}
+
+function applyEzpacPrefillsToAll(products: ImportedExternalProduct[]): PriceFloorMismatch[] {
+  return products.flatMap((product) => {
+    const mismatch = applyEzpacPrefills(product);
+    return mismatch ? [mismatch] : [];
+  });
+}
+
+function fidelitySummary(products: readonly ImportedExternalProduct[]) {
+  return {
+    productsWithPersonalizationFields: products.filter((p) => (p.personalizationFields?.length ?? 0) > 0).length,
+    personalizationFieldsTotal: products.reduce((n, p) => n + (p.personalizationFields?.length ?? 0), 0),
+    photoSlotProducts: products.flatMap((p) => (p.skippedPhotoSlots ?? 0) > 0 ? [{ externalKey: p.externalKey, slots: p.skippedPhotoSlots }] : []),
+    personalizationOverflow: products.flatMap((p) => (p.personalizationOverflow ?? 0) > 0 ? [{ externalKey: p.externalKey, overflow: p.personalizationOverflow }] : []),
+    bulkTierProducts: products.filter((p) => (p.bulkPriceTiers?.length ?? 0) > 0).length,
+    inventoryVariants: products.reduce((n, p) => n + p.variants.filter((v) => v.inventoryPolicy === "CONTINUE" && (v.onHand ?? 0) > 0).length, 0),
+    madeToOrderVariants: products.reduce((n, p) => n + p.variants.filter((v) => v.inventoryPolicy === "MADE_TO_ORDER").length, 0),
+    taxedProducts: products.filter((p) => (p.taxRateBasisPoints ?? 0) > 0).length,
+    seoTitleProducts: products.filter((p) => p.seoTitle).length,
+    seoDescriptionProducts: products.filter((p) => p.seoDescription).length,
+    seoTruncatedProducts: products.flatMap((p) => p.seoTruncated ? [p.externalKey] : []),
+    materialProducts: products.filter((p) => p.material).length,
+    structuredDescriptionProducts: products.filter((p) => p.structuredDescription).length,
+    customizableProducts: products.filter((p) => p.customizable || (p.personalizationFields?.length ?? 0) > 0).length,
+  };
 }
 
 interface ExistingImportedProduct {
@@ -102,6 +164,8 @@ interface SourceRunSummary {
   updated: number;
   failed: FetchFailure[];
   unmappedEzpacHandles: string[];
+  fidelity: ReturnType<typeof fidelitySummary>;
+  priceFloorMismatches: PriceFloorMismatch[];
 }
 
 function usage(message?: string): never {
@@ -179,11 +243,13 @@ function ezpacMappingCoverage(products: readonly ImportedExternalProduct[]) {
 async function fetchEzpac(offline: boolean): Promise<SourceResult> {
   if (offline) {
     const products = sourceProductsFromEzpacSnapshot();
+    const priceFloorMismatches = applyEzpacPrefillsToAll(products);
     return {
       source: "ezpac",
       products,
       failures: [],
       unmappedEzpacHandles: ezpacMappingCoverage(products),
+      priceFloorMismatches,
       probe: {
         source: "ezpac",
         details: [`Offline snapshot contains ${products.length} products. Live endpoint was not contacted.`],
@@ -214,11 +280,13 @@ async function fetchEzpac(offline: boolean): Promise<SourceResult> {
       }),
     });
   }
+  const priceFloorMismatches = applyEzpacPrefillsToAll(products);
   return {
     source: "ezpac",
     products,
     failures: [],
     unmappedEzpacHandles,
+    priceFloorMismatches,
     probe: {
       source: "ezpac",
       details: [
@@ -561,12 +629,32 @@ async function upsertImportedProduct(
     if (!categoryId) throw new Error(`No category could be resolved for ${product.externalKey}.`);
     const now = new Date();
     const existingMetadata = objectRecord(existing?.metadata);
+    const existingConfigurator = objectRecord(existingMetadata.configurator);
+    const quantityTiers = (product.bulkPriceTiers ?? []).map((tier) => ({
+      minimum: tier.minimum,
+      priceDelta: (tier.pricePaise - product.basePricePaise) / 100,
+    }));
+    const configurator = {
+      // 3D enablement keys (allow3D/previewTemplate/productModel/visualization) are owned
+      // by the visualization publish flow; re-imports must never clobber them.
+      ...existingConfigurator,
+      allow2D: true,
+      allow3D: product.source === "ranbazaar" ? false : existingConfigurator.allow3D === true,
+      quantityMin: 1,
+      quantityMax: 100,
+      quantityTiers,
+      setupCharge: 0,
+      printAreas: [{ id: "primary", label: "Primary print area" }],
+      ...(product.structuredDescription ? { structuredDescription: product.structuredDescription } : {}),
+    };
     const metadata = asJson({
       ...existingMetadata,
       importSource: product.source,
       externalId: product.externalId,
       externalKey: product.externalKey,
       externalSlug: slug,
+      configurator,
+      ...(product.features?.length ? { features: product.features } : {}),
     });
     const baseSku = product.variants[0]?.sku ?? sourceSkuPrefix(product.source, product.externalId).concat("1");
     const data = {
@@ -579,7 +667,12 @@ async function upsertImportedProduct(
       description: product.description,
       basePricePaise: product.basePricePaise,
       compareAtPricePaise: product.compareAtPricePaise,
-      material: null,
+      customizable: product.customizable === true || (product.personalizationFields?.length ?? 0) > 0,
+      material: product.material?.slice(0, 160) ?? null,
+      taxRateBasisPoints: product.taxRateBasisPoints ?? 0,
+      taxCode: product.taxCode ?? null,
+      seoTitle: product.seoTitle ?? null,
+      seoDescription: product.seoDescription ?? null,
       dimensions: product.dimensions ? asJson(product.dimensions) : Prisma.DbNull,
       packSize: 1,
       tags: product.tags,
@@ -615,7 +708,7 @@ async function upsertImportedProduct(
       if (current && current.productId !== saved.id) {
         throw new Error(`Variant SKU collision for ${variant.sku}; it belongs to a different product.`);
       }
-      await tx.productVariant.upsert({
+      const savedVariant = await tx.productVariant.upsert({
         where: { sku: variant.sku },
         update: {
           productId: saved.id,
@@ -640,11 +733,52 @@ async function upsertImportedProduct(
           isActive: variant.isActive,
           sortOrder: variant.sortOrder,
         },
+        select: { id: true },
       });
+      if (variant.inventoryPolicy === "CONTINUE" && typeof variant.onHand === "number" && variant.onHand > 0) {
+        await tx.inventory.upsert({
+          where: { variantId: savedVariant.id },
+          update: { quantityOnHand: variant.onHand, reorderPoint: 5 },
+          create: { variantId: savedVariant.id, quantityOnHand: variant.onHand, reorderPoint: 5 },
+        });
+      } else {
+        await tx.inventory.deleteMany({ where: { variantId: savedVariant.id } });
+      }
     }
     await tx.productVariant.updateMany({
       where: { productId: saved.id, sku: { startsWith: sourceSkuPrefix(product.source, product.externalId) }, ...(desiredSkus.size ? { sku: { startsWith: sourceSkuPrefix(product.source, product.externalId), notIn: [...desiredSkus] } } : {}) },
       data: { isActive: false },
+    });
+
+    const desiredFields = product.personalizationFields ?? [];
+    for (const field of desiredFields) {
+      await tx.productPersonalizationField.upsert({
+        where: { productId_key: { productId: saved.id, key: field.key } },
+        update: {
+          label: field.label,
+          inputType: field.inputType,
+          isRequired: field.required,
+          maxLength: field.maxLength,
+          validation: field.validation ? asJson(field.validation) : Prisma.DbNull,
+          sortOrder: field.sortOrder,
+        },
+        create: {
+          productId: saved.id,
+          key: field.key,
+          label: field.label,
+          inputType: field.inputType,
+          isRequired: field.required,
+          maxLength: field.maxLength,
+          validation: field.validation ? asJson(field.validation) : Prisma.DbNull,
+          sortOrder: field.sortOrder,
+        },
+      });
+    }
+    await tx.productPersonalizationField.deleteMany({
+      where: {
+        productId: saved.id,
+        ...(desiredFields.length ? { key: { notIn: desiredFields.map((field) => field.key) } } : {}),
+      },
     });
     return saved;
   }, { maxWait: 15000, timeout: 60000 });
@@ -748,7 +882,16 @@ async function main() {
           }
         }
       }
-      summaries.push({ source: result.source, discovered: result.products.length, created, updated, failed: failures, unmappedEzpacHandles: result.unmappedEzpacHandles });
+      summaries.push({
+        source: result.source,
+        discovered: result.products.length,
+        created,
+        updated,
+        failed: failures,
+        unmappedEzpacHandles: result.unmappedEzpacHandles,
+        fidelity: fidelitySummary(result.products),
+        priceFloorMismatches: result.priceFloorMismatches ?? [],
+      });
     }
     printPlan(rows);
     const plan = {
@@ -762,6 +905,7 @@ async function main() {
     for (const summary of summaries) {
       console.info(`${summary.source}: discovered ${summary.discovered}, created ${summary.created}, updated ${summary.updated}, failed ${summary.failed.length}.`);
       summary.unmappedEzpacHandles.forEach((handle) => console.warn(`UNMAPPED EzPac handle: ${handle}`));
+      summary.priceFloorMismatches.forEach((mismatch) => console.warn(`PRICE FLOOR MISMATCH ${mismatch.handle}: mapping says ₹${mismatch.mappingPriceRupees}, live price is ${mismatch.livePricePaise} paise (live wins).`));
       summary.failed.forEach((failure) => console.error(`FAILED ${failure.source} · ${failure.slug} · ${failure.url} · ${failure.reason}`));
     }
     console.info(`Plan written to ${resolve(PLAN_PATH)}.`);

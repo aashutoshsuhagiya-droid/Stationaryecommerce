@@ -248,18 +248,31 @@ export interface SearchResult {
   total: number;
 }
 
-export function searchCatalog(rawQuery: string, limit = 8): SearchResult {
+export interface SearchableCatalog {
+  products: Product[];
+  categories: Category[];
+}
+
+/**
+ * Pure fuzzy search over an explicit catalog. Defaults to the static demo data
+ * for backwards compatibility; the API route passes the runtime catalog.
+ */
+export function searchCatalog(
+  rawQuery: string,
+  limit = 8,
+  catalog: SearchableCatalog = { products, categories },
+): SearchResult {
   const query = normalize(rawQuery);
   if (!query) {
     return {
       products: [],
-      categories: categories.filter((category) => category.featured).slice(0, limit),
+      categories: catalog.categories.filter((category) => category.featured).slice(0, limit),
       suggestions: ["name slips", "waterproof labels", "school label set"],
       total: 0,
     };
   }
 
-  const scoredProducts = products
+  const scoredProducts = catalog.products
     .map((product) => ({ product, score: productSearchScore(product, query) }))
     .filter(({ score }) => score > 0)
     .sort((a, b) => b.score - a.score || a.product.name.localeCompare(b.product.name));
@@ -268,7 +281,7 @@ export function searchCatalog(rawQuery: string, limit = 8): SearchResult {
     .slice(0, limit)
     .map(({ product }) => product);
 
-  const matchingCategories = categories
+  const matchingCategories = catalog.categories
     .filter((category) =>
       normalize(`${category.name} ${category.description} ${category.slug}`).includes(query),
     )

@@ -23,6 +23,22 @@ export interface ImportedVariant {
   sortOrder: number;
 }
 
+export interface ImportedPersonalizationField {
+  key: string;
+  label: string;
+  inputType: "text";
+  required: boolean;
+  maxLength: number;
+  validation: Record<string, unknown> | null;
+  sortOrder: number;
+}
+
+export interface ImportedStructuredDescription {
+  intro?: string;
+  bestFor?: string[];
+  featureBullets?: string[];
+}
+
 export interface ImportedExternalProduct {
   source: ExternalCatalogSource;
   externalId: string;
@@ -42,6 +58,21 @@ export interface ImportedExternalProduct {
   customizable?: boolean;
   /** Absolute bulk price breaks inherited from the source ({quantity: price}). */
   bulkPriceTiers?: Array<{ minimum: number; pricePaise: number }>;
+  /** Source customize text inputs, in on-page order, capped at the admin schema's 20. */
+  personalizationFields?: ImportedPersonalizationField[];
+  /** Source photo-upload slots the storefront studio cannot render yet (report-only). */
+  skippedPhotoSlots?: number;
+  /** Source text inputs beyond the 20-field admin cap (report-only). */
+  personalizationOverflow?: number;
+  taxRateBasisPoints?: number;
+  taxCode?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  /** Source SEO copy exceeded our column limits and was sliced (report-only). */
+  seoTruncated?: boolean;
+  material?: string | null;
+  structuredDescription?: ImportedStructuredDescription;
+  features?: string[];
 }
 
 type UnknownRecord = Record<string, unknown>;
@@ -226,7 +257,8 @@ export function mapEzpacProduct(product: EzpacSourceProduct): ImportedExternalPr
         pricePaise,
         compareAtPricePaise: priceToPaise(raw.compare_at_price),
         weightGrams: integerValue(raw.grams),
-        inventoryPolicy: pricePaise === 0 ? "MADE_TO_ORDER" : "DENY",
+        // EzPac sells every product as custom-manufactured packaging with no stock model.
+        inventoryPolicy: "MADE_TO_ORDER",
         isActive: availability(raw.available),
         sortOrder: index,
       };
@@ -337,6 +369,10 @@ function ranbazaarVariants(record: UnknownRecord, sourceId: string, title: strin
   const rawVariants = firstValue(record, ["variants", "product_variants", "productVariants"]);
   const hasExplicitVariants = Array.isArray(rawVariants) && rawVariants.length > 0;
   const entries = hasExplicitVariants ? rawVariants : [record];
+
+  // Source quantity for stock parity: >0 → CONTINUE, 0 or -1 → MADE_TO_ORDER
+  const sourceQuantity = integerValue(firstValue(record, ["quantity", "stock", "stock_quantity", "qty"]));
+
   return entries.map((raw, index): ImportedVariant => {
     const variant = objectRecord(raw);
     const pricePaise = priceOrZero(firstValue(variant, ["sale", "price", "selling_price", "sellingPrice", "sale_price", "salePrice", "discountPrice"]));
@@ -353,6 +389,11 @@ function ranbazaarVariants(record: UnknownRecord, sourceId: string, title: strin
     const optionValues = Object.keys(parsedOptions).length > 0
       ? parsedOptions
       : { title: variantName };
+
+    // Stock parity: quantity > 0 → CONTINUE with onHand, else MADE_TO_ORDER
+    const inventoryPolicy = (sourceQuantity !== null && sourceQuantity > 0) ? "CONTINUE" : "MADE_TO_ORDER";
+    const onHand = (sourceQuantity !== null && sourceQuantity > 0) ? sourceQuantity : undefined;
+
     return {
       sku: externalSku("ranbazaar", sourceId, index + 1),
       name: variantName,
@@ -360,12 +401,93 @@ function ranbazaarVariants(record: UnknownRecord, sourceId: string, title: strin
       pricePaise,
       compareAtPricePaise: priceToPaise(firstValue(variant, ["mrp", "MRP", "compare_at_price", "compareAtPrice", "original_price", "originalPrice"])),
       weightGrams: integerValue(firstValue(variant, ["weightGrams", "weight_grams", "grams", "weight"])),
-      inventoryPolicy: pricePaise === 0 ? "MADE_TO_ORDER" : "DENY",
+      inventoryPolicy,
+      onHand,
       isActive: availability(firstValue(variant, ["available", "isAvailable", "inStock", "in_stock", "availability", "stock_status"])),
       sortOrder: index,
     };
   });
 }
+
+/** The admin catalog schema accepts at most 20 configuration fields per product. */
+export const PERSONALIZATION_FIELD_LIMIT = 20;
+/** Practical ceiling for personalization text on our print surfaces. */
+export const PERSONALIZATION_MAX_LENGTH = 32;
+
+function ranbazaarPersonalizationFields(record: UnknownRecord): {
+  fields: ImportedPersonalizationField[];
+  skippedPhotoSlots: number;
+  overflow: number;
+} {
+  const details = Array.isArray(record.customizeDetails) ? record.customizeDetails : [];
+  const fields: ImportedPersonalizationField[] = [];
+  const usedKeys = new Set<string>();
+  let skippedPhotoSlots = 0;
+  let overflow = 0;
+  let position = 0;
+  for (const rawDetail of details) {
+    const detail = objectRecord(rawDetail);
+    skippedPhotoSlots += Array.isArray(detail.customerImg) ? detail.customerImg.length : 0;
+    const inputFields = Array.isArray(detail.inputFields) ? detail.inputFields : [];
+    for (const rawField of inputFields) {
+      const field = objectRecord(rawField);
+      const name = stringValue(field.name);
+      const slug = stringValue(field.slug);
+      if (!name && !slug) continue;
+      position += 1;
+      if (fields.length >= PERSONALIZATION_FIELD_LIMIT) {
+        overflow += 1;
+        continue;
+      }
+      const slugged = slugifyCatalogTitle(slug ?? "") || slugifyCatalogTitle(name ?? "") || `field-${position}`;
+      // Admin field keys must start with a letter; the source label keeps its own spelling.
+      const safeBase = (/^[a-z]/.test(slugged) ? slugged : `field-${slugged}`).slice(0, 76);
+      let key = safeBase;
+      for (let suffix = 2; usedKeys.has(key); suffix += 1) key = `${safeBase}-${suffix}`;
+      usedKeys.add(key);
+      const style = objectRecord(field.style);
+      const fontId = stringValue(style.fontFamily);
+      const color = stringValue(style.color);
+      const fontSizeText = stringValue(style.fontSize);
+      const fontSize = fontSizeText !== null ? Number(fontSizeText) : Number.NaN;
+      const validation: Record<string, unknown> = {
+        ...(fontId ? { fontId } : {}),
+        ...(color ? { color } : {}),
+        ...(Number.isFinite(fontSize) && fontSize > 0 ? { fontSize } : {}),
+      };
+      fields.push({
+        key,
+        label: (name ?? slug ?? key).slice(0, 120),
+        inputType: "text",
+        required: true,
+        maxLength: PERSONALIZATION_MAX_LENGTH,
+        validation: Object.keys(validation).length ? validation : null,
+        sortOrder: fields.length,
+      });
+    }
+  }
+  return { fields, skippedPhotoSlots, overflow };
+}
+
+function ranbazaarBulkTiers(record: UnknownRecord): Array<{ minimum: number; pricePaise: number }> {
+  const priceMap = objectRecord(record.price);
+  const tiers: Array<{ minimum: number; pricePaise: number }> = [];
+  for (const [quantity, value] of Object.entries(priceMap)) {
+    const minimum = integerValue(quantity);
+    const pricePaise = priceToPaise(value);
+    if (minimum !== null && minimum >= 1 && pricePaise !== null) tiers.push({ minimum, pricePaise });
+  }
+  return tiers.sort((left, right) => left.minimum - right.minimum);
+}
+
+function ranbazaarTax(record: UnknownRecord): { taxRateBasisPoints: number; taxCode: string | null } {
+  const percentage = integerValue(stringValue(objectRecord(record.tax_class).percentage));
+  if (percentage === null || percentage <= 0) return { taxRateBasisPoints: 0, taxCode: null };
+  return { taxRateBasisPoints: percentage * 100, taxCode: `IN-GST-${percentage}` };
+}
+
+const SEO_TITLE_LIMIT = 160;
+const SEO_DESCRIPTION_LIMIT = 320;
 
 /** Maps a parsed Ranbazaar product JSON record (from API or __NEXT_DATA__). */
 export function mapRanbazaarProductRecord(rawRecord: unknown, sourceSlug?: string): ImportedExternalProduct {
@@ -386,6 +508,10 @@ export function mapRanbazaarProductRecord(rawRecord: unknown, sourceSlug?: strin
   const pkg = firstValue(record, ["package", "packageDetails"]);
   const specs = sourceSpecs(record);
   const dimensions = (specs || pkg) ? { ...(specs ?? {}), ...(pkg ? { package: pkg } : {}) } : null;
+  const personalization = ranbazaarPersonalizationFields(record);
+  const { taxRateBasisPoints, taxCode } = ranbazaarTax(record);
+  const rawSeoTitle = stringValue(record.metaTitle);
+  const rawSeoDescription = stringValue(record.metaDescription);
 
   return {
     source: "ranbazaar",
@@ -401,6 +527,16 @@ export function mapRanbazaarProductRecord(rawRecord: unknown, sourceSlug?: strin
     compareAtPricePaise: baseVariant?.compareAtPricePaise ?? null,
     categoryHints,
     dimensions,
+    customizable: personalization.fields.length > 0,
+    personalizationFields: personalization.fields,
+    skippedPhotoSlots: personalization.skippedPhotoSlots,
+    personalizationOverflow: personalization.overflow,
+    bulkPriceTiers: ranbazaarBulkTiers(record),
+    taxRateBasisPoints,
+    taxCode,
+    seoTitle: rawSeoTitle ? rawSeoTitle.slice(0, SEO_TITLE_LIMIT) : null,
+    seoDescription: rawSeoDescription ? rawSeoDescription.slice(0, SEO_DESCRIPTION_LIMIT) : null,
+    seoTruncated: (rawSeoTitle?.length ?? 0) > SEO_TITLE_LIMIT || (rawSeoDescription?.length ?? 0) > SEO_DESCRIPTION_LIMIT,
   };
 }
 

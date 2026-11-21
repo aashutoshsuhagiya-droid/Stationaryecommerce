@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="referrer" content="never">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Too many requests</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background: #F1F1F1;
+        font-size: 62.5%;
+        color: #303030;
+        min-height: 100%;
+      }
+      body {
+        padding: 0;
+        margin: 0;
+        line-height: 2.7rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 400;
+        margin: 0 0 1.4rem 0;
+      }
+      p {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+      .page {
+        padding: 4rem 3.5rem;
+        margin: 0;
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+      .text-container--main {
+        flex: 1;
+        display: flex;
+        align-items: start;
+        margin-bottom: 1.6rem;
+      }
+      @media all and (min-width:500px) {
+        .text-container--main {
+          align-items: center;
+        }
+        .page {
+          padding: 7.5rem 10.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="status-error status-code-429">
+    <div class="page">
+      <div class="text-container text-container--main">
+        <div>
+          <h1>Too many requests</h1>
+          <p>You have sent too many requests. Try again soon.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

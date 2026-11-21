@@ -1,0 +1,460 @@
+{
+  "generatedAt": "2026-11-21T17:20:14.390Z",
+  "counts": {
+    "skipped-ambiguous": 30,
+    "already-linked": 32,
+    "published": 2
+  },
+  "rows": [
+    {
+      "slug": "a4-flyer",
+      "handle": "a4-flyer",
+      "presetId": "a4-flyer",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset a4-flyer does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "brand-ziplock-pouch",
+      "handle": "25-grams-ziplock-pouch",
+      "presetId": "brand-ziplock-pouch",
+      "outcome": "already-linked",
+      "templateId": "cmwqo0b7300022cvg8i69ib6z"
+    },
+    {
+      "slug": "brownie-box",
+      "handle": "brownie-box",
+      "presetId": "brownie-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo0j5e00052cvgajmkx8jp"
+    },
+    {
+      "slug": "business-card",
+      "handle": "business-card",
+      "presetId": "business-card",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset business-card does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "cake-box-with-handle",
+      "handle": "cake-box-with-handle-box-with-handle",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "cereal-box",
+      "handle": "cereal-box",
+      "presetId": "cereal-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo0s8j00082cvgu6wstvka"
+    },
+    {
+      "slug": "chocolate-box",
+      "handle": "sweet-box",
+      "presetId": "chocolate-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo10eo000b2cvg43fo9nff"
+    },
+    {
+      "slug": "chocolate-pack-box",
+      "handle": "chocolate-pack-box",
+      "presetId": "chocolate-pack-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo19m3000e2cvgerol19n1"
+    },
+    {
+      "slug": "chocolate-triangle-box",
+      "handle": "choclate-triangle-box",
+      "presetId": "chocolate-triangle-box",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset chocolate-triangle-box does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "cosmetic-beauty-box-with-inside-holder",
+      "handle": "cosmetic-box-with-inside-holder",
+      "presetId": "cosmetic-beauty-box-with-inside-holder",
+      "outcome": "already-linked",
+      "templateId": "cmwqo1hju000h2cvg2bo70vnk"
+    },
+    {
+      "slug": "cosmetic-beauty-brand-box",
+      "handle": "cosmetic-bottle-box",
+      "presetId": "cosmetic-beauty-brand-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo1p1m000k2cvgv4vayk91"
+    },
+    {
+      "slug": "custom-branded-laminated-carry-bag",
+      "handle": "laminated-shopping-bags-with-thread-handle",
+      "presetId": "custom-branded-laminated-carry-bag",
+      "outcome": "already-linked",
+      "templateId": "cmwqo1x72000n2cvgpxyodos2"
+    },
+    {
+      "slug": "d-cut-paper-bag",
+      "handle": "bags-with-hand-handle",
+      "presetId": "d-cut-paper-bag",
+      "outcome": "already-linked",
+      "templateId": "cmwqo250h000q2cvgn8r4xxi9"
+    },
+    {
+      "slug": "d2c-mailer-bag",
+      "handle": "unique-sample-product-box",
+      "presetId": "d2c-mailer-bag",
+      "outcome": "published",
+      "model": "paper-bag",
+      "templateId": "cmwqoaxk30002i4vgpvra6g02"
+    },
+    {
+      "slug": "display-tray",
+      "handle": "display-tray",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "flower-box",
+      "handle": "flower-box",
+      "presetId": "flower-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo2jlp000v2cvgv2627qgb"
+    },
+    {
+      "slug": "folded-business-card",
+      "handle": "folded-business-card",
+      "presetId": "folded-business-card",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset folded-business-card does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "food-delivery-box",
+      "handle": "food-delievery-box",
+      "presetId": "food-delivery-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo2stc000y2cvg98xpaxib"
+    },
+    {
+      "slug": "food-parcel-box",
+      "handle": "food-parcel-box",
+      "presetId": "food-parcel-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo304o00112cvg7nqhr0x1"
+    },
+    {
+      "slug": "food-tray",
+      "handle": "food-tray",
+      "presetId": "food-tray",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset food-tray does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "four-fold-brochure",
+      "handle": "brochure-four-fold",
+      "presetId": "four-fold-brochure",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset four-fold-brochure does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "gift-box",
+      "handle": "gift-box",
+      "presetId": "gift-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo37ux00142cvgvej2a4zf"
+    },
+    {
+      "slug": "gift-box-with-window",
+      "handle": "gift-box-with-window",
+      "presetId": "gift-box-with-window",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset gift-box-with-window does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "hang-tags",
+      "handle": "hang-tags",
+      "presetId": "hang-tags",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset hang-tags does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "hanging-box",
+      "handle": "box-with-hanging-tab",
+      "presetId": "hanging-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo3flq00172cvgqazmufzj"
+    },
+    {
+      "slug": "middle-hanging-box",
+      "handle": "middle-hanging-box",
+      "presetId": "middle-hanging-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo3pbf001a2cvgw0un6s66"
+    },
+    {
+      "slug": "mithai-box-top-bottom-style",
+      "handle": "sweet-box-top-bottom-style",
+      "presetId": "mithai-box-top-bottom-style",
+      "outcome": "already-linked",
+      "templateId": "cmwqo3w8p001d2cvg44grei22"
+    },
+    {
+      "slug": "mobile-cover-box",
+      "handle": "mobile-cover-box",
+      "presetId": "mobile-cover-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo45dh001g2cvgsp8d048r"
+    },
+    {
+      "slug": "money-cover-shagun-envelope",
+      "handle": "money-cover-envelope",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "paan-box",
+      "handle": "paan-box",
+      "presetId": "paan-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo4dfe001j2cvgdbyrjxf4"
+    },
+    {
+      "slug": "parcel-bag",
+      "handle": "parcel-bag-with-handle",
+      "presetId": "parcel-bag",
+      "outcome": "already-linked",
+      "templateId": "cmwqo4o2q001m2cvgxesk2b45"
+    },
+    {
+      "slug": "pen-set-box",
+      "handle": "pen-set-box",
+      "presetId": "pen-set-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo4vy8001p2cvgw0id3zkm"
+    },
+    {
+      "slug": "perfume-box",
+      "handle": "perfume-box",
+      "presetId": "perfume-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo53a8001s2cvg13d9pfgt"
+    },
+    {
+      "slug": "pillow-box",
+      "handle": "pillow-box",
+      "presetId": "pillow-box",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset pillow-box does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "pooja-box",
+      "handle": "pooja-box",
+      "presetId": "pooja-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo5bfu001v2cvgcyct2il5"
+    },
+    {
+      "slug": "popcorn-box",
+      "handle": "popcorn-box",
+      "presetId": "popcorn-box",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset popcorn-box does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "rectangle-square-stickers",
+      "handle": "stickers",
+      "presetId": "stickers",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset stickers does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "round-stickers",
+      "handle": "round-stickers",
+      "presetId": "stickers",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset stickers does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "sachet-box",
+      "handle": "sachet-box",
+      "presetId": "sachet-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo5k0v001y2cvgkpvnzml5"
+    },
+    {
+      "slug": "side-open-box",
+      "handle": "side-open-tuck-in-box",
+      "presetId": "side-open-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo5rel00212cvgu99pcln8"
+    },
+    {
+      "slug": "slider-box-thick-wall",
+      "handle": "slider-style-box",
+      "presetId": "slider-box-thick-wall",
+      "outcome": "already-linked",
+      "templateId": "cmwqo5zwd00242cvg0xazeghs"
+    },
+    {
+      "slug": "slider-box-thin-wall",
+      "handle": "slider-chocolate-box",
+      "presetId": "slider-box-thin-wall",
+      "outcome": "already-linked",
+      "templateId": "cmwqo68ep00272cvghms0di43"
+    },
+    {
+      "slug": "snack-box",
+      "handle": "snack-box",
+      "presetId": "snack-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo6g0i002a2cvgskrpczrl"
+    },
+    {
+      "slug": "soap-box",
+      "handle": "soap-box",
+      "presetId": "soap-box",
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwqobdih0005i4vgps8hjai2"
+    },
+    {
+      "slug": "soap-pillow-box",
+      "handle": "shawl-box",
+      "presetId": "soap-pillow-box",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset soap-pillow-box does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "square-box",
+      "handle": "square-box",
+      "presetId": "square-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo73xb002e2cvgiagyf993"
+    },
+    {
+      "slug": "thank-you-card",
+      "handle": "thank-you-cad-square",
+      "presetId": "thank-you-card",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset thank-you-card does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "thank-you-card-folded",
+      "handle": "thank-you-card-folded",
+      "presetId": "folded-thank-you-card",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset folded-thank-you-card does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "thank-you-card-oval",
+      "handle": "thank-you-discount-oval-card",
+      "presetId": "oval-thank-you-card",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset oval-thank-you-card does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "tissue-paper-box",
+      "handle": "tissue-paper-box",
+      "presetId": "tissue-paper-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo7ciu002h2cvgi88mgo9p"
+    },
+    {
+      "slug": "tri-fold-brochure",
+      "handle": "brochure-tri-fold",
+      "presetId": "tri-fold-brochure",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset tri-fold-brochure does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "unboxing-experience-box",
+      "handle": "sweet-box-front-opening",
+      "presetId": "unboxing-experience-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo7koc002k2cvgtu3r9kzu"
+    },
+    {
+      "slug": "wedding-bags",
+      "handle": "wedding-bags",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "wedding-gift-hamper-box",
+      "handle": "wedding-gift-hamper-box-copy",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "wedding-internary-card",
+      "handle": "thank-you-card-folded-copy",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "wedding-ladoo-box",
+      "handle": "wedding-ladoo-box",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "wedding-luggage-tags",
+      "handle": "luggage-tags",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "wedding-planner-wardrobe-planner",
+      "handle": "wedding-planning-dressup-functions",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "wedding-snacks-packet",
+      "handle": "ziplock-pouch",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "wedding-stickers",
+      "handle": "wedding-stickers",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "wedding-tissue-paper-box",
+      "handle": "wedding-tissue-paper-box",
+      "presetId": null,
+      "outcome": "skipped-ambiguous",
+      "reason": "no packaging preset mapping"
+    },
+    {
+      "slug": "window-box",
+      "handle": "window-product-box",
+      "presetId": "window-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo7tle002n2cvgk131lqhf"
+    },
+    {
+      "slug": "z-fold-brochure",
+      "handle": "brochure-z-fold",
+      "presetId": "z-fold-brochure",
+      "outcome": "skipped-ambiguous",
+      "reason": "preset z-fold-brochure does not unambiguously name a packaging shape"
+    },
+    {
+      "slug": "zipper-box",
+      "handle": "product-box-with-zipper",
+      "presetId": "zipper-box",
+      "outcome": "already-linked",
+      "templateId": "cmwqo83jf002q2cvgoumf1s4h"
+    }
+  ]
+}

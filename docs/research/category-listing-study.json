@@ -1,0 +1,1718 @@
+{
+ "generatedAt": "2026-11-21T17:50:42.016Z",
+ "totalProducts": 435,
+ "categories": [
+  {
+   "category": "customized-name-slips",
+   "products": 105,
+   "active": 105,
+   "sources": {
+    "demo": 2,
+    "ranbazaar": 103
+   },
+   "customizable": 105,
+   "withFields": 105,
+   "fieldsMedian": 4,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×176",
+    "Enter Your School Name×154",
+    "ENTER YOUR SCHOOL NAME×15",
+    "Your Name×14",
+    "Your School Name×14",
+    "ENETR YOUR NAME×10"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×388",
+    "Roboto×18",
+    "Aleo Regular×6"
+   ],
+   "priceMin": 219,
+   "priceMedian": 219,
+   "priceMax": 499,
+   "withMrp": 103,
+   "taxBp": {
+    "0": 2,
+    "1800": 103
+   },
+   "policies": {
+    "MADE_TO_ORDER": 88,
+    "CONTINUE": 17
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 2,
+   "imagesMedian": 5,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 2,
+   "withSeo": 103
+  },
+  {
+   "category": "imported-ranbazaar > cake-topper",
+   "products": 34,
+   "active": 34,
+   "sources": {
+    "ranbazaar": 34
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 169,
+   "priceMedian": 169,
+   "priceMax": 169,
+   "withMrp": 34,
+   "taxBp": {
+    "1800": 34
+   },
+   "policies": {
+    "MADE_TO_ORDER": 34
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 34
+  },
+  {
+   "category": "waterproof-stickers",
+   "products": 31,
+   "active": 31,
+   "sources": {
+    "ranbazaar": 30,
+    "demo": 1
+   },
+   "customizable": 31,
+   "withFields": 31,
+   "fieldsMedian": 2,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×45",
+    "ENETR YOUR NAME×11",
+    "ENETER YOUR NAME×2",
+    "ENTER YOU NAME×2",
+    "Name×1",
+    "Class or section×1"
+   ],
+   "topFonts": [
+    "Roundkey Medium×60"
+   ],
+   "priceMin": 290,
+   "priceMedian": 290,
+   "priceMax": 399,
+   "withMrp": 30,
+   "taxBp": {
+    "0": 1,
+    "1800": 30
+   },
+   "policies": {
+    "MADE_TO_ORDER": 31
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 1,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 1,
+   "withSeo": 30
+  },
+  {
+   "category": "imported-ranbazaar > gift-slip-for-gifts",
+   "products": 30,
+   "active": 30,
+   "sources": {
+    "ranbazaar": 30
+   },
+   "customizable": 30,
+   "withFields": 30,
+   "fieldsMedian": 2,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×60"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×32",
+    "Roboto×10",
+    "Elmessiri bold×10"
+   ],
+   "priceMin": 249,
+   "priceMedian": 249,
+   "priceMax": 249,
+   "withMrp": 30,
+   "taxBp": {
+    "1800": 30
+   },
+   "policies": {
+    "MADE_TO_ORDER": 29,
+    "CONTINUE": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 3,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 30
+  },
+  {
+   "category": "imported-ranbazaar > decorative-items",
+   "products": 22,
+   "active": 22,
+   "sources": {
+    "ranbazaar": 22
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 849,
+   "priceMedian": 1399,
+   "priceMax": 2399,
+   "withMrp": 22,
+   "taxBp": {
+    "1800": 22
+   },
+   "policies": {
+    "MADE_TO_ORDER": 22
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 22
+  },
+  {
+   "category": "name-plates-keychains",
+   "products": 21,
+   "active": 21,
+   "sources": {
+    "demo": 1,
+    "ranbazaar": 20
+   },
+   "customizable": 9,
+   "withFields": 9,
+   "fieldsMedian": 2,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×20",
+    "Enter Your Name×4",
+    "Name×1",
+    "Font style×1"
+   ],
+   "topFonts": [
+    "Allura-Regular×24"
+   ],
+   "priceMin": 379,
+   "priceMedian": 949,
+   "priceMax": 1598,
+   "withMrp": 20,
+   "taxBp": {
+    "0": 4,
+    "1800": 17
+   },
+   "policies": {
+    "MADE_TO_ORDER": 20,
+    "CONTINUE": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 1,
+   "imagesMedian": 3,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 1,
+   "withSeo": 20
+  },
+  {
+   "category": "imported-ranbazaar > exam-board",
+   "products": 20,
+   "active": 20,
+   "sources": {
+    "ranbazaar": 20
+   },
+   "customizable": 19,
+   "withFields": 19,
+   "fieldsMedian": 2,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×39"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×31",
+    "Elmessiri bold×8"
+   ],
+   "priceMin": 389,
+   "priceMedian": 389,
+   "priceMax": 389,
+   "withMrp": 20,
+   "taxBp": {
+    "1800": 20
+   },
+   "policies": {
+    "MADE_TO_ORDER": 19,
+    "CONTINUE": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 3,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 20
+  },
+  {
+   "category": "imported-ranbazaar > premium-name-slips",
+   "products": 19,
+   "active": 19,
+   "sources": {
+    "ranbazaar": 19
+   },
+   "customizable": 19,
+   "withFields": 19,
+   "fieldsMedian": 4,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×22",
+    "ENTER YOUR SCHOOL NAME×18",
+    "ENETR YOUR NAME×14",
+    "ENETR YOUR SCHOOL NAME×12",
+    "ENTER YOUR SCHOOL  NAME×2",
+    "ENETR YOUR SCHOOL  NAME×2"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×76"
+   ],
+   "priceMin": 290,
+   "priceMedian": 290,
+   "priceMax": 290,
+   "withMrp": 19,
+   "taxBp": {
+    "1800": 19
+   },
+   "policies": {
+    "MADE_TO_ORDER": 19
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 19
+  },
+  {
+   "category": "imported-ranbazaar > kids-utilities",
+   "products": 18,
+   "active": 18,
+   "sources": {
+    "ranbazaar": 18
+   },
+   "customizable": 16,
+   "withFields": 16,
+   "fieldsMedian": 1,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×21",
+    "ENETR YOUR NAME×1",
+    "ENTER YOUR NAME 2×1",
+    "ENTER YOUR NAME 3×1"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×22",
+    "Arial, sans-serif×1",
+    "Roboto×1"
+   ],
+   "priceMin": 220,
+   "priceMedian": 350,
+   "priceMax": 1350,
+   "withMrp": 18,
+   "taxBp": {
+    "1800": 18
+   },
+   "policies": {
+    "MADE_TO_ORDER": 17,
+    "CONTINUE": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 3,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 18
+  },
+  {
+   "category": "personalized-notebooks",
+   "products": 13,
+   "active": 13,
+   "sources": {
+    "demo": 1,
+    "ranbazaar": 12
+   },
+   "customizable": 1,
+   "withFields": 1,
+   "fieldsMedian": 4,
+   "topFieldLabels": [
+    "Name×1",
+    "Font style×1",
+    "Short subtitle×1",
+    "Cover design×1"
+   ],
+   "topFonts": [],
+   "priceMin": 449,
+   "priceMedian": 499,
+   "priceMax": 499,
+   "withMrp": 12,
+   "taxBp": {
+    "0": 13
+   },
+   "policies": {
+    "DENY": 1,
+    "MADE_TO_ORDER": 11,
+    "CONTINUE": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 1,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 1,
+   "withSeo": 12
+  },
+  {
+   "category": "boxes > specialty-boxes",
+   "products": 13,
+   "active": 13,
+   "sources": {
+    "ezpac": 13
+   },
+   "customizable": 13,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 0,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 13
+   },
+   "policies": {
+    "MADE_TO_ORDER": 13
+   },
+   "allow3D": 12,
+   "models": {
+    "folding-carton": 10,
+    "square-box": 1,
+    "mailer-box": 1
+   },
+   "tiers": 0,
+   "structuredDesc": 13,
+   "features": 13,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 13,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "school-accessories",
+   "products": 11,
+   "active": 11,
+   "sources": {
+    "demo": 1,
+    "ranbazaar": 10
+   },
+   "customizable": 7,
+   "withFields": 7,
+   "fieldsMedian": 6,
+   "topFieldLabels": [
+    "Enter Name×12",
+    "Enter Address×7",
+    "Enter Phone×6",
+    "Enter City or School×5",
+    "Enter Class or Phone×4",
+    "Name×1"
+   ],
+   "topFonts": [
+    "Roboto×36"
+   ],
+   "priceMin": 230,
+   "priceMedian": 230,
+   "priceMax": 899,
+   "withMrp": 10,
+   "taxBp": {
+    "0": 1,
+    "500": 3,
+    "1800": 7
+   },
+   "policies": {
+    "DENY": 1,
+    "MADE_TO_ORDER": 10
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 6,
+   "structuredDesc": 0,
+   "features": 1,
+   "imagesMedian": 3,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 1,
+   "withSeo": 9
+  },
+  {
+   "category": "food-packaging > snack-confectionery-boxes",
+   "products": 9,
+   "active": 9,
+   "sources": {
+    "ezpac": 9
+   },
+   "customizable": 9,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 0,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 9
+   },
+   "policies": {
+    "MADE_TO_ORDER": 9
+   },
+   "allow3D": 7,
+   "models": {
+    "folding-carton": 7
+   },
+   "tiers": 0,
+   "structuredDesc": 9,
+   "features": 9,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 9,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "imported-ranbazaar > wrapping-paper",
+   "products": 8,
+   "active": 8,
+   "sources": {
+    "ranbazaar": 8
+   },
+   "customizable": 8,
+   "withFields": 8,
+   "fieldsMedian": 1,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×8",
+    "YOUR NAME×1"
+   ],
+   "topFonts": [
+    "Roboto×5",
+    "Gilroy Extrabold×4"
+   ],
+   "priceMin": 299,
+   "priceMedian": 299,
+   "priceMax": 299,
+   "withMrp": 8,
+   "taxBp": {
+    "1800": 8
+   },
+   "policies": {
+    "MADE_TO_ORDER": 8
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 2,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 8
+  },
+  {
+   "category": "imported-ranbazaar > mouse-pad",
+   "products": 8,
+   "active": 8,
+   "sources": {
+    "ranbazaar": 8
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 319,
+   "priceMedian": 319,
+   "priceMax": 319,
+   "withMrp": 8,
+   "taxBp": {
+    "1800": 8
+   },
+   "policies": {
+    "MADE_TO_ORDER": 8
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 3,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 8
+  },
+  {
+   "category": "imported-ezpac > unclassified",
+   "products": 7,
+   "active": 7,
+   "sources": {
+    "ezpac": 7
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 0,
+   "priceMedian": 5,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 7
+   },
+   "policies": {
+    "MADE_TO_ORDER": 7
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 7,
+   "features": 7,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "personalized-pencils-pens",
+   "products": 5,
+   "active": 5,
+   "sources": {
+    "demo": 1,
+    "ranbazaar": 4
+   },
+   "customizable": 4,
+   "withFields": 4,
+   "fieldsMedian": 2,
+   "topFieldLabels": [
+    "YOUR NAME×22",
+    "ENTER YOUR NAME×2",
+    "Name×1",
+    "Font style×1"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×24"
+   ],
+   "priceMin": 235,
+   "priceMedian": 299,
+   "priceMax": 869,
+   "withMrp": 4,
+   "taxBp": {
+    "0": 5
+   },
+   "policies": {
+    "DENY": 1,
+    "MADE_TO_ORDER": 3,
+    "CONTINUE": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 1,
+   "structuredDesc": 0,
+   "features": 1,
+   "imagesMedian": 2,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 1,
+   "withSeo": 4
+  },
+  {
+   "category": "boxes > gift-event-boxes",
+   "products": 5,
+   "active": 5,
+   "sources": {
+    "ezpac": 5
+   },
+   "customizable": 5,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 10,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 5
+   },
+   "policies": {
+    "MADE_TO_ORDER": 5
+   },
+   "allow3D": 4,
+   "models": {
+    "folding-carton": 4
+   },
+   "tiers": 0,
+   "structuredDesc": 5,
+   "features": 5,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 5,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "marketing-printing > flyers-brochures",
+   "products": 4,
+   "active": 4,
+   "sources": {
+    "ezpac": 4
+   },
+   "customizable": 4,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 10,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 4
+   },
+   "policies": {
+    "MADE_TO_ORDER": 4
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 4,
+   "features": 4,
+   "imagesMedian": 2,
+   "productTypes": [],
+   "multiCat": 4,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "marketing-printing > thank-you-hang-tags",
+   "products": 4,
+   "active": 4,
+   "sources": {
+    "ezpac": 4
+   },
+   "customizable": 4,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 5,
+   "priceMedian": 5,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 4
+   },
+   "policies": {
+    "MADE_TO_ORDER": 4
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 4,
+   "features": 4,
+   "imagesMedian": 2,
+   "productTypes": [],
+   "multiCat": 4,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "imported-ranbazaar > shagun-envelopes",
+   "products": 4,
+   "active": 4,
+   "sources": {
+    "ranbazaar": 4
+   },
+   "customizable": 4,
+   "withFields": 4,
+   "fieldsMedian": 3,
+   "topFieldLabels": [
+    "Wishes×4",
+    "Your Name×4",
+    "Address×4"
+   ],
+   "topFonts": [
+    "Aleo Regular×12"
+   ],
+   "priceMin": 625,
+   "priceMedian": 625,
+   "priceMax": 625,
+   "withMrp": 4,
+   "taxBp": {
+    "1800": 4
+   },
+   "policies": {
+    "MADE_TO_ORDER": 4
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 4
+  },
+  {
+   "category": "imported-ranbazaar > t-shirts",
+   "products": 4,
+   "active": 4,
+   "sources": {
+    "ranbazaar": 4
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 269,
+   "priceMedian": 299,
+   "priceMax": 349,
+   "withMrp": 4,
+   "taxBp": {
+    "500": 4
+   },
+   "policies": {
+    "MADE_TO_ORDER": 4
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 5,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 4
+  },
+  {
+   "category": "paper-bags",
+   "products": 4,
+   "active": 4,
+   "sources": {
+    "ranbazaar": 4
+   },
+   "customizable": 3,
+   "withFields": 3,
+   "fieldsMedian": 4,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×6",
+    "YOUR NAME×4"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×10"
+   ],
+   "priceMin": 1400,
+   "priceMedian": 1400,
+   "priceMax": 1400,
+   "withMrp": 4,
+   "taxBp": {
+    "1800": 4
+   },
+   "policies": {
+    "MADE_TO_ORDER": 4
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 4
+  },
+  {
+   "category": "imported-ezpac > box",
+   "products": 3,
+   "active": 3,
+   "sources": {
+    "ezpac": 3
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 0,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 3
+   },
+   "policies": {
+    "MADE_TO_ORDER": 3
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 2,
+   "features": 2,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "food-packaging > food-trays-delivery",
+   "products": 3,
+   "active": 3,
+   "sources": {
+    "ezpac": 3
+   },
+   "customizable": 3,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 0,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 3
+   },
+   "policies": {
+    "MADE_TO_ORDER": 3
+   },
+   "allow3D": 2,
+   "models": {
+    "folding-carton": 2
+   },
+   "tiers": 0,
+   "structuredDesc": 3,
+   "features": 3,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 3,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "boxes > perfume-cosmetic-boxes",
+   "products": 3,
+   "active": 3,
+   "sources": {
+    "ezpac": 3
+   },
+   "customizable": 3,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 10,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 3
+   },
+   "policies": {
+    "MADE_TO_ORDER": 3
+   },
+   "allow3D": 3,
+   "models": {
+    "folding-carton": 3
+   },
+   "tiers": 0,
+   "structuredDesc": 3,
+   "features": 3,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 3,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "imported-ranbazaar > customize-bottles",
+   "products": 3,
+   "active": 3,
+   "sources": {
+    "ranbazaar": 3
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 399,
+   "priceMedian": 799,
+   "priceMax": 799,
+   "withMrp": 3,
+   "taxBp": {
+    "500": 3
+   },
+   "policies": {
+    "CONTINUE": 1,
+    "MADE_TO_ORDER": 2
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 3
+  },
+  {
+   "category": "boxes > soap-boxes",
+   "products": 2,
+   "active": 2,
+   "sources": {
+    "ezpac": 2
+   },
+   "customizable": 2,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 0,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 2
+   },
+   "policies": {
+    "MADE_TO_ORDER": 2
+   },
+   "allow3D": 1,
+   "models": {
+    "folding-carton": 1
+   },
+   "tiers": 0,
+   "structuredDesc": 2,
+   "features": 2,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 2,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "e-commerce-packaging > mailer-bags",
+   "products": 2,
+   "active": 2,
+   "sources": {
+    "ezpac": 2
+   },
+   "customizable": 2,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 10,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 2
+   },
+   "policies": {
+    "MADE_TO_ORDER": 2
+   },
+   "allow3D": 2,
+   "models": {
+    "paper-bag": 2
+   },
+   "tiers": 0,
+   "structuredDesc": 2,
+   "features": 2,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 2,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "imported-ranbazaar > kids-bottle-tiffin-box",
+   "products": 2,
+   "active": 2,
+   "sources": {
+    "ranbazaar": 2
+   },
+   "customizable": 2,
+   "withFields": 2,
+   "fieldsMedian": 2,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×4"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×4"
+   ],
+   "priceMin": 875,
+   "priceMedian": 1025,
+   "priceMax": 1025,
+   "withMrp": 2,
+   "taxBp": {
+    "500": 2
+   },
+   "policies": {
+    "MADE_TO_ORDER": 2
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 2
+  },
+  {
+   "category": "imported-ranbazaar > bulk-buy",
+   "products": 2,
+   "active": 2,
+   "sources": {
+    "ranbazaar": 2
+   },
+   "customizable": 1,
+   "withFields": 1,
+   "fieldsMedian": 2,
+   "topFieldLabels": [
+    "SCHOOL NAME×2"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×2"
+   ],
+   "priceMin": 7000,
+   "priceMedian": 185000,
+   "priceMax": 185000,
+   "withMrp": 2,
+   "taxBp": {
+    "1800": 2
+   },
+   "policies": {
+    "MADE_TO_ORDER": 2
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 2,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 2
+  },
+  {
+   "category": "marketing-printing > stickers",
+   "products": 2,
+   "active": 2,
+   "sources": {
+    "ezpac": 2
+   },
+   "customizable": 2,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 0,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 2
+   },
+   "policies": {
+    "MADE_TO_ORDER": 2
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 2,
+   "features": 2,
+   "imagesMedian": 3,
+   "productTypes": [],
+   "multiCat": 2,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "imported-ranbazaar > geometry-box",
+   "products": 2,
+   "active": 2,
+   "sources": {
+    "ranbazaar": 2
+   },
+   "customizable": 2,
+   "withFields": 2,
+   "fieldsMedian": 2,
+   "topFieldLabels": [
+    "ENTER YOUR NAME×4"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×4"
+   ],
+   "priceMin": 299,
+   "priceMedian": 299,
+   "priceMax": 299,
+   "withMrp": 2,
+   "taxBp": {
+    "1800": 2
+   },
+   "policies": {
+    "MADE_TO_ORDER": 2
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 2
+  },
+  {
+   "category": "marketing-printing > business-cards",
+   "products": 2,
+   "active": 2,
+   "sources": {
+    "ezpac": 2
+   },
+   "customizable": 2,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 10,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 2
+   },
+   "policies": {
+    "MADE_TO_ORDER": 2
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 2,
+   "features": 2,
+   "imagesMedian": 3,
+   "productTypes": [],
+   "multiCat": 2,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "bottle-tiffin-labels",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "demo": 1
+   },
+   "customizable": 1,
+   "withFields": 1,
+   "fieldsMedian": 4,
+   "topFieldLabels": [
+    "Name×1",
+    "Class or section×1",
+    "Design×1",
+    "Font style×1"
+   ],
+   "topFonts": [],
+   "priceMin": 329,
+   "priceMedian": 329,
+   "priceMax": 329,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 1,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 1,
+   "withSeo": 0
+  },
+  {
+   "category": "bulk-orders",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "demo": 1
+   },
+   "customizable": 1,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 1799,
+   "priceMedian": 1799,
+   "priceMax": 1799,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 1,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 1,
+   "withSeo": 0
+  },
+  {
+   "category": "school-labels",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "demo": 1
+   },
+   "customizable": 1,
+   "withFields": 1,
+   "fieldsMedian": 4,
+   "topFieldLabels": [
+    "Name×1",
+    "Class or section×1",
+    "Design×1",
+    "Font style×1"
+   ],
+   "topFonts": [],
+   "priceMin": 649,
+   "priceMedian": 649,
+   "priceMax": 649,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 1,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 1,
+   "withSeo": 0
+  },
+  {
+   "category": "imported-ezpac > paper-bagspaper-bags-carriers",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "ezpac": 1
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 10,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 1,
+   "features": 1,
+   "imagesMedian": 7,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "paper-bags > d-cut-paper-bags",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "ezpac": 1
+   },
+   "customizable": 1,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 10,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 1,
+   "models": {
+    "paper-bag": 1
+   },
+   "tiers": 0,
+   "structuredDesc": 1,
+   "features": 1,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 1,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "imported-ezpac > paper-bags-2",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "ezpac": 1
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 10,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 1,
+   "features": 1,
+   "imagesMedian": 1,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "paper-bags > branded-carry-bags",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "ezpac": 1
+   },
+   "customizable": 1,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 10,
+   "priceMedian": 10,
+   "priceMax": 10,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 1,
+   "models": {
+    "paper-bag": 1
+   },
+   "tiers": 0,
+   "structuredDesc": 1,
+   "features": 1,
+   "imagesMedian": 3,
+   "productTypes": [],
+   "multiCat": 1,
+   "withMaterial": 0,
+   "withSeo": 0
+  },
+  {
+   "category": "ziplock-pouch > branded-ziplock-pouches",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "ezpac": 1
+   },
+   "customizable": 1,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 0,
+   "priceMedian": 0,
+   "priceMax": 0,
+   "withMrp": 0,
+   "taxBp": {
+    "0": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 1,
+   "models": {
+    "stand-up-pouch": 1
+   },
+   "tiers": 0,
+   "structuredDesc": 1,
+   "features": 1,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 1,
+   "withMaterial": 1,
+   "withSeo": 0
+  },
+  {
+   "category": "imported-ranbazaar > vinyl-poster",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "ranbazaar": 1
+   },
+   "customizable": 0,
+   "withFields": 0,
+   "fieldsMedian": 0,
+   "topFieldLabels": [],
+   "topFonts": [],
+   "priceMin": 189,
+   "priceMedian": 189,
+   "priceMax": 189,
+   "withMrp": 1,
+   "taxBp": {
+    "1800": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 1
+  },
+  {
+   "category": "imported-ranbazaar > tracing-name-board",
+   "products": 1,
+   "active": 1,
+   "sources": {
+    "ranbazaar": 1
+   },
+   "customizable": 1,
+   "withFields": 1,
+   "fieldsMedian": 2,
+   "topFieldLabels": [
+    "Enter Your Name×2"
+   ],
+   "topFonts": [
+    "Gilroy Extrabold×2"
+   ],
+   "priceMin": 1549,
+   "priceMedian": 1549,
+   "priceMax": 1549,
+   "withMrp": 1,
+   "taxBp": {
+    "1800": 1
+   },
+   "policies": {
+    "MADE_TO_ORDER": 1
+   },
+   "allow3D": 0,
+   "models": {},
+   "tiers": 0,
+   "structuredDesc": 0,
+   "features": 0,
+   "imagesMedian": 4,
+   "productTypes": [],
+   "multiCat": 0,
+   "withMaterial": 0,
+   "withSeo": 1
+  }
+ ],
+ "emptyCategories": [
+  "boxes",
+  "e-commerce-packaging",
+  "e-commerce-packaging > shipping-boxes",
+  "e-commerce-packaging > printed-inserts",
+  "ziplock-pouch",
+  "marketing-printing",
+  "food-packaging",
+  "food-packaging > food-pouches",
+  "industry-collections",
+  "industry-collections > collection-soap-packaging",
+  "industry-collections > collection-perfume-cosmetics-packaging",
+  "industry-collections > collection-display-products",
+  "industry-collections > collection-e-commerce-packaging",
+  "industry-collections > collection-product-packaging",
+  "industry-collections > collection-food-packaging",
+  "personalized-gifts",
+  "industry-collections > collection-gift-packaging",
+  "industry-collections > collection-personal",
+  "industry-collections > collection-bakery",
+  "notestick",
+  "bhautesh",
+  "bhautesh > bhautesh1",
+  "imported-ezpac",
+  "imported-ranbazaar"
+ ],
+ "tree": [
+  "bhautesh  [id=cmvthnsyq000108l2akm5gcql] primary=0 linked=0",
+  "bhautesh > bhautesh1  [id=cmvthos0w000208l2cky87byh] primary=0 linked=0",
+  "bottle-tiffin-labels  [id=cat-bottles] primary=1 linked=1",
+  "boxes  [id=cmvs4a7l6000s5wvg71jeichf] primary=0 linked=0",
+  "boxes > gift-event-boxes  [id=cmvs4a94b000w5wvgcluy5enm] primary=5 linked=5",
+  "boxes > perfume-cosmetic-boxes  [id=cmvs4a8cq000u5wvgtokoxxsk] primary=3 linked=3",
+  "boxes > soap-boxes  [id=cmvs4a7z5000t5wvgibfkepq2] primary=2 linked=2",
+  "boxes > specialty-boxes  [id=cmvs4a8qk000v5wvge1y59q2e] primary=13 linked=13",
+  "bulk-orders  [id=cat-bulk] primary=1 linked=1",
+  "customized-name-slips  [id=cat-name-slips] primary=105 linked=105",
+  "e-commerce-packaging  [id=cmvs4a9hz000x5wvgxm2dfv4d] primary=0 linked=0",
+  "e-commerce-packaging > mailer-bags  [id=cmvs4a9vn000y5wvgyh7uthau] primary=2 linked=2",
+  "e-commerce-packaging > printed-inserts  [id=cmvs4aamz00105wvg1wfx2kg1] primary=0 linked=0",
+  "e-commerce-packaging > shipping-boxes  [id=cmvs4aa9c000z5wvgtky2r943] primary=0 linked=0",
+  "food-packaging  [id=cmvs4aeu4001b5wvg8jpaonyj] primary=0 linked=0",
+  "food-packaging > food-pouches  [id=cmvs4afz6001e5wvg5iir57ob] primary=0 linked=0",
+  "food-packaging > food-trays-delivery  [id=cmvs4af7t001c5wvg9l7tlayt] primary=3 linked=3",
+  "food-packaging > snack-confectionery-boxes  [id=cmvs4aflj001d5wvgci4tes07] primary=9 linked=9",
+  "imported-ezpac  [id=cmw0jxwc5000pxgvgnt6oun3z] primary=0 linked=0",
+  "imported-ezpac > box  [id=cmw0kd4c100002wvgtwo6mmbu] primary=3 linked=3",
+  "imported-ezpac > paper-bags-2  [id=cmwqk8wbk000chwvgqe4f6yd4] primary=1 linked=1",
+  "imported-ezpac > paper-bagspaper-bags-carriers  [id=cmw0keouj001h2wvg2m13ludt] primary=1 linked=1",
+  "imported-ezpac > unclassified  [id=cmw0jxwm1000qxgvgk6lh34j4] primary=7 linked=7",
+  "imported-ranbazaar  [id=cmw0l1kql0019ukvgwida76ri] primary=0 linked=0",
+  "imported-ranbazaar > bulk-buy  [id=cmw0l4imr008vukvgdzflaghg] primary=2 linked=2",
+  "imported-ranbazaar > cake-topper  [id=cmw0l5j0900bdukvgseuz67jg] primary=34 linked=34",
+  "imported-ranbazaar > customize-bottles  [id=cmw0l43qi007uukvgt75a1l5j] primary=3 linked=3",
+  "imported-ranbazaar > decorative-items  [id=cmw0l1kwz001aukvg59wvwwcs] primary=22 linked=22",
+  "imported-ranbazaar > exam-board  [id=cmw0laifs00m5ukvgl537qssc] primary=20 linked=20",
+  "imported-ranbazaar > geometry-box  [id=cmw0l3yzk007hukvggi0liey7] primary=2 linked=2",
+  "imported-ranbazaar > gift-slip-for-gifts  [id=cmw0l8fp800h8ukvgcmykny83] primary=30 linked=30",
+  "imported-ranbazaar > kids-bottle-tiffin-box  [id=cmw0l4dw0008iukvgf5n4vh7h] primary=2 linked=2",
+  "imported-ranbazaar > kids-utilities  [id=cmw0l2ngm0043ukvgxmaoqlrz] primary=18 linked=18",
+  "imported-ranbazaar > mouse-pad  [id=cmw0la7hg00lfukvg64rf1e97] primary=8 linked=8",
+  "imported-ranbazaar > premium-name-slips  [id=cmw0l1rwp001tukvg8sqfg29y] primary=19 linked=19",
+  "imported-ranbazaar > shagun-envelopes  [id=cmw0l57gt00aiukvgwb734wej] primary=4 linked=4",
+  "imported-ranbazaar > t-shirts  [id=cmw0l4ypz009wukvgkodmpuvz] primary=4 linked=4",
+  "imported-ranbazaar > tracing-name-board  [id=cmw0l4kqi0090ukvgp34sud2f] primary=1 linked=1",
+  "imported-ranbazaar > vinyl-poster  [id=cmw0l3cn0005xukvgtaj7z7ih] primary=1 linked=1",
+  "imported-ranbazaar > wrapping-paper  [id=cmw0l804z00gbukvg3nj4gbm0] primary=8 linked=8",
+  "industry-collections  [id=cmvs4agcq001f5wvg8sk78779] primary=0 linked=0",
+  "industry-collections > collection-bakery  [id=cmvs4ajry001o5wvgvbm3rjsu] primary=0 linked=4",
+  "industry-collections > collection-display-products  [id=cmvs4ahhs001i5wvgt1voxj1t] primary=0 linked=3",
+  "industry-collections > collection-e-commerce-packaging  [id=cmvs4ahvf001j5wvgk1ff3yfr] primary=0 linked=12",
+  "industry-collections > collection-food-packaging  [id=cmvs4aimq001l5wvglqt7emx6] primary=0 linked=13",
+  "industry-collections > collection-gift-packaging  [id=cmvs4aj0e001m5wvg2bdzwqwr] primary=0 linked=9",
+  "industry-collections > collection-perfume-cosmetics-packaging  [id=cmvs4ah3v001h5wvg5jnu5xjq] primary=0 linked=3",
+  "industry-collections > collection-personal  [id=cmvs4aje4001n5wvgbsdl0qbs] primary=0 linked=16",
+  "industry-collections > collection-product-packaging  [id=cmvs4ai92001k5wvgeikfntra] primary=0 linked=25",
+  "industry-collections > collection-soap-packaging  [id=cmvs4agqc001g5wvguo4s46y3] primary=0 linked=2",
+  "marketing-printing  [id=cmvs4acx500165wvga05g6f5e] primary=0 linked=0",
+  "marketing-printing > business-cards  [id=cmvs4adat00175wvgzf1bg3y9] primary=2 linked=2",
+  "marketing-printing > flyers-brochures  [id=cmvs4adoh00185wvggdpnvkd2] primary=4 linked=4",
+  "marketing-printing > stickers  [id=cmvs4aegb001a5wvg4a9fts1o] primary=2 linked=2",
+  "marketing-printing > thank-you-hang-tags  [id=cmvs4ae2m00195wvgr4d0h5on] primary=4 linked=4",
+  "name-plates-keychains  [id=cat-name-plates] primary=21 linked=21",
+  "notestick  [id=cmvthjjzp000008l2gx9tb4uz] primary=0 linked=0",
+  "paper-bags  [id=cmvs4ab0p00115wvgiykaaj9e] primary=4 linked=4",
+  "paper-bags > branded-carry-bags  [id=cmvs4abef00125wvgmrdleea2] primary=1 linked=1",
+  "paper-bags > d-cut-paper-bags  [id=cmvs4abs200135wvgmmv5713l] primary=1 linked=1",
+  "personalized-gifts  [id=cat-gifts] primary=0 linked=0",
+  "personalized-notebooks  [id=cat-notebooks] primary=13 linked=13",
+  "personalized-pencils-pens  [id=cat-writing] primary=5 linked=5",
+  "school-accessories  [id=cat-accessories] primary=11 linked=11",
+  "school-labels  [id=cat-school-labels] primary=1 linked=1",
+  "waterproof-stickers  [id=cat-waterproof] primary=31 linked=31",
+  "ziplock-pouch  [id=cmvs4ac5t00145wvg8edcvttu] primary=0 linked=0",
+  "ziplock-pouch > branded-ziplock-pouches  [id=cmvs4acji00155wvg9zd8jpnf] primary=1 linked=1"
+ ]
+}

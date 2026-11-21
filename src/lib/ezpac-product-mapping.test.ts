@@ -23,10 +23,10 @@ const exportProducts = (JSON.parse(
 ) as { products: EzpacExportProduct[] }).products;
 
 test("maps every EzPac export row exactly once", () => {
-  assert.equal(EZPAC_SHOPIFY_PRODUCT_MAPPING.length, 55);
+  assert.equal(EZPAC_SHOPIFY_PRODUCT_MAPPING.length, 64);
 
   const mappedHandles = EZPAC_SHOPIFY_PRODUCT_MAPPING.map((mapping) => mapping.shopifyHandle);
-  assert.equal(new Set(mappedHandles).size, 55);
+  assert.equal(new Set(mappedHandles).size, 64);
   assert.deepEqual(
     [...mappedHandles].sort(),
     exportProducts.map((product) => product.handle).sort(),
@@ -40,7 +40,16 @@ test("maps every EzPac export row exactly once", () => {
     [
       "cake-box-with-handle-box-with-handle",
       "display-tray",
+      "luggage-tags",
       "money-cover-envelope",
+      "thank-you-card-folded-copy",
+      "wedding-bags",
+      "wedding-gift-hamper-box-copy",
+      "wedding-ladoo-box",
+      "wedding-planning-dressup-functions",
+      "wedding-stickers",
+      "wedding-tissue-paper-box",
+      "ziplock-pouch",
     ],
   );
 

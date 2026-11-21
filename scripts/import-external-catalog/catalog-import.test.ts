@@ -51,6 +51,80 @@ test("Ranbazaar __NEXT_DATA__ fixture maps title, images, price, variants and so
   assert.deepEqual(product.dimensions, { specs: [{ label: "Capacity", value: "500 ml" }] });
 });
 
+test("Ranbazaar customize details map to capped text personalization fields with source styling", () => {
+  const product = mapRanbazaarProductRecord({
+    id: "abc123",
+    name: "Name Slip",
+    sale: 219,
+    quantity: 24,
+    tax_class: { percentage: "18" },
+    metaTitle: "A".repeat(200),
+    metaDescription: "B".repeat(400),
+    price: { "2": "175" },
+    customizeDetails: [
+      {
+        name: "Sample_1",
+        customerImg: [{ id: 1, imageUrl: "https://example.test/upload-slot.webp" }],
+        inputFields: [
+          {
+            type: "customize",
+            name: "ENTER YOUR NAME",
+            slug: "enetr_your_name",
+            style: { color: "#000000", fontSize: "28", fontFamily: "Gilroy Extrabold" },
+          },
+          { type: "text", name: "Enter Your School Name ", slug: "enter_your_school_name", style: {} },
+          { type: "customize", name: "Duplicate", slug: "enetr_your_name" },
+        ],
+      },
+    ],
+  }, "name-slip");
+
+  assert.equal(product.customizable, true);
+  assert.equal(product.personalizationFields?.length, 3);
+  const [first, second, third] = product.personalizationFields ?? [];
+  assert.deepEqual(
+    { key: first?.key, label: first?.label, inputType: first?.inputType, required: first?.required, maxLength: first?.maxLength },
+    { key: "enetr-your-name", label: "ENTER YOUR NAME", inputType: "text", required: true, maxLength: 32 },
+  );
+  assert.deepEqual(first?.validation, { fontId: "Gilroy Extrabold", color: "#000000", fontSize: 28 });
+  assert.deepEqual(
+    { key: second?.key, label: second?.label, validation: second?.validation, sortOrder: second?.sortOrder },
+    { key: "enter-your-school-name", label: "Enter Your School Name", validation: null, sortOrder: 1 },
+  );
+  assert.equal(third?.key, "enetr-your-name-2");
+  assert.equal(product.skippedPhotoSlots, 1);
+  assert.equal(product.personalizationOverflow, 0);
+
+  assert.deepEqual(product.bulkPriceTiers, [{ minimum: 2, pricePaise: 17_500 }]);
+  assert.equal(product.taxRateBasisPoints, 1_800);
+  assert.equal(product.taxCode, "IN-GST-18");
+  assert.equal(product.seoTitle, "A".repeat(160));
+  assert.equal(product.seoDescription, "B".repeat(320));
+  assert.equal(product.seoTruncated, true);
+  assert.equal(product.variants[0]?.inventoryPolicy, "CONTINUE");
+  assert.equal(product.variants[0]?.onHand, 24);
+});
+
+test("Ranbazaar products without stock or customize inputs stay orderable made-to-order", () => {
+  const product = mapRanbazaarProductRecord({
+    id: "no-stock",
+    name: "Normal Product",
+    sale: 100,
+    quantity: -1,
+    tax_class: { percentage: "0" },
+    metaTitle: "Normal Product",
+  }, "normal-product");
+
+  assert.equal(product.customizable, false);
+  assert.deepEqual(product.personalizationFields, []);
+  assert.deepEqual(product.bulkPriceTiers, []);
+  assert.equal(product.taxRateBasisPoints, 0);
+  assert.equal(product.taxCode, null);
+  assert.equal(product.seoTruncated, false);
+  assert.equal(product.variants[0]?.inventoryPolicy, "MADE_TO_ORDER");
+  assert.equal(product.variants[0]?.onHand, undefined);
+});
+
 test("Ranbazaar API record maps title, customizeDetails images, sale price, mrp and package specs", () => {
   const rawRecord = {
     id: "66fe6ad4a436c566ac1925c1",

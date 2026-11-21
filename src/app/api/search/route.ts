@@ -1,15 +1,17 @@
 import { NextResponse } from "next/server";
 
 import { searchCatalog } from "@/lib/catalog";
+import { getStorefrontCatalog } from "@/lib/runtime-catalog";
 import { validationError } from "@/lib/http";
 import { searchQuerySchema } from "@/lib/validation";
 
-export function GET(request: Request) {
+export async function GET(request: Request) {
   const url = new URL(request.url);
   const parsed = searchQuerySchema.safeParse(Object.fromEntries(url.searchParams.entries()));
   if (!parsed.success) return validationError(parsed.error);
 
-  const result = searchCatalog(parsed.data.q, parsed.data.limit ?? 8);
+  const catalog = await getStorefrontCatalog();
+  const result = searchCatalog(parsed.data.q, parsed.data.limit ?? 8, catalog);
   return NextResponse.json(
     {
       query: parsed.data.q,

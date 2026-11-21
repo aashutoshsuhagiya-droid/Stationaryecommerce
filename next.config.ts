@@ -30,6 +30,18 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
+      // Imported EzPac catalog images (Shopify CDN).
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+        pathname: "/**",
+      },
+      // Imported Ranbazaar catalog images (their CloudFront distribution).
+      {
+        protocol: "https",
+        hostname: "dyuh5x5qbqu9p.cloudfront.net",
+        pathname: "/**",
+      },
     ],
   },
   turbopack: {

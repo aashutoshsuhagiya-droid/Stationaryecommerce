@@ -46,9 +46,9 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
   {
     presetId: "slider-box-thick-wall",
     shopifyHandle: "slider-style-box",
-    shopifyTitle: "Slider Box \u2014 Thick Wall",
+    shopifyTitle: "Slider Box — Thick Wall",
     prefills: {
-      intro: "Custom branded slider boxes with thick wall construction \u2014 a premium sliding drawer-style box that delivers a luxury unboxing experience. The thick walls give it a solid, high-quality feel perfect for premium chocolates, jewellery, cosmetics, and gifting. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded slider boxes with thick wall construction — a premium sliding drawer-style box that delivers a luxury unboxing experience. The thick walls give it a solid, high-quality feel perfect for premium chocolates, jewellery, cosmetics, and gifting. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Premium chocolate brands",
         "jewellery gifting",
@@ -78,7 +78,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "window-product-box",
     shopifyTitle: "Window Box",
     prefills: {
-      intro: "Custom branded window product boxes \u2014 a clean, structured box with a transparent front window that lets your product be seen before the box is even opened. Creates an instant premium display impression on retail shelves and in gift hampers. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded window product boxes — a clean, structured box with a transparent front window that lets your product be seen before the box is even opened. Creates an instant premium display impression on retail shelves and in gift hampers. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Cosmetic products",
         "food gifting",
@@ -92,7 +92,6 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
         "free-3d-studio",
         "moq-10",
         "doorstep-delivery",
-        "shark-tank",
       ],
       imageUrls: [
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/windowbox.ezpac.3d.png?v=1781963006",
@@ -105,7 +104,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "middle-hanging-box",
     shopifyTitle: "Middle Hanging Box",
     prefills: {
-      intro: "Custom branded middle-hanging boxes \u2014 a sleek, vertical box with a centre hang hole that displays your product perfectly on retail hooks and peg boards. Ideal for accessories, cosmetics, and small product brands that want strong shelf presence. Full-colour custom printing with your logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded middle-hanging boxes — a sleek, vertical box with a centre hang hole that displays your product perfectly on retail hooks and peg boards. Ideal for accessories, cosmetics, and small product brands that want strong shelf presence. Full-colour custom printing with your logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Accessories brands",
         "cosmetics retail",
@@ -133,7 +132,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "product-box-with-zipper",
     shopifyTitle: "Zipper Box",
     prefills: {
-      intro: "Custom branded product boxes with a built-in zipper closure \u2014 a unique, resealable packaging solution for products that customers open, use, and reseal. Perfect for cosmetics, skincare samples, and specialty food products where freshness and reusability matter. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded product boxes with a built-in zipper closure — a unique, resealable packaging solution for products that customers open, use, and reseal. Perfect for cosmetics, skincare samples, and specialty food products where freshness and reusability matter. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Cosmetic sample kits",
         "skincare trial packs",
@@ -159,7 +158,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "food-tray",
     shopifyTitle: "Food Tray",
     prefills: {
-      intro: "Custom branded food trays for restaurants, fast food counters, cloud kitchens, and food court businesses. Sturdy, food-safe trays with full-colour custom printing \u2014 your brand logo and design on every tray that reaches your customer. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded food trays for restaurants, fast food counters, cloud kitchens, and food court businesses. Sturdy, food-safe trays with full-colour custom printing — your brand logo and design on every tray that reaches your customer. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Fast food restaurants",
         "food courts",
@@ -187,7 +186,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "popcorn-box",
     shopifyTitle: "Popcorn Box",
     prefills: {
-      intro: "Custom branded popcorn boxes for cinemas, food stalls, event caterers, and gourmet popcorn brands. The iconic bucket shape with full-colour custom printing \u2014 your logo, brand colours, and design on every box served. Turn every popcorn experience into a brand moment. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded popcorn boxes for cinemas, food stalls, event caterers, and gourmet popcorn brands. The iconic bucket shape with full-colour custom printing — your logo, brand colours, and design on every box served. Turn every popcorn experience into a brand moment. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Gourmet popcorn brands",
         "event caterers",
@@ -243,7 +242,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "side-open-tuck-in-box",
     shopifyTitle: "Side Open Box",
     prefills: {
-      intro: "Custom branded side-open tuck-in boxes \u2014 a slim, elegant packaging style where the product slides in from the side for a clean, premium presentation. Ideal for cosmetic products, stationery, and small accessories that need structured, professional packaging. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded side-open tuck-in boxes — a slim, elegant packaging style where the product slides in from the side for a clean, premium presentation. Ideal for cosmetic products, stationery, and small accessories that need structured, professional packaging. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Cosmetic products",
         "lip balms",
@@ -270,7 +269,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "tissue-paper-box",
     shopifyTitle: "Tissue Paper Box",
     prefills: {
-      intro: "Custom branded tissue paper boxes for restaurants, hotel rooms, spas, salons, and premium retail environments. Turn a functional product into a branded touchpoint \u2014 your logo and design on every tissue box placed on tables, counters, and shelves. Full-colour custom printing with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded tissue paper boxes for restaurants, hotel rooms, spas, salons, and premium retail environments. Turn a functional product into a branded touchpoint — your logo and design on every tissue box placed on tables, counters, and shelves. Full-colour custom printing with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Restaurants",
         "hotels",
@@ -299,7 +298,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "box-with-hanging-tab",
     shopifyTitle: "Hanging Box",
     prefills: {
-      intro: "Custom branded hanging boxes with a top tab for hook display \u2014 perfect for retail shelves, pharmacy counters, exhibition hooks, and point-of-sale displays. Your product stays secure inside while your brand is fully visible from the front. Full-colour custom printing with your logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded hanging boxes with a top tab for hook display — perfect for retail shelves, pharmacy counters, exhibition hooks, and point-of-sale displays. Your product stays secure inside while your brand is fully visible from the front. Full-colour custom printing with your logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Retail shelf display",
         "pharmacy products",
@@ -326,7 +325,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "cosmetic-box-with-inside-holder",
     shopifyTitle: "Cosmetic / Beauty Box with Inside Holder",
     prefills: {
-      intro: "Custom branded cosmetic boxes with an internal holder \u2014 premium packaging that keeps your product perfectly centred and secure inside the box. Ideal for serum bottles, perfume vials, lipsticks, and premium beauty products where presentation is everything. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded cosmetic boxes with an internal holder — premium packaging that keeps your product perfectly centred and secure inside the box. Ideal for serum bottles, perfume vials, lipsticks, and premium beauty products where presentation is everything. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Premium skincare brands",
         "serum brands",
@@ -352,7 +351,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "soap-box",
     shopifyTitle: "Soap Box",
     prefills: {
-      intro: "Custom branded soap boxes for soap brands, handmade soap businesses, skincare startups, and natural beauty brands. Clean, sturdy packaging with full-colour custom printing \u2014 your brand name, logo, ingredients, and design on every box. Make your soap brand look professional from day one. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded soap boxes for soap brands, handmade soap businesses, skincare startups, and natural beauty brands. Clean, sturdy packaging with full-colour custom printing — your brand name, logo, ingredients, and design on every box. Make your soap brand look professional from day one. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Handmade soap brands",
         "natural skincare businesses",
@@ -378,7 +377,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "unique-sample-product-box",
     shopifyTitle: "D2C Mailer Bag",
     prefills: {
-      intro: "Custom printed courier and mailer bags for D2C brands, e-commerce sellers, and online businesses. Make every delivery a brand experience \u2014 your logo, brand colours, and design printed on durable, tamper-evident bags. Say goodbye to plain polybags. Customers receive your parcel and see your brand first. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed courier and mailer bags for D2C brands, e-commerce sellers, and online businesses. Make every delivery a brand experience — your logo, brand colours, and design printed on durable bags. Say goodbye to plain polybags. Customers receive your parcel and see your brand first. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "D2C brands",
         "Shopify stores",
@@ -388,7 +387,6 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
         "any business shipping orders",
       ],
       featureBullets: [
-        "tamper-evident",
         "free-3d-studio",
         "moq-10",
         "doorstep-delivery",
@@ -406,10 +404,10 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
   {
     presetId: "brand-ziplock-pouch",
     shopifyHandle: "25-grams-ziplock-pouch",
-    shopifyTitle: "Brand Ziplock Pouch",
+    shopifyTitle: "Ziplock Pouch",
     prefills: {
       materialHint: "outside paper, inside food-grade aluminium lining",
-      intro: "Custom printed ziplock paper pouches \u2014 outside paper, inside food-grade aluminium lining that keeps products fresh, moisture-free, and shelf-ready. Perfect for dry fruits, coffee, tea, protein mixes, spices, masala, and snack brands that want branded packaging without a plain sticker. Your logo, brand colours, and product name fully printed on the pouch. No graphic designer needed \u2014 design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed ziplock paper pouches — outside paper, inside food-grade aluminium lining that keeps products fresh, moisture-free, and shelf-ready. Perfect for dry fruits, coffee, tea, protein mixes, spices, masala, and snack brands that want branded packaging without a plain sticker. Your logo, brand colours, and product name fully printed on the pouch. No graphic designer needed — design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Dry fruit brands",
         "coffee and tea brands",
@@ -428,11 +426,10 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
         "shark-tank",
       ],
       imageUrls: [
-        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Ziplock7.ezpac.3d.jpg?v=1776323978",
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Ziplock6.ezpac.3d.jpg?v=1776323978",
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/IMG-20251105-WA0028.jpg?v=1779706336",
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Ziplock2.ezpac.3d_b2f5c13e-46b1-48ce-b7b5-4980fbf685b9.jpg?v=1776323978",
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Ziplock5.ezpac.3d.jpg?v=1776323978",
-        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Ziplock10.ezpac.3d.jpg?v=1776323978",
       ],
       priceRupees: 0,
     },
@@ -442,7 +439,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "round-stickers",
     shopifyTitle: "Round Stickers",
     prefills: {
-      intro: "Custom printed round stickers for D2C brands, home bakers, product brands, and small businesses. The most versatile branding tool \u2014 seal your packaging, brand your jars, label your products, or add a personal touch to every order. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed round stickers for D2C brands, home bakers, product brands, and small businesses. The most versatile branding tool — seal your packaging, brand your jars, label your products, or add a personal touch to every order. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Packaging seals",
         "jar and bottle labels",
@@ -470,7 +467,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "stickers",
     shopifyTitle: "Rectangle & Square Stickers",
     prefills: {
-      intro: "Custom printed rectangle and square stickers for D2C brands, e-commerce sellers, home bakers, and small businesses. Add your logo, brand name, website, QR code, or any design \u2014 and use them for product sealing, packaging branding, gifting labels, and marketing collateral. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed rectangle and square stickers for D2C brands, e-commerce sellers, home bakers, and small businesses. Add your logo, brand name, website, QR code, or any design — and use them for product sealing, packaging branding, gifting labels, and marketing collateral. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Product packaging seals",
         "courier bag branding",
@@ -496,9 +493,9 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
   {
     unmapped: true,
     shopifyHandle: "money-cover-envelope",
-    shopifyTitle: "Shagun Envelope",
+    shopifyTitle: "Money Cover / Shagun Envelope",
     prefills: {
-      intro: "Custom printed money envelopes and shagun covers \u2014 beautifully designed for weddings, festivals, and gifting occasions. Add your family name, brand name, custom design, or personal message. A premium alternative to plain envelopes for Diwali, Eid, weddings, and corporate gifting. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed money envelopes and shagun covers — beautifully designed for weddings, festivals, and gifting occasions. Add your family name, brand name, custom design, or personal message. A premium alternative to plain envelopes for Diwali, Eid, weddings, and corporate gifting. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Weddings",
         "shagun gifting",
@@ -517,12 +514,12 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
         "shark-tank",
       ],
       imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Wedding_moneycover.ezpac.3d.png?v=1794929696",
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/dipesh.ezpac.3d.jpg?v=1775201962",
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/wedding.ezpac.3d.jpg?v=1775201962",
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/rupal.ezpac.3d.jpg?v=1775201962",
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/shrinathji.ezpac.3d.jpg?v=1775201962",
-        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/dipesh.ezpac.3d.jpg?v=1775201962",
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/trial.ezpac.3d.jpg?v=1775201962",
-        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/trial2.ezpac.3d.jpg?v=1775201962",
       ],
       priceRupees: 10,
     },
@@ -532,7 +529,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "gift-box-with-window",
     shopifyTitle: "Gift Box with Window",
     prefills: {
-      intro: "Custom branded gift boxes with a clear window \u2014 let your product speak for itself while your brand surrounds it. The window front creates an instant premium unboxing impression, perfect for chocolates, jewellery, cosmetics, and artisan products. Full-colour custom printing with your logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded gift boxes with a clear window — let your product speak for itself while your brand surrounds it. The window front creates an instant premium unboxing impression, perfect for chocolates, jewellery, cosmetics, and artisan products. Full-colour custom printing with your logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Chocolate gifting",
         "jewellery brands",
@@ -559,7 +556,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "laminated-shopping-bags-with-thread-handle",
     shopifyTitle: "Custom Branded Laminated Carry Bag",
     prefills: {
-      intro: "Custom printed laminated shopping bags with thread handle \u2014 premium, glossy finish bags that make your brand look luxury from the moment a customer walks out of your store. Strong thread handles, durable laminated surface, and full-colour custom printing with your logo, brand name, and design. The ultimate walking advertisement for your brand. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed laminated shopping bags with thread handle — premium, glossy finish bags that make your brand look luxury from the moment a customer walks out of your store. Strong thread handles, durable laminated surface, and full-colour custom printing with your logo, brand name, and design. The ultimate walking advertisement for your brand. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Boutiques",
         "jewellery stores",
@@ -588,7 +585,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "folded-business-card",
     shopifyTitle: "Folded Business Card",
     prefills: {
-      intro: "Custom printed folded business cards \u2014 a premium, double-layered card that gives you twice the space for your brand story, contact details, services, and design. Makes a strong first impression at meetings, exhibitions, and networking events. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed folded business cards — a premium, double-layered card that gives you twice the space for your brand story, contact details, services, and design. Makes a strong first impression at meetings, exhibitions, and networking events. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Consultants",
         "premium service brands",
@@ -615,7 +612,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "business-card",
     shopifyTitle: "Business Card",
     prefills: {
-      intro: "Custom printed business cards that make your brand memorable. Premium quality card stock with full-colour printing on one or both sides \u2014 add your logo, contact details, tagline, and brand colours. Design in our free online studio with live preview. Perfect for professionals, freelancers, retail shops, and D2C brand founders. MOQ starts at just 10 pieces.",
+      intro: "Custom printed business cards that make your brand memorable. Premium quality card stock with full-colour printing on one or both sides — add your logo, contact details, tagline, and brand colours. Design in our free online studio with live preview. Perfect for professionals, freelancers, retail shops, and D2C brand founders. MOQ starts at just 10 pieces.",
       bestFor: [
         "Entrepreneurs",
         "small businesses",
@@ -644,7 +641,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "a4-flyer",
     shopifyTitle: "A4 Flyer",
     prefills: {
-      intro: "Custom printed A4 flyers for restaurants, retail stores, event promotions, and service businesses. Full-colour single or double-sided printing on high-quality paper stock. Design your flyer in our free online studio \u2014 upload your logo, add text, choose your layout \u2014 and preview before ordering. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed A4 flyers for restaurants, retail stores, event promotions, and service businesses. Full-colour single or double-sided printing on high-quality paper stock. Design your flyer in our free online studio — upload your logo, add text, choose your layout — and preview before ordering. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Menu cards",
         "promotional offers",
@@ -671,7 +668,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "brochure-four-fold",
     shopifyTitle: "Four Fold Brochure",
     prefills: {
-      intro: "Custom printed four-fold brochures \u2014 ideal for product catalogues, service menus, event guides, and detailed brand communication. Printed on premium paper stock with full-colour on one or both sides. Design directly in our free studio with 3D preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed four-fold brochures — ideal for product catalogues, service menus, event guides, and detailed brand communication. Printed on premium paper stock with full-colour on one or both sides. Design directly in our free studio with 3D preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Product catalogues",
         "wedding brochures",
@@ -698,7 +695,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "brochure-tri-fold",
     shopifyTitle: "Tri Fold Brochure",
     prefills: {
-      intro: "Custom printed tri-fold brochures \u2014 the most popular format for brand introductions, service menus, and event programs. Compact, professional, and easy to hand out. Full-colour printing on both sides. Design in our free 3D studio with live preview \u2014 no graphic designer needed. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed tri-fold brochures — the most popular format for brand introductions, service menus, and event programs. Compact, professional, and easy to hand out. Full-colour printing on both sides. Design in our free 3D studio with live preview — no graphic designer needed. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Brand introduction kits",
         "restaurant menus",
@@ -725,7 +722,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "brochure-z-fold",
     shopifyTitle: "Z Fold Brochure",
     prefills: {
-      intro: "Custom printed Z-fold brochures \u2014 a sleek, modern format that unfolds in a zigzag pattern, perfect for step-by-step brand storytelling, product guides, and lookbooks. Full-colour printing on premium stock. Design in our free 3D studio with real-time preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed Z-fold brochures — a sleek, modern format that unfolds in a zigzag pattern, perfect for step-by-step brand storytelling, product guides, and lookbooks. Full-colour printing on premium stock. Design in our free 3D studio with real-time preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Brand storytelling",
         "how-to guides",
@@ -779,9 +776,9 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
   {
     presetId: "oval-thank-you-card",
     shopifyHandle: "thank-you-discount-oval-card",
-    shopifyTitle: "Thank You Card \u2014 Oval",
+    shopifyTitle: "Thank You Card — Oval",
     prefills: {
-      intro: "Custom printed oval thank you cards \u2014 a distinctive, premium shape that stands out from standard rectangular cards. The oval format feels special and handcrafted, perfect for artisan brands, boutique businesses, and gifting brands that want every detail to reflect their brand personality. Add your logo, message, and discount code. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed oval thank you cards — a distinctive, premium shape that stands out from standard rectangular cards. The oval format feels special and handcrafted, perfect for artisan brands, boutique businesses, and gifting brands that want every detail to reflect their brand personality. Add your logo, message, and discount code. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Artisan brands",
         "boutique gifting",
@@ -807,9 +804,9 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
   {
     presetId: "folded-thank-you-card",
     shopifyHandle: "thank-you-card-folded",
-    shopifyTitle: "Thank You Card \u2014 Folded",
+    shopifyTitle: "Thank You Card — Folded",
     prefills: {
-      intro: "Custom printed folded thank you cards \u2014 a premium, double-panel card that gives you more space for your brand message, customer note, discount offer, and design. Unfolds to reveal your full message inside \u2014 a memorable touch that makes customers feel valued and drives repeat orders. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed folded thank you cards — a premium, double-panel card that gives you more space for your brand message, customer note, discount offer, and design. Unfolds to reveal your full message inside — a memorable touch that makes customers feel valued and drives repeat orders. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Premium D2C brands",
         "gifting businesses",
@@ -835,7 +832,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "hang-tags",
     shopifyTitle: "Hang Tags",
     prefills: {
-      intro: "Custom printed hang tags for fashion brands, clothing labels, jewellery, accessories, and D2C product businesses. Add your brand logo, product details, care instructions, price, QR code, or social handle \u2014 all in your brand colours and typography. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed hang tags for fashion brands, clothing labels, jewellery, accessories, and D2C product businesses. Add your brand logo, product details, care instructions, price, QR code, or social handle — all in your brand colours and typography. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Fashion brands",
         "clothing labels",
@@ -861,7 +858,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "parcel-bag-with-handle",
     shopifyTitle: "Parcel Bag",
     prefills: {
-      intro: "Custom printed parcel bags with hand handle \u2014 a sturdy, branded alternative to plain polybags for businesses that hand-deliver orders or sell at local markets and exhibitions. Your logo and brand design on a strong bag with a comfortable carry handle. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom printed parcel bags with hand handle — a sturdy, branded alternative to plain polybags for businesses that hand-deliver orders or sell at local markets and exhibitions. Your logo and brand design on a strong bag with a comfortable carry handle. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Local delivery businesses",
         "boutique shops",
@@ -889,7 +886,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "bags-with-hand-handle",
     shopifyTitle: "D-Cut Paper Bag",
     prefills: {
-      intro: "Custom printed D-cut paper bags with hand-cut hole handle \u2014 perfect for retail shops, boutiques, gifting, and food takeaway brands. Strong, eco-friendly kraft or art paper base with full-colour custom printing. Add your brand logo, colours, and design directly in our free 3D studio and preview exactly how your bag will look before placing the order. MOQ starts at just 10 pieces.",
+      intro: "Custom printed D-cut paper bags with hand-cut hole handle — perfect for retail shops, boutiques, gifting, and food takeaway brands. Strong, eco-friendly kraft or art paper base with full-colour custom printing. Add your brand logo, colours, and design directly in our free 3D studio and preview exactly how your bag will look before placing the order. MOQ starts at just 10 pieces.",
       bestFor: [
         "Retail shops",
         "boutique stores",
@@ -912,9 +909,9 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
   {
     presetId: "unboxing-experience-box",
     shopifyHandle: "sweet-box-front-opening",
-    shopifyTitle: "Unboxing Experience Box",
+    shopifyTitle: "Product Box / Unboxing Experince Box",
     prefills: {
-      intro: "Custom branded product boxes with front opening \u2014 a flip-top style that creates a dramatic, premium unboxing experience. When the front panel opens, your product is revealed front-and-centre. Ideal for D2C brands, subscription boxes, and premium product gifting. Full-colour custom printing with your logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded product boxes with front opening — a flip-top style that creates a dramatic, premium unboxing experience. When the front panel opens, your product is revealed front-and-centre. Ideal for D2C brands, subscription boxes, and premium product gifting. Full-colour custom printing with your logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "D2C brands",
         "subscription boxes",
@@ -932,6 +929,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
       ],
       imageUrls: [
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/sweet_box_flip_top_mailer_box_packaging_mockup.ezpac.3d.jpg?v=1761738031",
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/150010_sweet_box.ezpac.3d.jpg?v=1761742625",
       ],
       priceRupees: 10,
     },
@@ -969,7 +967,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "pooja-box",
     shopifyTitle: "Pooja Box",
     prefills: {
-      intro: "Custom branded pooja boxes for religious product brands, temple gift shops, puja kit sellers, and festive gifting businesses. Elegant, reverential packaging with full-colour custom printing \u2014 your brand name, logo, and design on every box. Perfect for Diwali puja kits, prasad packaging, and sacred product gifting. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded pooja boxes for religious product brands, temple gift shops, puja kit sellers, and festive gifting businesses. Elegant, reverential packaging with full-colour custom printing — your brand name, logo, and design on every box. Perfect for Diwali puja kits, prasad packaging, and sacred product gifting. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Puja kit brands",
         "prasad packaging",
@@ -996,7 +994,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "sachet-box",
     shopifyTitle: "Sachet Box",
     prefills: {
-      intro: "Custom branded sachet boxes for single-serve food, beverage, supplement, and personal care brands. Compact, slim packaging designed to hold sachets securely with full-colour custom printing \u2014 your brand name, logo, ingredients, and design on every box. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded sachet boxes for single-serve food, beverage, supplement, and personal care brands. Compact, slim packaging designed to hold sachets securely with full-colour custom printing — your brand name, logo, ingredients, and design on every box. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Coffee and tea sachet brands",
         "protein supplement brands",
@@ -1022,7 +1020,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "food-delievery-box",
     shopifyTitle: "Food Delivery Box",
     prefills: {
-      intro: "Custom branded food delivery boxes for restaurants, cloud kitchens, tiffin services, and food delivery businesses. Strong, food-safe corrugated construction with full-colour custom printing \u2014 make every delivery a branded experience. Your logo and design on every box that goes out. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded food delivery boxes for restaurants, cloud kitchens, tiffin services, and food delivery businesses. Strong, food-safe corrugated construction with full-colour custom printing — make every delivery a branded experience. Your logo and design on every box that goes out. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Cloud kitchens",
         "restaurants",
@@ -1077,7 +1075,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "mobile-cover-box",
     shopifyTitle: "Mobile Cover Box",
     prefills: {
-      intro: "Custom branded mobile cover boxes for phone accessories brands, mobile cover businesses, and electronics retail. Sleek, compact packaging with full-colour custom printing \u2014 display your brand, product name, compatibility details, and design on a box that looks professional in every retail or D2C setting. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded mobile cover boxes for phone accessories brands, mobile cover businesses, and electronics retail. Sleek, compact packaging with full-colour custom printing — display your brand, product name, compatibility details, and design on a box that looks professional in every retail or D2C setting. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Mobile cover brands",
         "phone accessories businesses",
@@ -1104,7 +1102,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "shawl-box",
     shopifyTitle: "Soap Pillow Box",
     prefills: {
-      intro: "Custom branded soap boxes in a pillow style \u2014 an elegant, curved packaging shape that gives handmade and artisan soap brands a boutique, premium look. Easy to assemble, eye-catching on retail shelves, and beautiful enough to gift directly. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded soap boxes in a pillow style — an elegant, curved packaging shape that gives handmade and artisan soap brands a boutique, premium look. Easy to assemble, eye-catching on retail shelves, and beautiful enough to gift directly. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Artisan soap brands",
         "handmade soap businesses",
@@ -1130,7 +1128,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "pillow-box",
     shopifyTitle: "Pillow Box",
     prefills: {
-      intro: "Custom branded pillow boxes \u2014 a graceful, curved shape that instantly elevates the presentation of jewellery, small gifts, accessories, and confectionery. Easy to assemble, strong enough to protect the product, and beautiful enough to gift directly. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded pillow boxes — a graceful, curved shape that instantly elevates the presentation of jewellery, small gifts, accessories, and confectionery. Easy to assemble, strong enough to protect the product, and beautiful enough to gift directly. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Jewellery brands",
         "accessories gifting",
@@ -1157,7 +1155,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "choclate-triangle-box",
     shopifyTitle: "Chocolate Triangle Box",
     prefills: {
-      intro: "Custom branded chocolate triangle boxes \u2014 a unique, eye-catching pyramid shape that makes your chocolate or confectionery product instantly stand out on a shelf or in a gift hamper. Food-safe material with full-colour custom printing. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded chocolate triangle boxes — a unique, eye-catching pyramid shape that makes your chocolate or confectionery product instantly stand out on a shelf or in a gift hamper. Food-safe material with full-colour custom printing. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Chocolate brands",
         "premium mithai",
@@ -1183,7 +1181,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "paan-box",
     shopifyTitle: "Paan Box",
     prefills: {
-      intro: "Custom branded paan boxes for paan shops, meetha paan brands, and premium betel leaf gifting businesses. Food-safe, compact packaging with full-colour custom printing \u2014 your brand name, logo, and design on every box. Make your paan brand memorable and giftable. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded paan boxes for paan shops, meetha paan brands, and premium betel leaf gifting businesses. Food-safe, compact packaging with full-colour custom printing — your brand name, logo, and design on every box. Make your paan brand memorable and giftable. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Paan shops",
         "premium meetha paan brands",
@@ -1210,7 +1208,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "cereal-box",
     shopifyTitle: "Cereal Box",
     prefills: {
-      intro: "Custom branded cereal boxes for food brands, health food startups, muesli brands, and breakfast product businesses. Sturdy, food-grade packaging with full-colour custom printing \u2014 your brand name, logo, nutritional info, and design printed to spec. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded cereal boxes for food brands, health food startups, muesli brands, and breakfast product businesses. Sturdy, food-grade packaging with full-colour custom printing — your brand name, logo, nutritional info, and design printed to spec. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Cereal brands",
         "muesli startups",
@@ -1237,7 +1235,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "perfume-box",
     shopifyTitle: "Perfume Box",
     prefills: {
-      intro: "Custom branded perfume boxes for fragrance brands, attar businesses, and luxury personal care brands. Your customer smells your fragrance later \u2014 they see your box first. Premium quality packaging with full-colour custom printing, gold foil options, and custom sizes to fit any bottle. Design in our free 3D studio with live preview. No graphic designer needed. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Your customer smells your fragrance later. They see your box first. Custom branded perfume boxes for fragrance brands, attar businesses and luxury personal care brands. Choose full-colour printing, gold foil and a size that fits your bottle. Design the box in EzPac's free 3D studio, then check the price for your chosen size and quantity. No graphic designer needed. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Perfume brands",
         "attar businesses",
@@ -1252,7 +1250,6 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
         "no-designer-needed",
         "moq-10",
         "doorstep-delivery",
-        "shark-tank",
       ],
       imageUrls: [
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/100010_perfume_box1.ezpac.3d.jpg?v=1761719995",
@@ -1266,7 +1263,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "cosmetic-bottle-box",
     shopifyTitle: "Cosmetic / Beauty Brand Box",
     prefills: {
-      intro: "Custom branded cosmetic boxes for skincare, makeup, beauty, and personal care brands. Premium quality packaging with full-colour custom printing \u2014 add your brand logo, product name, ingredients list, and design. Available in custom sizes to fit serums, moisturisers, lip products, and more. Design in our free 3D studio with live preview. No graphic designer needed. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded cosmetic boxes for skincare, makeup, beauty, and personal care brands. Premium quality packaging with full-colour custom printing — add your brand logo, product name, ingredients list, and design. Available in custom sizes to fit serums, moisturisers, lip products, and more. Design in our free 3D studio with live preview. No graphic designer needed. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Skincare brands",
         "makeup brands",
@@ -1293,7 +1290,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "gift-box",
     shopifyTitle: "Gift Box",
     prefills: {
-      intro: "Custom branded gift boxes for gifting brands, wedding planners, festive hampers, and premium product packaging. Elegant construction with full-colour custom printing \u2014 your logo, brand colours, and design on a box that makes every gift feel special. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded gift boxes for gifting brands, wedding planners, festive hampers, and premium product packaging. Elegant construction with full-colour custom printing — your logo, brand colours, and design on a box that makes every gift feel special. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Gifting brands",
         "wedding hampers",
@@ -1320,7 +1317,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "food-parcel-box",
     shopifyTitle: "Food Parcel Box",
     prefills: {
-      intro: "Custom branded food parcel boxes with handle \u2014 perfect for restaurants, cloud kitchens, and takeaway businesses that want their delivery to look as good as the food inside. Food-safe construction with built-in carry handle and full-colour custom printing. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded food parcel boxes with handle — perfect for restaurants, cloud kitchens, and takeaway businesses that want their delivery to look as good as the food inside. Food-safe construction with built-in carry handle and full-colour custom printing. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Takeaway restaurants",
         "cloud kitchens",
@@ -1347,9 +1344,9 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
   {
     presetId: "slider-box-thin-wall",
     shopifyHandle: "slider-chocolate-box",
-    shopifyTitle: "Slider Box \u2014 Thin Wall",
+    shopifyTitle: "Slider Box — Thin Wall",
     prefills: {
-      intro: "Custom branded slider boxes with thin wall construction \u2014 a sleek, modern sliding-drawer style packaging at a lighter weight and more accessible price point. Perfect for chocolates, small gifts, accessories, and retail products that need a premium look without the premium bulk. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded slider boxes with thin wall construction — a sleek, modern sliding-drawer style packaging at a lighter weight and more accessible price point. Perfect for chocolates, small gifts, accessories, and retail products that need a premium look without the premium bulk. Full-colour custom printing with your brand logo and design. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Chocolate brands",
         "small gifting",
@@ -1374,9 +1371,9 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
   {
     presetId: "mithai-box-top-bottom-style",
     shopifyHandle: "sweet-box-top-bottom-style",
-    shopifyTitle: "Mithai Box \u2014 Top Bottom Style",
+    shopifyTitle: "Mithai Box — Top Bottom Style",
     prefills: {
-      intro: "Custom branded sweet boxes in classic top-and-bottom style \u2014 a timeless, elegant packaging format for mithai shops, home sweet businesses, and festive gifting brands. Food-safe, sturdy construction with full-colour custom printing. Your brand name, logo, and design on every box that a customer gifts or receives. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded sweet boxes in classic top-and-bottom style — a timeless, elegant packaging format for mithai shops, home sweet businesses, and festive gifting brands. Food-safe, sturdy construction with full-colour custom printing. Your brand name, logo, and design on every box that a customer gifts or receives. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Mithai shops",
         "home sweet businesses",
@@ -1405,7 +1402,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "chocolate-pack-box",
     shopifyTitle: "Chocolate Pack Box",
     prefills: {
-      intro: "Custom branded chocolate pack boxes \u2014 the classic top-and-bottom lid style perfect for premium chocolate assortments, truffle collections, and festive gifting. Food-safe, sturdy construction with full-colour custom printing on all sides. Design your box with your logo and brand identity in our free 3D studio. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded chocolate pack boxes — the classic top-and-bottom lid style perfect for premium chocolate assortments, truffle collections, and festive gifting. Food-safe, sturdy construction with full-colour custom printing on all sides. Design your box with your logo and brand identity in our free 3D studio. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Premium chocolate brands",
         "truffle boxes",
@@ -1432,7 +1429,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "snack-box",
     shopifyTitle: "Snack Box",
     prefills: {
-      intro: "Custom branded snack boxes for snack brands, namkeen businesses, dry fruit gifting, and food startups. Sturdy, food-safe packaging with full-colour custom printing \u2014 your brand name, logo, flavour details, and design on every box. Make your snack brand shelf-ready and D2C-ready from just 10 pieces. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded snack boxes for snack brands, namkeen businesses, dry fruit gifting, and food startups. Sturdy, food-safe packaging with full-colour custom printing — your brand name, logo, flavour details, and design on every box. Make your snack brand shelf-ready and D2C-ready from just 10 pieces. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Snack brands",
         "namkeen businesses",
@@ -1460,7 +1457,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "square-box",
     shopifyTitle: "Square Box",
     prefills: {
-      intro: "Custom branded square boxes \u2014 a versatile, clean-lined packaging format that works for almost any product category. Strong, structured, and fully customisable in size and design. Add your brand logo, colours, product name, and design in our free 3D studio with live preview. Whether you sell cosmetics, jewellery, gifts, or food products \u2014 this box adapts to your brand. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded square boxes — a versatile, clean-lined packaging format that works for almost any product category. Strong, structured, and fully customisable in size and design. Add your brand logo, colours, product name, and design in our free 3D studio with live preview. Whether you sell cosmetics, jewellery, gifts, or food products — this box adapts to your brand. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Cosmetic products",
         "jewellery gifting",
@@ -1487,7 +1484,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "brownie-box",
     shopifyTitle: "Brownie Box",
     prefills: {
-      intro: "Custom branded brownie boxes for home bakers, cloud kitchens, gifting brands, and bakery businesses. Sturdy, food-safe construction with full-colour custom printing \u2014 your logo, brand colours, and design printed exactly as you want. Design for free in our 3D studio and preview your box before ordering. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded brownie boxes for home bakers, cloud kitchens, gifting brands, and bakery businesses. Sturdy, food-safe construction with full-colour custom printing — your logo, brand colours, and design printed exactly as you want. Design for free in our 3D studio and preview your box before ordering. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Home bakers",
         "brownie businesses",
@@ -1514,7 +1511,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     shopifyHandle: "sweet-box",
     shopifyTitle: "Chocolate Box",
     prefills: {
-      intro: "Custom branded chocolate boxes for chocolate brands, gifting businesses, mithai shops, and home confectionery brands. Food-safe, elegant packaging with full-colour custom printing \u2014 your logo, brand colours, and design perfectly printed. Design for free in our 3D studio and preview before ordering. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      intro: "Custom branded chocolate boxes for chocolate brands, gifting businesses, mithai shops, and home confectionery brands. Food-safe, elegant packaging with full-colour custom printing — your logo, brand colours, and design perfectly printed. Design for free in our 3D studio and preview before ordering. MOQ starts at just 10 pieces with doorstep delivery across India.",
       bestFor: [
         "Chocolate brands",
         "truffle businesses",
@@ -1533,6 +1530,242 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
       ],
       imageUrls: [
         "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/chocolate_bar_box_nail_buckles_tuck_end.ezpac.3d.jpg?v=1761737012",
+      ],
+      priceRupees: 10,
+    },
+  },
+  {
+    unmapped: true,
+    shopifyHandle: "wedding-gift-hamper-box-copy",
+    shopifyTitle: "Wedding Gift / Hamper Box",
+    prefills: {
+      intro: "Custom Printed Wedding Gift Boxes & Welcome Hampers (Front-Opening Reveal) Turn every wedding gift, guest room hamper, and mithai box into a memorable unboxing experience. Featuring a premium flip-top front opening, your curated gifts, dry fruits, sweets, or wedding favours are revealed front-and-centre the moment guests lift the lid. Full-colour custom printing showcases your couple monogram, wedding hashtag, and festive motif on every box. Design easily in our free 3D studio with a live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      bestFor: [
+        "Guest room welcome hampers",
+        "wedding invitation boxes",
+        "mithai & dry fruit gifting",
+        "return gift boxes",
+        "bridesmaid & groomsmen hampers",
+        "and bidaai favours",
+      ],
+      featureBullets: [
+        "free-3d-studio",
+        "moq-10",
+        "doorstep-delivery",
+        "shark-tank",
+      ],
+      imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/WeddingGiftHamperBox.ezpac.3d.png?v=1794931500",
+      ],
+      priceRupees: 10,
+    },
+  },
+  {
+    unmapped: true,
+    shopifyHandle: "ziplock-pouch",
+    shopifyTitle: "Wedding Snacks packet",
+    prefills: {
+      intro: "Custom printed wedding snack pouches — premium paper exterior with a food-grade aluminium lining inside that keeps wedding treats fresh, crispy, and moisture-free. Perfect for packing dry fruits, mukhwas, namkeen, artisanal sweets, and midnight snacks in guest rooms, wedding hampers, and return gifts without relying on generic pouches or plain stickers. Your couple monogram, wedding hashtag, and festive motif are fully printed directly on the pouch. No graphic designer needed — customize in our free 3D studio with a live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      bestFor: [
+        "Guest room welcome hampers",
+        "wedding return favours",
+        "bidaai & baraat snack packs",
+        "haldi/mehendi/sangeet giveaways",
+        "destination wedding travel kits",
+        "and festive mithai/dry fruit gifting",
+      ],
+      featureBullets: [
+        "food-grade-lining",
+        "no-designer-needed",
+        "free-3d-studio",
+        "moq-10",
+        "doorstep-delivery",
+      ],
+      imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Gemini_Generated_Image_obj455obj455obj4.ezpac.3d.png?v=1794926446",
+      ],
+      priceRupees: 0,
+    },
+  },
+  {
+    unmapped: true,
+    shopifyHandle: "wedding-ladoo-box",
+    shopifyTitle: "Wedding Ladoo Box",
+    prefills: {
+      intro: "Custom Printed Wedding Laddoo & Shagun Sweets Boxes Make your traditional mithai gifting look exquisite and luxurious. Specially designed to hold traditional laddoos, modaks, and festive sweets securely while showcasing your couple's branding. Featuring full-colour custom printing with your wedding motif, couple names, and hashtag. Design easily in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      bestFor: [
+        "Wedding laddoo distribution",
+        "shagun sweet gifting",
+        "ring ceremony favors",
+        "traditional mithai boxes",
+        "sagan hampers",
+        "and family celebration giveaways",
+      ],
+      featureBullets: [
+        "custom-size",
+        "free-3d-studio",
+        "moq-10",
+        "doorstep-delivery",
+        "shark-tank",
+      ],
+      imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/WeddingLadooBox.ezpac.3d.png?v=1794984625",
+      ],
+      priceRupees: 10,
+    },
+  },
+  {
+    unmapped: true,
+    shopifyHandle: "wedding-tissue-paper-box",
+    shopifyTitle: "Wedding Tissue Paper Box",
+    prefills: {
+      intro: "Custom Wedding Tissue Paper Boxes for Guest Rooms, Dining Tables & Celebration Venues Turn an everyday essential into a memorable wedding keepsake — feature your wedding monogram, couple’s hashtag, or custom wedding motif on every tissue box placed in guest welcome hampers, hotel rooms, dining tables during lunch and dinner, and banquet counters. Full-colour custom printing with a live preview to seamlessly match your wedding theme and stationery. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      bestFor: [
+        "Guest room welcome hampers",
+        "lunch & dinner table setups",
+        "haldi/mehendi/sangeet venues",
+        "destination weddings",
+        "and return gift boxes",
+      ],
+      featureBullets: [
+        "free-3d-studio",
+        "moq-10",
+        "doorstep-delivery",
+        "shark-tank",
+      ],
+      imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/WeddingTissueBox.ezpac.3d.png?v=1794931876",
+      ],
+      priceRupees: 0,
+    },
+  },
+  {
+    unmapped: true,
+    shopifyHandle: "wedding-bags",
+    shopifyTitle: "Wedding Bags",
+    prefills: {
+      intro: "Custom Printed Wedding Shopping Bags & Trousseau Carry Bags Make your wedding gifting and guest welcome hospitality look truly luxurious from the very first moment. Our premium, glossy or matte laminated paper carry bags feature your wedding monogram, couple’s hashtag, or festive motifs, complete with strong, comfortable thread handles. Perfect for distributing guest welcome hampers, trousseau packing, and wedding shopping without relying on generic bags. Design easily in our free 3D studio with a live preview—choose your colors, patterns, and personalized text. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      bestFor: [
+        "Guest welcome hampers",
+        "wedding guest hotel room drop-offs",
+        "wedding trousseau & saree packing",
+        "return gift bags",
+        "bidaai giveaways",
+        "and wedding shopping",
+      ],
+      featureBullets: [
+        "free-3d-studio",
+        "moq-10",
+        "doorstep-delivery",
+      ],
+      imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Wedding_Bags.ezpac.3d.png?v=1794930078",
+      ],
+      priceRupees: 10,
+    },
+  },
+  {
+    unmapped: true,
+    shopifyHandle: "wedding-stickers",
+    shopifyTitle: "Wedding Stickers",
+    prefills: {
+      intro: "Custom printed round wedding stickers for invitation envelopes, welcome hampers, return gift boxes, mithai jars, and wedding favours. The most versatile wedding stationery accent — seal your wedding invites, personalise guest room snack jars, brand your bidaai boxes, or add your couple monogram to every favour. Design in our free 3D studio with a live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      bestFor: [
+        "Invitation envelope seals",
+        "mithai & dry fruit jar labels",
+        "welcome hamper sealing",
+        "return gift boxes",
+        "wedding favour bags",
+        "cocktail glass tags",
+        "and Haldi/Mehendi giveaways",
+      ],
+      featureBullets: [
+        "free-3d-studio",
+        "moq-10",
+        "doorstep-delivery",
+        "shark-tank",
+      ],
+      imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Wedding_Stickers.ezpac.3d.png?v=1794928670",
+      ],
+      priceRupees: 10,
+    },
+  },
+  {
+    unmapped: true,
+    shopifyHandle: "wedding-planning-dressup-functions",
+    shopifyTitle: "Wedding Planner /  Wardrobe Planner",
+    prefills: {
+      intro: "Custom printed A4 flyers for wedding itineraries, dress code guides, function schedules, and guest room welcome notes. Full-colour single or double-sided printing on high-quality paper stock to match your wedding theme and stationery. Design your flyer in our free online studio — upload your couple monogram, add event timings, outfit colour palettes, and venue details — and preview before ordering. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      bestFor: [
+        "Wedding function itineraries",
+        "Haldi/Mehendi/Sangeet dress code cards",
+        "guest room welcome letters",
+        "baraat route & venue maps",
+        "bar & food menus",
+        "and cocktail night schedules",
+      ],
+      featureBullets: [
+        "custom-size",
+        "free-3d-studio",
+        "moq-10",
+        "doorstep-delivery",
+        "shark-tank",
+      ],
+      imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/wedding_planner.ezpac.3d.png?v=1794928435",
+      ],
+      priceRupees: 10,
+    },
+  },
+  {
+    unmapped: true,
+    shopifyHandle: "thank-you-card-folded-copy",
+    shopifyTitle: "Wedding Internary Card",
+    prefills: {
+      intro: "Custom Folded Wedding Itinerary Cards Custom printed folded itinerary cards are a premium, double-panel card with room for your full wedding schedule, venue details, dress codes, and a personal welcome note. Guests open it to see every function at a glance, from mehendi to sangeet to the pheras. It’s a thoughtful touch that keeps everyone on time and makes them feel truly welcomed. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      bestFor: [
+        "Destination weddings",
+        "multi-day wedding functions",
+        "wedding planners",
+        "welcome hamper makers",
+        "hotel room drops",
+        "and NRI guest kits",
+      ],
+      featureBullets: [
+        "free-3d-studio",
+        "moq-10",
+        "doorstep-delivery",
+        "shark-tank",
+      ],
+      imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Wedding_Iternary_card.ezpac.3d.png?v=1794930630",
+      ],
+      priceRupees: 5,
+    },
+  },
+  {
+    unmapped: true,
+    shopifyHandle: "luggage-tags",
+    shopifyTitle: "Wedding Luggage Tags",
+    prefills: {
+      intro: "Custom Wedding Luggage Tags Custom printed luggage tags for destination weddings, wedding hampers, guest welcome kits, and baraat or family travel. Add the couple’s names, wedding logo or monogram, wedding date, hashtag, venue, or a QR code to the event itinerary, all in your wedding theme colours and fonts. Design in our free 3D studio with live preview. MOQ starts at just 10 pieces with doorstep delivery across India.",
+      bestFor: [
+        "Destination weddings",
+        "wedding planners",
+        "welcome hamper makers",
+        "return gift curators",
+        "family travel for wedding functions",
+        "and NRI guest kits",
+      ],
+      featureBullets: [
+        "free-3d-studio",
+        "moq-10",
+        "doorstep-delivery",
+        "shark-tank",
+      ],
+      imageUrls: [
+        "https://cdn.shopify.com/s/files/1/0764/2274/2245/files/Wedding_luggage_tags_wedding.ezpac.3d.png?v=1794930679",
       ],
       priceRupees: 10,
     },

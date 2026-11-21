@@ -1,11 +1,15 @@
 # External catalog import probe
 
-Generated: 2026-11-03T11:26:36.596Z
+Generated: 2026-11-21T16:44:26.498Z
+
+Status: offline snapshot mode; no live endpoints were contacted.
+
+## EzPac
+
+- Offline snapshot contains 64 products. Live endpoint was not contacted.
 
 ## Ranbazaar
 
-- Homepage bundle: /static/js/main.da117eea.js.
-- POST https://api.ckbox.io/api/allproducts: 404.
-- POST https://ranbazaar.com/api/products: enumerated 361 products across 31 page(s).
-- Saved product snapshot JSONs to docs/research/ranbazaar/products/.
+- Offline product snapshots: 361 product(s) in docs/research/ranbazaar/products/.
+- Live product pages and list API were not contacted.
 

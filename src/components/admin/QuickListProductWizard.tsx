@@ -21,6 +21,15 @@ import { ezpacIndustryCollectionCategorySlug } from "@/lib/ezpac-packaging-prese
 import { formatStructuredDescription } from "@/lib/admin-structured-description";
 import { EZPAC_SHOPIFY_PRODUCT_MAPPING, ezpacMappingCategory } from "@/lib/ezpac-product-mapping";
 import { listRanBazaarCustomizationStarters } from "@/lib/ranbazaar-customization-presets";
+import {
+  buildListingSources,
+  draftFromExistingProduct,
+  essentialsComplete,
+  previewPrice,
+  quickListProductPayload,
+  searchListingSources,
+  type ListingSource,
+} from "@/lib/listing-wizard";
 import { StatusBadge } from "./AdminUI";
 import { ProductFullDetailsSections, ProductLayoutControls, clampLayoutElementDefaults, type PublishedVisualizationTemplate } from "./ProductFullDetailsSections";
 import { SurfaceCustomerPreview } from "./SurfaceCustomerPreview";
@@ -32,10 +41,12 @@ type StepStatus = "waiting" | "working" | "done" | "failed" | "skipped";
 
 const readinessLabels = {
   "mime-types": "Photo uploads: allowed formats",
-  "physical-dimensions": "Print size set (mm)",
+  "physical-dimensions": "Photo surface sizes set",
   "linked-templates": "Design template ready",
   "packaging-visualization": "3D preview ready (packaging only)",
 } as const;
+
+const sourceKindLabels = { ranbazaar: "Starter", packaging: "Packaging", blank: "Simple", similar: "Copy existing" } as const;
 
 const categoryByStarter: Record<string, string> = {
   "name-slips": "premium-name-slips", "pen-pencil": "pen-pencil-custom", notebook: "note-books",
@@ -69,8 +80,54 @@ function previewFile(file: File | null, previous: string) {
   return file ? URL.createObjectURL(file) : "";
 }
 
+/** Storefront-style live preview: what the admin types is what the customer will see. */
+function ListingPreviewCard({
+  photoUrl,
+  name,
+  price,
+  categoryName,
+  basePreview,
+  sampleText,
+  surface,
+  fieldCount,
+}: {
+  photoUrl: string;
+  name: string;
+  price: string;
+  categoryName: string;
+  basePreview: string;
+  sampleText: string;
+  surface?: QuickListPrintArea;
+  fieldCount: number;
+}) {
+  return (
+    <details className={styles.quickListPreviewWrap} open>
+      <summary>Live preview</summary>
+      <div className={styles.quickListPreviewPane}>
+        <div aria-label="Live customer preview" className={styles.quickListPreviewCard}>
+          <div className={styles.quickListPreviewPhoto}>{photoUrl ? <img alt="Product photo preview" src={photoUrl} /> : <FileImage size={22} />}</div>
+          <strong>{name.trim() || "Your product"}</strong>
+          {categoryName && <span className={styles.quickListPreviewChip}>{categoryName}</span>}
+          <em className={styles.quickListPreviewPrice}>{previewPrice(price) || "Set a price"}</em>
+        </div>
+        {fieldCount > 0 && (
+          <SurfaceCustomerPreview
+            baseImageUrl={basePreview}
+            heightMm={surface?.heightMm}
+            productPhotoUrl={photoUrl}
+            sampleText={sampleText}
+            surfaceLabel={surface?.label ?? "Primary surface"}
+            widthMm={surface?.widthMm}
+          />
+        )}
+      </div>
+    </details>
+  );
+}
+
 export function QuickListProductWizard({
   categories,
+  catalogProducts = [],
   onClose,
   onSaved,
   onOpenStudio,
@@ -78,6 +135,8 @@ export function QuickListProductWizard({
   onImportPackaging,
 }: {
   categories: CategoryRecord[];
+  /** Existing products offered as "copy this setup" sources in step 1. */
+  catalogProducts?: Array<{ id: string; name: string }>;
   onClose: () => void;
   onSaved: (productId: string) => void | Promise<void>;
   onOpenStudio: (productId: string) => void | Promise<void>;
@@ -89,7 +148,7 @@ export function QuickListProductWizard({
   const exportPresets = useMemo(() => EZPAC_SHOPIFY_PRODUCT_MAPPING.map((mapping) => ({ value: mapping.shopifyHandle, label: mapping.shopifyTitle, unmapped: mapping.unmapped === true })), []);
   const [step, setStep] = useState(1);
   const [draft, setDraft] = useState<RanBazaarStarterDraft>(() => blankDraft());
-  const [starterMode, setStarterMode] = useState<"ranbazaar" | "blank" | "packaging" | null>(null);
+  const [starterMode, setStarterMode] = useState<"ranbazaar" | "blank" | "packaging" | "similar" | null>(null);
   const [productType, setProductType] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -98,7 +157,8 @@ export function QuickListProductWizard({
   const [sku, setSku] = useState(() => autoSku(""));
   const [skuEdited, setSkuEdited] = useState(false);
   const [sampleText, setSampleText] = useState("Aarav");
-  const [packagingSearch, setPackagingSearch] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [similarLoadingId, setSimilarLoadingId] = useState("");
   const [suggestedCategoryId, setSuggestedCategoryId] = useState("");
   const [primaryFile, setPrimaryFile] = useState<File | null>(null);
   const [baseFile, setBaseFile] = useState<File | null>(null);
@@ -130,10 +190,12 @@ export function QuickListProductWizard({
       category.id !== industryCollections?.id && category.parentId !== industryCollections?.id
     ));
   }, [categories]);
-  const filteredPackagingStarters = useMemo(() => {
-    const search = packagingSearch.trim().toLocaleLowerCase();
-    return search ? packagingStarters.filter((starter) => starter.name.toLocaleLowerCase().includes(search)) : packagingStarters;
-  }, [packagingSearch, packagingStarters]);
+  const listingSources = useMemo(() => buildListingSources({
+    starters: starters.map((starter) => ({ id: starter.id, name: starter.name, description: starter.description, fieldCount: starter.fields.length })),
+    packagingTypes: packagingStarters.map((starter) => ({ id: starter.id, name: starter.name })),
+    products: catalogProducts,
+  }), [starters, packagingStarters, catalogProducts]);
+  const searchResults = useMemo(() => searchListingSources(listingSources, searchQuery), [listingSources, searchQuery]);
 
   useEffect(() => {
     if (categoryId || !categories.length) return;
@@ -151,7 +213,7 @@ export function QuickListProductWizard({
     packagingRequiresVisualization: isEzpacPackagingProductType(readinessDetails?.productType ?? productType),
     hasPublishedVisualization: publishedTemplates.some((template) => readinessDetails?.previewTemplate === `visualization:${template.id}`),
   });
-  const essentialsReady = Boolean(name.trim() && price.trim() && Number(price) >= 0 && categoryId && sku.trim());
+  const essentialsReady = essentialsComplete({ name, price, categoryId, sku });
   const hasPrimaryPhoto = Boolean(primaryFile || uploadedPrimaryUrl);
 
   function categoryOptionLabel(category: CategoryRecord) {
@@ -192,27 +254,53 @@ export function QuickListProductWizard({
   function selectPackagingStarter(productTypeId: string) {
     const next = packagingDraft(productTypeId);
     if (!next) return;
-    const starter = packagingStarters.find((item) => item.id === productTypeId);
-    setPackagingSearch(starter?.name ?? "");
     selectDraft(next, "packaging");
   }
 
+  /** "List similar": copy an existing product's configuration — never its identity. */
+  async function selectSimilar(productId: string, sourceName: string) {
+    setSimilarLoadingId(productId);
+    setError("");
+    try {
+      const response = await fetch(`/api/admin/catalog?productId=${encodeURIComponent(productId)}`);
+      const data = await response.json().catch(() => undefined) as { data?: { product?: Record<string, unknown> } } | undefined;
+      const product = data?.data?.product;
+      if (!response.ok || !product) throw new Error("Could not load that product's setup. Try another one.");
+      const result = draftFromExistingProduct(sourceName, product);
+      setDraft(result.draft);
+      setStarterMode("similar");
+      setStep(2);
+      setProductType(result.productType);
+      setName("");
+      setSkuEdited(false);
+      setSku(autoSku(""));
+      setPrice(result.priceText);
+      setDescription(result.description);
+      const matching = categories.find((category) => category.id === result.categoryId);
+      setCategoryId(matching?.id ?? categories[0]?.id ?? "");
+      setSuggestedCategoryId(matching?.id ?? "");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not load that product's setup.");
+    } finally {
+      setSimilarLoadingId("");
+    }
+  }
+
+  function chooseSource(source: ListingSource) {
+    if (source.kind === "ranbazaar") {
+      const next = createRanBazaarStarterDraft(source.id);
+      if (next) selectDraft(next, "ranbazaar", categoryByStarter[source.id]);
+    } else if (source.kind === "packaging") {
+      selectPackagingStarter(source.id);
+    } else if (source.kind === "blank") {
+      selectDraft(blankDraft(), "blank");
+    } else {
+      void selectSimilar(source.id, source.name);
+    }
+  }
+
   function payload(published: boolean, imageUrl: string) {
-    return {
-      type: "product", name: name.trim(), sku: sku.trim(), categoryId, price: Number(price),
-      description: description.trim(), imageUrl, productType: productType || undefined,
-      configurationFields: draft.configurationFields.map((field) => ({
-        key: field.key, label: field.label, inputType: field.inputType, required: field.required,
-        placeholder: field.placeholder || null, helpText: field.helpText || null, defaultValue: field.defaultValue || null,
-        minLength: field.minLength, maxLength: field.maxLength, allowedPattern: field.allowedPattern || null,
-        minValue: null, maxValue: null, step: null, priceDelta: 0, options: field.options,
-        enabled: field.enabled, customerVisible: field.customerVisible, visibleWhen: null, unit: null,
-      })),
-      printAreas: draft.printAreas, artworkUpload: draft.artworkUpload,
-      acceptedArtworkTypes: draft.acceptedArtworkTypes, artworkPolicy: draft.artworkPolicy,
-      customizable: draft.configurationFields.length > 0, published, allow2D: true, allow3D: false,
-      quantityMin: 1, quantityMax: 100, quantityTiers: [], setupCharge: 0, productionDaysMin: 0, productionDaysMax: 0,
-    };
+    return quickListProductPayload({ name, sku, categoryId, price, description, productType, draft, published, imageUrl });
   }
 
   function makeFullDetails(id: string): FullDetailsProductBase {
@@ -406,17 +494,29 @@ export function QuickListProductWizard({
     } finally { setReusingPhoto(false); }
   }
   const success = attachStatus === "done" && savedProduct;
-  const supportsFullDetails = starterMode === "packaging" || starterMode === "ranbazaar";
-  const wizardSteps = supportsFullDetails ? ["Choose a product type", "Essentials", "Images & publish", "Full details"] : ["Choose a product type", "Essentials", "Images & publish"];
+  const supportsFullDetails = starterMode === "packaging" || starterMode === "ranbazaar" || starterMode === "similar";
+  const wizardSteps = supportsFullDetails && step === 4 ? ["What are you selling?", "Name, price & photo", "Review & publish", "Full details"] : ["What are you selling?", "Name, price & photo", "Review & publish"];
+  const selectedCategoryName = categories.find((category) => category.id === categoryId)?.name ?? "";
   const publishChoice = <fieldset className={styles.quickListPublishChoice}><legend>Save choice</legend><label><input checked={publishNow} name="quick-publish" onChange={() => setPublishNow(true)} type="radio" /> Publish now</label><label><input checked={!publishNow} name="quick-publish" onChange={() => setPublishNow(false)} type="radio" /> Save as draft</label></fieldset>;
   const reusePhotoChoice = <label className={styles.quickListReuseChoice}><input checked={reusePhotoAsBase} onChange={(event) => setReusePhotoAsBase(event.target.checked)} type="checkbox" /> Use the product photo as the 2D canvas background</label>;
-  const readinessChecklist = <div className={styles.quickListChecklist}><strong>{publishNow ? "Publish readiness" : "Publishing checks"}</strong>{readiness.items.map((item) => <p key={item.id} className={publishNow ? item.ready ? styles.quickListReady : styles.quickListNotReady : styles.quickListSkipped}><span>{publishNow ? item.ready ? <Check size={13} /> : "×" : "–"}</span><span><strong>{readinessLabels[item.id]}</strong>{publishNow ? !item.ready ? ` — ${item.message}` : !item.blocking ? " (hint)" : "" : " — skipped for drafts"}</span></p>)}</div>;
+  // Only unresolved checks are worth the admin's attention; a ready product gets one calm line.
+  const pendingChecks = readiness.items.filter((item) => !item.ready && (item.id !== "packaging-visualization" || isEzpacPackagingProductType(productType)));
+  const readinessChecklist = <div className={styles.quickListChecklist}>
+    <strong>{publishNow ? "Before it goes live" : "Saving as a draft"}</strong>
+    {!publishNow
+      ? <p className={styles.quickListSkipped}><span>–</span><span>Publish checks run later, when you publish it.</span></p>
+      : !hasPrimaryPhoto
+        ? <p className={styles.quickListNotReady}><span>×</span><span><strong>Photo</strong> — go back and add a product photo to publish.</span></p>
+        : pendingChecks.length === 0
+          ? <p className={styles.quickListReady}><span><Check size={13} /></span><span>Everything&apos;s ready — this goes live as soon as you publish.</span></p>
+          : pendingChecks.map((item) => <p className={styles.quickListNotReady} key={item.id}><span>×</span><span><strong>{readinessLabels[item.id]}</strong> — {item.message}{item.blocking ? "" : " (optional)"}</span></p>)}
+  </div>;
   return (
     <>
-      <button aria-label="Close quick add" className={styles.drawerBackdrop} onClick={onClose} type="button" />
-      <aside aria-label="Quick add product" className={`${styles.drawer} ${styles.quickListDrawer}`}>
+      <button aria-label="Close add product" className={styles.drawerBackdrop} onClick={onClose} type="button" />
+      <aside aria-label="Add product" className={`${styles.drawer} ${styles.quickListDrawer}`}>
         <div className={styles.drawerHeader}>
-          <div><h3>Quick add product</h3><p>List a personalizable product with the essentials, then manage advanced settings later.</p></div>
+          <div><h3>Add product</h3><p>Five quick decisions and it&apos;s live — advanced settings can wait until after saving.</p></div>
           <button aria-label="Close" className={styles.iconButton} onClick={onClose} type="button"><X size={16} /></button>
         </div>
         <div className={styles.quickListRail} aria-label="Quick add progress">
@@ -424,40 +524,54 @@ export function QuickListProductWizard({
         </div>
         <div className={styles.drawerBody}>
           {step === 1 && <div className={styles.quickListContent}>
-            <div className={styles.quickListStarterHeading}><h4>Pick the closest match — everything can be changed later.</h4></div>
+            <div className={styles.quickListStarterHeading}><h4>What are you selling? Search, or pick the closest match — everything can be changed later.</h4></div>
             {!categories.length && <div className={styles.quickListImportCard}><strong>No categories yet — import the RanBazaar category groups first</strong><p>Imports only missing category records; it never creates products.</p><span><button className={styles.buttonSecondary} onClick={() => void onImportRanBazaar()} type="button">Import RanBazaar groups</button><button className={styles.buttonSecondary} onClick={() => void onImportPackaging()} type="button">Import packaging groups</button></span></div>}
+            <label className={styles.quickListSearch}>
+              <span className={styles.fieldLabel}>Search product types, packaging, or your existing products</span>
+              <input autoFocus className={styles.input} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Try “name slip”, “soap box”, or an existing product’s name" type="search" value={searchQuery} />
+            </label>
             <div className={styles.quickListStarterGrid}>
-              {starters.map((starter) => <button className={styles.configCard} key={starter.id} onClick={() => { const next = createRanBazaarStarterDraft(starter.id); if (next) selectDraft(next, "ranbazaar", categoryByStarter[starter.id]); }} type="button"><strong>{starter.name}</strong><small>{starter.description}</small><span className={styles.quickListChips}><StatusBadge>{starter.fields.length} fields</StatusBadge><StatusBadge>{starter.surfaces.length} surface{starter.surfaces.length === 1 ? "" : "s"}</StatusBadge>{starter.artworkUpload.enabled && <StatusBadge tone="info">Photo upload allowed</StatusBadge>}{starter.fields.find((field) => field.maxLength)?.maxLength && <StatusBadge>max {starter.fields.find((field) => field.maxLength)?.maxLength} chars</StatusBadge>}</span></button>)}
-              <button className={styles.configCard} onClick={() => selectDraft(blankDraft(), "blank")} type="button"><Package size={18} /><strong>Simple product</strong><small>No customer customization — list it, price it, publish.</small></button>
-              <div className={styles.configCard}><Sparkles size={18} /><strong>Packaging &amp; print (boxes, pouches, bags)</strong><small>Boxes, pouches, paper bags, marketing print. Pick one of 55 types.</small><label className={styles.quickListPackagingSearch}><span>Find a packaging type</span><input className={styles.input} list="quick-list-packaging-types" onChange={(event) => { const value = event.target.value; setPackagingSearch(value); const selected = packagingStarters.find((starter) => starter.name === value); if (selected) selectPackagingStarter(selected.id); }} placeholder="Search 55 types" value={packagingSearch} /></label><datalist id="quick-list-packaging-types">{filteredPackagingStarters.map((starter) => <option key={starter.id} value={starter.name} />)}</datalist><select className={styles.select} onChange={(event) => selectPackagingStarter(event.target.value)} value={productType}><option value="">Choose packaging type</option>{filteredPackagingStarters.map((starter) => <option key={starter.id} value={starter.id}>{starter.name}</option>)}</select></div>
+              {searchResults.map((source) => (
+                <button className={styles.configCard} disabled={Boolean(similarLoadingId)} key={`${source.kind}-${source.id}`} onClick={() => chooseSource(source)} type="button">
+                  {source.kind === "blank" ? <Package size={18} /> : source.kind === "packaging" ? <Sparkles size={18} /> : null}
+                  <strong>{source.name}</strong>
+                  <small>{source.hint}</small>
+                  <span className={styles.quickListChips}>
+                    <StatusBadge tone={source.kind === "similar" ? "info" : undefined}>{similarLoadingId === source.id ? "Loading…" : sourceKindLabels[source.kind]}</StatusBadge>
+                    {typeof source.fieldCount === "number" && source.fieldCount > 0 && <StatusBadge>{source.fieldCount} customize field{source.fieldCount === 1 ? "" : "s"}</StatusBadge>}
+                  </span>
+                </button>
+              ))}
             </div>
-            <p className={styles.quickListStarterHint}>Not sure? Pick the closest one — the admin can fine-tune everything in Full details later.</p>
+            {Boolean(searchQuery.trim()) && !searchResults.length && <div className={styles.quickListNoResults}><strong>No matches for “{searchQuery.trim()}”.</strong><p>Try another word, or start from a simple product.</p><button className={styles.buttonSecondary} onClick={() => selectDraft(blankDraft(), "blank")} type="button"><Package size={13} /> Start blank</button></div>}
+            <p className={styles.quickListStarterHint}>Tip: type an existing product&apos;s name to copy its whole setup — then just add a new name, price and photo.</p>
           </div>}
           {step === 2 && <div className={styles.quickListContent}>
             <div className={styles.quickListForm}>
-              {publishChoice}
-              {reusePhotoChoice}
-              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Name</span><input className={styles.input} onChange={(event) => setName(event.target.value)} required value={name} /></label>
-              <div className={styles.fieldGrid}><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Price (₹)</span><input className={styles.input} inputMode="decimal" min="0" onChange={(event) => setPrice(event.target.value)} required type="number" value={price} /></label><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Category</span><select className={styles.select} onChange={(event) => { setCategoryId(event.target.value); setSuggestedCategoryId(""); }} required value={categoryId}><option value="" disabled>Choose a category</option>{categories.map((item) => <option key={item.id} value={item.id}>{categoryOptionLabel(item)}</option>)}</select>{suggestedCategoryId === categoryId && <span className={styles.quickListAutoCategory}>Auto-picked from the starter <button className={styles.buttonGhost} onClick={() => setSuggestedCategoryId("")} type="button">Change</button></span>}</label></div>
+              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Name</span><input autoFocus className={styles.input} onChange={(event) => setName(event.target.value)} placeholder={starterMode === "similar" ? "Give the new product its own name" : undefined} required value={name} /></label>
+              <div className={styles.fieldGrid}><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Price (₹)</span><input className={styles.input} inputMode="decimal" min="0" onChange={(event) => setPrice(event.target.value)} required type="number" value={price} /></label><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Category</span><select className={styles.select} onChange={(event) => { setCategoryId(event.target.value); setSuggestedCategoryId(""); }} required value={categoryId}><option value="" disabled>Choose a category</option>{categories.map((item) => <option key={item.id} value={item.id}>{categoryOptionLabel(item)}</option>)}</select>{suggestedCategoryId === categoryId && <span className={styles.quickListAutoCategory}>Auto-picked for you <button className={styles.buttonGhost} onClick={() => setSuggestedCategoryId("")} type="button">Change</button></span>}</label></div>
+              <div className={styles.assetPicker}><div className={styles.assetPreview}>{primaryPreview ? <img alt="Product photo preview" src={primaryPreview} /> : <FileImage size={20} />}</div><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Photo</span><input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} onChange={(event) => choosePrimary(event.target.files?.[0])} type="file" /><small>Needed before publishing — drafts can wait. It shows up in the live preview instantly.</small></label></div>
               <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Description <small>Optional</small></span><input className={styles.input} onChange={(event) => setDescription(event.target.value)} value={description} /></label>
-              <details className={styles.quickListAdvancedDetails}><summary>Advanced details</summary><div className={styles.quickListSku}><span>SKU <strong>{sku}</strong></span><button className={styles.buttonGhost} onClick={() => setSkuEdited((current) => !current)} type="button">{skuEdited ? "Auto" : "Edit"}</button>{skuEdited && <input aria-label="SKU" className={styles.input} onChange={(event) => setSku(event.target.value)} value={sku} />}</div></details>
-              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Sample customer name (shown in the live preview)</span><input className={styles.input} onChange={(event) => setSampleText(event.target.value)} value={sampleText} /><small>This is what the 2D preview on the right shows — change it to check fonts and sizes.</small></label>
-              {readinessChecklist}
+              {draft.configurationFields.length > 0 && <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Sample name for the preview</span><input className={styles.input} onChange={(event) => setSampleText(event.target.value)} value={sampleText} /><small>Only for the live preview — customers type their own.</small></label>}
+              <details className={styles.quickListAdvancedDetails}><summary>Advanced details</summary>
+                <div className={styles.quickListSku}><span>SKU <strong>{sku}</strong></span><button className={styles.buttonGhost} onClick={() => setSkuEdited((current) => !current)} type="button">{skuEdited ? "Auto" : "Edit"}</button>{skuEdited && <input aria-label="SKU" className={styles.input} onChange={(event) => setSku(event.target.value)} value={sku} />}</div>
+                {reusePhotoChoice}
+                <div className={styles.assetPicker}><div className={styles.assetPreview}>{basePreview ? <img alt="Base image preview" src={basePreview} /> : <FileImage size={20} />}</div><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Different canvas background <small>Optional</small></span><input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} onChange={(event) => chooseBase(event.target.files?.[0])} type="file" /><small>{reusePhotoAsBase ? "The product photo is reused automatically — add one only to override it." : "Shown underneath customer text and photo layers."}</small></label></div>
+              </details>
             </div>
-            <SurfaceCustomerPreview baseImageUrl={basePreview} heightMm={primarySurface?.heightMm} productPhotoUrl={primaryPreview} sampleText={sampleText} surfaceLabel={primarySurface?.label ?? "Primary surface"} widthMm={primarySurface?.widthMm} />
+            <ListingPreviewCard basePreview={basePreview} categoryName={selectedCategoryName} fieldCount={draft.configurationFields.length} name={name} photoUrl={primaryPreview} price={price} sampleText={sampleText} surface={primarySurface} />
           </div>}
           {step === 3 && <div className={styles.quickListContent}>
             <div className={styles.quickListForm}>
+              <div className={styles.quickListSummaryCard}><div className={styles.quickListSummaryPhoto}>{primaryPreview ? <img alt="Product photo" src={primaryPreview} /> : <FileImage size={18} />}</div><div><strong>{name.trim() || "Unnamed product"}</strong><small>{[selectedCategoryName, previewPrice(price) || "no price yet", draft.configurationFields.length ? `${draft.configurationFields.length} customize field${draft.configurationFields.length === 1 ? "" : "s"}` : "", starterMode !== "blank" && draft.name ? draft.name : ""].filter(Boolean).join(" · ")}</small></div></div>
               {publishChoice}
-              {reusePhotoChoice}
-              <div className={styles.assetPicker}><div className={styles.assetPreview}>{primaryPreview ? <img alt="Product photo preview" src={primaryPreview} /> : <FileImage size={20} />}</div><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Product photo</span><input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} onChange={(event) => choosePrimary(event.target.files?.[0])} type="file" /><small>{publishNow ? "Required to publish. Used on storefront product listings." : "Optional for drafts. Used on storefront product listings when added."}</small></label></div>
-              <div className={styles.assetPicker}><div className={styles.assetPreview}>{basePreview ? <img alt="Base image preview" src={basePreview} /> : <FileImage size={20} />}</div><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Base image for the customer&apos;s 2D canvas</span><input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} onChange={(event) => chooseBase(event.target.files?.[0])} type="file" /><small>{reusePhotoAsBase ? "The product photo will be used after upload." : "Optional. Shown underneath customer text and photo layers."}</small></label></div>
-              {savedProduct && <button className={styles.buttonSecondary} disabled={reusingPhoto} onClick={() => void reusePhotoForBase()} type="button">{reusingPhoto ? <LoaderCircle className={styles.studioSpin} size={13} /> : <FileImage size={13} />} Use this product&apos;s photo</button>}
+              {readinessChecklist}
+              {savedProduct && !success && <button className={styles.buttonSecondary} disabled={reusingPhoto} onClick={() => void reusePhotoForBase()} type="button">{reusingPhoto ? <LoaderCircle className={styles.studioSpin} size={13} /> : <FileImage size={13} />} Use this product&apos;s photo</button>}
               <div className={styles.quickListSequence} aria-live="polite">{[["1", "saving draft", saveStatus], ["2", "uploading images", uploadStatus], ["3", publishNow ? "attaching and publishing" : "attaching", attachStatus]].map(([number, label, status]) => <span className={styles[`quickListSequence${String(status)[0].toUpperCase()}${String(status).slice(1)}` as "quickListSequenceWaiting"]} key={String(number)}>{number}) {label} {status === "done" ? "✓" : status === "working" ? "…" : status === "failed" ? "×" : status === "skipped" ? "skipped" : ""}</span>)}</div>
               {error && <p className={styles.formError} role="alert">{error}</p>}
-              {success ? <div className={styles.quickListSuccess}><strong>{publishNow ? "Product published" : "Draft saved"}</strong><p>/products/{savedProduct.slug}</p><span className={styles.quickListSuccessActions}><a className={styles.buttonPrimary} href={`/products/${savedProduct.slug}`} onClick={() => void onSaved(savedProduct.id)} rel="noreferrer" target="_blank">See it live</a><button className={styles.buttonSecondary} onClick={continueFullDetails} type="button">Add description, material &amp; extra images</button><button className={styles.buttonSecondary} onClick={() => void onOpenStudio(savedProduct.id)} type="button">3D preview (optional)</button></span></div> : <button className={styles.buttonPrimary} disabled={saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" || (publishNow && (!hasPrimaryPhoto || !readiness.canPublish))} onClick={() => void save()} type="button">{saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" ? "Saving…" : (saveStatus === "failed" || uploadStatus === "failed" || attachStatus === "failed") ? "Retry failed step" : publishNow ? "Save and publish" : "Save draft"}</button>}
+              {success ? <div className={styles.quickListSuccess}><strong>{publishNow ? "Product published" : "Draft saved"}</strong><p>/products/{savedProduct.slug}</p><span className={styles.quickListSuccessActions}><a className={styles.buttonPrimary} href={`/products/${savedProduct.slug}`} onClick={() => void onSaved(savedProduct.id)} rel="noreferrer" target="_blank">See it live</a><button className={styles.buttonSecondary} onClick={continueFullDetails} type="button">Open advanced editor</button><button className={styles.buttonSecondary} onClick={() => void onOpenStudio(savedProduct.id)} type="button">3D preview (optional)</button></span></div> : <button className={styles.buttonPrimary} disabled={saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" || (publishNow && (!hasPrimaryPhoto || !readiness.canPublish))} onClick={() => void save()} type="button">{saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" ? "Saving…" : (saveStatus === "failed" || uploadStatus === "failed" || attachStatus === "failed") ? "Retry failed step" : publishNow ? "Save and publish" : "Save draft"}</button>}
             </div>
-            <SurfaceCustomerPreview baseImageUrl={basePreview} heightMm={primarySurface?.heightMm} productPhotoUrl={primaryPreview} sampleText={sampleText} surfaceLabel={primarySurface?.label ?? "Primary surface"} widthMm={primarySurface?.widthMm} />
+            <ListingPreviewCard basePreview={basePreview} categoryName={selectedCategoryName} fieldCount={draft.configurationFields.length} name={name} photoUrl={primaryPreview} price={price} sampleText={sampleText} surface={primarySurface} />
           </div>}
           {step === 4 && fullDetails && <div className={styles.quickListContent}>
             <div className={styles.quickListForm}>
@@ -471,7 +585,7 @@ export function QuickListProductWizard({
               <ProductLayoutControls onChange={(value) => setFullDetails(value)} publishedTemplates={publishedTemplates} value={fullDetails} />
               <div className={styles.quickListChecklist}><strong>Publish readiness</strong>{readiness.items.map((item) => {
                 const notApplicable = item.id === "packaging-visualization" && !isEzpacPackagingProductType(fullDetails.productType);
-                return <p className={notApplicable || item.ready ? styles.quickListReady : styles.quickListNotReady} key={item.id}><span>{notApplicable || item.ready ? <Check size={13} /> : "x"}</span>{notApplicable ? "not applicable" : item.ready ? item.id.replaceAll("-", " ") : item.message}{!notApplicable && !item.blocking && " (hint)"}</p>;
+                return <p className={notApplicable || item.ready ? styles.quickListReady : styles.quickListNotReady} key={item.id}><span>{notApplicable || item.ready ? <Check size={13} /> : "×"}</span><span><strong>{readinessLabels[item.id]}</strong>{notApplicable ? " — not applicable" : item.ready ? "" : ` — ${item.message}`}{!notApplicable && !item.blocking && !item.ready ? " (hint)" : ""}</span></p>;
               })}</div>
               {error && <p className={styles.formError} role="alert">{error}</p>}
             </div>
