@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T17:10:52.461Z",
+  "generatedAt": "2026-11-21T18:58:21.151Z",
   "options": {
     "source": "both",
     "dryRun": false,
@@ -22,7 +22,7 @@
       "source": "ezpac",
       "externalId": "15527904149733",
       "title": "Wedding Snacks packet",
-      "categories": 1,
+      "categories": 3,
       "images": 1,
       "variants": 1,
       "pricePaise": 0,
@@ -44,7 +44,7 @@
       "source": "ezpac",
       "externalId": "15526229999845",
       "title": "Wedding Tissue Paper Box",
-      "categories": 1,
+      "categories": 2,
       "images": 1,
       "variants": 1,
       "pricePaise": 0,
@@ -66,7 +66,7 @@
       "source": "ezpac",
       "externalId": "15526437585125",
       "title": "Wedding Stickers",
-      "categories": 1,
+      "categories": 3,
       "images": 1,
       "variants": 1,
       "pricePaise": 1000,
@@ -99,7 +99,7 @@
       "source": "ezpac",
       "externalId": "15490226618597",
       "title": "Wedding Luggage Tags",
-      "categories": 1,
+      "categories": 3,
       "images": 1,
       "variants": 1,
       "pricePaise": 1000,
@@ -4705,7 +4705,9 @@
         "seoTruncatedProducts": [],
         "materialProducts": 1,
         "structuredDescriptionProducts": 63,
-        "customizableProducts": 52
+        "customizableProducts": 56,
+        "curatedCategoryMoves": 0,
+        "pendingCategoryBuckets": []
       },
       "priceFloorMismatches": []
     },
@@ -5410,7 +5412,16 @@
         ],
         "materialProducts": 0,
         "structuredDescriptionProducts": 0,
-        "customizableProducts": 255
+        "customizableProducts": 255,
+        "curatedCategoryMoves": 165,
+        "pendingCategoryBuckets": [
+          "Wrapping Paper — Needs a 'Wrapping & posters' shelf decision in the storefront nav.",
+          "wrapping_paper — Needs a 'Wrapping & posters' shelf decision in the storefront nav.",
+          "T-shirts — No garments shelf exists yet; create one before moving these.",
+          "t_shirts — No garments shelf exists yet; create one before moving these.",
+          "Vinyl Poster — Needs the same 'Wrapping & posters' shelf decision.",
+          "vinyl_poster — Needs the same 'Wrapping & posters' shelf decision."
+        ]
       },
       "priceFloorMismatches": []
     }

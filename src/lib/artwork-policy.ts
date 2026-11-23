@@ -10,6 +10,9 @@ import type {
   ProductArtworkPolicy,
 } from "./types";
 import { resolveArtworkTextTypography } from "./artwork-text-policy";
+import { resolveProductTemplateLinks } from "./product-template-resolution";
+import { STUDIO_POLICY_SPACE } from "./studio-photo";
+import { readStudioConfig } from "./studio-template";
 
 export type ArtworkPolicyIssueCode =
   | "ACTIVE_SURFACE_NOT_ALLOWED"
@@ -163,15 +166,67 @@ function legacySurfacePolicy(product: Product, surface: NonNullable<Product["con
   };
 }
 
+/** The most photo slots any of the product's studio designs has (0 without studio designs). */
+export function studioPhotoSlotCount(product: Product): number {
+  return resolveProductTemplateLinks(product).reduce((most, { template }) =>
+    Math.max(most, readStudioConfig(template.production?.previewConfig)?.photos.length ?? 0), 0);
+}
+
+/**
+ * Studio designs place customer photos in fixed slots: the policy space is the
+ * 600 × 600 box every studio canvas is anchored in, the whole box is printable
+ * (the template clips each photo to its slot), and there is one image per slot.
+ */
+function studioSurfacePolicy(base: ArtworkSurfacePolicy, photoSlots: number): ArtworkSurfacePolicy {
+  const space = STUDIO_POLICY_SPACE;
+  return {
+    ...base,
+    coordinateSpace: { width: space, height: space },
+    printableBounds: { x: 0, y: 0, width: space, height: space },
+    text: { ...base.text, geometry: defaultGeometryPolicy(base.text.geometry.default, space, space) },
+    image: base.image.enabled
+      ? {
+          ...base.image,
+          maximumElements: photoSlots,
+          permissions: { ...IMAGE_EDITABLE },
+          geometry: {
+            default: { x: 0, y: 0, width: space, height: space, rotation: 0 },
+            minimumWidth: 1,
+            maximumWidth: space,
+            minimumHeight: 1,
+            maximumHeight: space,
+            minimumRotation: -180,
+            maximumRotation: 180,
+          },
+        }
+      : base.image,
+  };
+}
+
 /** Resolves a complete policy while keeping products without one compatible with the existing editor. */
 export function resolveProductArtworkPolicy(product: Product): ProductArtworkPolicy {
-  if (product.configurator?.artworkPolicy) return product.configurator.artworkPolicy;
+  const photoSlots = studioPhotoSlotCount(product);
+  const explicit = product.configurator?.artworkPolicy;
+  if (explicit) {
+    // Saving a product in admin always stores a policy. On a product with studio photo
+    // slots the design templates own the photo geometry, so the slot rules still apply;
+    // the saved policy keeps its upload switch, file types and byte limits.
+    return photoSlots > 0
+      ? {
+          ...explicit,
+          maximumElements: Math.max(explicit.maximumElements, photoSlots),
+          surfaces: explicit.surfaces.map((surface) => studioSurfacePolicy(surface, photoSlots)),
+        }
+      : explicit;
+  }
   const surfaces = product.configurator?.printAreas?.length
     ? product.configurator.printAreas
     : [{ id: "primary", label: "Primary print area" }];
   return {
     maximumElements: 100,
-    surfaces: surfaces.map((surface) => legacySurfacePolicy(product, surface)),
+    surfaces: surfaces.map((surface) => photoSlots > 0
+      ? studioSurfacePolicy(legacySurfacePolicy(product, surface), photoSlots)
+      : legacySurfacePolicy(product, surface)),
   };
 }
 

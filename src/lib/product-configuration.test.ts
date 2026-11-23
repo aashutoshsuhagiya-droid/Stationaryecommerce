@@ -152,3 +152,52 @@ test("configuration exposes only configured per-surface product base images", ()
     front: "/api/product-images/front-image",
   });
 });
+
+test("a packaging preview uses the product's own size, then its shelf's, before a placeholder", () => {
+  const source = getProductById("prod-everyday-name-slips");
+  assert.ok(source);
+  const placeholderTemplate = {
+    id: "vis-1",
+    version: 1,
+    name: "Soap Box 3D",
+    productType: "folding-carton",
+    geometryKind: "box" as const,
+    dimensionsMm: { width: 150, height: 100, depth: 50, unit: 1 },
+    surfaces: [],
+    manufacturingValidated: false,
+  };
+  const soapBox = {
+    ...source,
+    categorySlug: "soap-boxes",
+    sizes: [],
+    dimensions: "Not specified",
+    configurator: {
+      allow2D: true,
+      allow3D: true,
+      quantityMin: 1,
+      quantityMax: 100,
+      printAreas: [{ id: "front", label: "Front" }],
+      productModel: "folding-carton",
+      visualizationTemplate: placeholderTemplate,
+    },
+  };
+
+  // Unvalidated placeholder → the soap-box shelf's typical size.
+  assert.deepEqual(
+    buildProductConfiguration(soapBox).dimensions.presets[0].dimensionsMm,
+    { width: 90, height: 60, depth: 30 },
+  );
+
+  // The product's own measured size wins, with no need to regenerate the template.
+  assert.deepEqual(
+    buildProductConfiguration({ ...soapBox, dimensions: "110 x 70 x 40 mm" }).dimensions.presets[0].dimensionsMm,
+    { width: 110, height: 70, depth: 40 },
+  );
+
+  // An admin-validated template size is real and is kept.
+  const validated = {
+    ...soapBox,
+    configurator: { ...soapBox.configurator, visualizationTemplate: { ...placeholderTemplate, manufacturingValidated: true } },
+  };
+  assert.equal(buildProductConfiguration(validated).dimensions.presets[0].dimensionsMm?.width, 150);
+});

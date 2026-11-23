@@ -16,7 +16,9 @@ export type Product3DKind =
   | "mailer-box"
   | "paper-bag"
   | "stand-up-pouch"
-  | "product-sleeve";
+  | "product-sleeve"
+  | "rigid-lid-box"
+  | "mailer-envelope";
 
 export type PackagingProduct3DKind =
   | "rectangular-box"
@@ -25,7 +27,19 @@ export type PackagingProduct3DKind =
   | "mailer-box"
   | "paper-bag"
   | "stand-up-pouch"
-  | "product-sleeve";
+  | "product-sleeve"
+  | "rigid-lid-box"
+  | "mailer-envelope";
+
+const PACKAGING_KINDS = new Set<Product3DKind>([
+  "rectangular-box", "square-box", "folding-carton", "mailer-box", "paper-bag",
+  "stand-up-pouch", "product-sleeve", "rigid-lid-box", "mailer-envelope",
+]);
+
+/** Packaging is printed per panel; label and school models print every face. */
+export function isPackagingProduct3DKind(kind: Product3DKind): kind is PackagingProduct3DKind {
+  return PACKAGING_KINDS.has(kind);
+}
 
 export type Product3DFinish =
   | "matte"
@@ -39,6 +53,7 @@ export type Product3DThemeFlag =
   | "acrylic"
   | "batch-grid"
   | "bound"
+  | "corrugated"
   | "gift-box"
   | "hinged"
   | "iridescent"
@@ -74,6 +89,11 @@ export interface Product3DProfile {
 export interface Product3DProfileOptions {
   materialName?: string;
   colors?: readonly string[];
+  /**
+   * Board colour sampled from the edge of the packaging's front artwork, so
+   * unprinted panels match the print. A named board material still wins.
+   */
+  sampledBaseColor?: string;
 }
 
 /**
@@ -255,17 +275,19 @@ export const CATEGORY_3D_PROFILES = {
 } as const satisfies Record<string, Product3DProfile>;
 
 export const PACKAGING_3D_PROFILES = {
+  // Carton board has a soft satin sheen (roughness ~0.55) and no clearcoat
+  // until the material says gloss lamination; kraft stays fully matte.
   "rectangular-box": {
     kind: "rectangular-box",
     label: "Rectangular packaging box",
     cameraDistance: 4,
     categoryTheme: {
-      baseColor: "#d6b98c",
-      tintColor: "#f3e8d2",
+      baseColor: "#f4f1ea",
+      tintColor: "#fbf9f4",
       accentColor: "#7c5a35",
-      roughness: 0.76,
+      roughness: 0.58,
       metalness: 0,
-      clearcoat: 0.08,
+      clearcoat: 0,
       clearcoatRoughness: 0.68,
       iridescence: 0,
       finish: "matte",
@@ -277,12 +299,12 @@ export const PACKAGING_3D_PROFILES = {
     label: "Square packaging box",
     cameraDistance: 4,
     categoryTheme: {
-      baseColor: "#f1e7d6",
+      baseColor: "#f4f1ea",
       tintColor: "#fffaf0",
       accentColor: "#8b5e34",
-      roughness: 0.7,
+      roughness: 0.55,
       metalness: 0,
-      clearcoat: 0.12,
+      clearcoat: 0,
       clearcoatRoughness: 0.58,
       iridescence: 0,
       finish: "matte",
@@ -294,16 +316,50 @@ export const PACKAGING_3D_PROFILES = {
     label: "Folding carton",
     cameraDistance: 4,
     categoryTheme: {
-      baseColor: "#f5f1e8",
+      baseColor: "#f5f3ee",
       tintColor: "#fffdf8",
       accentColor: "#6b7280",
-      roughness: 0.66,
+      roughness: 0.55,
       metalness: 0,
-      clearcoat: 0.14,
+      clearcoat: 0,
       clearcoatRoughness: 0.5,
       iridescence: 0,
       finish: "matte",
       flags: ["paper", "hinged"],
+    },
+  },
+  "rigid-lid-box": {
+    kind: "rigid-lid-box",
+    label: "Rigid lid-and-base box",
+    cameraDistance: 4.2,
+    categoryTheme: {
+      baseColor: "#f1ede6",
+      tintColor: "#fffaf0",
+      accentColor: "#8b5e34",
+      roughness: 0.55,
+      metalness: 0,
+      clearcoat: 0,
+      clearcoatRoughness: 0.55,
+      iridescence: 0,
+      finish: "matte",
+      flags: ["paper", "gift-box"],
+    },
+  },
+  "mailer-envelope": {
+    kind: "mailer-envelope",
+    label: "Courier mailer envelope",
+    cameraDistance: 4,
+    categoryTheme: {
+      baseColor: "#f3f4f6",
+      tintColor: "#ffffff",
+      accentColor: "#9ca3af",
+      roughness: 0.38,
+      metalness: 0,
+      clearcoat: 0.25,
+      clearcoatRoughness: 0.35,
+      iridescence: 0,
+      finish: "glossy",
+      flags: ["wrapped"],
     },
   },
   "mailer-box": {
@@ -316,7 +372,7 @@ export const PACKAGING_3D_PROFILES = {
       accentColor: "#765337",
       roughness: 0.82,
       metalness: 0,
-      clearcoat: 0.04,
+      clearcoat: 0,
       clearcoatRoughness: 0.74,
       iridescence: 0,
       finish: "matte",
@@ -476,14 +532,72 @@ function applyMaterialAndColors(
   return theme;
 }
 
+/** Named board stocks decide the colour of unprinted panels: the material is what ships. */
+const BOARD_COLORS: ReadonlyArray<readonly [RegExp, string]> = [
+  [/kraft|brown/u, "#c9a777"],
+  [/black/u, "#23272e"],
+  [/white|sbs|ivory|duplex|fbb|art[- ]?(?:card|paper|board)/u, "#f6f4ee"],
+];
+
+export function packagingBoardColor(materialName = ""): string | undefined {
+  const material = materialName.trim().toLowerCase();
+  return BOARD_COLORS.find(([pattern]) => pattern.test(material))?.[1];
+}
+
+/**
+ * Shelf-level looks for packaging that shares a model with other shelves:
+ * shipping cartons are rectangular boxes, but corrugated kraft with a tape seam.
+ */
+const PACKAGING_CATEGORY_OVERRIDES: Readonly<Record<string, {
+  baseColor: string;
+  roughness: number;
+  flags: Product3DThemeFlag[];
+}>> = {
+  "shipping-boxes": { baseColor: "#c49a6c", roughness: 0.86, flags: ["corrugated"] },
+};
+
+function applyPackagingMaterial(
+  categoryTheme: Product3DTheme,
+  { materialName = "", colors = [], sampledBaseColor }: Product3DProfileOptions,
+): Product3DTheme {
+  const material = materialName.trim().toLowerCase();
+  const resolvedColors = colors.map(resolveColor).filter((color): color is string => Boolean(color));
+  const board = packagingBoardColor(material) ?? resolveColor(sampledBaseColor);
+  let theme: Product3DTheme = {
+    ...categoryTheme,
+    flags: [...categoryTheme.flags],
+    tintColor: resolvedColors[0] ?? categoryTheme.tintColor,
+    accentColor: resolvedColors[1] ?? resolvedColors[0] ?? categoryTheme.accentColor,
+    ...(board ? { baseColor: board } : {}),
+  };
+  // Only gloss lamination earns a clearcoat; matte lamination stays satin board.
+  if (/gloss/u.test(material)) {
+    theme = { ...theme, roughness: 0.3, clearcoat: 0.7, clearcoatRoughness: 0.14, finish: "glossy" };
+  } else if (/kraft|brown|corrugat/u.test(material)) {
+    theme = { ...theme, roughness: Math.max(theme.roughness, 0.82), clearcoat: 0, finish: "matte" };
+  }
+  return theme;
+}
+
 function materializeProfile(
   profile: Product3DProfile,
   options: Product3DProfileOptions,
+  categorySlug = "",
 ): Product3DProfile {
-  return {
-    ...profile,
-    categoryTheme: applyMaterialAndColors(profile.categoryTheme, options),
-  };
+  if (!isPackagingProduct3DKind(profile.kind)) {
+    return { ...profile, categoryTheme: applyMaterialAndColors(profile.categoryTheme, options) };
+  }
+  const override = PACKAGING_CATEGORY_OVERRIDES[categorySlug];
+  const base = override
+    ? {
+        ...profile.categoryTheme,
+        baseColor: override.baseColor,
+        roughness: override.roughness,
+        clearcoat: 0,
+        flags: addFlags(profile.categoryTheme.flags, ...override.flags),
+      }
+    : profile.categoryTheme;
+  return { ...profile, categoryTheme: applyPackagingMaterial(base, options) };
 }
 
 const STRUCTURAL_FALLBACKS: ReadonlyArray<{
@@ -538,6 +652,8 @@ const PACKAGING_FALLBACKS: ReadonlyArray<{
   pattern: RegExp;
   kind: PackagingProduct3DKind;
 }> = [
+  { pattern: /(?:^|[-_\s])(?:courier|mailer|poly)[-_\s]+(?:bag|envelope)s?(?:$|[-_\s])/u, kind: "mailer-envelope" },
+  { pattern: /(?:^|[-_\s])(?:rigid|hamper|lid[-_\s]+and[-_\s]+base)[-_\s]+box(?:$|[-_\s])/u, kind: "rigid-lid-box" },
   { pattern: /(?:^|[-_\s])square[-_\s]+(?:gift[-_\s]+)?box(?:$|[-_\s])/u, kind: "square-box" },
   { pattern: /(?:^|[-_\s])(?:mailer|mailing|shipping)[-_\s]+box(?:$|[-_\s])/u, kind: "mailer-box" },
   { pattern: /(?:^|[-_\s])(?:paper|shopping|carry)[-_\s]+bag(?:$|[-_\s])/u, kind: "paper-bag" },
@@ -553,35 +669,34 @@ export function resolveProduct3DProfile(
   options: Product3DProfileOptions = {},
 ): Product3DProfile {
   const structuralKey = structuralDesign.trim().toLowerCase();
-  const explicitModel = PRODUCT_3D_MODEL_PROFILES[structuralKey as Product3DKind];
-  if (explicitModel) return materializeProfile(explicitModel, options);
-
   const normalizedCategory = productType.trim().toLowerCase();
+  const finish = (profile: Product3DProfile) => materializeProfile(profile, options, normalizedCategory);
+
+  const explicitModel = PRODUCT_3D_MODEL_PROFILES[structuralKey as Product3DKind];
+  if (explicitModel) return finish(explicitModel);
+
   if (normalizedCategory in CATEGORY_3D_PROFILES) {
-    return materializeProfile(
-      CATEGORY_3D_PROFILES[normalizedCategory as Product3DCategorySlug],
-      options,
-    );
+    return finish(CATEGORY_3D_PROFILES[normalizedCategory as Product3DCategorySlug]);
   }
 
   const categoryModel = PRODUCT_3D_MODEL_PROFILES[normalizedCategory as Product3DKind];
-  if (categoryModel) return materializeProfile(categoryModel, options);
+  if (categoryModel) return finish(categoryModel);
 
   for (const fallback of STRUCTURAL_FALLBACKS) {
     if (fallback.pattern.test(structuralKey)) {
-      return materializeProfile(CATEGORY_3D_PROFILES[fallback.categorySlug], options);
+      return finish(CATEGORY_3D_PROFILES[fallback.categorySlug]);
     }
   }
   if (/(?:^|[-_\s])(?:backpack|tags?)(?:$|[-_\s])/u.test(structuralKey)) {
-    return materializeProfile(LEGACY_TAG_PROFILE, options);
+    return finish(LEGACY_TAG_PROFILE);
   }
 
   const packagingKey = `${structuralKey} ${normalizedCategory}`;
   for (const fallback of PACKAGING_FALLBACKS) {
     if (fallback.pattern.test(packagingKey)) {
-      return materializeProfile(PRODUCT_3D_MODEL_PROFILES[fallback.kind], options);
+      return finish(PRODUCT_3D_MODEL_PROFILES[fallback.kind]);
     }
   }
 
-  return materializeProfile(CATEGORY_3D_PROFILES["customized-name-slips"], options);
+  return finish(CATEGORY_3D_PROFILES["customized-name-slips"]);
 }

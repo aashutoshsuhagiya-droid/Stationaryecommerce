@@ -4,6 +4,12 @@ import {
   type RanBazaarStarterDraft,
 } from "./admin-quick-list";
 import { buildDefaultAdminArtworkPolicy } from "./admin-artwork-policy";
+import {
+  deriveListingTags,
+  deriveSeo,
+  getCategoryListingRecipe,
+  type CategoryListingRecipe,
+} from "./category-listing-playbook";
 import type { ProductArtworkPolicy } from "./types";
 
 /**
@@ -121,17 +127,39 @@ export interface ListingPayloadInput {
   draft: RanBazaarStarterDraft;
   published: boolean;
   imageUrl: string;
+  /** The chosen shelf's recipe: supplies GST, MRP habit, 3D model and collections. */
+  recipe?: CategoryListingRecipe;
+  categoryName?: string;
+  /** Extra category ids ("Also list in" collections resolved by the caller). */
+  categoryIds?: string[];
+  compareAtPrice?: string | number;
+  /** Admin's choice for the built-in 3D preview; ignored unless the recipe allows it. */
+  enable3D?: boolean;
 }
 
 /** Builds the full admin catalog POST/PATCH body from the 5 decisions + starter draft. */
 export function quickListProductPayload(input: ListingPayloadInput) {
+  const price = Number(input.price);
+  const compareAt = input.compareAtPrice === undefined || String(input.compareAtPrice).trim() === ""
+    ? undefined
+    : Number(input.compareAtPrice);
+  const name = input.name.trim();
+  const categoryName = input.categoryName?.trim() ?? "";
+  const description = input.description.trim();
+  // Built-in 3D needs no template, but only for shapes the playbook vouches for.
+  const builtin3D = input.recipe?.threeDPath === "builtin" && Boolean(input.recipe.model3D) && input.enable3D !== false;
+  const seo = deriveSeo(name, categoryName, description);
   return {
     type: "product" as const,
-    name: input.name.trim(),
+    name,
     sku: input.sku.trim(),
     categoryId: input.categoryId,
-    price: Number(input.price),
-    description: input.description.trim(),
+    ...(input.categoryIds?.length ? { categoryIds: [...new Set([input.categoryId, ...input.categoryIds])] } : {}),
+    price,
+    ...(compareAt !== undefined && Number.isFinite(compareAt) && compareAt > price ? { compareAtPrice: compareAt } : {}),
+    ...(input.recipe ? { gstPercent: input.recipe.gstPercent } : {}),
+    ...(name ? { tags: deriveListingTags(name, categoryName), seoTitle: seo.seoTitle, seoDescription: seo.seoDescription } : {}),
+    description,
     imageUrl: input.imageUrl,
     productType: input.productType || undefined,
     configurationFields: input.draft.configurationFields.map((field) => ({
@@ -162,7 +190,8 @@ export function quickListProductPayload(input: ListingPayloadInput) {
     customizable: input.draft.configurationFields.length > 0,
     published: input.published,
     allow2D: true,
-    allow3D: false,
+    allow3D: builtin3D,
+    ...(builtin3D ? { productModel: input.recipe!.model3D } : {}),
     quantityMin: 1,
     quantityMax: 100,
     quantityTiers: [],
@@ -243,6 +272,21 @@ export function draftFromExistingProduct(sourceName: string, product: ExistingPr
     priceText: typeof product.price === "number" && Number.isFinite(product.price) ? String(product.price) : "",
     description: (product.description ?? "").slice(0, 10_000),
   };
+}
+
+/**
+ * Starter/packaging-preset draft for a category, from its playbook recipe.
+ * Returns undefined when the shelf has no recipe (the admin then picks a starter).
+ */
+export function recipeForCategorySlug(categorySlug: string | undefined | null) {
+  return getCategoryListingRecipe(categorySlug);
+}
+
+/** Packaging selects a super admin must still fill in (material, lamination, GSM…). */
+export function unconfiguredOptionLabels(draft: RanBazaarStarterDraft): string[] {
+  return draft.configurationFields
+    .filter((field) => field.inputType === "select" && field.options.length === 0)
+    .map((field) => field.label);
 }
 
 /** ₹ formatting for the live preview card (Indian digit grouping, no paise for whole rupees). */

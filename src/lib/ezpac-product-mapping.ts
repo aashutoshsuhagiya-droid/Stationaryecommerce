@@ -1561,7 +1561,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     },
   },
   {
-    unmapped: true,
+    presetId: "brand-ziplock-pouch",
     shopifyHandle: "ziplock-pouch",
     shopifyTitle: "Wedding Snacks packet",
     prefills: {
@@ -1615,7 +1615,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     },
   },
   {
-    unmapped: true,
+    presetId: "tissue-paper-box",
     shopifyHandle: "wedding-tissue-paper-box",
     shopifyTitle: "Wedding Tissue Paper Box",
     prefills: {
@@ -1665,7 +1665,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     },
   },
   {
-    unmapped: true,
+    presetId: "stickers",
     shopifyHandle: "wedding-stickers",
     shopifyTitle: "Wedding Stickers",
     prefills: {
@@ -1745,7 +1745,7 @@ export const EZPAC_SHOPIFY_PRODUCT_MAPPING: readonly EzpacProductPresetMapping[]
     },
   },
   {
-    unmapped: true,
+    presetId: "hang-tags",
     shopifyHandle: "luggage-tags",
     shopifyTitle: "Wedding Luggage Tags",
     prefills: {

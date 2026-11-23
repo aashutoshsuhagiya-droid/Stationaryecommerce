@@ -12,10 +12,12 @@ import {
   type RanBazaarStarterDraft,
 } from "@/lib/admin-quick-list";
 import {
+  getEzpacPackagingFieldPreset,
   getEzpacPackagingFieldsForProductType,
   getEzpacPackagingProductType,
   isEzpacPackagingProductType,
   listEzpacPackagingProductTypes,
+  type PackagingFieldPresetId,
 } from "@/lib/ezpac-packaging-presets";
 import { ezpacIndustryCollectionCategorySlug } from "@/lib/ezpac-packaging-presets";
 import { formatStructuredDescription } from "@/lib/admin-structured-description";
@@ -27,13 +29,22 @@ import {
   essentialsComplete,
   previewPrice,
   quickListProductPayload,
+  recipeForCategorySlug,
   searchListingSources,
+  unconfiguredOptionLabels,
   type ListingSource,
 } from "@/lib/listing-wizard";
+import {
+  listableCategories,
+  priceBandHint,
+  priceBandWarning,
+  recipeSummaryChips,
+} from "@/lib/category-listing-playbook";
 import { StatusBadge } from "./AdminUI";
 import { ProductFullDetailsSections, ProductLayoutControls, clampLayoutElementDefaults, type PublishedVisualizationTemplate } from "./ProductFullDetailsSections";
 import { SurfaceCustomerPreview } from "./SurfaceCustomerPreview";
 import { buildFullDetailsPatch, type FullDetailsProductBase } from "./product-details-payload";
+import { defaultDesignPayload } from "@/lib/studio-design";
 import styles from "./admin.module.css";
 
 type CategoryRecord = { id: string; slug: string; name: string; parentId: string | null; sortOrder: number };
@@ -73,6 +84,27 @@ function packagingDraft(productType: string): RanBazaarStarterDraft | undefined 
   }));
   const base = blankDraft();
   return { ...base, id: product.id, name: product.name, configurationFields: fields };
+}
+
+/** Packaging spec fields for a shelf whose recipe names a field preset but no product type. */
+function packagingDraftFromFieldPreset(presetId: PackagingFieldPresetId): RanBazaarStarterDraft {
+  const preset = getEzpacPackagingFieldPreset(presetId);
+  const base = blankDraft();
+  return {
+    ...base,
+    id: preset.id,
+    name: preset.label,
+    configurationFields: preset.fields.map((field) => ({
+      key: field.key, label: field.label, inputType: field.inputType, required: field.required,
+      placeholder: field.placeholder ?? "",
+      helpText: field.helpText ?? (field.optionSource === "admin_configured" ? "Configure supported choices, then enable this field for customers." : ""),
+      defaultValue: "", minLength: field.minLength ?? null, maxLength: field.maxLength ?? null,
+      allowedPattern: field.allowedPattern ?? "",
+      options: field.options?.map((option) => ({ label: option.label, value: option.value, priceDelta: option.priceDelta ?? 0 })) ?? [],
+      enabled: field.optionSource !== "admin_configured",
+      customerVisible: field.optionSource !== "admin_configured",
+    })),
+  };
 }
 
 function previewFile(file: File | null, previous: string) {
@@ -159,6 +191,12 @@ export function QuickListProductWizard({
   const [sampleText, setSampleText] = useState("Aarav");
   const [searchQuery, setSearchQuery] = useState("");
   const [similarLoadingId, setSimilarLoadingId] = useState("");
+  const [compareAtPrice, setCompareAtPrice] = useState("");
+  const [enable3D, setEnable3D] = useState(true);
+  const [creating3D, setCreating3D] = useState(false);
+  const [created3DModel, setCreated3DModel] = useState("");
+  const [created3DNote, setCreated3DNote] = useState("");
+  const [three3DError, setThree3DError] = useState("");
   const [suggestedCategoryId, setSuggestedCategoryId] = useState("");
   const [primaryFile, setPrimaryFile] = useState<File | null>(null);
   const [baseFile, setBaseFile] = useState<File | null>(null);
@@ -184,12 +222,25 @@ export function QuickListProductWizard({
   useEffect(() => {
     if (!skuEdited) setSku(autoSku(name));
   }, [name, skuEdited]);
-  const primaryCategories = useMemo(() => {
-    const industryCollections = categories.find((category) => category.slug === "industry-collections");
-    return categories.filter((category) => (
-      category.id !== industryCollections?.id && category.parentId !== industryCollections?.id
-    ));
-  }, [categories]);
+  // Import buckets, the collection tree and test shelves are not sellable shelves.
+  const primaryCategories = useMemo(() => listableCategories(categories), [categories]);
+  const categoryById = useMemo(() => new Map(categories.map((category) => [category.id, category])), [categories]);
+  const selectedCategory = categoryId ? categoryById.get(categoryId) : undefined;
+  const recipe = recipeForCategorySlug(selectedCategory?.slug);
+  const collectionCategories = useMemo(() => (recipe?.collectionSlugs ?? [])
+    .flatMap((slug) => categories.filter((category) => category.slug === slug)), [categories, recipe]);
+  const pendingOptionLabels = useMemo(() => unconfiguredOptionLabels(draft), [draft]);
+  /** Shelves with a recipe, shown as the category-first entry on step 1. */
+  const shelfOptions = useMemo(() => primaryCategories.flatMap((category) => {
+    const shelfRecipe = recipeForCategorySlug(category.slug);
+    if (!shelfRecipe) return [];
+    const parent = category.parentId ? categoryById.get(category.parentId) : undefined;
+    return [{ category, recipe: shelfRecipe, label: parent ? `${parent.name} › ${category.name}` : category.name }];
+  }), [primaryCategories, categoryById]);
+  const bandWarning = priceBandWarning(recipe, Number(price));
+  const bandHint = priceBandHint(recipe);
+  const summaryChips = recipeSummaryChips(recipe, collectionCategories.map((category) => category.name));
+  const builtin3DAvailable = recipe?.threeDPath === "builtin" && Boolean(recipe.model3D);
   const listingSources = useMemo(() => buildListingSources({
     starters: starters.map((starter) => ({ id: starter.id, name: starter.name, description: starter.description, fieldCount: starter.fields.length })),
     packagingTypes: packagingStarters.map((starter) => ({ id: starter.id, name: starter.name })),
@@ -198,10 +249,9 @@ export function QuickListProductWizard({
   const searchResults = useMemo(() => searchListingSources(listingSources, searchQuery), [listingSources, searchQuery]);
 
   useEffect(() => {
-    if (categoryId || !categories.length) return;
-    const availableCategories = starterMode === "packaging" || starterMode === "ranbazaar" ? primaryCategories : categories;
-    setCategoryId(availableCategories[0]?.id ?? categories[0].id);
-  }, [categories, categoryId, primaryCategories, starterMode]);
+    if (categoryId || !primaryCategories.length) return;
+    setCategoryId(primaryCategories[0].id);
+  }, [categoryId, primaryCategories]);
 
   const primarySurface = draft.printAreas[0];
   const readinessDetails = step === 4 ? fullDetails : null;
@@ -232,11 +282,29 @@ export function QuickListProductWizard({
       setSku(autoSku(packagingProduct.name));
     }
     const categorySlug = suggestedSlug ?? packagingProduct?.primarySubcategoryId;
-    const selectableCategories = mode === "blank" ? categories : primaryCategories;
-    const matchingCategory = categorySlug ? selectableCategories.find((category) => category.slug === categorySlug) : undefined;
-    const nextCategoryId = matchingCategory?.id ?? selectableCategories[0]?.id ?? "";
+    const matchingCategory = categorySlug ? primaryCategories.find((category) => category.slug === categorySlug) : undefined;
+    const nextCategoryId = matchingCategory?.id ?? primaryCategories[0]?.id ?? "";
     setCategoryId(nextCategoryId);
     setSuggestedCategoryId(matchingCategory?.id ?? "");
+  }
+
+  /** Category-first entry: the shelf's recipe decides the starter, fields and surface. */
+  function selectCategory(category: CategoryRecord) {
+    const categoryRecipe = recipeForCategorySlug(category.slug);
+    const nextDraft = categoryRecipe?.starterId
+      ? createRanBazaarStarterDraft(categoryRecipe.starterId)
+      : categoryRecipe?.packagingFieldPresetId
+        ? packagingDraftFromFieldPreset(categoryRecipe.packagingFieldPresetId)
+        : undefined;
+    setDraft(nextDraft ?? blankDraft());
+    setStarterMode(categoryRecipe?.packagingFieldPresetId ? "packaging" : categoryRecipe?.starterId ? "ranbazaar" : "blank");
+    setProductType("");
+    setCategoryId(category.id);
+    setSuggestedCategoryId("");
+    setCompareAtPrice("");
+    setEnable3D(true);
+    setStep(2);
+    setError("");
   }
 
   function choosePrimary(file: File | undefined) {
@@ -300,7 +368,14 @@ export function QuickListProductWizard({
   }
 
   function payload(published: boolean, imageUrl: string) {
-    return quickListProductPayload({ name, sku, categoryId, price, description, productType, draft, published, imageUrl });
+    return quickListProductPayload({
+      name, sku, categoryId, price, description, productType, draft, published, imageUrl,
+      recipe,
+      categoryName: selectedCategory?.name ?? "",
+      categoryIds: collectionCategories.map((category) => category.id),
+      compareAtPrice,
+      enable3D: builtin3DAvailable && enable3D,
+    });
   }
 
   function makeFullDetails(id: string): FullDetailsProductBase {
@@ -474,12 +549,51 @@ export function QuickListProductWizard({
       setAttachStatus("working");
       await request("PATCH", { ...payload(publishNow, imageUrl || "/api/product-images/pending"), id: product.id });
       setAttachStatus("done");
+      await addDefaultDesign(product.id);
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : "Could not save the product.";
       if (phase === "save") setSaveStatus("failed");
       else if (phase === "upload") setUploadStatus("failed");
       else setAttachStatus("failed");
       setError(message); return;
+    }
+  }
+
+  /**
+   * A personalised product starts with a 2D design: its photo with the name box in the
+   * middle, fine-tuned later in the design editor. Never replaces existing designs, skips
+   * packaging (it keeps the free-form artwork editor), and never blocks the listing.
+   */
+  async function addDefaultDesign(productId: string) {
+    if (starterMode === "packaging") return;
+    try {
+      const response = await fetch(`/api/admin/studio-designs?productId=${encodeURIComponent(productId)}`, { cache: "no-store" });
+      const current = await response.json() as { data?: { designs: unknown[]; product: { imageUrl: string; imageSize: { width: number; height: number } | null } } };
+      if (!response.ok || !current.data || current.data.designs.length) return;
+      const design = defaultDesignPayload({ productId, imageUrl: current.data.product.imageUrl, imageSize: current.data.product.imageSize, fields: draft.configurationFields });
+      if (!design) return;
+      await fetch("/api/admin/studio-designs", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(design) });
+    } catch {
+      // The design can still be made in the product's design editor.
+    }
+  }
+
+  /** Builds and publishes a packaging product's 3D preview from its own photo. */
+  async function createQuick3D(productId: string) {
+    setCreating3D(true); setThree3DError("");
+    try {
+      const response = await fetch("/api/admin/visualization-studio/quick-3d", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId }),
+      });
+      const data = await response.json().catch(() => undefined) as { data?: { productModel?: string; alreadyLinked?: boolean; artworkNote?: string }; error?: { message?: string } } | undefined;
+      if (!response.ok) throw new Error(data?.error?.message || "The 3D preview could not be created.");
+      setCreated3DModel(data?.data?.productModel ?? "linked");
+      setCreated3DNote(data?.data?.artworkNote ?? "");
+    } catch (cause) {
+      setThree3DError(cause instanceof Error ? cause.message : "The 3D preview could not be created.");
+    } finally {
+      setCreating3D(false);
     }
   }
 
@@ -544,12 +658,26 @@ export function QuickListProductWizard({
               ))}
             </div>
             {Boolean(searchQuery.trim()) && !searchResults.length && <div className={styles.quickListNoResults}><strong>No matches for “{searchQuery.trim()}”.</strong><p>Try another word, or start from a simple product.</p><button className={styles.buttonSecondary} onClick={() => selectDraft(blankDraft(), "blank")} type="button"><Package size={13} /> Start blank</button></div>}
+            {!searchQuery.trim() && shelfOptions.length > 0 && <div className={styles.quickListShelves}>
+              <p className={styles.sectionCaption}>Or pick the shelf it goes on — the rest fills itself in</p>
+              <div className={styles.quickListShelfGrid}>
+                {shelfOptions.map((shelf) => <button className={styles.quickListShelfButton} key={shelf.category.id} onClick={() => selectCategory(shelf.category)} type="button">
+                  <strong>{shelf.label}</strong>
+                  <small>{shelf.recipe.notes ?? (shelf.recipe.gstPercent > 0 ? `GST ${shelf.recipe.gstPercent}%` : "Quote-priced packaging")}</small>
+                </button>)}
+              </div>
+            </div>}
             <p className={styles.quickListStarterHint}>Tip: type an existing product&apos;s name to copy its whole setup — then just add a new name, price and photo.</p>
           </div>}
           {step === 2 && <div className={styles.quickListContent}>
             <div className={styles.quickListForm}>
               <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Name</span><input autoFocus className={styles.input} onChange={(event) => setName(event.target.value)} placeholder={starterMode === "similar" ? "Give the new product its own name" : undefined} required value={name} /></label>
-              <div className={styles.fieldGrid}><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Price (₹)</span><input className={styles.input} inputMode="decimal" min="0" onChange={(event) => setPrice(event.target.value)} required type="number" value={price} /></label><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Category</span><select className={styles.select} onChange={(event) => { setCategoryId(event.target.value); setSuggestedCategoryId(""); }} required value={categoryId}><option value="" disabled>Choose a category</option>{categories.map((item) => <option key={item.id} value={item.id}>{categoryOptionLabel(item)}</option>)}</select>{suggestedCategoryId === categoryId && <span className={styles.quickListAutoCategory}>Auto-picked for you <button className={styles.buttonGhost} onClick={() => setSuggestedCategoryId("")} type="button">Change</button></span>}</label></div>
+              <div className={styles.fieldGrid}>
+                <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Price (₹)</span><input className={styles.input} inputMode="decimal" min="0" onChange={(event) => setPrice(event.target.value)} required type="number" value={price} />{bandWarning ? <small className={styles.quickListBandWarning}>{bandWarning}</small> : bandHint ? <small>{bandHint}</small> : null}</label>
+                <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Category</span><select className={styles.select} onChange={(event) => { setCategoryId(event.target.value); setSuggestedCategoryId(""); }} required value={categoryId}><option value="" disabled>Choose a category</option>{primaryCategories.map((item) => <option key={item.id} value={item.id}>{categoryOptionLabel(item)}</option>)}</select>{suggestedCategoryId === categoryId && <span className={styles.quickListAutoCategory}>Auto-picked for you <button className={styles.buttonGhost} onClick={() => setSuggestedCategoryId("")} type="button">Change</button></span>}</label>
+              </div>
+              {recipe?.mrpExpected && <label className={styles.fieldGroup}><span className={styles.fieldLabel}>MRP (₹) <small>Optional</small></span><input className={styles.input} inputMode="decimal" min="0" onChange={(event) => setCompareAtPrice(event.target.value)} type="number" value={compareAtPrice} /><small>Shown struck through next to the price. Products on this shelf usually show one.</small></label>}
+              {summaryChips.length > 0 && <p className={styles.quickListRecipeChips}>{summaryChips.map((chip) => <StatusBadge key={chip}>{chip}</StatusBadge>)}</p>}
               <div className={styles.assetPicker}><div className={styles.assetPreview}>{primaryPreview ? <img alt="Product photo preview" src={primaryPreview} /> : <FileImage size={20} />}</div><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Photo</span><input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} onChange={(event) => choosePrimary(event.target.files?.[0])} type="file" /><small>Needed before publishing — drafts can wait. It shows up in the live preview instantly.</small></label></div>
               <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Description <small>Optional</small></span><input className={styles.input} onChange={(event) => setDescription(event.target.value)} value={description} /></label>
               {draft.configurationFields.length > 0 && <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Sample name for the preview</span><input className={styles.input} onChange={(event) => setSampleText(event.target.value)} value={sampleText} /><small>Only for the live preview — customers type their own.</small></label>}
@@ -565,11 +693,14 @@ export function QuickListProductWizard({
             <div className={styles.quickListForm}>
               <div className={styles.quickListSummaryCard}><div className={styles.quickListSummaryPhoto}>{primaryPreview ? <img alt="Product photo" src={primaryPreview} /> : <FileImage size={18} />}</div><div><strong>{name.trim() || "Unnamed product"}</strong><small>{[selectedCategoryName, previewPrice(price) || "no price yet", draft.configurationFields.length ? `${draft.configurationFields.length} customize field${draft.configurationFields.length === 1 ? "" : "s"}` : "", starterMode !== "blank" && draft.name ? draft.name : ""].filter(Boolean).join(" · ")}</small></div></div>
               {publishChoice}
+              {builtin3DAvailable && <label className={styles.quickListReuseChoice}><input checked={enable3D} onChange={(event) => setEnable3D(event.target.checked)} type="checkbox" /> Show a 3D preview on the product page</label>}
+              {recipe?.threeDPath === "template" && <p className={styles.quickListHintLine}>Packaging gets its 3D preview from a photo — use <strong>Create 3D preview</strong> after saving.</p>}
+              {pendingOptionLabels.length > 0 && <p className={styles.quickListHintLine}>Needs your print options once: {pendingOptionLabels.join(", ")}. Add them in the advanced editor — customers won&apos;t see those choices until you do.</p>}
               {readinessChecklist}
               {savedProduct && !success && <button className={styles.buttonSecondary} disabled={reusingPhoto} onClick={() => void reusePhotoForBase()} type="button">{reusingPhoto ? <LoaderCircle className={styles.studioSpin} size={13} /> : <FileImage size={13} />} Use this product&apos;s photo</button>}
               <div className={styles.quickListSequence} aria-live="polite">{[["1", "saving draft", saveStatus], ["2", "uploading images", uploadStatus], ["3", publishNow ? "attaching and publishing" : "attaching", attachStatus]].map(([number, label, status]) => <span className={styles[`quickListSequence${String(status)[0].toUpperCase()}${String(status).slice(1)}` as "quickListSequenceWaiting"]} key={String(number)}>{number}) {label} {status === "done" ? "✓" : status === "working" ? "…" : status === "failed" ? "×" : status === "skipped" ? "skipped" : ""}</span>)}</div>
               {error && <p className={styles.formError} role="alert">{error}</p>}
-              {success ? <div className={styles.quickListSuccess}><strong>{publishNow ? "Product published" : "Draft saved"}</strong><p>/products/{savedProduct.slug}</p><span className={styles.quickListSuccessActions}><a className={styles.buttonPrimary} href={`/products/${savedProduct.slug}`} onClick={() => void onSaved(savedProduct.id)} rel="noreferrer" target="_blank">See it live</a><button className={styles.buttonSecondary} onClick={continueFullDetails} type="button">Open advanced editor</button><button className={styles.buttonSecondary} onClick={() => void onOpenStudio(savedProduct.id)} type="button">3D preview (optional)</button></span></div> : <button className={styles.buttonPrimary} disabled={saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" || (publishNow && (!hasPrimaryPhoto || !readiness.canPublish))} onClick={() => void save()} type="button">{saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" ? "Saving…" : (saveStatus === "failed" || uploadStatus === "failed" || attachStatus === "failed") ? "Retry failed step" : publishNow ? "Save and publish" : "Save draft"}</button>}
+              {success ? <div className={styles.quickListSuccess}><strong>{publishNow ? "Product published" : "Draft saved"}</strong><p>/products/{savedProduct.slug}</p><span className={styles.quickListSuccessActions}><a className={styles.buttonPrimary} href={`/products/${savedProduct.slug}`} onClick={() => void onSaved(savedProduct.id)} rel="noreferrer" target="_blank">See it live</a><button className={styles.buttonSecondary} onClick={continueFullDetails} type="button">Open advanced editor</button>{recipe?.threeDPath === "template" ? <button className={styles.buttonSecondary} disabled={creating3D || Boolean(created3DModel)} onClick={() => void createQuick3D(savedProduct.id)} type="button">{creating3D ? <LoaderCircle className={styles.studioSpin} size={13} /> : null} {created3DModel ? `3D preview ready (${created3DModel})` : creating3D ? "Creating 3D preview…" : "Create 3D preview"}</button> : <button className={styles.buttonSecondary} onClick={() => void onOpenStudio(savedProduct.id)} type="button">Open 3D studio</button>}</span>{created3DNote && <p className={styles.quickListHintLine}>{created3DNote}</p>}{three3DError && <p className={styles.formError} role="alert">{three3DError}</p>}</div> : <button className={styles.buttonPrimary} disabled={saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" || (publishNow && (!hasPrimaryPhoto || !readiness.canPublish))} onClick={() => void save()} type="button">{saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" ? "Saving…" : (saveStatus === "failed" || uploadStatus === "failed" || attachStatus === "failed") ? "Retry failed step" : publishNow ? "Save and publish" : "Save draft"}</button>}
             </div>
             <ListingPreviewCard basePreview={basePreview} categoryName={selectedCategoryName} fieldCount={draft.configurationFields.length} name={name} photoUrl={primaryPreview} price={price} sampleText={sampleText} surface={primarySurface} />
           </div>}

@@ -186,6 +186,12 @@ export interface ProductVisualizationTemplate {
     mimeType: ArtworkImageMimeType;
   };
   manufacturingValidated: boolean;
+  /** Board colour for unprinted panels, sampled from the front artwork's edge. */
+  baseColor?: string;
+  /** Set when the source was a lifestyle photo rather than flat front artwork. */
+  artworkNote?: string;
+  /** Admin opt-in: the back panel repeats the front design. */
+  mirrorBack?: boolean;
 }
 
 export interface PersonalizationTemplateSurface {
@@ -468,6 +474,8 @@ export type ArtworkLayerSnapshot =
       sourceHeight: number;
       imageFit?: "contain" | "cover" | "stretch";
       aspectLocked?: boolean;
+      /** Studio photo slots only (`studio-photo-<fieldKey>`): the customer's move/rotate/zoom. */
+      photo?: { offsetX: number; offsetY: number; rotation: number; scale: number };
     };
 
 export interface ArtworkDocumentSnapshot {

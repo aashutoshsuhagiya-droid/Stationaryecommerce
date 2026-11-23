@@ -3,33 +3,12 @@ import {
   EZPAC_FEATURE_BULLET_LABELS,
   type EzpacFeatureBullet,
 } from "./ezpac-feature-bullets";
+import { decodeHtmlEntities } from "./html-text";
 
 export interface StructuredDescription {
   intro?: string;
   bestFor?: string[];
   featureBullets?: EzpacFeatureBullet[];
-}
-
-function decodeHtmlEntities(value: string): string {
-  return value
-    .replace(/&nbsp;/gi, " ")
-    .replace(/&amp;/gi, "&")
-    .replace(/&quot;/gi, "\"")
-    .replace(/&#39;|&apos;/gi, "'")
-    .replace(/&lt;/gi, "<")
-    .replace(/&gt;/gi, ">")
-    .replace(/&#x([0-9a-f]+);/gi, (_match, hexadecimal: string) => {
-      const codePoint = Number.parseInt(hexadecimal, 16);
-      return Number.isFinite(codePoint) && codePoint <= 0x10ffff
-        ? String.fromCodePoint(codePoint)
-        : _match;
-    })
-    .replace(/&#(\d+);/g, (_match, decimal: string) => {
-      const codePoint = Number.parseInt(decimal, 10);
-      return Number.isFinite(codePoint) && codePoint <= 0x10ffff
-        ? String.fromCodePoint(codePoint)
-        : _match;
-    });
 }
 
 function stripHtml(value: string): string {

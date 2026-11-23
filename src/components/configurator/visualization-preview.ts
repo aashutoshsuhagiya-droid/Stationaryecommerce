@@ -1,6 +1,7 @@
 import type { ProductVisualizationTemplate } from "../../lib/types";
 import type {
   ArtworkDocument,
+  ArtworkLayer,
   ArtworkSurface,
   PrintableSurfaceDefinition,
 } from "./artwork-types";
@@ -47,12 +48,17 @@ function uniquePreviewId(
   return id;
 }
 
-function syntheticSurfaceDefinition(
+/**
+ * Physical size of one model face in mm. `faceDimensionsMm` is the size the 3D
+ * model actually renders with (the product's own, or its shelf's); the
+ * template's stored size is only the fallback.
+ */
+function facePhysicalSize(
   visualization: ProductVisualizationTemplate,
   surface: ProductVisualizationTemplate["surfaces"][number],
-  id: string,
-): PrintableSurfaceDefinition {
-  const dimensions = visualization.dimensionsMm;
+  faceDimensionsMm?: Readonly<Record<string, number>> | null,
+) {
+  const dimensions = { ...visualization.dimensionsMm, ...(faceDimensionsMm ?? {}) };
   const width = positiveDimension(dimensions.width, positiveDimension(dimensions.diameter, 100));
   const height = positiveDimension(dimensions.height, 100);
   const depth = positiveDimension(
@@ -83,7 +89,16 @@ function syntheticSurfaceDefinition(
       physicalHeightMm = surface.sourceBounds.height * sourceHeight;
     }
   }
+  return { physicalWidthMm, physicalHeightMm };
+}
 
+function syntheticSurfaceDefinition(
+  visualization: ProductVisualizationTemplate,
+  surface: ProductVisualizationTemplate["surfaces"][number],
+  id: string,
+  faceDimensionsMm?: Readonly<Record<string, number>> | null,
+): PrintableSurfaceDefinition {
+  const { physicalWidthMm, physicalHeightMm } = facePhysicalSize(visualization, surface, faceDimensionsMm);
   const longest = Math.max(physicalWidthMm, physicalHeightMm, Number.EPSILON);
   const pixelScale = 600 / longest;
   const previewWidth = Math.max(64, Math.round(physicalWidthMm * pixelScale));
@@ -100,6 +115,46 @@ function syntheticSurfaceDefinition(
   };
 }
 
+/**
+ * Reshapes an editor surface to the model face it is painted on. The 2D editor's
+ * coordinate space is often a generic shape; stretching that canvas over a face
+ * of a different aspect squashes the print. The canvas keeps its long edge and
+ * takes the face's proportions instead.
+ */
+function fitDefinitionToFace(
+  definition: PrintableSurfaceDefinition,
+  face: { physicalWidthMm: number; physicalHeightMm: number },
+): PrintableSurfaceDefinition {
+  const faceAspect = face.physicalWidthMm / face.physicalHeightMm;
+  const currentAspect = definition.width / definition.height;
+  const physical = { physicalWidthMm: face.physicalWidthMm, physicalHeightMm: face.physicalHeightMm };
+  if (!Number.isFinite(faceAspect) || faceAspect <= 0 || Math.abs(faceAspect - currentAspect) / faceAspect < 0.02) {
+    return { ...definition, ...physical };
+  }
+  const longest = Math.max(definition.width, definition.height);
+  const width = faceAspect >= 1 ? longest : Math.max(64, Math.round(longest * faceAspect));
+  const height = faceAspect >= 1 ? Math.max(64, Math.round(longest / faceAspect)) : longest;
+  return {
+    ...definition,
+    width,
+    height,
+    safeInset: Math.max(8, Math.round(Math.min(width, height) * 0.05)),
+    ...physical,
+  };
+}
+
+/** Moves and resizes layer boxes onto a reshaped canvas; glyphs are never stretched. */
+function relayout(layers: readonly ArtworkLayer[], scaleX: number, scaleY: number): ArtworkLayer[] {
+  if (Math.abs(scaleX - 1) < 1e-6 && Math.abs(scaleY - 1) < 1e-6) return [...layers];
+  return layers.map((layer) => ({
+    ...layer,
+    x: layer.x * scaleX,
+    y: layer.y * scaleY,
+    width: layer.width * scaleX,
+    height: layer.height * scaleY,
+  }));
+}
+
 interface OriginalSurface {
   id: string;
   definition?: PrintableSurfaceDefinition;
@@ -114,6 +169,8 @@ export function buildVisualization3DPreview(
   document: ArtworkDocument,
   definitions: PrintableSurfaceDefinition[],
   visualization: ProductVisualizationTemplate | undefined,
+  /** The size the 3D model renders with, so each texture matches its face. */
+  faceDimensionsMm?: Readonly<Record<string, number>> | null,
 ) {
   const texturedMappings = visualization?.surfaces.filter((surface) => surface.textureUrl) ?? [];
   if (!visualization || !texturedMappings.length) return { document, surfaces: definitions };
@@ -161,8 +218,13 @@ export function buildVisualization3DPreview(
     if (original) sourceToPreviewId.set(normalizedId(original.id), previewId);
 
     const definition = original?.definition
-      ? { ...original.definition, id: previewId, label: mapping.label }
-      : syntheticSurfaceDefinition(visualization, mapping, previewId);
+      ? fitDefinitionToFace(
+          { ...original.definition, id: previewId, label: mapping.label },
+          facePhysicalSize(visualization, mapping, faceDimensionsMm),
+        )
+      : syntheticSurfaceDefinition(visualization, mapping, previewId, faceDimensionsMm);
+    const scaleX = original?.definition ? definition.width / original.definition.width : 1;
+    const scaleY = original?.definition ? definition.height / original.definition.height : 1;
     const baseLayerId = `visualization-base-${visualization.id}-${mapping.surfaceId}`;
     previewDefinitions.push(definition);
     previewDocumentSurfaces.push({
@@ -182,10 +244,12 @@ export function buildVisualization3DPreview(
           src: mapping.textureUrl,
           sourceWidth: visualization.sourceAsset?.width ?? definition.width,
           sourceHeight: visualization.sourceAsset?.height ?? definition.height,
-          imageFit: "stretch",
-          aspectLocked: false,
+          // Fill the panel without squashing: a 4:3 photo on a tall carton front
+          // is cropped to the panel, never stretched to it.
+          imageFit: "cover",
+          aspectLocked: true,
         },
-        ...(original?.documentSurface?.layers.filter((layer) => layer.id !== baseLayerId) ?? []),
+        ...relayout(original?.documentSurface?.layers.filter((layer) => layer.id !== baseLayerId) ?? [], scaleX, scaleY),
       ],
     });
   });

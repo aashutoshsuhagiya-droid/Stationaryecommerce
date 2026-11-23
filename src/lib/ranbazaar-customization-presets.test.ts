@@ -18,9 +18,13 @@ const EXPECTED_IDS = [
   "t-shirt",
   "name-plate",
   "wrapping-paper-vinyl-poster",
+  "school-kit",
+  "gift-slip",
+  "shagun-envelope",
+  "photo-gift",
 ] as const;
 
-test("registry exposes eight form-only, price-free starters", () => {
+test("registry exposes twelve form-only, price-free starters", () => {
   const starters = listRanBazaarCustomizationStarters();
   assert.deepEqual(starters.map((starter) => starter.id), EXPECTED_IDS);
   assert.equal(new Set(starters.map((starter) => starter.id)).size, starters.length);

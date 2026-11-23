@@ -5,6 +5,8 @@ import { resolveProductArtworkPolicy, validateArtworkDocumentPolicy } from "./ar
 import { isConfigurationFieldVisible } from "./configuration-field-visibility";
 import { getProductById, products } from "./data";
 import { resolveProductTemplate, resolveProductTemplateLinks } from "./product-template-resolution";
+import { missingStudioPhotos } from "./studio-photo";
+import { readStudioConfig } from "./studio-template";
 import type { CurrencyCode, Product } from "./types";
 import type { CatalogQuoteInput, OrderItemInput } from "./validation";
 
@@ -241,6 +243,22 @@ function validateCustomization(product: Product, input: OrderItemInput) {
         "The selected design is not available for this product.",
         { productId: product.id, templateId: customization.templateId },
       );
+    }
+    // A studio design's photo slots are required, as on the source site — but only
+    // where the product accepts uploads, so a design can never become unorderable.
+    const studio = readStudioConfig(template.production?.previewConfig);
+    const surfaceAcceptsPhotos = artworkPolicy.surfaces.some((surface) => surface.image.enabled && surface.image.maximumElements > 0);
+    if (studio?.photos.length && surfaceAcceptsPhotos) {
+      const layers = customization.artwork?.surfaces.flatMap((surface) => surface.layers) ?? [];
+      const missing = missingStudioPhotos(studio, layers);
+      if (missing.length) {
+        throw new CommerceError(
+          422,
+          "STUDIO_PHOTO_REQUIRED",
+          `Upload a photo for ${template.name}.`,
+          { productId: product.id, templateId: template.id, fieldKeys: missing },
+        );
+      }
     }
     const amountPaise = toPaise(template.premiumPrice);
     if (amountPaise > 0) {

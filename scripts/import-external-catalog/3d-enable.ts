@@ -12,76 +12,74 @@
  * `activateVisualizationProductMetadata`, keeping the admin invariant intact.
  *
  * Idempotency: products that already have a PUBLISHED, unarchived template are
- * skipped. Ambiguous shapes are skipped and reported — never guessed.
+ * skipped unless `--regenerate` is passed — then a fresh template is built with
+ * the current pipeline, and publishing it archives the old one. Ambiguous
+ * shapes are skipped and reported — never guessed. `--only=<slug>` limits the run.
+ *
+ * Sizes, front-artwork cropping and board colour come from the same shared
+ * modules the admin's one-click "Create 3D preview" uses.
  */
 import "../../prisma/load-env";
 
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { EZPAC_SHOPIFY_PRODUCT_MAPPING } from "../../src/lib/ezpac-product-mapping";
+import { parseExactDimensions } from "../../src/lib/product-configuration";
+import { cropFrontArtwork, downscaleVisualizationSource } from "../../src/lib/visualization-artwork";
+import {
+  visualizationConfirmationFor,
+  visualizationShapePlan,
+  type PackagingVisualizationModel,
+} from "../../src/lib/visualization-shape-presets";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-
-type PackagingModel = "folding-carton" | "mailer-box" | "square-box" | "paper-bag" | "stand-up-pouch";
-
-interface ModelPlan {
-  model: PackagingModel;
-  geometryKind: "box" | "bag" | "pouch";
-  dimensions: Record<string, number>;
-}
-
-const BOX_DIMENSIONS = { width: 150, height: 100, depth: 50 };
-const SQUARE_DIMENSIONS = { width: 100, height: 100, depth: 100 };
-const BAG_DIMENSIONS = { width: 250, height: 350, gusset: 80 };
-const POUCH_DIMENSIONS = { width: 160, height: 240, gusset: 90 };
-
-const carton: ModelPlan = { model: "folding-carton", geometryKind: "box", dimensions: BOX_DIMENSIONS };
-const bag: ModelPlan = { model: "paper-bag", geometryKind: "bag", dimensions: BAG_DIMENSIONS };
 
 /**
  * Conservative per-preset mapping. Only preset slugs that unambiguously name a
  * packaging shape are listed; everything else stays 2D-only.
- * - slider/plain boxes → folding-carton; window → mailer-box; square → square-box
- * - bags and courier mailers → paper-bag; ziplock pouch → stand-up-pouch
+ * - tuck/slider/plain cartons → folding-carton; window → mailer-box; square → square-box
+ * - gift/pooja/flower/unboxing boxes are rigid lid-and-base boxes → rigid-lid-box
+ * - courier and parcel mailers are flat poly envelopes → mailer-envelope
+ * - carry bags → paper-bag; ziplock pouch → stand-up-pouch
  * - pillow/triangle/popcorn/tray shapes and flat print products are ambiguous → skipped
  */
-const PRESET_MODEL_PLANS: Record<string, ModelPlan> = {
-  "soap-box": carton,
-  "perfume-box": carton,
-  "cosmetic-beauty-brand-box": carton,
-  "cosmetic-beauty-box-with-inside-holder": carton,
-  "slider-box-thick-wall": carton,
-  "slider-box-thin-wall": carton,
-  "gift-box": carton,
-  "pooja-box": carton,
-  "flower-box": carton,
-  "snack-box": carton,
-  "paan-box": carton,
-  "mithai-box-top-bottom-style": carton,
-  "brownie-box": carton,
-  "chocolate-box": carton,
-  "chocolate-pack-box": carton,
-  "cereal-box": carton,
-  "food-delivery-box": carton,
-  "food-parcel-box": carton,
-  "pen-set-box": carton,
-  "tissue-paper-box": carton,
-  "side-open-box": carton,
-  "zipper-box": carton,
-  "mobile-cover-box": carton,
-  "sachet-box": carton,
-  "unboxing-experience-box": carton,
-  "hanging-box": carton,
-  "middle-hanging-box": carton,
-  "window-box": { model: "mailer-box", geometryKind: "box", dimensions: BOX_DIMENSIONS },
-  "square-box": { model: "square-box", geometryKind: "box", dimensions: SQUARE_DIMENSIONS },
-  "d-cut-paper-bag": bag,
-  "custom-branded-laminated-carry-bag": bag,
-  "parcel-bag": bag,
-  "courier-bags": bag,
-  "e-commerce-mailers": bag,
-  "d2c-mailer-bag": bag,
-  "brand-ziplock-pouch": { model: "stand-up-pouch", geometryKind: "pouch", dimensions: POUCH_DIMENSIONS },
+const PRESET_MODELS: Record<string, PackagingVisualizationModel> = {
+  "soap-box": "folding-carton",
+  "perfume-box": "folding-carton",
+  "cosmetic-beauty-brand-box": "folding-carton",
+  "cosmetic-beauty-box-with-inside-holder": "folding-carton",
+  "slider-box-thick-wall": "folding-carton",
+  "slider-box-thin-wall": "folding-carton",
+  "snack-box": "folding-carton",
+  "paan-box": "folding-carton",
+  "mithai-box-top-bottom-style": "folding-carton",
+  "brownie-box": "folding-carton",
+  "chocolate-box": "folding-carton",
+  "chocolate-pack-box": "folding-carton",
+  "cereal-box": "folding-carton",
+  "food-delivery-box": "folding-carton",
+  "food-parcel-box": "folding-carton",
+  "pen-set-box": "folding-carton",
+  "tissue-paper-box": "folding-carton",
+  "side-open-box": "folding-carton",
+  "zipper-box": "folding-carton",
+  "mobile-cover-box": "folding-carton",
+  "sachet-box": "folding-carton",
+  "hanging-box": "folding-carton",
+  "middle-hanging-box": "folding-carton",
+  "gift-box": "rigid-lid-box",
+  "pooja-box": "rigid-lid-box",
+  "flower-box": "rigid-lid-box",
+  "unboxing-experience-box": "rigid-lid-box",
+  "window-box": "mailer-box",
+  "square-box": "square-box",
+  "d-cut-paper-bag": "paper-bag",
+  "custom-branded-laminated-carry-bag": "paper-bag",
+  "parcel-bag": "mailer-envelope",
+  "courier-bags": "mailer-envelope",
+  "e-commerce-mailers": "mailer-envelope",
+  "d2c-mailer-bag": "mailer-envelope",
+  "brand-ziplock-pouch": "stand-up-pouch",
 };
 
 interface ReportRow {
@@ -89,8 +87,9 @@ interface ReportRow {
   handle: string | null;
   presetId: string | null;
   outcome: "published" | "already-linked" | "skipped-ambiguous" | "skipped-no-image" | "failed";
-  model?: PackagingModel;
+  model?: PackagingVisualizationModel;
   templateId?: string;
+  artworkConfidence?: "high" | "low";
   reason?: string;
 }
 
@@ -106,6 +105,8 @@ function mimeFromResponse(response: Response, url: string): "image/jpeg" | "imag
 
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
+  const regenerate = process.argv.includes("--regenerate");
+  const only = process.argv.find((arg) => arg.startsWith("--only="))?.slice("--only=".length);
   const connectionString = (process.env.DATABASE_URL_POOLED || process.env.DATABASE_URL)?.trim();
   if (!connectionString) throw new Error("DATABASE_URL_POOLED or DATABASE_URL is required.");
   const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
@@ -135,24 +136,32 @@ async function main() {
     }
 
     const products = await prisma.product.findMany({
-      where: { metadata: { path: ["importSource"], equals: "ezpac" } },
-      select: { id: true, slug: true, name: true, metadata: true },
+      where: { metadata: { path: ["importSource"], equals: "ezpac" }, ...(only ? { slug: only } : {}) },
+      select: { id: true, slug: true, name: true, metadata: true, dimensions: true, category: { select: { slug: true } } },
       orderBy: { slug: "asc" },
     });
-    console.info(`${products.length} EzPac products found.`);
+    console.info(`${products.length} EzPac products found${regenerate ? " (regenerating existing previews)" : ""}.`);
 
     for (const product of products) {
       const metadata = (product.metadata ?? {}) as Record<string, unknown>;
       const handle = handleById.get(String(metadata.externalId ?? "")) ?? null;
       const mapping = handle ? EZPAC_SHOPIFY_PRODUCT_MAPPING.find((entry) => entry.shopifyHandle === handle) : undefined;
       const presetId = mapping?.presetId ?? null;
-      const plan = presetId ? PRESET_MODEL_PLANS[presetId] : undefined;
+      const display = (product.dimensions as { display?: unknown } | null)?.display;
+      const plan = presetId && PRESET_MODELS[presetId]
+        ? visualizationShapePlan(PRESET_MODELS[presetId], {
+            categorySlug: product.category.slug,
+            productName: product.name,
+            productSlug: product.slug,
+            productDimensions: typeof display === "string" ? parseExactDimensions(display) : null,
+          })
+        : undefined;
 
       const published = await prisma.visualizationTemplate.findFirst({
         where: { productId: product.id, status: "PUBLISHED", archivedAt: null },
         select: { id: true },
       });
-      if (published) {
+      if (published && !regenerate) {
         report.push({ slug: product.slug, handle, presetId, outcome: "already-linked", templateId: published.id });
         continue;
       }
@@ -179,19 +188,16 @@ async function main() {
       try {
         const response = await fetch(image.url);
         if (!response.ok) throw new Error(`Image fetch failed: ${response.status}`);
-        let mimeType = mimeFromResponse(response, image.url);
-        if (!mimeType) throw new Error("Unsupported image mime type.");
-        let bytes = new Uint8Array(await response.arrayBuffer());
-        if (bytes.byteLength > VISUALIZATION_MAXIMUM_FILE_BYTES) throw new Error("Image exceeds the 12 MB studio limit.");
-        // Large hero bytes cannot be inserted within the service's 5 s interactive
-        // transaction against the remote DB; a texture does not need print resolution.
-        if (bytes.byteLength > 500 * 1024) {
-          const { default: sharp } = await import("sharp");
-          bytes = new Uint8Array(await sharp(bytes).resize({ width: 1600, height: 1600, fit: "inside", withoutEnlargement: true }).webp({ quality: 85 }).toBuffer());
-          mimeType = "image/webp";
-        }
+        if (!mimeFromResponse(response, image.url)) throw new Error("Unsupported image mime type.");
+        const original = new Uint8Array(await response.arrayBuffer());
+        if (original.byteLength > VISUALIZATION_MAXIMUM_FILE_BYTES) throw new Error("Image exceeds the 12 MB studio limit.");
+        // Wrap the box's own front, not the scene it was photographed in; then keep
+        // the bytes small enough for the studio's short interactive transaction.
+        const frontAspect = (plan.dimensions.width ?? 1) / Math.max(1, plan.dimensions.height ?? 1);
+        const artwork = await cropFrontArtwork(original, { targetAspect: frontAspect });
+        const { bytes, mimeType } = await downscaleVisualizationSource(artwork.bytes, artwork.mimeType);
         const upload = await validateArtworkUpload(
-          new File([bytes], `${product.slug}-hero`.slice(0, 180), { type: mimeType }),
+          new File([bytes as unknown as BlobPart], `${product.slug}-hero`.slice(0, 180), { type: mimeType }),
           {
             allowedMimeTypes: supportedArtworkMimeTypes,
             maximumBytes: VISUALIZATION_MAXIMUM_FILE_BYTES,
@@ -216,13 +222,10 @@ async function main() {
         if (processed?.status !== "NEEDS_CONFIRMATION") {
           throw new Error(`Manual analysis ended in ${processed?.status ?? "unknown"}${processed?.errorCode ? ` (${processed.errorCode})` : ""}.`);
         }
-        const confirmation = {
-          productType: plan.model,
-          geometry: { kind: plan.geometryKind },
-          dimensions: { unit: "mm" as const, ...plan.dimensions },
-          surfaceMappings: [{ surfaceId: "front", label: "Front", role: "front" as const }],
-          manufacturingValidated: false,
-        };
+        const confirmation = visualizationConfirmationFor(plan, {
+          confidence: artwork.confidence,
+          edgeColor: artwork.edgeColor,
+        });
         await service.confirmVisualizationAnalysis(job.id, confirmation);
         const template = await service.saveVisualizationTemplate(admin.id, job.id, {
           name: `${product.name}`.slice(0, 150) + " 3D",
@@ -231,10 +234,12 @@ async function main() {
           geometry: confirmation.geometry,
           dimensions: confirmation.dimensions,
           surfaces: confirmation.surfaceMappings,
+          materialSettings: confirmation.materialSettings,
         });
+        // Publishing archives the product's previous template and relinks metadata.
         await service.changeVisualizationTemplateStatus(template.id, "publish");
-        report.push({ slug: product.slug, handle, presetId, outcome: "published", model: plan.model, templateId: template.id });
-        console.info(`PUBLISHED 3D ${product.slug} → ${plan.model} (${template.id})`);
+        report.push({ slug: product.slug, handle, presetId, outcome: "published", model: plan.model, templateId: template.id, artworkConfidence: artwork.confidence });
+        console.info(`PUBLISHED 3D ${product.slug} → ${plan.model} (${template.id}, artwork ${artwork.confidence})`);
       } catch (error) {
         report.push({ slug: product.slug, handle, presetId, outcome: "failed", model: plan.model, reason: error instanceof Error ? error.message : String(error) });
         console.error(`FAILED 3D ${product.slug}: ${error instanceof Error ? error.message : String(error)}`);

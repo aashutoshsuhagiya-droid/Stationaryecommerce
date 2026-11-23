@@ -34,6 +34,10 @@ interface Product3DPreviewProps {
   productType?: string;
   dimensionsMm?: Record<string, number> | null;
   materialName?: string;
+  /** Packaging: board colour for unprinted panels, sampled from the front artwork. */
+  packagingBaseColor?: string;
+  /** Packaging: the back panel repeats the front design (admin opt-in). */
+  mirrorBack?: boolean;
   productName: string;
   onReadyChange?: (ready: boolean) => void;
 }
@@ -195,6 +199,8 @@ export function Product3DPreview({
   productType,
   dimensionsMm,
   materialName = "Vinyl Matte",
+  packagingBaseColor,
+  mirrorBack = false,
   productName,
   onReadyChange,
 }: Product3DPreviewProps) {
@@ -224,8 +230,9 @@ export function Product3DPreview({
     () => resolveProduct3DProfile(structuralDesign, productType, {
       materialName,
       colors: [background, accent],
+      sampledBaseColor: packagingBaseColor,
     }),
-    [accent, background, materialName, productType, structuralDesign],
+    [accent, background, materialName, packagingBaseColor, productType, structuralDesign],
   );
 
   const fitModelToView = useCallback((view: CameraView = currentViewRef.current) => {
@@ -269,6 +276,14 @@ export function Product3DPreview({
     let intersectionObserver: IntersectionObserver | null = null;
     let floorGeometry: THREE.PlaneGeometry | null = null;
     let floorMaterial: THREE.ShadowMaterial | null = null;
+    let contactGeometry: THREE.PlaneGeometry | null = null;
+    let contactMaterial: THREE.MeshBasicMaterial | null = null;
+    let contactTexture: THREE.CanvasTexture | null = null;
+    const disposeContactShadow = () => {
+      contactGeometry?.dispose();
+      contactMaterial?.dispose();
+      contactTexture?.dispose();
+    };
     let group: THREE.Group | null = null;
 
     setIsReady(false);
@@ -383,6 +398,29 @@ export function Product3DPreview({
       floorGeometry = new THREE.PlaneGeometry(10, 10);
       floorMaterial = new THREE.ShadowMaterial({ opacity: quality.lowPower ? 0.07 : 0.12 });
       const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+
+      // A soft contact shadow grounds the product on every device, including
+      // low-power ones where real shadow maps are switched off.
+      const shadowCanvas = window.document.createElement("canvas");
+      shadowCanvas.width = 128;
+      shadowCanvas.height = 128;
+      const shadowContext = shadowCanvas.getContext("2d");
+      if (shadowContext) {
+        const gradient = shadowContext.createRadialGradient(64, 64, 4, 64, 64, 64);
+        gradient.addColorStop(0, "rgba(15, 23, 42, 0.38)");
+        gradient.addColorStop(0.55, "rgba(15, 23, 42, 0.12)");
+        gradient.addColorStop(1, "rgba(15, 23, 42, 0)");
+        shadowContext.fillStyle = gradient;
+        shadowContext.fillRect(0, 0, 128, 128);
+      }
+      contactTexture = new THREE.CanvasTexture(shadowCanvas);
+      contactGeometry = new THREE.PlaneGeometry(1, 1);
+      contactMaterial = new THREE.MeshBasicMaterial({ map: contactTexture, transparent: true, depthWrite: false });
+      const contactShadow = new THREE.Mesh(contactGeometry, contactMaterial);
+      contactShadow.name = "contact-shadow";
+      contactShadow.position.z = 0.002;
+      contactShadow.renderOrder = -1;
+      floor.add(contactShadow);
       floor.rotation.x = -Math.PI / 2;
       floor.position.y = -0.9;
       floor.receiveShadow = !quality.lowPower;
@@ -476,6 +514,7 @@ export function Product3DPreview({
         }
         floorGeometry?.dispose();
         floorMaterial?.dispose();
+        disposeContactShadow();
         textureRefs.current.forEach((texture) => texture.dispose());
         textureRefs.current.clear();
         textureCanvasesRef.current.clear();
@@ -499,6 +538,7 @@ export function Product3DPreview({
       if (group) disposeGroupChildren(group, new Set(textureRefs.current.values()));
       floorGeometry?.dispose();
       floorMaterial?.dispose();
+      disposeContactShadow();
       renderer?.renderLists.dispose();
       renderer?.dispose();
       sceneRef.current?.clear();
@@ -582,11 +622,22 @@ export function Product3DPreview({
         surfaces: surfaceDefinitions,
         textures: textureRefs.current,
         dimensionsMm,
+        mirrorBack,
       });
 
       const bounds = new THREE.Box3().setFromObject(group);
       const floor = floorRef.current;
-      if (floor && !bounds.isEmpty()) floor.position.y = bounds.min.y - 0.035;
+      if (floor && !bounds.isEmpty()) {
+        floor.position.y = bounds.min.y - 0.035;
+        const contactShadow = floor.getObjectByName("contact-shadow");
+        if (contactShadow) {
+          const size = bounds.getSize(new THREE.Vector3());
+          const center = bounds.getCenter(new THREE.Vector3());
+          // The floor lies rotated flat: its local x is world x, local y is world -z.
+          contactShadow.position.set(center.x, -center.z, 0.002);
+          contactShadow.scale.set(Math.max(0.2, size.x * 1.6), Math.max(0.2, size.z * 1.6), 1);
+        }
+      }
 
       const dimensionEntries = Object.entries(dimensionsMm ?? {}).sort(([left], [right]) => left.localeCompare(right));
       const geometrySignature = JSON.stringify({
@@ -646,6 +697,7 @@ export function Product3DPreview({
     document,
     fitModelToView,
     materialName,
+    mirrorBack,
     onReadyChange,
     productProfile.categoryTheme,
     productProfile.kind,

@@ -101,6 +101,13 @@ export interface FullDetailsProductBase {
   configurationFields: FullDetailsConfigurationField[];
   structuredDescription?: FullDetailsStructuredDescription | null;
   extraImages?: FullDetailsImage[];
+  /** Storefront parity fields; 0/"" means "leave this off the product". */
+  compareAtPrice?: number;
+  gstPercent?: number;
+  tags?: string[];
+  seoTitle?: string;
+  seoDescription?: string;
+  stockOnHand?: number;
 }
 
 export type FullDetailsOverrides = Partial<Omit<FullDetailsProductBase, "id">>;
@@ -205,6 +212,13 @@ export function buildFullDetailsPatch(
     categoryIds,
     ...(value.productType.trim() ? { productType: value.productType.trim() } : {}),
     price: numberOr(value.price, 0),
+    // Sent only when set, so a client that never shows these cannot blank them.
+    ...(numberOr(value.compareAtPrice, 0) > numberOr(value.price, 0) ? { compareAtPrice: numberOr(value.compareAtPrice, 0) } : {}),
+    ...([0, 5, 18].includes(numberOr(value.gstPercent, -1)) ? { gstPercent: numberOr(value.gstPercent, 0) as 0 | 5 | 18 } : {}),
+    ...(value.tags ? { tags: value.tags.map((tag) => tag.trim()).filter(Boolean).slice(0, 30) } : {}),
+    ...(value.seoTitle !== undefined ? { seoTitle: value.seoTitle.trim().slice(0, 160) } : {}),
+    ...(value.seoDescription !== undefined ? { seoDescription: value.seoDescription.trim().slice(0, 320) } : {}),
+    ...(value.stockOnHand !== undefined ? { stockOnHand: Math.max(0, Math.round(numberOr(value.stockOnHand, 0))) } : {}),
     imageUrl: value.imageUrl.trim(),
     material: value.material.trim(),
     sizes: value.sizes.map((item) => item.trim()).filter(Boolean),

@@ -109,6 +109,31 @@ export function wrapTextLines(
   return lines;
 }
 
+/**
+ * Where an image lands inside a target box, relative to the box's top-left.
+ * "cover" fills the box and overflows (the caller clips), "contain" fits
+ * inside with letterboxing, and only "stretch" ignores the image's aspect.
+ */
+export function fitImageRect(
+  imageWidth: number,
+  imageHeight: number,
+  targetWidth: number,
+  targetHeight: number,
+  fit: "contain" | "cover" | "stretch",
+): { x: number; y: number; width: number; height: number } {
+  if (fit === "stretch" || imageWidth <= 0 || imageHeight <= 0 || targetWidth <= 0 || targetHeight <= 0) {
+    return { x: 0, y: 0, width: targetWidth, height: targetHeight };
+  }
+  const imageAspect = imageWidth / imageHeight;
+  const targetAspect = targetWidth / targetHeight;
+  const scaleFactor = fit === "cover"
+    ? (imageAspect > targetAspect ? targetHeight / imageHeight : targetWidth / imageWidth)
+    : (imageAspect > targetAspect ? targetWidth / imageWidth : targetHeight / imageHeight);
+  const width = imageWidth * scaleFactor;
+  const height = imageHeight * scaleFactor;
+  return { x: (targetWidth - width) / 2, y: (targetHeight - height) / 2, width, height };
+}
+
 export function renderLayerToContext(
   ctx: CanvasRenderingContext2D,
   layer: ArtworkLayer,
@@ -135,25 +160,15 @@ export function renderLayerToContext(
     const img = imageCache.get(layer.src);
     if (img && img.complete) {
       const fit = layer.imageFit ?? "contain";
-      if (fit === "stretch") {
-        ctx.drawImage(img, drawX, drawY, renderW, renderH);
-      } else {
-        const imageAspect = img.naturalWidth / img.naturalHeight;
-        const targetAspect = renderW / renderH;
-        const scaleFactor = fit === "cover"
-          ? (imageAspect > targetAspect ? renderH / img.naturalHeight : renderW / img.naturalWidth)
-          : (imageAspect > targetAspect ? renderW / img.naturalWidth : renderH / img.naturalHeight);
-        const width = img.naturalWidth * scaleFactor;
-        const height = img.naturalHeight * scaleFactor;
-        if (fit === "cover") {
-          ctx.save();
-          ctx.beginPath();
-          ctx.rect(drawX, drawY, renderW, renderH);
-          ctx.clip();
-        }
-        ctx.drawImage(img, drawX + (renderW - width) / 2, drawY + (renderH - height) / 2, width, height);
-        if (fit === "cover") ctx.restore();
+      const placed = fitImageRect(img.naturalWidth, img.naturalHeight, renderW, renderH, fit);
+      if (fit === "cover") {
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(drawX, drawY, renderW, renderH);
+        ctx.clip();
       }
+      ctx.drawImage(img, drawX + placed.x, drawY + placed.y, placed.width, placed.height);
+      if (fit === "cover") ctx.restore();
     }
   } else if (layer.type === "text" && layer.text) {
     const fontSize = Math.max(12, (layer.fontSize ?? 32) * scale);

@@ -51,7 +51,7 @@ test("Ranbazaar __NEXT_DATA__ fixture maps title, images, price, variants and so
   assert.deepEqual(product.dimensions, { specs: [{ label: "Capacity", value: "500 ml" }] });
 });
 
-test("Ranbazaar customize details map to capped text personalization fields with source styling", () => {
+test("Ranbazaar customize details map to readable, source-limited fields with source styling", () => {
   const product = mapRanbazaarProductRecord({
     id: "abc123",
     name: "Name Slip",
@@ -64,7 +64,7 @@ test("Ranbazaar customize details map to capped text personalization fields with
     customizeDetails: [
       {
         name: "Sample_1",
-        customerImg: [{ id: 1, imageUrl: "https://example.test/upload-slot.webp" }],
+        customerImg: [{ id: 1, imageUrl: "https://example.test/upload-slot.webp", x: 10, y: 10, width: "200px", height: "200px" }],
         inputFields: [
           {
             type: "customize",
@@ -84,15 +84,18 @@ test("Ranbazaar customize details map to capped text personalization fields with
   const [first, second, third] = product.personalizationFields ?? [];
   assert.deepEqual(
     { key: first?.key, label: first?.label, inputType: first?.inputType, required: first?.required, maxLength: first?.maxLength },
-    { key: "enetr-your-name", label: "ENTER YOUR NAME", inputType: "text", required: true, maxLength: 32 },
+    { key: "enetr-your-name", label: "Your name", inputType: "text", required: true, maxLength: 32 },
   );
-  assert.deepEqual(first?.validation, { fontId: "Gilroy Extrabold", color: "#000000", fontSize: 28 });
+  // The source text stays as the placeholder; Gilroy maps to its open substitute.
+  assert.deepEqual(first?.validation, { placeholder: "ENTER YOUR NAME", sourceLabel: "ENTER YOUR NAME", fontId: "montserrat", color: "#000000", fontSize: 28 });
   assert.deepEqual(
     { key: second?.key, label: second?.label, validation: second?.validation, sortOrder: second?.sortOrder },
-    { key: "enter-your-school-name", label: "Enter Your School Name", validation: null, sortOrder: 1 },
+    { key: "enter-your-school-name", label: "Your school name", validation: { placeholder: "Enter Your School Name", sourceLabel: "Enter Your School Name", fontId: "montserrat", color: "#111418", fontSize: 24 }, sortOrder: 1 },
   );
   assert.equal(third?.key, "enetr-your-name-2");
+  // This fixture's photo input sits on a sample without a mockup, so there is no design to place it on.
   assert.equal(product.skippedPhotoSlots, 1);
+  assert.equal(product.studioPlan?.acceptsPhotos, false);
   assert.equal(product.personalizationOverflow, 0);
 
   assert.deepEqual(product.bulkPriceTiers, [{ minimum: 2, pricePaise: 17_500 }]);
@@ -103,6 +106,14 @@ test("Ranbazaar customize details map to capped text personalization fields with
   assert.equal(product.seoTruncated, true);
   assert.equal(product.variants[0]?.inventoryPolicy, "CONTINUE");
   assert.equal(product.variants[0]?.onHand, 24);
+});
+
+test("a photo-only Ranbazaar product (no text inputs) is still customizable", () => {
+  const source = JSON.parse(readFileSync("docs/research/ranbazaar/products/customizable-kids-notebooks-perfect-for-school-and-play---pack-of-5.json", "utf8")).product;
+  const product = mapRanbazaarProductRecord(source, "customizable-kids-notebooks-perfect-for-school-and-play---pack-of-5");
+  assert.deepEqual(product.personalizationFields, [], "no text fields");
+  assert.equal(product.studioPlan?.acceptsPhotos, true);
+  assert.equal(product.customizable, true, "the customer uploads into its photo slots");
 });
 
 test("Ranbazaar products without stock or customize inputs stay orderable made-to-order", () => {

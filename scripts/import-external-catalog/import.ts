@@ -18,6 +18,10 @@ import {
 } from "../../src/lib/ezpac-product-mapping";
 import { EZPAC_FEATURE_BULLET_LABELS } from "../../src/lib/ezpac-feature-bullets";
 import {
+  curatedCategorySlugForImport,
+  importCategoryPendingReason,
+} from "../../src/lib/imported-category-mapping";
+import {
   findRanBazaarCategoryMatch,
   flattenRanBazaarTaxonomy,
   getRanBazaarCategoryGroup,
@@ -38,6 +42,9 @@ import {
   type ExternalCatalogSource,
   type ImportedExternalProduct,
 } from "./catalog-import";
+import { STUDIO_PHOTO_UPLOAD, studioPrintArea, withMeasuredMockups, writeStudioPlan } from "./studio-writer";
+import { studioEditedInAdmin } from "../../src/lib/studio-design";
+import { saveMockupSizes, loadMockupSizes } from "./mockup-sizes";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
@@ -54,6 +61,8 @@ interface CliOptions {
   dryRun: boolean;
   publish: boolean;
   offline: boolean;
+  /** Reset designs edited in the admin design editor back to the source. */
+  forceStudio: boolean;
 }
 
 interface FetchFailure {
@@ -134,6 +143,11 @@ function fidelitySummary(products: readonly ImportedExternalProduct[]) {
     materialProducts: products.filter((p) => p.material).length,
     structuredDescriptionProducts: products.filter((p) => p.structuredDescription).length,
     customizableProducts: products.filter((p) => p.customizable || (p.personalizationFields?.length ?? 0) > 0).length,
+    curatedCategoryMoves: products.filter((p) => p.categoryHints.some((hint) => curatedCategorySlugForImport(slugifyCatalogTitle(hint)))).length,
+    pendingCategoryBuckets: [...new Set(products.flatMap((p) => p.categoryHints.flatMap((hint) => {
+      const reason = importCategoryPendingReason(slugifyCatalogTitle(hint));
+      return reason ? [`${hint} — ${reason}`] : [];
+    })))],
   };
 }
 
@@ -170,7 +184,7 @@ interface SourceRunSummary {
 
 function usage(message?: string): never {
   if (message) console.error(message);
-  console.error("Usage: npm run import:external-catalog -- --source=ezpac|ranbazaar|both [--dry-run] [--publish] [--offline]");
+  console.error("Usage: npm run import:external-catalog -- --source=ezpac|ranbazaar|both [--dry-run] [--publish] [--offline] [--force-studio]");
   process.exit(2);
 }
 
@@ -179,6 +193,7 @@ function parseArgs(args: readonly string[]): CliOptions {
   let dryRun = false;
   let publish = false;
   let offline = false;
+  let forceStudio = false;
   for (const arg of args) {
     if (arg.startsWith("--source=")) {
       const candidate = arg.slice("--source=".length);
@@ -190,11 +205,13 @@ function parseArgs(args: readonly string[]): CliOptions {
       publish = true;
     } else if (arg === "--offline") {
       offline = true;
+    } else if (arg === "--force-studio") {
+      forceStudio = true;
     } else {
       usage(`Unknown argument: ${arg}`);
     }
   }
-  return { source, dryRun, publish, offline };
+  return { source, dryRun, publish, offline, forceStudio };
 }
 
 function asJson(value: unknown): Prisma.InputJsonValue {
@@ -583,6 +600,15 @@ async function resolveRanbazaarCategories(
   product: ImportedExternalProduct,
   categories: CatalogCategoryIdentity[],
 ) {
+  // A curated home beats an import bucket: the product keeps its slug and simply
+  // moves onto a real shelf. Unknown future source categories still fall back.
+  const curated = product.categoryHints.flatMap((hint) => {
+    const destination = curatedCategorySlugForImport(slugifyCatalogTitle(hint));
+    const category = destination ? categories.find((candidate) => candidate.slug === destination) : undefined;
+    return category ? [category.id] : [];
+  });
+  if (curated.length) return [...new Set(curated)];
+
   const taxonomy = flattenRanBazaarTaxonomy().filter((entry) => entry.kind === "category");
   const resolved = product.categoryHints.flatMap((hint) => {
     const normalized = slugifyCatalogTitle(hint);
@@ -622,7 +648,17 @@ async function upsertImportedProduct(
   slug: string,
   publish: boolean,
   categoriesCache: CatalogCategoryIdentity[],
+  forceStudio = false,
 ) {
+  // Designs edited in the admin design editor are kept (with their fields, print area and
+  // upload settings); the importer refreshes everything else about the product.
+  const keepAdminStudio = Boolean(product.studioPlan) && studioEditedInAdmin(existing?.metadata) && !forceStudio;
+  // A new mockup needs its size before its design canvas can be laid out (network, so before the transaction).
+  if (!keepAdminStudio && product.studioPlan?.unmeasuredMockups.length) {
+    const studioPlan = await withMeasuredMockups(product.studioPlan);
+    if (studioPlan.unmeasuredMockups.length < product.studioPlan.unmeasuredMockups.length) saveMockupSizes(loadMockupSizes());
+    product = { ...product, studioPlan };
+  }
   return prisma.$transaction(async (tx) => {
     const categoryIds = await resolveCategories(tx, product, categoriesCache);
     const categoryId = categoryIds[0];
@@ -644,7 +680,12 @@ async function upsertImportedProduct(
       quantityMax: 100,
       quantityTiers,
       setupCharge: 0,
-      printAreas: [{ id: "primary", label: "Primary print area" }],
+      // A studio design surface always carries a size; nothing else is invented here.
+      printAreas: keepAdminStudio && Array.isArray(existingConfigurator.printAreas)
+        ? existingConfigurator.printAreas
+        : product.studioPlan?.templates.length ? [studioPrintArea(product.studioPlan)] : [{ id: "primary", label: "Primary print area" }],
+      // Photo slots on the designs need uploads.
+      ...(!keepAdminStudio && product.studioPlan?.acceptsPhotos ? STUDIO_PHOTO_UPLOAD : {}),
       ...(product.structuredDescription ? { structuredDescription: product.structuredDescription } : {}),
     };
     const metadata = asJson({
@@ -750,36 +791,43 @@ async function upsertImportedProduct(
       data: { isActive: false },
     });
 
-    const desiredFields = product.personalizationFields ?? [];
-    for (const field of desiredFields) {
-      await tx.productPersonalizationField.upsert({
-        where: { productId_key: { productId: saved.id, key: field.key } },
-        update: {
-          label: field.label,
-          inputType: field.inputType,
-          isRequired: field.required,
-          maxLength: field.maxLength,
-          validation: field.validation ? asJson(field.validation) : Prisma.DbNull,
-          sortOrder: field.sortOrder,
-        },
-        create: {
+    if (keepAdminStudio) {
+      // The admin owns this product's designs and the fields they bind.
+    } else if (product.studioPlan) {
+      // Ranbazaar: design templates, their links and the fields they bind, in one pass.
+      await writeStudioPlan(tx, saved.id, product.studioPlan);
+    } else {
+      const desiredFields = product.personalizationFields ?? [];
+      for (const field of desiredFields) {
+        await tx.productPersonalizationField.upsert({
+          where: { productId_key: { productId: saved.id, key: field.key } },
+          update: {
+            label: field.label,
+            inputType: field.inputType,
+            isRequired: field.required,
+            maxLength: field.maxLength,
+            validation: field.validation ? asJson(field.validation) : Prisma.DbNull,
+            sortOrder: field.sortOrder,
+          },
+          create: {
+            productId: saved.id,
+            key: field.key,
+            label: field.label,
+            inputType: field.inputType,
+            isRequired: field.required,
+            maxLength: field.maxLength,
+            validation: field.validation ? asJson(field.validation) : Prisma.DbNull,
+            sortOrder: field.sortOrder,
+          },
+        });
+      }
+      await tx.productPersonalizationField.deleteMany({
+        where: {
           productId: saved.id,
-          key: field.key,
-          label: field.label,
-          inputType: field.inputType,
-          isRequired: field.required,
-          maxLength: field.maxLength,
-          validation: field.validation ? asJson(field.validation) : Prisma.DbNull,
-          sortOrder: field.sortOrder,
+          ...(desiredFields.length ? { key: { notIn: desiredFields.map((field) => field.key) } } : {}),
         },
       });
     }
-    await tx.productPersonalizationField.deleteMany({
-      where: {
-        productId: saved.id,
-        ...(desiredFields.length ? { key: { notIn: desiredFields.map((field) => field.key) } } : {}),
-      },
-    });
     return saved;
   }, { maxWait: 15000, timeout: 60000 });
 }
@@ -865,7 +913,7 @@ async function main() {
           let lastDbError: unknown;
           for (let attempt = 0; attempt < 3; attempt += 1) {
             try {
-              saved = await upsertImportedProduct(prisma, product, existing, slug, options.publish, categoriesCache);
+              saved = await upsertImportedProduct(prisma, product, existing, slug, options.publish, categoriesCache, options.forceStudio);
               break;
             } catch (err) {
               lastDbError = err;

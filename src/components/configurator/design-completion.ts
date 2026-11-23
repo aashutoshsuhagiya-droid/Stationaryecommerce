@@ -1,10 +1,10 @@
-export type DesignCompletionStepId = "name" | "theme" | "size" | "preview";
+export type DesignCompletionStepId = "name" | "details" | "theme" | "size" | "preview";
 
 export type DesignCompletionInput = Partial<Record<DesignCompletionStepId, boolean>>;
 
 export interface DesignCompletionStep {
   id: DesignCompletionStepId;
-  label: "Name" | "Theme" | "Size" | "Preview";
+  label: "Name" | "Details" | "Theme" | "Size" | "Preview";
   complete: boolean;
 }
 
@@ -18,6 +18,7 @@ export interface DesignCompletion {
 
 const STEP_DEFINITIONS: ReadonlyArray<Pick<DesignCompletionStep, "id" | "label">> = [
   { id: "name", label: "Name" },
+  { id: "details", label: "Details" },
   { id: "theme", label: "Theme" },
   { id: "size", label: "Size" },
   { id: "preview", label: "Preview" },

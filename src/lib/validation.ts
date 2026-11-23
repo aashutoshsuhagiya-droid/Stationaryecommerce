@@ -111,6 +111,13 @@ export const artworkLayerSchema = z.discriminatedUnion("type", [
     sourceHeight: z.number().int().min(1).max(50_000),
     imageFit: z.enum(["contain", "cover", "stretch"]).optional(),
     aspectLocked: z.boolean().optional(),
+    // Studio photo slots: the customer's adjustment of a photo inside its slot.
+    photo: z.object({
+      offsetX: z.number().finite().min(-2_000).max(2_000),
+      offsetY: z.number().finite().min(-2_000).max(2_000),
+      rotation: z.number().finite().min(-360).max(360),
+      scale: z.number().finite().min(0.2).max(5),
+    }).strict().optional(),
   }).strict().superRefine((layer, context) => {
     if (!layer.src && !layer.asset) {
       context.addIssue({

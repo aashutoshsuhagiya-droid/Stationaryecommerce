@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
 import { neutralPresentationPalette } from "../../lib/data";
 import type { PrintableSurfaceDefinition } from "./artwork-types";
@@ -6,7 +7,11 @@ import {
   normalizeProduct3DDimensions,
   type Product3DNormalizedDimensions,
 } from "./product-3d-dimensions";
-import type { Product3DKind, Product3DTheme } from "./product-3d-profile";
+import {
+  isPackagingProduct3DKind,
+  type Product3DKind,
+  type Product3DTheme,
+} from "./product-3d-profile";
 import {
   resolveProduct3DSurfaceId,
   type Product3DSurfaceSlot,
@@ -21,6 +26,10 @@ interface ProductGeometryContext {
   theme: Product3DTheme;
   dimensions: Product3DNormalizedDimensions;
   textureVariants: THREE.Texture[];
+  /** Packaging prints per panel: faces without artwork are plain board. */
+  packaging: boolean;
+  /** Admin opt-in: the back panel repeats the front design. */
+  mirrorBack: boolean;
 }
 
 type ProductGeometryBuilder = (context: ProductGeometryContext) => void;
@@ -46,12 +55,29 @@ function markProductMesh(mesh: THREE.Mesh, receiveShadow = false): void {
   mesh.receiveShadow = receiveShadow;
 }
 
+/**
+ * The artwork for a model face, or null when a packaging face has none of its
+ * own. Printed label and school models always fall back to the front artwork.
+ */
 function textureForSurface(
   context: ProductGeometryContext,
   slot: Product3DSurfaceSlot,
-): THREE.Texture {
-  const surfaceId = resolveProduct3DSurfaceId(context.surfaces, slot);
-  return (surfaceId ? context.textures.get(surfaceId) : undefined) ?? context.fallbackTexture;
+): THREE.Texture | null {
+  const surfaceId = resolveProduct3DSurfaceId(context.surfaces, slot, {
+    packaging: context.packaging,
+    mirrorBack: context.mirrorBack,
+  });
+  const texture = surfaceId ? context.textures.get(surfaceId) : undefined;
+  if (texture) return texture;
+  return context.packaging ? null : context.fallbackTexture;
+}
+
+/** Unprinted board, kraft or film in the packaging's own base colour. */
+function boardMaterial(
+  context: ProductGeometryContext,
+  parameters: THREE.MeshPhysicalMaterialParameters = {},
+): THREE.MeshPhysicalMaterial {
+  return createThemedMaterial(context.theme, { color: context.theme.baseColor, ...parameters });
 }
 
 function printedMaterial(
@@ -59,9 +85,11 @@ function printedMaterial(
   slot: Product3DSurfaceSlot,
   parameters: THREE.MeshPhysicalMaterialParameters = {},
 ): THREE.MeshPhysicalMaterial {
+  const map = textureForSurface(context, slot);
+  if (!map) return boardMaterial(context, parameters);
   return createThemedMaterial(context.theme, {
     color: neutralPresentationPalette.surface,
-    map: textureForSurface(context, slot),
+    map,
     transparent: false,
     opacity: 1,
     depthWrite: true,
@@ -104,6 +132,40 @@ function addBox(
   markProductMesh(mesh, true);
   context.group.add(mesh);
   return mesh;
+}
+
+/**
+ * A board body with slightly rounded edges, so the corners catch light like
+ * folded card rather than a CG cube. RoundedBoxGeometry keeps BoxGeometry's
+ * six material groups, so per-face artwork still lands on the right panel.
+ */
+function addBoardBox(
+  context: ProductGeometryContext,
+  width: number,
+  height: number,
+  depth: number,
+  materials: THREE.Material | THREE.Material[],
+  position: [number, number, number] = [0, 0, 0],
+): THREE.Mesh {
+  const radius = Math.min(Math.max(width, height, depth) * 0.006, Math.min(width, height, depth) * 0.45);
+  const geometry = radius > 0.002
+    ? new RoundedBoxGeometry(width, height, depth, 2, radius)
+    : new THREE.BoxGeometry(width, height, depth);
+  const mesh = new THREE.Mesh(geometry, materials);
+  mesh.position.set(...position);
+  markProductMesh(mesh, true);
+  context.group.add(mesh);
+  return mesh;
+}
+
+/** A barely-there fold line; creases read as shading, never as a dark stripe. */
+function creaseMaterial(context: ProductGeometryContext): THREE.MeshPhysicalMaterial {
+  const base = new THREE.Color(context.theme.baseColor);
+  return createThemedMaterial(context.theme, {
+    color: base.clone().multiplyScalar(0.9),
+    roughness: Math.max(context.theme.roughness, 0.7),
+    clearcoat: 0,
+  });
 }
 
 function buildLabelPack(context: ProductGeometryContext): void {
@@ -226,7 +288,7 @@ function buildBottleLabel(context: ProductGeometryContext): void {
 function buildPencilSet(context: ProductGeometryContext): void {
   const pencilLength = context.dimensions.height;
   const pencilRadius = Math.max(0.07, context.dimensions.width / 9);
-  const pencilTexture = textureForSurface(context, "front").clone();
+  const pencilTexture = (textureForSurface(context, "front") ?? context.fallbackTexture).clone();
   pencilTexture.center.set(0.5, 0.5);
   pencilTexture.rotation = Math.PI / 2;
   pencilTexture.needsUpdate = true;
@@ -391,63 +453,134 @@ function buildBulkGrid(context: ProductGeometryContext): void {
   }
 }
 
-function addCartonDetails(context: ProductGeometryContext, folding = false): void {
+/** Board thickness in scene units: thin enough to read as card, never invisible. */
+function boardThickness(context: ProductGeometryContext): number {
+  const { width, depth } = context.dimensions;
+  return Math.max(0.006, Math.min(width, depth) * 0.012);
+}
+
+/**
+ * Lid materials: the lip band around a lid is plain board — it is not the box's
+ * front panel — and the lid top carries artwork only when a top panel exists.
+ */
+function lidMaterials(context: ProductGeometryContext): THREE.Material[] {
+  const plain = () => boardMaterial(context);
+  // BoxGeometry group order: right, left, top, bottom, front (+z), back (-z).
+  return [plain(), plain(), printedMaterial(context, "top"), plain(), plain(), plain()];
+}
+
+/** Packing tape over the centre seam of a corrugated shipping carton. */
+function addTapeSeam(context: ProductGeometryContext): void {
   const { width, height, depth } = context.dimensions;
-  const crease = createThemedMaterial(context.theme, {
-    color: context.theme.accentColor,
-    roughness: Math.max(context.theme.roughness, 0.62),
+  const thickness = Math.max(0.003, boardThickness(context) * 0.4);
+  const tapeWidth = Math.min(width * 0.2, 0.2);
+  const drop = height * 0.2;
+  const tape = createThemedMaterial(context.theme, {
+    color: "#b98d58",
+    roughness: 0.34,
+    clearcoat: 0.45,
+    clearcoatRoughness: 0.2,
     metalness: 0,
   });
-  addBox(context, width * 0.92, Math.max(0.012, height * 0.009), depth + 0.012, crease, [0, height * 0.43, 0]);
-  if (folding) {
-    const flap = addBox(
-      context,
-      width * 0.82,
-      Math.max(0.025, height * 0.018),
-      depth * 0.86,
-      printedMaterial(context, "top"),
-      [0, height / 2 + Math.max(0.015, height * 0.009), -depth * 0.04],
-    );
-    flap.rotation.x = -0.015;
+  addBox(context, tapeWidth, thickness, depth + thickness * 2, tape, [0, height / 2 + thickness / 2, 0]);
+  for (const side of [1, -1]) {
+    addBox(context, tapeWidth, drop, thickness, tape, [0, height / 2 - drop / 2, side * (depth / 2 + thickness / 2)]);
   }
 }
 
 function buildRectangularBox(context: ProductGeometryContext): void {
   const { width, height, depth } = context.dimensions;
-  addBox(context, width, height, depth, boxFaceMaterials(context));
-  addCartonDetails(context);
+  addBoardBox(context, width, height, depth, boxFaceMaterials(context));
+  if (context.theme.flags.includes("corrugated")) addTapeSeam(context);
 }
 
 function buildSquareBox(context: ProductGeometryContext): void {
   buildRectangularBox(context);
 }
 
+/**
+ * A tuck-end folding carton: a thin lid hinged at the back edge sits flush on
+ * the body with its tuck flap folded in at the front, and the manufacturer's
+ * glue flap shows as a faint seam down one side.
+ */
 function buildFoldingCarton(context: ProductGeometryContext): void {
   const { width, height, depth } = context.dimensions;
-  addBox(context, width, height, depth, boxFaceMaterials(context));
-  addCartonDetails(context, true);
+  const thickness = boardThickness(context);
+  addBoardBox(context, width, height, depth, boxFaceMaterials(context));
+
+  addBoardBox(context, width, thickness, depth, printedMaterial(context, "top"), [0, height / 2 + thickness / 2, 0]);
+
+  const crease = creaseMaterial(context);
+  const lineDepth = Math.max(0.003, depth * 0.018);
+  // Hinge along the back top edge, and the tuck fold just inside the front edge.
+  addBox(context, width * 0.98, thickness * 0.35, lineDepth, crease, [0, height / 2 + thickness, -depth / 2 + lineDepth]);
+  addBox(context, width * 0.94, thickness * 0.35, lineDepth, crease, [0, height / 2 + thickness, depth / 2 - lineDepth * 3]);
+
+  const glueFlapWidth = Math.max(0.004, depth * 0.07);
+  addBox(
+    context,
+    Math.max(0.002, thickness * 0.3),
+    height * 0.97,
+    glueFlapWidth,
+    crease,
+    [width / 2 + Math.max(0.001, thickness * 0.15), 0, -depth / 2 + glueFlapWidth / 2],
+  );
 }
 
 function buildMailerBox(context: ProductGeometryContext): void {
   const { width, height, depth } = context.dimensions;
   const bodyHeight = height * 0.72;
-  addBox(context, width, bodyHeight, depth, boxFaceMaterials(context), [0, -height * 0.14, 0]);
-  addBox(
+  const lidHeight = Math.max(0.04, height * 0.16);
+  addBoardBox(context, width, bodyHeight, depth, boxFaceMaterials(context), [0, -height / 2 + bodyHeight / 2, 0]);
+  addBoardBox(
     context,
     width * 1.015,
-    Math.max(0.04, height * 0.14),
+    lidHeight,
     depth * 1.015,
-    boxFaceMaterials(context),
-    [0, height * 0.29, -depth * 0.015],
+    lidMaterials(context),
+    [0, height / 2 - lidHeight / 2, 0],
   );
-  addBox(
+  const crease = creaseMaterial(context);
+  addBox(context, width * 0.98, Math.max(0.003, lidHeight * 0.05), Math.max(0.004, depth * 0.02), crease, [0, height / 2, -depth * 0.5]);
+}
+
+/**
+ * A rigid gift box: a base with a slightly larger, shallower lid whose lip
+ * steps out over it. The lid band is plain board; the base front carries the print.
+ */
+function buildRigidLidBox(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  const lidHeight = height * 0.3;
+  // The base only tucks a little way under the lid, so the lid hides as little
+  // of the printed front as a real shoulder box would.
+  const baseHeight = height - lidHeight + height * 0.04;
+  const lip = Math.max(0.008, Math.min(width, depth) * 0.014);
+  addBoardBox(context, width, baseHeight, depth, boxFaceMaterials(context), [0, -height / 2 + baseHeight / 2, 0]);
+  addBoardBox(
     context,
-    width * 0.96,
-    Math.max(0.018, height * 0.04),
-    Math.max(0.025, depth * 0.045),
-    createThemedMaterial(context.theme, { color: context.theme.accentColor, roughness: 0.72 }),
-    [0, height * 0.22, -depth * 0.51],
+    width + lip * 2,
+    lidHeight,
+    depth + lip * 2,
+    lidMaterials(context),
+    [0, height / 2 - lidHeight / 2, 0],
   );
+}
+
+/**
+ * A flat courier mailer: a thin rounded poly slab, print on the front, and the
+ * peel-and-seal flap folded over the top edge.
+ */
+function buildMailerEnvelope(context: ProductGeometryContext): void {
+  const { width, height, depth } = context.dimensions;
+  const slab = Math.max(0.02, depth);
+  addBoardBox(context, width, height, slab, boxFaceMaterials(context));
+  const flapHeight = height * 0.075;
+  const flap = createThemedMaterial(context.theme, {
+    color: new THREE.Color(context.theme.baseColor).multiplyScalar(0.94),
+    roughness: Math.max(0.3, context.theme.roughness - 0.05),
+    clearcoat: context.theme.clearcoat,
+  });
+  addBoardBox(context, width * 0.99, flapHeight, slab * 1.7, flap, [0, height / 2 - flapHeight / 2, -slab * 0.2]);
 }
 
 function buildPaperBag(context: ProductGeometryContext): void {
@@ -486,8 +619,9 @@ function buildStandUpPouch(context: ProductGeometryContext): void {
       left: "gusset-left",
     }),
   );
+  // Zip and heat seals are the film itself, a shade darker — not a dark band.
   const seam = createThemedMaterial(context.theme, {
-    color: context.theme.accentColor,
+    color: new THREE.Color(context.theme.baseColor).multiplyScalar(0.9),
     roughness: Math.max(0.25, context.theme.roughness),
     metalness: Math.min(0.08, context.theme.metalness),
   });
@@ -523,6 +657,8 @@ const PRODUCT_GEOMETRY_BUILDERS: Record<Product3DKind, ProductGeometryBuilder> =
   "paper-bag": buildPaperBag,
   "stand-up-pouch": buildStandUpPouch,
   "product-sleeve": buildProductSleeve,
+  "rigid-lid-box": buildRigidLidBox,
+  "mailer-envelope": buildMailerEnvelope,
 };
 
 export function buildProductGeometry({
@@ -534,6 +670,7 @@ export function buildProductGeometry({
   surfaces = [primaryDef],
   textures,
   dimensionsMm,
+  mirrorBack = false,
 }: {
   group: THREE.Group;
   kind: Product3DKind;
@@ -543,6 +680,7 @@ export function buildProductGeometry({
   surfaces?: readonly PrintableSurfaceDefinition[];
   textures?: ReadonlyMap<string, THREE.Texture>;
   dimensionsMm?: Readonly<Record<string, number>> | null;
+  mirrorBack?: boolean;
 }): THREE.Texture[] {
   const textureVariants: THREE.Texture[] = [];
   const availableTextures = textures ?? new Map([[primaryDef.id, texture]]);
@@ -559,6 +697,8 @@ export function buildProductGeometry({
       primaryDef.width / Math.max(1, primaryDef.height),
     ),
     textureVariants,
+    packaging: isPackagingProduct3DKind(kind),
+    mirrorBack,
   };
   PRODUCT_GEOMETRY_BUILDERS[kind](context);
   return textureVariants;

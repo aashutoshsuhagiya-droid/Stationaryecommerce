@@ -1,9 +1,8 @@
 {
-  "generatedAt": "2026-11-21T17:20:14.390Z",
+  "generatedAt": "2026-11-22T06:22:19.948Z",
   "counts": {
-    "skipped-ambiguous": 30,
-    "already-linked": 32,
-    "published": 2
+    "skipped-ambiguous": 28,
+    "published": 36
   },
   "rows": [
     {
@@ -17,15 +16,19 @@
       "slug": "brand-ziplock-pouch",
       "handle": "25-grams-ziplock-pouch",
       "presetId": "brand-ziplock-pouch",
-      "outcome": "already-linked",
-      "templateId": "cmwqo0b7300022cvg8i69ib6z"
+      "outcome": "published",
+      "model": "stand-up-pouch",
+      "templateId": "cmwrg0smd0002l4vglol9293y",
+      "artworkConfidence": "low"
     },
     {
       "slug": "brownie-box",
       "handle": "brownie-box",
       "presetId": "brownie-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo0j5e00052cvgajmkx8jp"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg13lt0005l4vgpppndguc",
+      "artworkConfidence": "low"
     },
     {
       "slug": "business-card",
@@ -45,22 +48,28 @@
       "slug": "cereal-box",
       "handle": "cereal-box",
       "presetId": "cereal-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo0s8j00082cvgu6wstvka"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg1gw70008l4vgtuzww9yx",
+      "artworkConfidence": "low"
     },
     {
       "slug": "chocolate-box",
       "handle": "sweet-box",
       "presetId": "chocolate-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo10eo000b2cvg43fo9nff"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg1r1d000bl4vgeh32bnml",
+      "artworkConfidence": "low"
     },
     {
       "slug": "chocolate-pack-box",
       "handle": "chocolate-pack-box",
       "presetId": "chocolate-pack-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo19m3000e2cvgerol19n1"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg1ylx000el4vg2ru3iu1s",
+      "artworkConfidence": "low"
     },
     {
       "slug": "chocolate-triangle-box",
@@ -73,37 +82,46 @@
       "slug": "cosmetic-beauty-box-with-inside-holder",
       "handle": "cosmetic-box-with-inside-holder",
       "presetId": "cosmetic-beauty-box-with-inside-holder",
-      "outcome": "already-linked",
-      "templateId": "cmwqo1hju000h2cvg2bo70vnk"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg27pp000hl4vg1jrgfttt",
+      "artworkConfidence": "low"
     },
     {
       "slug": "cosmetic-beauty-brand-box",
       "handle": "cosmetic-bottle-box",
       "presetId": "cosmetic-beauty-brand-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo1p1m000k2cvgv4vayk91"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg2gi8000kl4vgxyocj0wl",
+      "artworkConfidence": "low"
     },
     {
       "slug": "custom-branded-laminated-carry-bag",
       "handle": "laminated-shopping-bags-with-thread-handle",
       "presetId": "custom-branded-laminated-carry-bag",
-      "outcome": "already-linked",
-      "templateId": "cmwqo1x72000n2cvgpxyodos2"
+      "outcome": "published",
+      "model": "paper-bag",
+      "templateId": "cmwrg2o2g000nl4vgd1ym5nyj",
+      "artworkConfidence": "low"
     },
     {
       "slug": "d-cut-paper-bag",
       "handle": "bags-with-hand-handle",
       "presetId": "d-cut-paper-bag",
-      "outcome": "already-linked",
-      "templateId": "cmwqo250h000q2cvgn8r4xxi9"
+      "outcome": "published",
+      "model": "paper-bag",
+      "templateId": "cmwrg2v9c000ql4vg3ynmcjfv",
+      "artworkConfidence": "high"
     },
     {
       "slug": "d2c-mailer-bag",
       "handle": "unique-sample-product-box",
       "presetId": "d2c-mailer-bag",
       "outcome": "published",
-      "model": "paper-bag",
-      "templateId": "cmwqoaxk30002i4vgpvra6g02"
+      "model": "mailer-envelope",
+      "templateId": "cmwrg32g3000tl4vg6e9dwplp",
+      "artworkConfidence": "high"
     },
     {
       "slug": "display-tray",
@@ -116,8 +134,10 @@
       "slug": "flower-box",
       "handle": "flower-box",
       "presetId": "flower-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo2jlp000v2cvgv2627qgb"
+      "outcome": "published",
+      "model": "rigid-lid-box",
+      "templateId": "cmwrg39uu000wl4vgvkqcy4mr",
+      "artworkConfidence": "low"
     },
     {
       "slug": "folded-business-card",
@@ -130,15 +150,19 @@
       "slug": "food-delivery-box",
       "handle": "food-delievery-box",
       "presetId": "food-delivery-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo2stc000y2cvg98xpaxib"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg3h0e000zl4vg98suypmt",
+      "artworkConfidence": "low"
     },
     {
       "slug": "food-parcel-box",
       "handle": "food-parcel-box",
       "presetId": "food-parcel-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo304o00112cvg7nqhr0x1"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg3q240012l4vgoaeaje36",
+      "artworkConfidence": "low"
     },
     {
       "slug": "food-tray",
@@ -158,8 +182,10 @@
       "slug": "gift-box",
       "handle": "gift-box",
       "presetId": "gift-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo37ux00142cvgvej2a4zf"
+      "outcome": "published",
+      "model": "rigid-lid-box",
+      "templateId": "cmwrg3xrd0015l4vgqauk2v4e",
+      "artworkConfidence": "low"
     },
     {
       "slug": "gift-box-with-window",
@@ -179,29 +205,37 @@
       "slug": "hanging-box",
       "handle": "box-with-hanging-tab",
       "presetId": "hanging-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo3flq00172cvgqazmufzj"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg47oc0018l4vgvh9tqbov",
+      "artworkConfidence": "low"
     },
     {
       "slug": "middle-hanging-box",
       "handle": "middle-hanging-box",
       "presetId": "middle-hanging-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo3pbf001a2cvgw0un6s66"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg4f50001bl4vgh3e1se6y",
+      "artworkConfidence": "low"
     },
     {
       "slug": "mithai-box-top-bottom-style",
       "handle": "sweet-box-top-bottom-style",
       "presetId": "mithai-box-top-bottom-style",
-      "outcome": "already-linked",
-      "templateId": "cmwqo3w8p001d2cvg44grei22"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg4mmj001el4vgk8s52mis",
+      "artworkConfidence": "low"
     },
     {
       "slug": "mobile-cover-box",
       "handle": "mobile-cover-box",
       "presetId": "mobile-cover-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo45dh001g2cvgsp8d048r"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg4uid001hl4vgo5nr6iwq",
+      "artworkConfidence": "low"
     },
     {
       "slug": "money-cover-shagun-envelope",
@@ -214,29 +248,37 @@
       "slug": "paan-box",
       "handle": "paan-box",
       "presetId": "paan-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo4dfe001j2cvgdbyrjxf4"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg53oa001kl4vg07y7yv2e",
+      "artworkConfidence": "low"
     },
     {
       "slug": "parcel-bag",
       "handle": "parcel-bag-with-handle",
       "presetId": "parcel-bag",
-      "outcome": "already-linked",
-      "templateId": "cmwqo4o2q001m2cvgxesk2b45"
+      "outcome": "published",
+      "model": "mailer-envelope",
+      "templateId": "cmwrg5d8k001nl4vg9dfdqydf",
+      "artworkConfidence": "low"
     },
     {
       "slug": "pen-set-box",
       "handle": "pen-set-box",
       "presetId": "pen-set-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo4vy8001p2cvgw0id3zkm"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg5kh9001ql4vgzyw3u9fc",
+      "artworkConfidence": "low"
     },
     {
       "slug": "perfume-box",
       "handle": "perfume-box",
       "presetId": "perfume-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo53a8001s2cvg13d9pfgt"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg5s7v001tl4vgb702pn5t",
+      "artworkConfidence": "low"
     },
     {
       "slug": "pillow-box",
@@ -249,8 +291,10 @@
       "slug": "pooja-box",
       "handle": "pooja-box",
       "presetId": "pooja-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo5bfu001v2cvgcyct2il5"
+      "outcome": "published",
+      "model": "rigid-lid-box",
+      "templateId": "cmwrg5ztc001wl4vgnie4mmz5",
+      "artworkConfidence": "low"
     },
     {
       "slug": "popcorn-box",
@@ -277,36 +321,46 @@
       "slug": "sachet-box",
       "handle": "sachet-box",
       "presetId": "sachet-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo5k0v001y2cvgkpvnzml5"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg67ra001zl4vg94uyhfpc",
+      "artworkConfidence": "low"
     },
     {
       "slug": "side-open-box",
       "handle": "side-open-tuck-in-box",
       "presetId": "side-open-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo5rel00212cvgu99pcln8"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg6fzu0022l4vgixxkz76h",
+      "artworkConfidence": "low"
     },
     {
       "slug": "slider-box-thick-wall",
       "handle": "slider-style-box",
       "presetId": "slider-box-thick-wall",
-      "outcome": "already-linked",
-      "templateId": "cmwqo5zwd00242cvg0xazeghs"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg6n2h0025l4vg81tis672",
+      "artworkConfidence": "low"
     },
     {
       "slug": "slider-box-thin-wall",
       "handle": "slider-chocolate-box",
       "presetId": "slider-box-thin-wall",
-      "outcome": "already-linked",
-      "templateId": "cmwqo68ep00272cvghms0di43"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg6uco0028l4vgarojwpzj",
+      "artworkConfidence": "low"
     },
     {
       "slug": "snack-box",
       "handle": "snack-box",
       "presetId": "snack-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo6g0i002a2cvgskrpczrl"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg7383002bl4vg5egyoi53",
+      "artworkConfidence": "low"
     },
     {
       "slug": "soap-box",
@@ -314,7 +368,8 @@
       "presetId": "soap-box",
       "outcome": "published",
       "model": "folding-carton",
-      "templateId": "cmwqobdih0005i4vgps8hjai2"
+      "templateId": "cmwrg7cdv002el4vgrvnzey2a",
+      "artworkConfidence": "low"
     },
     {
       "slug": "soap-pillow-box",
@@ -327,8 +382,10 @@
       "slug": "square-box",
       "handle": "square-box",
       "presetId": "square-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo73xb002e2cvgiagyf993"
+      "outcome": "published",
+      "model": "square-box",
+      "templateId": "cmwrg7jl0002hl4vga10dlqea",
+      "artworkConfidence": "low"
     },
     {
       "slug": "thank-you-card",
@@ -355,8 +412,10 @@
       "slug": "tissue-paper-box",
       "handle": "tissue-paper-box",
       "presetId": "tissue-paper-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo7ciu002h2cvgi88mgo9p"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg7rmp002kl4vgi35emn17",
+      "artworkConfidence": "low"
     },
     {
       "slug": "tri-fold-brochure",
@@ -369,8 +428,10 @@
       "slug": "unboxing-experience-box",
       "handle": "sweet-box-front-opening",
       "presetId": "unboxing-experience-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo7koc002k2cvgtu3r9kzu"
+      "outcome": "published",
+      "model": "rigid-lid-box",
+      "templateId": "cmwrg7zbt002nl4vgfn822zuz",
+      "artworkConfidence": "low"
     },
     {
       "slug": "wedding-bags",
@@ -403,9 +464,9 @@
     {
       "slug": "wedding-luggage-tags",
       "handle": "luggage-tags",
-      "presetId": null,
+      "presetId": "hang-tags",
       "outcome": "skipped-ambiguous",
-      "reason": "no packaging preset mapping"
+      "reason": "preset hang-tags does not unambiguously name a packaging shape"
     },
     {
       "slug": "wedding-planner-wardrobe-planner",
@@ -417,30 +478,36 @@
     {
       "slug": "wedding-snacks-packet",
       "handle": "ziplock-pouch",
-      "presetId": null,
-      "outcome": "skipped-ambiguous",
-      "reason": "no packaging preset mapping"
+      "presetId": "brand-ziplock-pouch",
+      "outcome": "published",
+      "model": "stand-up-pouch",
+      "templateId": "cmwrg8c7u002ql4vge6b63f6n",
+      "artworkConfidence": "low"
     },
     {
       "slug": "wedding-stickers",
       "handle": "wedding-stickers",
-      "presetId": null,
+      "presetId": "stickers",
       "outcome": "skipped-ambiguous",
-      "reason": "no packaging preset mapping"
+      "reason": "preset stickers does not unambiguously name a packaging shape"
     },
     {
       "slug": "wedding-tissue-paper-box",
       "handle": "wedding-tissue-paper-box",
-      "presetId": null,
-      "outcome": "skipped-ambiguous",
-      "reason": "no packaging preset mapping"
+      "presetId": "tissue-paper-box",
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg8rlk002tl4vgb1ycz7fv",
+      "artworkConfidence": "low"
     },
     {
       "slug": "window-box",
       "handle": "window-product-box",
       "presetId": "window-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo7tle002n2cvgk131lqhf"
+      "outcome": "published",
+      "model": "mailer-box",
+      "templateId": "cmwrg8ziw002wl4vg79trxpur",
+      "artworkConfidence": "low"
     },
     {
       "slug": "z-fold-brochure",
@@ -453,8 +520,10 @@
       "slug": "zipper-box",
       "handle": "product-box-with-zipper",
       "presetId": "zipper-box",
-      "outcome": "already-linked",
-      "templateId": "cmwqo83jf002q2cvgoumf1s4h"
+      "outcome": "published",
+      "model": "folding-carton",
+      "templateId": "cmwrg98zr002zl4vgzgbo0tzu",
+      "artworkConfidence": "low"
     }
   ]
 }

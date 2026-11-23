@@ -15,7 +15,11 @@ export type RanBazaarCustomizationStarterId =
   | "bag-luggage-tag"
   | "t-shirt"
   | "name-plate"
-  | "wrapping-paper-vinyl-poster";
+  | "wrapping-paper-vinyl-poster"
+  | "school-kit"
+  | "gift-slip"
+  | "shagun-envelope"
+  | "photo-gift";
 
 export interface RanBazaarConfigurationFieldPreset {
   key: string;
@@ -271,6 +275,83 @@ const STARTERS = [
     ],
     surfaces: [surface({ aspectRatio: 1, suggestedMm: { widthMm: 300, heightMm: 300 }, textMaximum: 4, imageMaximum: 2 })],
     maximumElements: 6,
+    artworkUpload: { enabled: true, acceptedMimeTypes: IMAGE_MIME_TYPES },
+  },
+  {
+    // Field set observed on the school-accessories shelf (name, class, school, address, phone).
+    id: "school-kit",
+    name: "School bag or kit label",
+    description: "Name with class, school and contact lines for bags and kit boxes.",
+    fields: [
+      textField("name", "Enter Name", 40),
+      textField("class-or-phone", "Enter Class or Phone", 40),
+      textField("city-or-school", "Enter City or School", 60, false),
+      textField("address", "Enter Address", 120, false),
+      { ...textField("phone", "Enter Phone", 15, false), allowedPattern: "^[0-9]+$", helpText: "Digits only." },
+      fontField(),
+    ],
+    surfaces: [surface({
+      label: "Label sheet",
+      aspectRatio: 1.6,
+      suggestedMm: { widthMm: 150, heightMm: 90 },
+      textMaximum: 5,
+    })],
+    maximumElements: 6,
+    artworkUpload: { enabled: false, acceptedMimeTypes: [] },
+  },
+  {
+    // Single-name gift slips: the shelf's products carry one name line plus a font.
+    id: "gift-slip",
+    name: "Gift slip or tag",
+    description: "One name line on a small gift slip or tag.",
+    fields: [textField("name", "Name", 40), fontField()],
+    surfaces: [surface({
+      label: "Gift slip",
+      aspectRatio: 1.875,
+      suggestedMm: { widthMm: 120, heightMm: 64 },
+      textMaximum: 2,
+    })],
+    maximumElements: 3,
+    artworkUpload: { enabled: false, acceptedMimeTypes: [] },
+  },
+  {
+    // Shagun envelopes carry a name, a wish line and an address block.
+    id: "shagun-envelope",
+    name: "Shagun envelope",
+    description: "Portrait envelope with a name, wishes and an address block.",
+    fields: [
+      textField("name", "Your Name", 60),
+      textField("wishes", "Wishes", 120, false),
+      textField("address", "Address", 120, false),
+      fontField(),
+    ],
+    surfaces: [surface({
+      label: "Envelope front",
+      aspectRatio: 0.7,
+      suggestedMm: { widthMm: 90, heightMm: 170 },
+      textMaximum: 3,
+    })],
+    maximumElements: 4,
+    artworkUpload: { enabled: false, acceptedMimeTypes: [] },
+  },
+  {
+    // The native answer to photo-personalised gifts (cake toppers, mouse pads, decor):
+    // the customer uploads their own picture instead of the source's fixed photo slots.
+    id: "photo-gift",
+    name: "Photo gift",
+    description: "Customer uploads a photo, with an optional name line.",
+    fields: [
+      { ...textField("name", "Name", 40, false), placeholder: "Optional name" },
+      fontField(),
+    ],
+    surfaces: [surface({
+      label: "Photo area",
+      aspectRatio: 1,
+      suggestedMm: { widthMm: 200, heightMm: 200 },
+      textMaximum: 2,
+      imageMaximum: 2,
+    })],
+    maximumElements: 4,
     artworkUpload: { enabled: true, acceptedMimeTypes: IMAGE_MIME_TYPES },
   },
 ] as const satisfies readonly RanBazaarCustomizationStarter[];

@@ -12,6 +12,7 @@ import {
   LayoutTemplate,
   MoreHorizontal,
   Package,
+  Palette,
   Pencil,
   Plus,
   Search,
@@ -27,6 +28,7 @@ import { ProductListThumb } from "./ProductListThumb";
 import { ProductVisualizationStudio } from "./ProductVisualizationStudio";
 import { ProductLayoutDrawer } from "./ProductLayoutDrawer";
 import { QuickListProductWizard } from "./QuickListProductWizard";
+import { StudioDesignEditor } from "./StudioDesignEditor";
 import { createRanBazaarStarterDraft } from "@/lib/admin-quick-list";
 import { buildDefaultAdminArtworkPolicy, reconcileAdminArtworkPolicy } from "@/lib/admin-artwork-policy";
 import {
@@ -74,7 +76,7 @@ type ConfigurationFieldInput = {
 type PrintAreaInput = { id: string; label: string; widthMm: string; heightMm: string; safeInsetMm: string };
 type QuantityTierInput = { id: string; minimum: string; priceDelta: string; label: string };
 type TemplateOption = { id: string; name: string; slug: string; theme: string; thumbnailUrl: string; premiumPrice: number };
-type TemplateLinkInput = { templateId: string; isDefault: boolean; sortOrder?: number };
+type TemplateLinkInput = { templateId: string; isDefault: boolean; sortOrder?: number; imported?: boolean; name?: string; thumbnailUrl?: string };
 type ProductBaseImage = { id: string; url: string; altText: string | null };
 type CatalogResponse = {
   data?: { products?: CatalogProduct[]; categories?: CategoryRecord[]; templates?: TemplateOption[] };
@@ -131,9 +133,11 @@ const packagingProductModels = [
   ['square-box', 'Square box'],
   ['folding-carton', 'Folding carton'],
   ['mailer-box', 'Mailer box'],
+  ['rigid-lid-box', 'Rigid lid-and-base box'],
   ['paper-bag', 'Paper bag'],
   ['stand-up-pouch', 'Stand-up pouch'],
   ['product-sleeve', 'Product sleeve'],
+  ['mailer-envelope', 'Courier mailer envelope'],
 ] as const;
 
 function policyPrintAreas(areas: PrintAreaInput[]) {
@@ -211,6 +215,7 @@ export function ProductsPanel() {
       allowedMimeTypes: ["image/png", "image/jpeg"],
     }));
   const [editingProduct, setEditingProduct] = useState<EditingProduct | null>(null);
+  const [studioEditorOpen, setStudioEditorOpen] = useState(false);
   const [productImageUrl, setProductImageUrl] = useState("");
   const [productImagePreview, setProductImagePreview] = useState("");
   const [pendingProductImage, setPendingProductImage] = useState<File | null>(null);
@@ -698,6 +703,18 @@ export function ProductsPanel() {
     setTemplateLinks((current) => current.map((item) => ({ ...item, isDefault: item.templateId === templateId })));
   }
 
+  /** Reorders a linked design; the saved order is the order customers see the designs in. */
+  function moveTemplateLink(templateId: string, direction: -1 | 1) {
+    setTemplateLinks((current) => {
+      const index = current.findIndex((item) => item.templateId === templateId);
+      const target = index + direction;
+      if (index < 0 || target < 0 || target >= current.length) return current;
+      const next = [...current];
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
+  }
+
   async function importPackagingCategoryStarters(presetIds: string[], label: string) {
     if (!presetIds.length) return;
     if (!window.confirm(`Add any missing ${label} categories and subcategories? Existing categories, products, prices, and orders will not be changed.`)) return;
@@ -852,6 +869,33 @@ export function ProductsPanel() {
     }
   }
 
+  /** The form state the 2D design editor can change: design links, fields, print areas and uploads. */
+  function applyDesignSettings(product: EditingProduct) {
+    setTemplateLinks(product.templateLinks ?? []);
+    setConfigurationFields(product.configurationFields.map((field) => ({ id: `${product.id}-${field.key}`, key: field.key, label: field.label, inputType: field.inputType, required: field.required, options: field.options.map((option) => `${option.label}${option.priceDelta ? `|${option.priceDelta}` : ""}`).join(", "), priceDelta: String(field.priceDelta), minLength: field.minLength?.toString() ?? "", maxLength: field.maxLength?.toString() ?? "", allowedPattern: field.allowedPattern ?? "", minValue: field.minValue?.toString() ?? "", maxValue: field.maxValue?.toString() ?? "", step: field.step?.toString() ?? "", placeholder: field.placeholder ?? "", helpText: field.helpText ?? "", defaultValue: field.defaultValue ?? "", unit: field.unit ?? "", enabled: field.enabled !== false, customerVisible: field.customerVisible !== false, visibleWhenFieldId: field.visibleWhen?.fieldId ?? "", visibleWhenEquals: field.visibleWhen?.equals ?? "" })));
+    const loadedPrintAreas = (product.printAreas.length ? product.printAreas : [{ id: "primary", label: "Primary print area", widthMm: null, heightMm: null, safeInsetMm: null }]).map((area) => ({ id: area.id, label: area.label, widthMm: area.widthMm?.toString() ?? "", heightMm: area.heightMm?.toString() ?? "", safeInsetMm: area.safeInsetMm?.toString() ?? "" }));
+    setPrintAreas(loadedPrintAreas);
+    const loadedArtworkTypes = product.acceptedArtworkTypes.length ? product.acceptedArtworkTypes : ["image/png", "image/jpeg"];
+    setAcceptedArtworkTypes(loadedArtworkTypes);
+    setArtworkUploadEnabled(product.artworkUpload);
+    setArtworkPolicy(product.artworkPolicy ?? buildDefaultAdminArtworkPolicy(policyPrintAreas(loadedPrintAreas), {
+      uploadsEnabled: product.artworkUpload,
+      allowedMimeTypes: loadedArtworkTypes,
+    }));
+  }
+
+  /** After the design editor saves, reload just those parts so a later product save cannot undo them. */
+  async function reloadDesignSettings(productId: string) {
+    setSaving(true);
+    try {
+      const response = await fetch(`/api/admin/catalog?productId=${encodeURIComponent(productId)}`, { cache: "no-store" });
+      const payload = await response.json() as { data?: { product?: EditingProduct }; error?: { message?: string } };
+      const product = payload.data?.product;
+      if (!response.ok || !product) throw new Error(payload.error?.message || "Could not reload this product's designs.");
+      applyDesignSettings(product);
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not reload this product's designs."); } finally { setSaving(false); }
+  }
+
   async function editProduct(productId: string) {
     setSaving(true);
     setError("");
@@ -873,18 +917,8 @@ export function ProductsPanel() {
       setProductCategoryId(product.categoryId);
       setProductCategoryIds((product.categoryIds ?? [product.categoryId]).filter((categoryId) => categoryId !== product.categoryId));
       setProductType(product.productType ?? "");
-      setTemplateLinks(product.templateLinks ?? []);
-      setConfigurationFields(product.configurationFields.map((field) => ({ id: `${product.id}-${field.key}`, key: field.key, label: field.label, inputType: field.inputType, required: field.required, options: field.options.map((option) => `${option.label}${option.priceDelta ? `|${option.priceDelta}` : ""}`).join(", "), priceDelta: String(field.priceDelta), minLength: field.minLength?.toString() ?? "", maxLength: field.maxLength?.toString() ?? "", allowedPattern: field.allowedPattern ?? "", minValue: field.minValue?.toString() ?? "", maxValue: field.maxValue?.toString() ?? "", step: field.step?.toString() ?? "", placeholder: field.placeholder ?? "", helpText: field.helpText ?? "", defaultValue: field.defaultValue ?? "", unit: field.unit ?? "", enabled: field.enabled !== false, customerVisible: field.customerVisible !== false, visibleWhenFieldId: field.visibleWhen?.fieldId ?? "", visibleWhenEquals: field.visibleWhen?.equals ?? "" })));
-      const loadedPrintAreas = (product.printAreas.length ? product.printAreas : [{ id: "primary", label: "Primary print area", widthMm: null, heightMm: null, safeInsetMm: null }]).map((area) => ({ id: area.id, label: area.label, widthMm: area.widthMm?.toString() ?? "", heightMm: area.heightMm?.toString() ?? "", safeInsetMm: area.safeInsetMm?.toString() ?? "" }));
-      setPrintAreas(loadedPrintAreas);
+      applyDesignSettings(product);
       setQuantityTiers(product.quantityTiers.map((tier, index) => ({ id: `${product.id}-tier-${index}`, minimum: String(tier.minimum), priceDelta: String(tier.priceDelta), label: tier.label ?? "" })));
-      const loadedArtworkTypes = product.acceptedArtworkTypes.length ? product.acceptedArtworkTypes : ["image/png", "image/jpeg"];
-      setAcceptedArtworkTypes(loadedArtworkTypes);
-      setArtworkUploadEnabled(product.artworkUpload);
-      setArtworkPolicy(product.artworkPolicy ?? buildDefaultAdminArtworkPolicy(policyPrintAreas(loadedPrintAreas), {
-        uploadsEnabled: product.artworkUpload,
-        allowedMimeTypes: loadedArtworkTypes,
-      }));
       setVisualizationOpen((current) => current || product.previewTemplate.startsWith("visualization:") || Boolean(product.visualizationJobStatus));
       setAdding(true);
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not load this product."); } finally { setSaving(false); }
@@ -1395,7 +1429,43 @@ export function ProductsPanel() {
                     </div>
                     <div className={styles.configSection}>
                       <div className={styles.configSectionHead}><div><strong>Customer design templates</strong><small>Link only the live design templates this product can use. The customer page and server pricing read these links.</small></div></div>
-                      {!templateOptions.length && <p className={styles.configHint}>No active personalization templates are available yet. Add or publish a template before linking it to this product.</p>}
+                      <div className={styles.configCard}>
+                        <div className={styles.configCardHead}>
+                          <span><strong>2D designs</strong></span>
+                          <button className={styles.buttonPrimary} disabled={!editingProduct?.id} onClick={() => setStudioEditorOpen(true)} type="button"><Palette size={14} /> Open design editor</button>
+                        </div>
+                        <p className={styles.configHint}>{editingProduct?.id ? "Place the customer's name and photos on the product mockup, set fonts, colours and character limits, and preview it as a customer. Save other product changes first: the editor saves on its own." : "Save the product first, then open the design editor."}</p>
+                        {studioEditorOpen && editingProduct?.id && (
+                          <StudioDesignEditor
+                            productId={editingProduct.id}
+                            productName={editingProduct.name}
+                            onClose={() => setStudioEditorOpen(false)}
+                            onSaved={() => reloadDesignSettings(editingProduct.id)}
+                          />
+                        )}
+                      </div>
+                      {templateLinks.some((link) => link.imported) && (
+                        <div className={styles.configList} aria-label="Product designs">
+                          <p className={styles.configHint}>This product's 2D designs. Pick the one customers see first and set their order (or do it in the design editor).</p>
+                          {templateLinks.map((link, index) => link.imported ? (
+                            <div className={styles.configCard} key={link.templateId}>
+                              <div className={styles.configCardHead}>
+                                <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  {link.thumbnailUrl && <img alt="" src={link.thumbnailUrl} style={{ width: 44, height: 44, objectFit: "contain", border: "1px solid var(--border-default)", borderRadius: 6, background: "#fff" }} />}
+                                  <strong>{link.name || `Design ${index + 1}`}</strong>
+                                </span>
+                                <span style={{ display: "flex", gap: 4 }}>
+                                  <button aria-label={`Move ${link.name || "design"} up`} className={styles.buttonGhost} disabled={index === 0} onClick={() => moveTemplateLink(link.templateId, -1)} type="button">↑</button>
+                                  <button aria-label={`Move ${link.name || "design"} down`} className={styles.buttonGhost} disabled={index === templateLinks.length - 1} onClick={() => moveTemplateLink(link.templateId, 1)} type="button">↓</button>
+                                </span>
+                              </div>
+                              <label className={styles.compactCheck}><input checked={link.isDefault} name="default-product-template" onChange={() => makeDefaultTemplate(link.templateId)} type="radio" /> Show this design first</label>
+                            </div>
+                          ) : null)}
+                        </div>
+                      )}
+                      {!templateOptions.length && !templateLinks.some((link) => link.imported) && <p className={styles.configHint}>No active personalization templates are available yet. Add or publish a template before linking it to this product.</p>}
                       <div className={styles.configList}>
                         {templateOptions.map((template) => {
                           const link = templateLinks.find((item) => item.templateId === template.id);

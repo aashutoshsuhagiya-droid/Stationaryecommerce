@@ -2,8 +2,29 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import type { ProductVisualizationTemplate } from "../../lib/types";
+import { fitImageRect } from "./artwork-canvas-renderer";
 import type { ArtworkDocument, PrintableSurfaceDefinition } from "./artwork-types";
 import { buildVisualization3DPreview } from "./visualization-preview";
+
+test("cover keeps a 4:3 photo's proportions on a tall 1:2 panel instead of stretching it", () => {
+  // A 400×300 photo onto a 100×200 carton front.
+  const sameAspect = (width: number, height: number) =>
+    assert.ok(Math.abs(width / height - 400 / 300) < 1e-9, `aspect ${width / height} drifted from 4:3`);
+
+  const cover = fitImageRect(400, 300, 100, 200, "cover");
+  sameAspect(cover.width, cover.height);
+  assert.equal(cover.height, 200, "fills the panel height");
+  assert.ok(cover.width > 100, "overflows sideways, to be clipped");
+  assert.equal(cover.x, (100 - cover.width) / 2, "stays centred");
+
+  const contain = fitImageRect(400, 300, 100, 200, "contain");
+  sameAspect(contain.width, contain.height);
+  assert.equal(contain.width, 100, "fits inside without cropping");
+  assert.ok(contain.height < 200);
+
+  const stretch = fitImageRect(400, 300, 100, 200, "stretch");
+  assert.deepEqual(stretch, { x: 0, y: 0, width: 100, height: 200 });
+});
 
 test("published visualization panels form a preview-only union with existing artwork", () => {
   const definitions: PrintableSurfaceDefinition[] = [{
@@ -72,7 +93,8 @@ test("published visualization panels form a preview-only union with existing art
   ]);
   assert.equal(result.document.surfaces[1].layers[0]?.src, "/back");
   assert.equal(result.document.surfaces[2].layers[0]?.src, "/left");
-  assert.equal(result.document.surfaces[0].layers[0]?.imageFit, "stretch");
+  assert.equal(result.document.surfaces[0].layers[0]?.imageFit, "cover", "panels are filled, never squashed");
+  assert.equal(result.document.surfaces[0].layers[0]?.aspectLocked, true);
   assert.equal(result.document.activeSurfaceId, "front");
   assert.equal(result.surfaces[1].width, 600);
   assert.equal(result.surfaces[1].height, 300);
@@ -133,4 +155,41 @@ test("cylindrical wrap previews use the confirmed label dimensions", () => {
   assert.equal(result.surfaces[0].physicalHeightMm, 90);
   assert.equal(result.surfaces[0].width, 600);
   assert.equal(result.surfaces[0].height, 300);
+});
+
+test("an editor canvas is reshaped to the 3D face it is painted on, so the print is not squashed", () => {
+  const definitions: PrintableSurfaceDefinition[] = [{ id: "primary", label: "Primary", width: 600, height: 360, safeInset: 24 }];
+  const document: ArtworkDocument = {
+    version: 1,
+    activeSurfaceId: "primary",
+    surfaces: [{
+      id: "primary",
+      label: "Primary",
+      layers: [{ id: "name", type: "text", name: "Name", x: 60, y: 36, width: 120, height: 72, rotation: 0, opacity: 1, text: "Aarav" }],
+    }],
+  } as ArtworkDocument;
+  const visualization = {
+    id: "vis-soap",
+    version: 1,
+    name: "Soap Box 3D",
+    productType: "folding-carton",
+    geometryKind: "box",
+    dimensionsMm: { width: 150, height: 100, depth: 50 },
+    surfaces: [{ surfaceId: "front", label: "Front", role: "front", textureUrl: "/front" }],
+    manufacturingValidated: false,
+  } as ProductVisualizationTemplate;
+
+  // The model renders the shelf's 90 × 60 mm soap box, not the template placeholder.
+  const result = buildVisualization3DPreview(document, definitions, visualization, { width: 90, height: 60, depth: 30 });
+  const front = result.surfaces[0];
+  assert.equal(front.width, 600);
+  assert.equal(front.height, 400, "600 × 400 matches the 90 × 60 face");
+  assert.equal(front.physicalWidthMm, 90);
+  assert.equal(front.physicalHeightMm, 60);
+  const name = result.document.surfaces[0].layers.find((layer) => layer.id === "name");
+  assert.deepEqual(
+    { x: name?.x, y: name?.y, width: name?.width, height: name?.height },
+    { x: 60, y: 40, width: 120, height: 80 },
+    "customer layers keep their place on the reshaped canvas",
+  );
 });

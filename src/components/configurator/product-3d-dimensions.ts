@@ -37,7 +37,15 @@ const DEFAULT_DIMENSIONS_MM: Record<Product3DKind, DimensionDefaults> = {
   "paper-bag": { width: 180, height: 240, depth: 80 },
   "stand-up-pouch": { width: 160, height: 220, depth: 58 },
   "product-sleeve": { width: 180, height: 105, depth: 58 },
+  "rigid-lid-box": { width: 200, height: 90, depth: 160 },
+  "mailer-envelope": { width: 250, height: 330, depth: 2 },
 };
+
+/** The model's own generic size, used only when neither product nor shelf gives one. */
+export function defaultProduct3DDimensionsMm(kind: Product3DKind): { width: number; height: number; depth: number } {
+  const { width, height, depth } = DEFAULT_DIMENSIONS_MM[kind];
+  return { width, height, depth };
+}
 
 const WIDTH_KEYS = ["width", "productwidth", "boxwidth", "bagwidth", "pouchwidth", "sleevewidth", "frontwidth"] as const;
 const HEIGHT_KEYS = ["height", "productheight", "boxheight", "bagheight", "pouchheight", "sleeveheight", "frontheight"] as const;

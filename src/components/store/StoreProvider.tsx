@@ -19,6 +19,8 @@ export type Customization = {
   dimensionLabel?: string;
   displayUnit?: "mm" | "cm" | "in";
   artwork?: ArtworkDocument;
+  /** JPEG data URL of the studio canvas at add-to-cart time, shown in the cart and checkout. */
+  designPreview?: string;
   quote?: {
     id: string;
     pricingVersion: string;
@@ -105,6 +107,16 @@ function isStoredCartItem(value: unknown): value is CartItem {
   );
 }
 
+const DESIGN_PREVIEW_PATTERN = /^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/]+=*$/i;
+
+/** Only an inline raster image is kept as a design preview; anything else falls back to the illustration. */
+function withSafeDesignPreview(item: CartItem): CartItem {
+  const preview = item.customization?.designPreview;
+  if (!item.customization || preview === undefined || (typeof preview === "string" && DESIGN_PREVIEW_PATTERN.test(preview))) return item;
+  const { designPreview: _discarded, ...customization } = item.customization;
+  return { ...item, customization };
+}
+
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
@@ -115,7 +127,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const storedCart: unknown = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
-      setCart(Array.isArray(storedCart) ? storedCart.filter(isStoredCartItem) : []);
+      setCart(Array.isArray(storedCart) ? storedCart.filter(isStoredCartItem).map(withSafeDesignPreview) : []);
     } catch {
       setCart([]);
     }

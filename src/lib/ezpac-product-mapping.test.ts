@@ -40,16 +40,13 @@ test("maps every EzPac export row exactly once", () => {
     [
       "cake-box-with-handle-box-with-handle",
       "display-tray",
-      "luggage-tags",
       "money-cover-envelope",
+      // Handle says "thank-you-card" but the title is a wedding itinerary card.
       "thank-you-card-folded-copy",
       "wedding-bags",
       "wedding-gift-hamper-box-copy",
       "wedding-ladoo-box",
       "wedding-planning-dressup-functions",
-      "wedding-stickers",
-      "wedding-tissue-paper-box",
-      "ziplock-pouch",
     ],
   );
 

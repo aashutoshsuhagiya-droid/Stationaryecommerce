@@ -28,7 +28,7 @@ import { DesignCompletionMeter } from "@/components/configurator/DesignCompletio
 import { buildVisualization3DPreview } from "@/components/configurator/visualization-preview";
 import { setPersonalizedNameColor } from "@/components/configurator/artwork-color";
 import { calculateDesignCompletion } from "@/components/configurator/design-completion";
-import { downloadArtworkDesign } from "@/components/configurator/design-export";
+import { downloadArtworkDesign, renderStudioPreview } from "@/components/configurator/design-export";
 import {
   createArtworkDocument,
   keepArtworkLayerInForeground,
@@ -51,6 +51,7 @@ import { formatPrice, neutralPresentationPalette } from "@/lib/data";
 import { EZPAC_FEATURE_BULLET_LABELS } from "@/lib/ezpac-feature-bullets";
 import type { ProductConfigurationSchema } from "@/lib/product-configuration";
 import { newestSavedDesign } from "@/lib/saved-design";
+import { missingStudioPhotos, studioPhotoFieldKey, studioPhotoLabel, studioPhotoValues } from "@/lib/studio-photo";
 import type { Product } from "@/lib/types";
 import { artworkDocumentSchema } from "@/lib/validation";
 
@@ -515,6 +516,7 @@ export function CustomizationStudio({
   const [saveMessage, setSaveMessage] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
   const [added, setAdded] = useState(false);
+  const addingToCart = useRef(false);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [previewReady, setPreviewReady] = useState(false);
   const [selectedProductImage, setSelectedProductImage] = useState(product.image);
@@ -607,8 +609,29 @@ export function CustomizationStudio({
       surface.textureUrl ? [[surface.surfaceId, surface.textureUrl] as const] : [],
     ) ?? []) images[surfaceId] = textureUrl;
     Object.assign(images, configuration.preview.baseImages ?? {});
+
+    // Nothing configured for the first print area (packaging 3D textures are keyed by face,
+    // e.g. "front", not by print area): show the front face, else the product itself, rather
+    // than an empty grey box.
+    const firstSurfaceId = configuration.artwork.policy.surfaces[0]?.id ?? configuration.artwork.surfaces[0]?.id;
+    const frontTexture = configuration.preview.visualization?.surfaces.find((surface) => surface.surfaceId === "front")?.textureUrl;
+    if (firstSurfaceId && !images[firstSurfaceId]) {
+      const fallback = frontTexture ?? product.image;
+      if (fallback) images[firstSurfaceId] = fallback;
+    }
     return images;
-  }, [configuration.artwork.surfaces, configuration.preview.baseImages, configuration.preview.visualization, selectedTemplate]);
+  }, [configuration.artwork.policy.surfaces, configuration.artwork.surfaces, configuration.preview.baseImages, configuration.preview.visualization, product.image, selectedTemplate]);
+  const studioDesign = selectedTemplate?.studio;
+  // Photo slots count only where uploads are possible, so a design can never be blocked by a slot nobody can fill.
+  const studioPhotoSlots = studioDesign && artworkUploadsEnabled && configuration.artwork.policy.surfaces.some((surface) => surface.image.enabled)
+    ? studioDesign.photos
+    : [];
+  const activeArtworkLayers = (artwork.surfaces.find((surface) => surface.id === artwork.activeSurfaceId) ?? artwork.surfaces[0])?.layers ?? [];
+  const missingPhotoKeys = studioPhotoSlots.length ? missingStudioPhotos({ photos: studioPhotoSlots }, activeArtworkLayers) : [];
+  const missingPhotoSignature = missingPhotoKeys.join(",");
+  // A single "Not specified" placeholder is not a choice; showing it reads as missing data.
+  const hasSizeOptions = configuration.dimensions.presets.length > 1
+    || configuration.dimensions.presets.some((preset) => preset.dimensionsMm !== null);
   const selectedPreset = configuration.dimensions.presets.find((preset) => preset.id === dimensionPresetId) ?? defaultPreset;
   const activeSurfaceDefinitions = useMemo(
     () => surfaceDefinitions(configuration, selectedPreset),
@@ -619,8 +642,9 @@ export function CustomizationStudio({
       artwork,
       activeSurfaceDefinitions,
       configuration.preview.visualization,
+      selectedPreset?.dimensionsMm,
     ),
-    [activeSurfaceDefinitions, artwork, configuration.preview.visualization],
+    [activeSurfaceDefinitions, artwork, configuration.preview.visualization, selectedPreset?.dimensionsMm],
   );
   const productIsWishlisted = isWishlisted(product.id);
   const errors = useMemo(() => validateFields(configuration, fields, templateId), [configuration, fields, templateId]);
@@ -643,9 +667,14 @@ export function CustomizationStudio({
   const nameField = visiblePersonalizationFields.find((field) => field.id === "name");
   const nameValue = nameField ? (fields[nameField.id] ?? "").trim() : "";
   const hasSizeRequirement = configuration.dimensions.presets.length > 0 || configuration.variants.length > 0;
+  // Every other visible field counts too, so "Design ready" never contradicts the price check.
+  const otherDetailFields = visiblePersonalizationFields.filter((field) => field.id !== "name" && field.type !== "template");
   const designCompletion = calculateDesignCompletion({
     name: nameField
       ? (!nameField.required && !nameValue) || (Boolean(nameValue) && !errors[nameField.id])
+      : undefined,
+    details: otherDetailFields.length || studioPhotoSlots.length
+      ? otherDetailFields.every((field) => !errors[field.id]) && !missingPhotoKeys.length
       : undefined,
     theme: configuration.personalization.templates.length
       ? configuration.personalization.templates.some((template) => template.id === templateId)
@@ -778,8 +807,18 @@ export function CustomizationStudio({
   }, [configuration.artwork.policy, templateForeground]);
 
   useEffect(() => {
-    if (Object.keys(errors).length || !selectedVariant) {
-      setQuote({ status: "idle", message: "Complete the required details for a verified price." });
+    if (Object.keys(errors).length || !selectedVariant || missingPhotoSignature) {
+      // Name what is missing: a disabled button with no reason reads as broken.
+      const missing = visibleCustomerFields.find((field) => errors[field.id]);
+      const missingPhoto = missingPhotoSignature.split(",")[0];
+      setQuote({
+        status: "idle",
+        message: missing
+          ? `Add ${missing.label.toLowerCase()} to see the price.`
+          : missingPhoto
+            ? `Upload ${studioPhotoLabel(missingPhoto, studioPhotoSlots.find((slot) => slot.fieldKey === missingPhoto)?.label).toLowerCase()} to see the price.`
+            : "Complete the required details for a verified price.",
+      });
       return;
     }
     const controller = new AbortController();
@@ -812,7 +851,26 @@ export function CustomizationStudio({
       window.clearTimeout(timer);
       controller.abort();
     };
-  }, [configuration.personalization.supported, configuration.pricing.endpoint, customerFieldValues, errors, persistedArtwork, product.id, quantity, selectedVariant, templateId]);
+  }, [configuration.personalization.supported, configuration.pricing.endpoint, customerFieldValues, errors, missingPhotoSignature, persistedArtwork, product.id, quantity, selectedVariant, templateId, visibleCustomerFields]);
+
+  // Switching designs keeps photos for the slots the new design shares and drops the rest.
+  useEffect(() => {
+    if (!studioDesign) return;
+    const slotKeys = new Set(studioDesign.photos.map((slot) => slot.fieldKey));
+    setArtwork((current) => {
+      let changed = false;
+      const surfaces = current.surfaces.map((surface) => {
+        const layers = surface.layers.filter((layer) => {
+          const key = studioPhotoFieldKey(layer.id);
+          return !key || slotKeys.has(key);
+        });
+        if (layers.length === surface.layers.length) return surface;
+        changed = true;
+        return { ...surface, layers };
+      });
+      return changed ? { ...current, surfaces, updatedAt: new Date().toISOString() } : current;
+    });
+  }, [studioDesign]);
 
   function changeField(fieldId: string, value: string) {
     if (fieldId === "font" && primaryTextPolicy) {
@@ -983,6 +1041,7 @@ export function CustomizationStudio({
         background: templateBackground,
         accent: templateAccent,
         productName: product.name,
+        ...(studioDesign ? { studio: { config: studioDesign, values: customerFieldValues, photos: studioPhotoValues(activeArtworkLayers) } } : {}),
       });
       setSaveMessage(result.zipped
         ? `Downloaded ${result.fileCount} artwork surfaces in ${result.filename}.`
@@ -1009,7 +1068,7 @@ export function CustomizationStudio({
     setSaveMessage("");
   }
 
-  function addToCart() {
+  async function addToCart() {
     const currentErrors = validateFields(configuration, fields, templateId);
     setFieldErrors(currentErrors);
     if (Object.keys(currentErrors).length) return;
@@ -1017,6 +1076,17 @@ export function CustomizationStudio({
       setSaveMessage("Wait for the server-verified price before adding this configuration.");
       return;
     }
+    if (addingToCart.current) return;
+    addingToCart.current = true;
+    let designPreview: string | undefined;
+    if (studioDesign) {
+      try {
+        designPreview = await renderStudioPreview({ config: studioDesign, values: customerFieldValues, photos: studioPhotoValues(activeArtworkLayers) });
+      } catch {
+        // The cart falls back to the product illustration; the design itself is unaffected.
+      }
+    }
+    addingToCart.current = false;
     if (editingKey) removeItem(editingKey);
     const fontValue = customerFieldValues.font || "rounded";
     const fontLabel = visiblePersonalizationFields.find((field) => field.id === "font")?.options?.find((option) => option.value === fontValue)?.label ?? fontValue;
@@ -1048,6 +1118,7 @@ export function CustomizationStudio({
         dimensionLabel: selectedPreset?.label ?? configuration.dimensions.catalogDescription,
         displayUnit,
         artwork,
+        ...(designPreview ? { designPreview } : {}),
         ...(configuration.preview.model && configuration.preview.supportedModes.includes("3d") ? {
           visualization: {
             schemaVersion: 1 as const,
@@ -1178,7 +1249,7 @@ export function CustomizationStudio({
               </div>
             </fieldset>
 
-            <fieldset className={configuratorStyles.optionSection}>
+            {hasSizeOptions && <fieldset className={configuratorStyles.optionSection}>
               <legend><span>2</span><div><strong>Dimensions</strong><small>Physical size stays fixed when units change</small></div></legend>
               {configuration.dimensions.supportedDisplayUnits.length > 0 && (
                 <div className={configuratorStyles.segmented} aria-label="Measurement unit">
@@ -1194,7 +1265,7 @@ export function CustomizationStudio({
                 ))}
               </div>
               <Link className={configuratorStyles.blockedOption} href={buildCustomSizeQuotePath({ productId: product.id, quantity, dimensions: selectedPreset?.label })}><LockKeyhole /><span><strong>Custom size - request a quote</strong><small>{configuration.dimensions.custom.reason}</small></span></Link>
-            </fieldset>
+            </fieldset>}
 
             {configuration.personalization.supported && visibleCustomerFields.length > 0 && (
               <fieldset className={configuratorStyles.optionSection}>
@@ -1218,13 +1289,15 @@ export function CustomizationStudio({
               </fieldset>
             )}
 
-            {configuration.personalization.templates.length > 0 && (
+            {configuration.personalization.templates.length > (studioDesign ? 1 : 0) && (
               <fieldset className={configuratorStyles.optionSection}>
-                <legend><span>4</span><div><strong>Design theme</strong><small>Premium additions appear in the quote</small></div></legend>
+                <legend><span>4</span><div><strong>{studioDesign ? "Choose a design" : "Design theme"}</strong><small>{studioDesign ? "Your details stay the same when you switch" : "Premium additions appear in the quote"}</small></div></legend>
                 <div className={configuratorStyles.templateChoices}>
                   {configuration.personalization.templates.map((template) => (
                     <button key={template.id} type="button" aria-pressed={template.id === templateId} className={template.id === templateId ? configuratorStyles.selectedChoice : ""} onClick={() => setTemplateId(template.id)}>
-                      <i style={{ background: template.preview.background, borderColor: template.preview.accent, color: template.preview.foreground }}>Aa</i>
+                      {template.studio
+                        ? <i className={configuratorStyles.templateThumbnail} style={{ background: template.studio.background.color ?? "#ffffff" }}><img src={template.studio.background.url} alt="" loading="lazy" /></i>
+                        : <i style={{ background: template.preview.background, borderColor: template.preview.accent, color: template.preview.foreground }}>Aa</i>}
                       <span><strong>{template.label}</strong><small>{template.premiumPricePaise ? `+${formatPrice(template.premiumPricePaise / 100)}` : "Included"}</small></span>
                     </button>
                   ))}
@@ -1285,6 +1358,8 @@ export function CustomizationStudio({
                     productType={product.categorySlug}
                     dimensionsMm={selectedPreset?.dimensionsMm}
                     materialName={selectedVariant?.material || product.material}
+                    packagingBaseColor={configuration.preview.visualization?.baseColor}
+                    mirrorBack={configuration.preview.visualization?.mirrorBack === true}
                     productName={product.name}
                     onReadyChange={handlePreviewReadyChange}
                   />
@@ -1305,6 +1380,7 @@ export function CustomizationStudio({
                   designCompletion={designCompletion}
                   onChange={updateArtwork}
                   footer={purchasePanel}
+                  studio={studioDesign ? { config: studioDesign, values: customerFieldValues } : undefined}
                 />
               ) : (
               <div className={configuratorStyles.standardPreview}>
@@ -1338,7 +1414,7 @@ export function CustomizationStudio({
           ref={practicalDetailsReveal.ref}
           className={`shell product-info-grid ${practicalDetailsReveal.className}`}
           data-scroll-reveal={practicalDetailsReveal.state}
-        ><div><span className="eyebrow">The practical details</span><h2>Made for everyday use</h2>{hasStructuredDescription ? <>{structuredDescription?.intro && <p>{structuredDescription.intro}</p>}{structuredDescription?.bestFor?.length ? <p><strong>Best for:</strong> {structuredDescription.bestFor.join(", ")}</p> : null}{structuredBulletLabels.length ? <ul>{structuredBulletLabels.map((label, index) => <li key={`${label}-${index}`}><Check /> {label}</li>)}</ul> : null}</> : <><p>{product.description}</p><ul>{product.features.map((feature) => <li key={feature}><Check /> {feature}</li>)}</ul></>}</div><dl><div><dt>Material</dt><dd>{selectedVariant?.material || product.material}</dd></div><div><dt>Dimensions</dt><dd>{product.dimensions}</dd></div><div><dt>What is included</dt><dd>{selectedVariant?.packSize || product.packSize} pieces in your selected format</dd></div><div><dt>Production window</dt><dd>{product.productionDays.min}-{product.productionDays.max} working days after design review</dd></div>{product.careInstructions && <div><dt>Care</dt><dd>{product.careInstructions}</dd></div>}</dl></div>
+        ><div><span className="eyebrow">The practical details</span><h2>Made for everyday use</h2>{hasStructuredDescription ? <>{structuredDescription?.intro && <p>{structuredDescription.intro}</p>}{structuredDescription?.bestFor?.length ? <p><strong>Best for:</strong> {structuredDescription.bestFor.join(", ")}</p> : null}{structuredBulletLabels.length ? <ul>{structuredBulletLabels.map((label, index) => <li key={`${label}-${index}`}><Check /> {label}</li>)}</ul> : null}</> : <><p>{product.description}</p><ul>{product.features.map((feature) => <li key={feature}><Check /> {feature}</li>)}</ul></>}</div><dl>{(selectedVariant?.material || product.material) !== "Not specified" && <div><dt>Material</dt><dd>{selectedVariant?.material || product.material}</dd></div>}{product.dimensions !== "Not specified" && <div><dt>Dimensions</dt><dd>{product.dimensions}</dd></div>}<div><dt>What is included</dt><dd>{selectedVariant?.packSize || product.packSize} pieces in your selected format</dd></div><div><dt>Production window</dt><dd>{product.productionDays.min}-{product.productionDays.max} working days after design review</dd></div>{product.careInstructions && <div><dt>Care</dt><dd>{product.careInstructions}</dd></div>}</dl></div>
       </section>
 
       <div className={configuratorStyles.mobileBuyBar}><div><small>{quote.message}</small><strong>{formatPrice(displaySubtotal / 100)}</strong></div><button type="button" onClick={addToCart} disabled={quote.status !== "ready"}>{added ? "Added" : "Add to cart"}</button></div>

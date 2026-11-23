@@ -8,8 +8,11 @@ import {
   essentialsComplete,
   previewPrice,
   quickListProductPayload,
+  recipeForCategorySlug,
   searchListingSources,
+  unconfiguredOptionLabels,
 } from "./listing-wizard";
+import { getCategoryListingRecipe } from "./category-listing-playbook";
 
 const sources = buildListingSources({
   starters: [
@@ -107,6 +110,93 @@ test("list-similar copies configuration but never identity, and fills safe fallb
     { categoryId: result.categoryId, priceText: result.priceText, description: result.description },
     { categoryId: "cat-9", priceText: "219", description: "<p>Original</p>" },
   );
+});
+
+const starterDraft = () => draftFromExistingProduct("Source", {
+  configurationFields: [{ key: "name", label: "Name", required: true, maxLength: 40 }],
+}).draft;
+
+test("a shelf's recipe fills GST, MRP, tags and SEO so admin rows match imported rows", () => {
+  const recipe = recipeForCategorySlug("customized-name-slips");
+  assert.ok(recipe);
+  const payload = quickListProductPayload({
+    name: "Rocket Name Slip",
+    sku: "ROCKET-1",
+    categoryId: "cat-1",
+    price: "249",
+    compareAtPrice: "349",
+    description: "",
+    productType: "",
+    draft: starterDraft(),
+    published: true,
+    imageUrl: "/api/product-images/pending",
+    recipe,
+    categoryName: "Customized Name Slips",
+  });
+  assert.equal(payload.gstPercent, 18);
+  assert.equal(payload.compareAtPrice, 349);
+  assert.ok((payload.tags ?? []).length >= 3);
+  assert.equal(payload.seoTitle, "Rocket Name Slip · Customized Name Slips");
+  assert.ok((payload.seoDescription ?? "").includes("Rocket Name Slip"));
+});
+
+test("an MRP at or below the selling price is dropped rather than shown as a fake discount", () => {
+  const base = {
+    name: "Slip", sku: "S-1", categoryId: "c", price: "249", description: "", productType: "",
+    draft: starterDraft(), published: false, imageUrl: "/api/product-images/pending",
+    recipe: recipeForCategorySlug("customized-name-slips"), categoryName: "Customized Name Slips",
+  };
+  assert.equal(quickListProductPayload({ ...base, compareAtPrice: "199" }).compareAtPrice, undefined);
+  assert.equal(quickListProductPayload({ ...base, compareAtPrice: "249" }).compareAtPrice, undefined);
+  assert.equal(quickListProductPayload({ ...base, compareAtPrice: "" }).compareAtPrice, undefined);
+  assert.equal(quickListProductPayload({ ...base, compareAtPrice: "399" }).compareAtPrice, 399);
+});
+
+test("built-in 3D is set only where the playbook vouches for the shape, and obeys the admin's opt-out", () => {
+  const build = (slug: string, enable3D?: boolean) => quickListProductPayload({
+    name: "Thing", sku: "T-1", categoryId: "c", price: "100", description: "", productType: "",
+    draft: starterDraft(), published: false, imageUrl: "/api/product-images/pending",
+    recipe: getCategoryListingRecipe(slug), categoryName: slug, enable3D,
+  });
+
+  const builtin = build("customized-name-slips");
+  assert.equal(builtin.allow3D, true);
+  assert.equal(builtin.productModel, "label-pack");
+
+  assert.equal(build("customized-name-slips", false).allow3D, false, "admin can switch it off");
+  assert.equal(build("customized-name-slips", false).productModel, undefined);
+
+  // Packaging needs a published template first; flat print has no honest model.
+  assert.equal(build("soap-boxes").allow3D, false);
+  assert.equal(build("soap-boxes").productModel, undefined);
+  assert.equal(build("business-cards").allow3D, false);
+
+  // The admin API refuses allow3D without a model, so the pairing must always hold.
+  for (const slug of ["customized-name-slips", "soap-boxes", "business-cards", "bottle-tiffin-labels"]) {
+    const payload = build(slug);
+    assert.equal(payload.allow3D, Boolean(payload.productModel), `${slug} must pair allow3D with a model`);
+  }
+});
+
+test("collections are merged into categoryIds without dropping the primary shelf", () => {
+  const payload = quickListProductPayload({
+    name: "Gift", sku: "G-1", categoryId: "primary", price: "199", description: "", productType: "",
+    draft: starterDraft(), published: false, imageUrl: "/api/product-images/pending",
+    categoryIds: ["collection-a", "primary"], categoryName: "Personalized Gifts",
+    recipe: getCategoryListingRecipe("personalized-gifts"),
+  });
+  assert.deepEqual(payload.categoryIds, ["primary", "collection-a"]);
+});
+
+test("unconfigured packaging selects are reported so they do not silently vanish", () => {
+  const draft = draftFromExistingProduct("Box", {
+    configurationFields: [
+      { key: "material", label: "Material", inputType: "select", options: [] },
+      { key: "name", label: "Name", inputType: "text" },
+      { key: "finish", label: "Lamination", inputType: "select", options: [{ label: "Matte", value: "matte", priceDelta: 0 }] },
+    ],
+  }).draft;
+  assert.deepEqual(unconfiguredOptionLabels(draft), ["Material"]);
 });
 
 test("preview price formats Indian rupees and rejects junk", () => {

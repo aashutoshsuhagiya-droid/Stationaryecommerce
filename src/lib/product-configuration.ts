@@ -2,7 +2,9 @@ import { getProductBySlug } from "./data";
 import { resolveProductArtworkPolicy } from "./artwork-policy";
 import { buildCustomSizeQuotePath } from "./bulk-quote-prefill";
 import { isEzpacPackagingProductType } from "./ezpac-packaging-presets";
+import { packagingCategoryDimensions } from "./packaging-dimensions";
 import { resolveProductTemplateLinks } from "./product-template-resolution";
+import { readStudioConfig, type StudioConfig } from "./studio-template";
 import type {
   CustomizationField,
   CurrencyCode,
@@ -51,6 +53,8 @@ export interface ConfiguratorTemplate {
     safeArea: { x: number; y: number; width: number; height: number };
   };
   production?: PersonalizationTemplate["production"];
+  /** A locked mockup design whose text follows the customer's field values. */
+  studio?: StudioConfig;
 }
 
 export interface ProductConfigurationSchema {
@@ -144,7 +148,7 @@ function parseLegacyDimensions(label: string): Record<string, number> | null {
   };
 }
 
-function parseExactDimensions(label: string): Record<string, number> | null {
+export function parseExactDimensions(label: string): Record<string, number> | null {
   if (/\b(?:approx|mixed|standard|three|two)\b/i.test(label)) return null;
   const match = label.match(
     /(?:^|\D)(\d+(?:\.\d+)?)\s*(?:x|\u00d7)\s*(\d+(?:\.\d+)?)(?:\s*(?:x|\u00d7)\s*(\d+(?:\.\d+)?))?\s*(mm|cm|in)\b/i,
@@ -161,13 +165,17 @@ function parseExactDimensions(label: string): Record<string, number> | null {
 }
 
 function activeTemplates(product: Product): ConfiguratorTemplate[] {
-  return resolveProductTemplateLinks(product).map(({ template }) => ({
-    id: template.id,
-    label: template.name,
-    premiumPricePaise: toPaise(template.premiumPrice),
-    preview: template.preview,
-    ...(template.production ? { production: template.production } : {}),
-  }));
+  return resolveProductTemplateLinks(product).map(({ template }) => {
+    const studio = readStudioConfig(template.production?.previewConfig);
+    return {
+      id: template.id,
+      label: template.name,
+      premiumPricePaise: toPaise(template.premiumPrice),
+      preview: template.preview,
+      ...(template.production ? { production: template.production } : {}),
+      ...(studio ? { studio } : {}),
+    };
+  });
 }
 
 export function productSupportsMultipleNames(product: Product) {
@@ -177,13 +185,20 @@ export function productSupportsMultipleNames(product: Product) {
 export function buildProductConfiguration(product: Product): ProductConfigurationSchema {
   const sizeLabels = product.sizes?.length ? product.sizes : [product.dimensions];
   const publishedVisualization = product.configurator?.visualizationTemplate;
+  // An unvalidated template's size is a placeholder; the shelf's typical size is a
+  // better estimate. An admin-validated template size is real and is kept.
+  const visualizationDimensions = publishedVisualization
+    ? (publishedVisualization.manufacturingValidated
+        ? publishedVisualization.dimensionsMm
+        : packagingCategoryDimensions(product.categorySlug) ?? publishedVisualization.dimensionsMm)
+    : null;
   const presets = sizeLabels.map((label, index) => ({
       id: presetId(label, index),
       label,
       dimensionsMm:
         parseExactDimensions(label) ??
         (sizeLabels.length === 1
-          ? parseExactDimensions(product.dimensions) ?? publishedVisualization?.dimensionsMm ?? null
+          ? parseExactDimensions(product.dimensions) ?? visualizationDimensions ?? null
           : null),
     }),
   );

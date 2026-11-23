@@ -3,6 +3,7 @@ import "server-only";
 import { CommerceError } from "./commerce-error";
 import { categories as demoCategories, getProductById, getProductBySlug, products as demoProducts } from "./data";
 import { getPrisma } from "./prisma";
+import { productSummaryText } from "./html-text";
 import { normalizeProductCategoryIds } from "./product-category-links";
 import { productArtworkPolicySchema } from "./artwork-policy-schema";
 import { normalizeTemplateProduction } from "./template-production";
@@ -243,6 +244,12 @@ function mappedVisualizationTemplate(value: any, productId: string): ProductVisu
     };
   });
   const manufacturingMetadata = jsonObject(value.manufacturingMetadata);
+  const materialSettings = jsonObject(value.materialSettings);
+  const previewCapabilities = jsonObject(value.previewCapabilities);
+  const baseColor = typeof materialSettings.baseColor === "string" && /^#[\da-f]{6}$/iu.test(materialSettings.baseColor)
+    ? materialSettings.baseColor
+    : undefined;
+  const artworkNote = typeof materialSettings.artworkNote === "string" ? materialSettings.artworkNote.slice(0, 240) : undefined;
   return {
     id: value.id,
     version,
@@ -258,6 +265,9 @@ function mappedVisualizationTemplate(value: any, productId: string): ProductVisu
       mimeType: sourceAsset.mimeType as "image/jpeg" | "image/png" | "image/webp",
     },
     manufacturingValidated: manufacturingMetadata.validated === true,
+    ...(baseColor ? { baseColor } : {}),
+    ...(artworkNote ? { artworkNote } : {}),
+    ...(previewCapabilities.mirrorBack === true ? { mirrorBack: true } : {}),
   };
 }
 
@@ -392,7 +402,7 @@ function mapProduct(product: any): Product {
   return {
     id: product.id, slug: product.slug, sku: product.baseSku, name: product.name, categorySlug: product.category.slug, category: product.category.name, categoryIds, categorySlugs,
     price: product.basePricePaise / 100, compareAtPrice: product.compareAtPricePaise ? product.compareAtPricePaise / 100 : undefined, customizable: product.customizable,
-    description: product.description ?? product.shortDescription ?? "", shortDescription: product.shortDescription ?? "", material: product.material ?? "Not specified", dimensions: typeof dimensions.display === "string" ? dimensions.display : "Not specified", packSize: product.packSize,
+    description: product.description ?? product.shortDescription ?? "", shortDescription: productSummaryText(product.shortDescription, product.description), material: product.material ?? "Not specified", dimensions: typeof dimensions.display === "string" ? dimensions.display : "Not specified", packSize: product.packSize,
     artwork: typeof metadata.artwork === "string" ? metadata.artwork : "labels", image: images[0]?.src ?? "", images, stockStatus: variantList[0]?.stockStatus ?? "made_to_order", featured: Boolean(metadata.featured), newArrival: Boolean(metadata.newArrival), tags: product.tags, features: stringList(metadata.features), careInstructions: typeof metadata.careInstructions === "string" ? metadata.careInstructions : undefined,
     productionDays: { min: product.productionDaysMin, max: product.productionDaysMax }, variants: variantList, customizationFields: fields, templateIds: templateLinks.map((link) => link.template.id), templateLinks, sizes: stringList(metadata.sizes), colors: stringList(metadata.colors), themes: stringList(metadata.themes), productType: typeof metadata.productType === "string" ? metadata.productType : undefined, badge: undefined,
     configurator: (() => {
@@ -436,7 +446,7 @@ function mapProduct(product: any): Product {
   };
 }
 
-const include = { category: { include: { parent: { select: { id: true, isActive: true } } } }, categoryLinks: { include: { category: { include: { parent: { select: { id: true, isActive: true } } } } } }, images: { orderBy: { sortOrder: "asc" as const } }, variants: { include: { inventory: true }, orderBy: { sortOrder: "asc" as const } }, personalizationFields: { orderBy: { sortOrder: "asc" as const } }, templateLinks: { include: { template: true }, orderBy: [{ isDefault: "desc" as const }, { sortOrder: "asc" as const }] }, visualizationTemplates: { where: { status: "PUBLISHED" as const, publishedAt: { not: null }, archivedAt: null }, orderBy: { publishedAt: "desc" as const }, take: 1, select: { id: true, version: true, name: true, productType: true, status: true, geometry: true, dimensions: true, surfaceMappings: true, manufacturingMetadata: true, publishedAt: true, archivedAt: true, assets: { where: { kind: "SOURCE_IMAGE" as const, storage: "DATABASE" as const, sha256: { not: null }, mimeType: { in: ["image/jpeg", "image/png", "image/webp"] } }, take: 1, select: { id: true, productId: true, kind: true, storage: true, mimeType: true, width: true, height: true, sha256: true } } } } };
+const include = { category: { include: { parent: { select: { id: true, isActive: true } } } }, categoryLinks: { include: { category: { include: { parent: { select: { id: true, isActive: true } } } } } }, images: { orderBy: { sortOrder: "asc" as const } }, variants: { include: { inventory: true }, orderBy: { sortOrder: "asc" as const } }, personalizationFields: { orderBy: { sortOrder: "asc" as const } }, templateLinks: { include: { template: true }, orderBy: [{ isDefault: "desc" as const }, { sortOrder: "asc" as const }] }, visualizationTemplates: { where: { status: "PUBLISHED" as const, publishedAt: { not: null }, archivedAt: null }, orderBy: { publishedAt: "desc" as const }, take: 1, select: { id: true, version: true, name: true, productType: true, status: true, geometry: true, dimensions: true, surfaceMappings: true, manufacturingMetadata: true, materialSettings: true, previewCapabilities: true, publishedAt: true, archivedAt: true, assets: { where: { kind: "SOURCE_IMAGE" as const, storage: "DATABASE" as const, sha256: { not: null }, mimeType: { in: ["image/jpeg", "image/png", "image/webp"] } }, take: 1, select: { id: true, productId: true, kind: true, storage: true, mimeType: true, width: true, height: true, sha256: true } } } } };
 const storefrontCategoryWhere = { isActive: true, OR: [{ parentId: null }, { parent: { isActive: true } }] };
 
 export async function getStorefrontCatalog() {

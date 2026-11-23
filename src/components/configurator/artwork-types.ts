@@ -40,6 +40,8 @@ export interface ArtworkLayer {
   sourceHeight?: number;
   imageFit?: "contain" | "cover" | "stretch";
   aspectLocked?: boolean;
+  /** Studio photo slots only (`studio-photo-<fieldKey>`): the customer's move/rotate/zoom. */
+  photo?: { offsetX: number; offsetY: number; rotation: number; scale: number };
 }
 
 export interface ArtworkSurface {

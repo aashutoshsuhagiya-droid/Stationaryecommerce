@@ -1,3 +1,4 @@
+import { planRanbazaarStudio, studioFieldRow, STUDIO_PHOTO_SLOTS_ENABLED, type StudioPlan } from "./studio-writer";
 
 export type ExternalCatalogSource = "ezpac" | "ranbazaar";
 
@@ -73,6 +74,8 @@ export interface ImportedExternalProduct {
   material?: string | null;
   structuredDescription?: ImportedStructuredDescription;
   features?: string[];
+  /** Ranbazaar: design samples as studio templates, plus the fields they bind. */
+  studioPlan?: StudioPlan;
 }
 
 type UnknownRecord = Record<string, unknown>;
@@ -414,59 +417,42 @@ export const PERSONALIZATION_FIELD_LIMIT = 20;
 /** Practical ceiling for personalization text on our print surfaces. */
 export const PERSONALIZATION_MAX_LENGTH = 32;
 
-function ranbazaarPersonalizationFields(record: UnknownRecord): {
+/**
+ * Fields and design templates come from one parser (see ranbazaar-studio.ts):
+ * an input repeated across design samples is one field, keeps the source's
+ * own character limit, and is what every template's text layer binds to.
+ */
+function ranbazaarPersonalizationFields(record: UnknownRecord, externalId: string): {
   fields: ImportedPersonalizationField[];
   skippedPhotoSlots: number;
   overflow: number;
+  plan: StudioPlan;
 } {
-  const details = Array.isArray(record.customizeDetails) ? record.customizeDetails : [];
-  const fields: ImportedPersonalizationField[] = [];
-  const usedKeys = new Set<string>();
-  let skippedPhotoSlots = 0;
-  let overflow = 0;
-  let position = 0;
-  for (const rawDetail of details) {
-    const detail = objectRecord(rawDetail);
-    skippedPhotoSlots += Array.isArray(detail.customerImg) ? detail.customerImg.length : 0;
-    const inputFields = Array.isArray(detail.inputFields) ? detail.inputFields : [];
-    for (const rawField of inputFields) {
-      const field = objectRecord(rawField);
-      const name = stringValue(field.name);
-      const slug = stringValue(field.slug);
-      if (!name && !slug) continue;
-      position += 1;
-      if (fields.length >= PERSONALIZATION_FIELD_LIMIT) {
-        overflow += 1;
-        continue;
-      }
-      const slugged = slugifyCatalogTitle(slug ?? "") || slugifyCatalogTitle(name ?? "") || `field-${position}`;
-      // Admin field keys must start with a letter; the source label keeps its own spelling.
-      const safeBase = (/^[a-z]/.test(slugged) ? slugged : `field-${slugged}`).slice(0, 76);
-      let key = safeBase;
-      for (let suffix = 2; usedKeys.has(key); suffix += 1) key = `${safeBase}-${suffix}`;
-      usedKeys.add(key);
-      const style = objectRecord(field.style);
-      const fontId = stringValue(style.fontFamily);
-      const color = stringValue(style.color);
-      const fontSizeText = stringValue(style.fontSize);
-      const fontSize = fontSizeText !== null ? Number(fontSizeText) : Number.NaN;
-      const validation: Record<string, unknown> = {
-        ...(fontId ? { fontId } : {}),
-        ...(color ? { color } : {}),
-        ...(Number.isFinite(fontSize) && fontSize > 0 ? { fontSize } : {}),
-      };
-      fields.push({
-        key,
-        label: (name ?? slug ?? key).slice(0, 120),
-        inputType: "text",
-        required: true,
-        maxLength: PERSONALIZATION_MAX_LENGTH,
-        validation: Object.keys(validation).length ? validation : null,
-        sortOrder: fields.length,
-      });
-    }
-  }
-  return { fields, skippedPhotoSlots, overflow };
+  const plan = planRanbazaarStudio(externalId, record);
+  const fields = plan.fields.map((field, index) => {
+    const row = studioFieldRow(field, index);
+    return {
+      key: row.key,
+      label: row.label,
+      inputType: "text" as const,
+      required: row.isRequired,
+      maxLength: row.maxLength ?? PERSONALIZATION_MAX_LENGTH,
+      validation: Object.keys(row.validation).length ? row.validation : null,
+      sortOrder: index,
+    };
+  });
+  // Photo inputs become photo slots on the design templates (see STUDIO_PHOTO_SLOTS_ENABLED);
+  // one on a sample without a mockup has no design to sit on and is reported as skipped.
+  const placedPhotoKeys = new Set(plan.studio.samples.flatMap((sample) => sample.photos.map((slot) => slot.fieldKey)));
+  const photoFields = plan.studio.fields.filter((field) => field.inputType === "image");
+  return {
+    fields,
+    skippedPhotoSlots: STUDIO_PHOTO_SLOTS_ENABLED
+      ? photoFields.filter((field) => !placedPhotoKeys.has(field.key)).length
+      : photoFields.length,
+    overflow: plan.studio.overflow,
+    plan,
+  };
 }
 
 function ranbazaarBulkTiers(record: UnknownRecord): Array<{ minimum: number; pricePaise: number }> {
@@ -508,7 +494,7 @@ export function mapRanbazaarProductRecord(rawRecord: unknown, sourceSlug?: strin
   const pkg = firstValue(record, ["package", "packageDetails"]);
   const specs = sourceSpecs(record);
   const dimensions = (specs || pkg) ? { ...(specs ?? {}), ...(pkg ? { package: pkg } : {}) } : null;
-  const personalization = ranbazaarPersonalizationFields(record);
+  const personalization = ranbazaarPersonalizationFields(record, externalId);
   const { taxRateBasisPoints, taxCode } = ranbazaarTax(record);
   const rawSeoTitle = stringValue(record.metaTitle);
   const rawSeoDescription = stringValue(record.metaDescription);
@@ -527,10 +513,12 @@ export function mapRanbazaarProductRecord(rawRecord: unknown, sourceSlug?: strin
     compareAtPricePaise: baseVariant?.compareAtPricePaise ?? null,
     categoryHints,
     dimensions,
-    customizable: personalization.fields.length > 0,
+    // Photo-only designs (no text inputs) are still customised: the customer uploads into them.
+    customizable: personalization.fields.length > 0 || personalization.plan?.acceptsPhotos === true,
     personalizationFields: personalization.fields,
     skippedPhotoSlots: personalization.skippedPhotoSlots,
     personalizationOverflow: personalization.overflow,
+    studioPlan: personalization.plan,
     bulkPriceTiers: ranbazaarBulkTiers(record),
     taxRateBasisPoints,
     taxCode,

@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-11-22T15:27:29.588Z",
+  "options": {
+    "dryRun": false,
+    "source": "ranbazaar",
+    "forceStudio": false,
+    "only": "parker-classic-matte-bp-ball-pen-engraved-your-name-on-pen-with-box-black"
+  },
+  "fidelity": {
+    "templates": {
+      "created": 0,
+      "updated": 0,
+      "unchanged": 2,
+      "planned": 0
+    }
+  },
+  "products": 1,
+  "withDesigns": 1,
+  "templates": {
+    "created": 0,
+    "updated": 0,
+    "unchanged": 2,
+    "planned": 0
+  },
+  "fieldsRemoved": 0,
+  "linksRemoved": 0,
+  "missingSnapshot": [],
+  "keptAdminEdits": [],
+  "unmeasuredMockups": [],
+  "failed": []
+}

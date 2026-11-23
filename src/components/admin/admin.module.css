@@ -2643,6 +2643,15 @@ button.configCard:hover { border-color: var(--border-focus); background: var(--s
 .quickListSuccess strong { color: var(--success); font-size: 12px; }
 .quickListSuccess p { margin: 0; color: var(--text-body); font-size: 10px; }
 .quickListSuccess a { color: var(--text-heading); text-decoration: underline; }
+.quickListShelves { display: grid; gap: 8px; grid-column: 1 / -1; }
+.quickListShelfGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; }
+.quickListShelfButton { display: grid; gap: 3px; justify-items: start; text-align: left; padding: 10px 12px; border: 1px solid var(--border-default); border-radius: var(--admin-control-radius); background: var(--surface-main); cursor: pointer; }
+.quickListShelfButton:hover { border-color: var(--border-focus); background: var(--surface-subtle); }
+.quickListShelfButton strong { color: var(--text-heading); font-size: 11px; }
+.quickListShelfButton small { color: var(--text-secondary); font-size: 9px; line-height: 1.4; }
+.quickListRecipeChips { display: flex; flex-wrap: wrap; gap: 5px; margin: 0; }
+.quickListBandWarning { color: var(--warning); }
+.quickListHintLine { margin: 0; padding: 9px 11px; border: 1px solid var(--border-default); border-radius: var(--admin-control-radius); background: var(--surface-subtle); color: var(--text-secondary); font-size: 10px; line-height: 1.45; }
 .quickListSearch { display: grid; gap: 5px; grid-column: 1 / -1; }
 .quickListSearch input { max-width: 460px; }
 .quickListNoResults { display: grid; gap: 6px; justify-items: start; grid-column: 1 / -1; padding: 14px; border: 1px dashed var(--border-strong); border-radius: var(--admin-card-radius); background: var(--surface-subtle); }

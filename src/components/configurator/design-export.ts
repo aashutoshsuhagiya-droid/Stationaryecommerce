@@ -6,6 +6,8 @@ import type {
   ArtworkDocument,
   PrintableSurfaceDefinition,
 } from "./artwork-types";
+import type { StudioConfig } from "../../lib/studio-template";
+import { drawStudioDesign, type StudioPhotoValue } from "./studio-canvas";
 
 const EXPORT_DPI = 300;
 const ZIP_UTF8_FLAG = 0x0800;
@@ -23,6 +25,57 @@ export interface ArtworkExportOptions {
   background: string;
   accent?: string;
   productName: string;
+  /** A locked studio design: exported exactly as the customer saw it. */
+  studio?: { config: StudioConfig; values: Readonly<Record<string, string>>; photos?: Readonly<Record<string, StudioPhotoValue>> };
+}
+
+/** Studio proofs render at twice the editor canvas, enough to judge text placement. */
+const STUDIO_EXPORT_SCALE = 2;
+
+/** Longest edge of the cart thumbnail: sharp at 2x in the cart, small enough for localStorage. */
+export const STUDIO_PREVIEW_MAX_EDGE = 480;
+
+/**
+ * The customer's studio design as a JPEG data URL, drawn by the same renderer
+ * as the proof download, so the cart shows exactly what the canvas showed.
+ */
+export async function renderStudioPreview(
+  studio: NonNullable<ArtworkExportOptions["studio"]>,
+  maxEdge = STUDIO_PREVIEW_MAX_EDGE,
+): Promise<string> {
+  const { width, height } = studio.config.canvas;
+  const scale = Math.min(1, maxEdge / Math.max(width, height));
+  const canvas = window.document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(width * scale));
+  canvas.height = Math.max(1, Math.round(height * scale));
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("This browser cannot prepare the design preview.");
+  ctx.scale(canvas.width / width, canvas.height / height);
+  await drawStudioDesign(ctx, studio.config, studio.values, studio.photos);
+  const dataUrl = canvas.toDataURL("image/jpeg", 0.86);
+  canvas.width = 1;
+  canvas.height = 1;
+  return dataUrl;
+}
+
+async function exportStudioDesign(
+  studio: NonNullable<ArtworkExportOptions["studio"]>,
+  productName: string,
+): Promise<ArtworkExportResult> {
+  const { width, height } = studio.config.canvas;
+  const canvas = window.document.createElement("canvas");
+  canvas.width = Math.round(width * STUDIO_EXPORT_SCALE);
+  canvas.height = Math.round(height * STUDIO_EXPORT_SCALE);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("This browser cannot prepare the design image.");
+  ctx.scale(STUDIO_EXPORT_SCALE, STUDIO_EXPORT_SCALE);
+  await drawStudioDesign(ctx, studio.config, studio.values, studio.photos);
+  const blob = await canvasToPngBlob(canvas);
+  const filename = buildArtworkExportFilename(productName, "design", canvas.width, canvas.height, "2x");
+  canvas.width = 1;
+  canvas.height = 1;
+  downloadBlob(blob, filename);
+  return { fileCount: 1, filename, zipped: false };
 }
 
 export interface ArtworkExportResult {
@@ -232,10 +285,12 @@ export async function downloadArtworkDesign({
   background,
   accent,
   productName,
+  studio,
 }: ArtworkExportOptions): Promise<ArtworkExportResult> {
   if (typeof window === "undefined") {
     throw new Error("Design downloads are only available in the browser.");
   }
+  if (studio) return exportStudioDesign(studio, productName);
   if (!artworkDocument.surfaces.length) {
     throw new Error("This design does not contain an artwork surface.");
   }

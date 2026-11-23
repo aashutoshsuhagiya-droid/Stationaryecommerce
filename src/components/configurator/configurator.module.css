@@ -241,6 +241,23 @@
 
 .visuallyHidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
+/* Studio photo slots */
+.studioPhotoSlot { cursor: pointer; touch-action: none; }
+.studioPhotos { margin-top: 14px; display: grid; gap: 10px; }
+.studioPhoto { padding: 10px; display: grid; gap: 8px; border: 1px solid var(--border-default); border-radius: var(--config-control-radius); background: var(--surface-main); }
+.studioPhotoSelected { border-color: var(--border-focus); box-shadow: 0 0 0 1px var(--border-focus); }
+.studioPhotoHead { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.studioPhotoHead strong { color: var(--text-heading); font-size: var(--config-label-size); }
+.studioPhotoHead small { color: var(--text-secondary); font-size: var(--config-meta-size); text-align: right; }
+.studioPhotoUpload { min-height: var(--config-control-height); display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--button-primary); border-radius: var(--config-control-radius); color: #fff; background: var(--button-primary); cursor: pointer; font-size: var(--config-meta-size); font-weight: 750; }
+.studioPhotoUpload svg { width: 16px; height: 16px; }
+.studioPhotoControls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.studioPhotoControls button { min-height: var(--config-icon-control); display: inline-grid; place-items: center; padding: 0; border: 1px solid var(--border-default); border-radius: var(--config-control-radius); color: var(--text-body); background: var(--surface-alt); cursor: pointer; }
+.studioPhotoControls button:hover { border-color: var(--border-focus); background: var(--surface-hover); }
+.studioPhotoControls button svg { width: 16px; height: 16px; }
+.studioPhotoControls .studioPhotoTextButton { grid-column: span 3; font-size: var(--config-meta-size); font-weight: 750; }
+.studioPhotoControls .studioPhotoRemove { color: var(--danger, #b42318); }
+
 @media (max-width: 1050px) {
   .editor { grid-template-columns: minmax(0, 1fr) 220px; }
   .artboardViewport { padding: 24px; }
@@ -359,6 +376,8 @@
 .templateChoices { grid-template-columns: 1fr 1fr; }
 .templateChoices > button { grid-template-columns: 40px 1fr; gap: 7px; }
 .templateChoices i { width: 40px; height: 34px; display: grid; place-items: center; border: 1px solid; border-radius: var(--config-control-radius); font-size: var(--config-meta-size); font-style: normal; font-weight: 800; }
+.templateChoices i.templateThumbnail { width: 52px; height: 52px; overflow: hidden; padding: 0; border-color: var(--border-default); }
+.templateThumbnail img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 .quantityRow { display: grid; grid-template-columns: var(--config-control-height) 1fr var(--config-control-height); }
 .quantityRow button, .quantityRow input { height: var(--config-control-height); border: 1px solid var(--border-strong); background: var(--surface-main); }

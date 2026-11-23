@@ -8,6 +8,7 @@ import { apiError, readJson, RequestTooLargeError, validationError } from "@/lib
 import { DatabaseConfigurationError, getPrisma } from "@/lib/prisma";
 import { type AdminTemplateInput, type AdminTemplateSurface, validateAdminTemplate } from "@/lib/admin-template-validation";
 import { Prisma } from "@/generated/prisma/client";
+import { STUDIO_TEMPLATE_SLUG_PREFIXES } from "@/lib/studio-design";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -199,6 +200,9 @@ export async function GET(request: Request) {
   try {
     await requireTemplateAdmin(request);
     const templates = await getPrisma().personalizationTemplate.findMany({
+      // Per-product studio designs (imported "rb-…", admin-made "st-…") belong to their product,
+      // not to the reusable theme library this page manages.
+      where: { AND: STUDIO_TEMPLATE_SLUG_PREFIXES.map((prefix) => ({ NOT: { slug: { startsWith: prefix } } })) },
       include: templateInclude,
       orderBy: [{ updatedAt: "desc" }, { name: "asc" }],
     });
