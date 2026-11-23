@@ -67,3 +67,54 @@ export function productSummaryText(shortDescription: string | null | undefined, 
   const summary = candidates.find(isSummarySentence);
   return summary ? truncateAtWord(summary, maximum) : "";
 }
+
+export interface DescriptionBlock {
+  kind: "paragraph" | "item";
+  /** A leading bold label such as "Dimensions" (trailing colon removed). */
+  label?: string;
+  text: string;
+}
+
+const LEADING_LABEL = /^\s*<(strong|b)\b[^>]*>([\s\S]*?)<\/\1\s*>\s*:?\s*/i;
+
+function descriptionBlock(kind: DescriptionBlock["kind"], inner: string): DescriptionBlock | null {
+  const labelMatch = inner.match(LEADING_LABEL);
+  let label = labelMatch ? htmlToPlainText(labelMatch[2]).replace(/\s*:\s*$/, "") : "";
+  let text = htmlToPlainText(labelMatch ? inner.slice(labelMatch[0].length) : inner).replace(/^:\s*/, "");
+  // A whole bullet in bold ("<strong>Great Gift Idea: Carry it…</strong>") keeps only its short lead as the label.
+  const lead = label.match(/^([^:]{1,40}):\s+(.+)$/);
+  if (!text && lead) [label, text] = [lead[1], lead[2]];
+  if (!label && !text) return null;
+  return label ? { kind, label, text } : { kind, text };
+}
+
+/** A specification table row: first cell is the label, the remaining cells its value. */
+function tableRowBlock(row: string): DescriptionBlock | null {
+  const cells = [...row.matchAll(/<(td|th)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi)].map((cell) => htmlToPlainText(cell[2])).filter(Boolean);
+  if (!cells.length) return null;
+  if (cells.length === 1) return { kind: "item", text: cells[0] };
+  return { kind: "item", label: cells[0].replace(/\s*:\s*$/, ""), text: cells.slice(1).join(", ") };
+}
+
+/**
+ * Splits a product description into plain-text paragraphs and list items for
+ * display without injecting HTML. Empty spacer paragraphs (`<p>&nbsp;</p>`) are dropped.
+ */
+export function htmlToDescriptionBlocks(value: string | null | undefined): DescriptionBlock[] {
+  const source = value?.trim() ?? "";
+  if (!source) return [];
+  if (!HTML_TAG.test(source)) {
+    return source.split(/\n\s*\n/).map((part) => decodeHtmlEntities(part).replace(/\s+/g, " ").trim()).filter(Boolean).map((text) => ({ kind: "paragraph" as const, text }));
+  }
+  const blocks: DescriptionBlock[] = [];
+  const pattern = /<(p|li|h[1-6]|tr)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi;
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(source))) {
+    const tag = match[1].toLowerCase();
+    const block = tag === "tr" ? tableRowBlock(match[2]) : descriptionBlock(tag === "li" ? "item" : "paragraph", match[2]);
+    if (block) blocks.push(block);
+  }
+  if (blocks.length) return blocks;
+  const text = htmlToPlainText(source);
+  return text ? [{ kind: "paragraph", text }] : [];
+}

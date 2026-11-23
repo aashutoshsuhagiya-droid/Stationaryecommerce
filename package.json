@@ -33,7 +33,7 @@
     "@types/three": "^0.186.0",
     "clsx": "latest",
     "lucide-react": "latest",
-    "next": "latest",
+    "next": "^16.4.6",
     "pg": "8.16.3",
     "react": "latest",
     "react-dom": "latest",

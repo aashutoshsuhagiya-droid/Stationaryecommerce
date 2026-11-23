@@ -29,6 +29,7 @@ import { buildVisualization3DPreview } from "@/components/configurator/visualiza
 import { setPersonalizedNameColor } from "@/components/configurator/artwork-color";
 import { calculateDesignCompletion } from "@/components/configurator/design-completion";
 import { downloadArtworkDesign, renderStudioPreview } from "@/components/configurator/design-export";
+import { htmlToDescriptionBlocks, type DescriptionBlock } from "@/lib/html-text";
 import {
   createArtworkDocument,
   keepArtworkLayerInForeground,
@@ -486,6 +487,21 @@ function validateFields(configuration: ProductConfigurationSchema, fields: Recor
     }
   }
   return errors;
+}
+
+/** Source descriptions arrive as HTML; they are shown as plain-text paragraphs and bullets, never injected. */
+function ProductDescription({ value }: { value: string }) {
+  const blocks = htmlToDescriptionBlocks(value);
+  const groups: Array<{ kind: DescriptionBlock["kind"]; blocks: DescriptionBlock[] }> = [];
+  for (const block of blocks) {
+    const last = groups[groups.length - 1];
+    if (last && last.kind === "item" && block.kind === "item") last.blocks.push(block);
+    else groups.push({ kind: block.kind, blocks: [block] });
+  }
+  const content = (block: DescriptionBlock) => block.label ? <><strong>{block.label}</strong>{block.text ? `: ${block.text}` : ""}</> : block.text;
+  return <>{groups.map((group, index) => group.kind === "item"
+    ? <ul key={index} className="product-description-list">{group.blocks.map((block, itemIndex) => <li key={itemIndex}><Check /> <span>{content(block)}</span></li>)}</ul>
+    : <p key={index}>{content(group.blocks[0])}</p>)}</>;
 }
 
 export function CustomizationStudio({
@@ -1414,7 +1430,7 @@ export function CustomizationStudio({
           ref={practicalDetailsReveal.ref}
           className={`shell product-info-grid ${practicalDetailsReveal.className}`}
           data-scroll-reveal={practicalDetailsReveal.state}
-        ><div><span className="eyebrow">The practical details</span><h2>Made for everyday use</h2>{hasStructuredDescription ? <>{structuredDescription?.intro && <p>{structuredDescription.intro}</p>}{structuredDescription?.bestFor?.length ? <p><strong>Best for:</strong> {structuredDescription.bestFor.join(", ")}</p> : null}{structuredBulletLabels.length ? <ul>{structuredBulletLabels.map((label, index) => <li key={`${label}-${index}`}><Check /> {label}</li>)}</ul> : null}</> : <><p>{product.description}</p><ul>{product.features.map((feature) => <li key={feature}><Check /> {feature}</li>)}</ul></>}</div><dl>{(selectedVariant?.material || product.material) !== "Not specified" && <div><dt>Material</dt><dd>{selectedVariant?.material || product.material}</dd></div>}{product.dimensions !== "Not specified" && <div><dt>Dimensions</dt><dd>{product.dimensions}</dd></div>}<div><dt>What is included</dt><dd>{selectedVariant?.packSize || product.packSize} pieces in your selected format</dd></div><div><dt>Production window</dt><dd>{product.productionDays.min}-{product.productionDays.max} working days after design review</dd></div>{product.careInstructions && <div><dt>Care</dt><dd>{product.careInstructions}</dd></div>}</dl></div>
+        ><div><span className="eyebrow">The practical details</span><h2>Made for everyday use</h2>{hasStructuredDescription ? <>{structuredDescription?.intro && <p>{structuredDescription.intro}</p>}{structuredDescription?.bestFor?.length ? <p><strong>Best for:</strong> {structuredDescription.bestFor.join(", ")}</p> : null}{structuredBulletLabels.length ? <ul>{structuredBulletLabels.map((label, index) => <li key={`${label}-${index}`}><Check /> {label}</li>)}</ul> : null}</> : <><ProductDescription value={product.description} /><ul>{product.features.map((feature) => <li key={feature}><Check /> {feature}</li>)}</ul></>}</div><dl>{(selectedVariant?.material || product.material) !== "Not specified" && <div><dt>Material</dt><dd>{selectedVariant?.material || product.material}</dd></div>}{product.dimensions !== "Not specified" && <div><dt>Dimensions</dt><dd>{product.dimensions}</dd></div>}<div><dt>What is included</dt><dd>{selectedVariant?.packSize || product.packSize} pieces in your selected format</dd></div><div><dt>Production window</dt><dd>{product.productionDays.min}-{product.productionDays.max} working days after design review</dd></div>{product.careInstructions && <div><dt>Care</dt><dd>{product.careInstructions}</dd></div>}</dl></div>
       </section>
 
       <div className={configuratorStyles.mobileBuyBar}><div><small>{quote.message}</small><strong>{formatPrice(displaySubtotal / 100)}</strong></div><button type="button" onClick={addToCart} disabled={quote.status !== "ready"}>{added ? "Added" : "Add to cart"}</button></div>

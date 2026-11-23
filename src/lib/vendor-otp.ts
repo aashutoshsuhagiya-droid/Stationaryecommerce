@@ -32,7 +32,8 @@ export async function requestVendorOtp(phone: string) {
   const code = String(randomInt(0, 1_000_000)).padStart(6, "0");
   const expiresAt = new Date(Date.now() + OTP_TTL_MS);
   await prisma.$transaction(async (tx) => {
-    await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtextextended(${phone}, 0))`;
+    // executeRaw: the lock function returns void, which the Prisma driver adapter cannot deserialize as a query result.
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${phone}, 0))`;
     const recentCount = await tx.phoneVerificationChallenge.count({
       where: { phone, createdAt: { gt: new Date(Date.now() - 60 * 60 * 1000) } },
     });

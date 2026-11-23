@@ -879,6 +879,11 @@ button:not(:disabled):active { transform: scale(.98); }
 .product-info-grid ul { margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 9px; list-style: none; }
 .product-info-grid li { display: flex; align-items: center; gap: 6px; color: var(--navy); font-size: .64rem; font-weight: 700; }
 .product-info-grid li svg { width: 15px; color: var(--teal); }
+.product-info-grid li svg { flex: none; }
+.product-info-grid ul.product-description-list { grid-template-columns: 1fr; gap: 10px; margin: 0 0 18px; }
+.product-description-list li { align-items: flex-start; color: var(--slate); font-size: .88rem; font-weight: 400; line-height: 1.6; }
+.product-description-list li svg { margin-top: 4px; }
+.product-description-list strong, .product-info-grid p strong { color: var(--navy); font-weight: 700; }
 .product-info-grid dl { margin: 0; display: grid; }
 .product-info-grid dl > div { padding: 15px 0; display: grid; grid-template-columns: 135px 1fr; gap: 12px; border-bottom: 1px solid var(--line); }
 .product-info-grid dt { color: var(--navy); font-size: .65rem; font-weight: 850; }
