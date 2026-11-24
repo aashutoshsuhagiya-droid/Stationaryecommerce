@@ -59,6 +59,8 @@ tier at or below it. Base and deltas are fractional paise taken from the source'
   (checkout demanded a reservation flow). They now order normally and record a stock reservation; when
   stock runs out they show "Made to order", never "out of stock". Verified with a real API order (then deleted).
 - Single "Default Title" variants (Shopify placeholder) no longer render as a choice card.
+- 2D studio shows the whole product photo, uncropped (2026-11-24). It used to show the 3D template's
+  front-face crop, a cut-off strip of the photo. The 3D model stays plain: no photo on any face.
 
 ## Gaps and decisions for the owner
 

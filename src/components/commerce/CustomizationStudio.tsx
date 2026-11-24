@@ -643,23 +643,16 @@ export function CustomizationStudio({
       })) images[surfaceId] = baseImageUrl;
     }
 
-    // Published visualization textures supplement templates, but an admin base wins.
-    for (const [surfaceId, textureUrl] of configuration.preview.visualization?.surfaces.flatMap((surface) =>
-      surface.textureUrl ? [[surface.surfaceId, surface.textureUrl] as const] : [],
-    ) ?? []) images[surfaceId] = textureUrl;
+    // An admin-configured base image wins.
     Object.assign(images, configuration.preview.baseImages ?? {});
 
-    // Nothing configured for the first print area (packaging 3D textures are keyed by face,
-    // e.g. "front", not by print area): show the front face, else the product itself, rather
-    // than an empty grey box.
+    // Nothing configured for the first print area: show the whole product photo (the
+    // editor fits it uncropped). Never a 3D template's face texture — that is a panel
+    // cropped out of the photo, which reads as a cut-off strip of the product.
     const firstSurfaceId = configuration.artwork.policy.surfaces[0]?.id ?? configuration.artwork.surfaces[0]?.id;
-    const frontTexture = configuration.preview.visualization?.surfaces.find((surface) => surface.surfaceId === "front")?.textureUrl;
-    if (firstSurfaceId && !images[firstSurfaceId]) {
-      const fallback = frontTexture ?? product.image;
-      if (fallback) images[firstSurfaceId] = fallback;
-    }
+    if (firstSurfaceId && !images[firstSurfaceId] && product.image) images[firstSurfaceId] = product.image;
     return images;
-  }, [configuration.artwork.policy.surfaces, configuration.artwork.surfaces, configuration.preview.baseImages, configuration.preview.visualization, product.image, selectedTemplate]);
+  }, [configuration.artwork.policy.surfaces, configuration.artwork.surfaces, configuration.preview.baseImages, product.image, selectedTemplate]);
   const studioDesign = selectedTemplate?.studio;
   // Photo slots count only where uploads are possible, so a design can never be blocked by a slot nobody can fill.
   const studioPhotoSlots = studioDesign && artworkUploadsEnabled && configuration.artwork.policy.surfaces.some((surface) => surface.image.enabled)
