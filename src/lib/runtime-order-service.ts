@@ -183,9 +183,13 @@ export async function createPersistentStorefrontOrder(input: CreateOrderInput, i
   });
   if (persistentProducts.length !== ids.length) return null;
   const persistentById = new Map(persistentProducts.map((product) => [product.id, product]));
+  const continueSellingVariantIds = new Set<string>();
   for (const item of input.items) {
     const variant = persistentById.get(item.productId)?.variants.find((candidate) => candidate.id === item.variantId);
-    if (variant && variant.inventoryPolicy !== "MADE_TO_ORDER") {
+    // CONTINUE keeps selling past tracked stock (the order reserves what is on hand);
+    // only DENY needs a hard reservation flow before it can be sold here.
+    if (variant?.inventoryPolicy === "CONTINUE") continueSellingVariantIds.add(variant.id);
+    else if (variant && variant.inventoryPolicy !== "MADE_TO_ORDER") {
       throw new CommerceError(409, "INVENTORY_RESERVATION_REQUIRED", "This product needs an inventory reservation flow before it can be ordered through the database checkout.", {
         productId: item.productId,
         variantId: item.variantId,
@@ -257,7 +261,7 @@ export async function createPersistentStorefrontOrder(input: CreateOrderInput, i
               productSlugSnapshot: priced.productSlug,
               skuSnapshot: priced.sku,
               variantSnapshot: asJson({ id: priced.variantId, name: priced.productSnapshot.variantName, sku: priced.sku, material: priced.productSnapshot.material }),
-              productSnapshot: asJson({ ...priced.productSnapshot, image: priced.image, configuration: configurationSnapshot(product), pricingAdjustments: priced.adjustments }),
+              productSnapshot: asJson({ ...priced.productSnapshot, image: priced.image, configuration: configurationSnapshot(product), pricingAdjustments: priced.adjustments, ...(priced.packaging ? { packaging: priced.packaging } : {}) }),
               quantity: priced.quantity,
               unitPricePaise: priced.unitPricePaise,
               lineTotalPaise: priced.lineTotalPaise,
@@ -267,6 +271,18 @@ export async function createPersistentStorefrontOrder(input: CreateOrderInput, i
         },
         include: persistedOrderInclude,
       });
+      for (const priced of pricedItems) {
+        if (!continueSellingVariantIds.has(priced.variantId)) continue;
+        const reserved = await tx.inventory.updateMany({
+          where: { variantId: priced.variantId },
+          data: { quantityReserved: { increment: priced.quantity } },
+        });
+        if (reserved.count) {
+          await tx.inventoryMovement.create({
+            data: { variantId: priced.variantId, type: "RESERVATION", quantity: priced.quantity, referenceType: "order", referenceId: created.id },
+          });
+        }
+      }
       const attachedAt = new Date();
       const guestClaimExpiresAt = new Date(attachedAt.getTime() + 7 * 24 * 60 * 60 * 1_000);
       for (let itemIndex = 0; itemIndex < verifiedArtworkAssets.length; itemIndex += 1) {

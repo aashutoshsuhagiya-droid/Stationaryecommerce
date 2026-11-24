@@ -1,0 +1,106 @@
+[
+  {
+    "key": "d-cut-paper-bag",
+    "slug": "d-cut-paper-bag",
+    "viewport": "desktop",
+    "views": {},
+    "errors": [
+      "Waiting for selector `[aria-label^=\"Interactive 3D preview\"]` failed"
+    ],
+    "seconds": 160
+  },
+  {
+    "key": "laminated-carry-bag",
+    "slug": "custom-branded-laminated-carry-bag",
+    "viewport": "desktop",
+    "views": {
+      "iso": {
+        "mean": 207,
+        "spread": 0
+      },
+      "front": {
+        "mean": 207,
+        "spread": 0
+      },
+      "left": {
+        "mean": 195,
+        "spread": 43.8
+      },
+      "right": {
+        "mean": 204,
+        "spread": 36.2
+      },
+      "back": {
+        "mean": 154,
+        "spread": 0
+      },
+      "top": {
+        "mean": 167,
+        "spread": 41.1
+      },
+      "text-front": {
+        "mean": 202,
+        "spread": 26.7
+      },
+      "text-iso": {
+        "mean": 206,
+        "spread": 13.3
+      }
+    },
+    "errors": [],
+    "sizePresets": 1,
+    "studioPhoto": {
+      "href": "/api/visualization-assets/cmwrg2k2j000ll4vgo58umwrd?surfaceId=front",
+      "visible": true
+    },
+    "textAdded": "Add text (\"Your text\")",
+    "seconds": 243
+  },
+  {
+    "key": "soap-box",
+    "slug": "soap-box",
+    "viewport": "desktop",
+    "views": {
+      "iso": {
+        "mean": 205,
+        "spread": 11.1
+      },
+      "front": {
+        "mean": 207,
+        "spread": 0.3
+      },
+      "left": {
+        "mean": 199,
+        "spread": 14.9
+      },
+      "right": {
+        "mean": 209,
+        "spread": 12.6
+      },
+      "back": {
+        "mean": 193,
+        "spread": 0
+      },
+      "top": {
+        "mean": 217,
+        "spread": 1.4
+      },
+      "text-front": {
+        "mean": 200,
+        "spread": 31.1
+      },
+      "text-iso": {
+        "mean": 202,
+        "spread": 25.1
+      }
+    },
+    "errors": [],
+    "sizePresets": 1,
+    "studioPhoto": {
+      "href": "/api/visualization-assets/cmwrg77i1002cl4vg9584tvmp?surfaceId=front",
+      "visible": true
+    },
+    "textAdded": "Add text (\"Your text\")",
+    "seconds": 94
+  }
+]

@@ -70,7 +70,7 @@ const SLOT_FALLBACKS: Record<Product3DSurfaceSlot, readonly Product3DSurfaceSlot
 /**
  * Packaging is printed per panel: a carton whose only artwork is its front has
  * plain board on every other face. Side, top, back and bottom therefore never
- * borrow the front photo here — they resolve to nothing and the model paints
+ * borrow the front design here — they resolve to nothing and the model paints
  * them in the board material instead.
  */
 const PACKAGING_SLOT_FALLBACKS: Record<Product3DSurfaceSlot, readonly Product3DSurfaceSlot[]> = {

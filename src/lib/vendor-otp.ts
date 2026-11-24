@@ -7,6 +7,19 @@ import { getPrisma } from "./prisma";
 const OTP_TTL_MS = 10 * 60 * 1000;
 const MAX_ATTEMPTS = 5;
 
+/**
+ * TEMPORARY (owner-approved 2026-11-23): until an SMS provider is attached via
+ * VENDOR_OTP_PROVIDER_URL, every vendor OTP is this fixed code, so anyone can
+ * verify any mobile number. VENDOR_OTP_FIXED_CODE overrides it. Setting the
+ * provider URL switches back to random 6-digit codes sent by SMS.
+ */
+const DEFAULT_FIXED_OTP = "12345";
+
+function fixedOtpCode(): string {
+  const configured = process.env.VENDOR_OTP_FIXED_CODE?.trim();
+  return configured && /^\d{5,6}$/.test(configured) ? configured : DEFAULT_FIXED_OTP;
+}
+
 export class OtpError extends Error {
   constructor(readonly status: number, readonly code: string, message: string) {
     super(message);
@@ -29,7 +42,8 @@ function codeHash(challengeId: string, phone: string, code: string) {
 export async function requestVendorOtp(phone: string) {
   const prisma = getPrisma();
   const challengeId = randomUUID();
-  const code = String(randomInt(0, 1_000_000)).padStart(6, "0");
+  const providerUrl = process.env.VENDOR_OTP_PROVIDER_URL?.trim();
+  const code = providerUrl ? String(randomInt(0, 1_000_000)).padStart(6, "0") : fixedOtpCode();
   const expiresAt = new Date(Date.now() + OTP_TTL_MS);
   await prisma.$transaction(async (tx) => {
     // executeRaw: the lock function returns void, which the Prisma driver adapter cannot deserialize as a query result.
@@ -41,9 +55,9 @@ export async function requestVendorOtp(phone: string) {
     await tx.phoneVerificationChallenge.create({
       data: { id: challengeId, phone, codeHash: codeHash(challengeId, phone, code), expiresAt },
     });
-  });
+    // The remote database can take a few seconds to hand out a connection after idling.
+  }, { maxWait: 10_000, timeout: 15_000 });
 
-  const providerUrl = process.env.VENDOR_OTP_PROVIDER_URL?.trim();
   if (providerUrl) {
     const response = await fetch(providerUrl, {
       method: "POST",
@@ -55,8 +69,6 @@ export async function requestVendorOtp(phone: string) {
       signal: AbortSignal.timeout(8_000),
     });
     if (!response.ok) throw new OtpError(502, "OTP_DELIVERY_FAILED", "The verification code could not be delivered.");
-  } else if (process.env.NODE_ENV === "production") {
-    throw new OtpError(503, "OTP_PROVIDER_NOT_CONFIGURED", "Mobile verification delivery is not configured.");
   }
 
   return {

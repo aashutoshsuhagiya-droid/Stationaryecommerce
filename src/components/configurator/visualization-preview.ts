@@ -162,18 +162,21 @@ interface OriginalSurface {
 }
 
 /**
- * Builds an ephemeral 3D document that combines storefront artwork with every
- * published visualization panel. The persisted editor document is never mutated.
+ * Builds an ephemeral 3D document that puts the customer's artwork on the faces
+ * a published visualization maps, each canvas reshaped to its face. The model
+ * itself stays plain: the template's photo (`textureUrl`) is never painted on
+ * it — it is the picture behind the 2D studio only. The persisted editor
+ * document is never mutated.
  */
 export function buildVisualization3DPreview(
   document: ArtworkDocument,
   definitions: PrintableSurfaceDefinition[],
   visualization: ProductVisualizationTemplate | undefined,
-  /** The size the 3D model renders with, so each texture matches its face. */
+  /** The size the 3D model renders with, so each canvas matches its face. */
   faceDimensionsMm?: Readonly<Record<string, number>> | null,
 ) {
-  const texturedMappings = visualization?.surfaces.filter((surface) => surface.textureUrl) ?? [];
-  if (!visualization || !texturedMappings.length) return { document, surfaces: definitions };
+  const faceMappings = visualization?.surfaces ?? [];
+  if (!visualization || !faceMappings.length) return { document, surfaces: definitions };
 
   const originalsById = new Map<string, OriginalSurface>();
   const originalOrder: OriginalSurface[] = [];
@@ -192,13 +195,13 @@ export function buildVisualization3DPreview(
 
   const assignedOriginals = new Map<number, OriginalSurface>();
   const claimedOriginalIds = new Set<string>();
-  texturedMappings.forEach((mapping, index) => {
+  faceMappings.forEach((mapping, index) => {
     const exact = originalsById.get(normalizedId(mapping.surfaceId));
     if (!exact) return;
     assignedOriginals.set(index, exact);
     claimedOriginalIds.add(normalizedId(exact.id));
   });
-  texturedMappings.forEach((_mapping, index) => {
+  faceMappings.forEach((_mapping, index) => {
     if (assignedOriginals.has(index)) return;
     const fallback = originalOrder.find((candidate) => !claimedOriginalIds.has(normalizedId(candidate.id)));
     if (!fallback) return;
@@ -211,7 +214,7 @@ export function buildVisualization3DPreview(
   const previewDefinitions: PrintableSurfaceDefinition[] = [];
   const previewDocumentSurfaces: ArtworkSurface[] = [];
 
-  texturedMappings.forEach((mapping, index) => {
+  faceMappings.forEach((mapping, index) => {
     const original = assignedOriginals.get(index);
     const roleId = semanticRoles.has(mapping.role) ? mapping.role : mapping.surfaceId;
     const previewId = uniquePreviewId(roleId, mapping.surfaceId, usedPreviewIds, index);
@@ -225,32 +228,12 @@ export function buildVisualization3DPreview(
       : syntheticSurfaceDefinition(visualization, mapping, previewId, faceDimensionsMm);
     const scaleX = original?.definition ? definition.width / original.definition.width : 1;
     const scaleY = original?.definition ? definition.height / original.definition.height : 1;
-    const baseLayerId = `visualization-base-${visualization.id}-${mapping.surfaceId}`;
     previewDefinitions.push(definition);
+    // Only the customer's own layers: a face they left empty stays plain board.
     previewDocumentSurfaces.push({
       id: previewId,
       label: mapping.label,
-      layers: [
-        {
-          id: baseLayerId,
-          type: "image",
-          name: `${visualization.name} base artwork`,
-          x: 0,
-          y: 0,
-          width: definition.width,
-          height: definition.height,
-          rotation: 0,
-          opacity: 1,
-          src: mapping.textureUrl,
-          sourceWidth: visualization.sourceAsset?.width ?? definition.width,
-          sourceHeight: visualization.sourceAsset?.height ?? definition.height,
-          // Fill the panel without squashing: a 4:3 photo on a tall carton front
-          // is cropped to the panel, never stretched to it.
-          imageFit: "cover",
-          aspectLocked: true,
-        },
-        ...relayout(original?.documentSurface?.layers.filter((layer) => layer.id !== baseLayerId) ?? [], scaleX, scaleY),
-      ],
+      layers: relayout(original?.documentSurface?.layers ?? [], scaleX, scaleY),
     });
   });
 

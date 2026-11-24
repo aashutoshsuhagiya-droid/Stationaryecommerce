@@ -16,6 +16,7 @@ import {
   PackageCheck,
   Plus,
   RotateCcw,
+  Ruler,
   Save,
   ShieldCheck,
   ShoppingBag,
@@ -25,6 +26,8 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArtworkEditor } from "@/components/configurator/ArtworkEditor";
 import { DesignCompletionMeter } from "@/components/configurator/DesignCompletionMeter";
+import { PackagingDielineView } from "@/components/configurator/PackagingDielineView";
+import { PackagingSpecPanel } from "@/components/commerce/PackagingSpecPanel";
 import { buildVisualization3DPreview } from "@/components/configurator/visualization-preview";
 import { setPersonalizedNameColor } from "@/components/configurator/artwork-color";
 import { calculateDesignCompletion } from "@/components/configurator/design-completion";
@@ -51,6 +54,14 @@ import {
 import { formatPrice, neutralPresentationPalette } from "@/lib/data";
 import { EZPAC_FEATURE_BULLET_LABELS } from "@/lib/ezpac-feature-bullets";
 import type { ProductConfigurationSchema } from "@/lib/product-configuration";
+import {
+  formatPackagingSize,
+  packagingDefaultSelections,
+  packagingPreviewDimensionsMm,
+  pricePackagingConfiguration,
+  type PackagingDisplayUnit,
+  type PackagingSizeMm,
+} from "@/lib/packaging-quote";
 import { newestSavedDesign } from "@/lib/saved-design";
 import { missingStudioPhotos, studioPhotoFieldKey, studioPhotoLabel, studioPhotoValues } from "@/lib/studio-photo";
 import type { Product } from "@/lib/types";
@@ -101,6 +112,13 @@ type SavedDesign = {
 };
 
 const SAVED_DESIGNS_KEY = "naamly-saved-designs-v1";
+
+/** ezpac.in's production note for pouches and courier bags, shown where it applies. */
+const PACKAGING_POUCH_NOTE = [
+  "*Only for Ziplock pouch and Courier/Mailer Bags",
+  "-The artwork will print under the zip and it won't print edge to edge; 0.2 mm space will remain.",
+  "-Ziplock Pouch: outside paper, inside food-grade aluminium, sealable.",
+].join("\n");
 
 function uniqueId() {
   return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -517,7 +535,12 @@ export function CustomizationStudio({
   const defaultPreset = configuration.dimensions.presets.find(
     (preset) => preset.id === configuration.dimensions.defaultPresetId,
   ) ?? configuration.dimensions.presets[0];
-  const [previewMode, setPreviewMode] = useState<"3d" | "2d" | null>(configuration.preview.defaultMode);
+  const packagingSpec = configuration.packaging;
+  const [previewMode, setPreviewMode] = useState<"3d" | "2d" | "dieline" | null>(configuration.preview.defaultMode ?? (packagingSpec ? "dieline" : null));
+  const [packagingSelections, setPackagingSelections] = useState<Record<string, string>>(() => packagingSpec ? packagingDefaultSelections(packagingSpec) : {});
+  const [packagingSize, setPackagingSize] = useState<PackagingSizeMm | null>(() => packagingSpec ? { ...packagingSpec.referenceSizeMm } : null);
+  const [packagingUnit, setPackagingUnit] = useState<PackagingDisplayUnit>(packagingSpec?.defaultUnit ?? "mm");
+  const designAreaRef = useRef<HTMLElement>(null);
   const [configurationId, setConfigurationId] = useState(uniqueId);
   const [variantId, setVariantId] = useState(firstVariant?.id ?? "");
   const [templateId, setTemplateId] = useState(firstTemplate?.id ?? "");
@@ -561,7 +584,7 @@ export function CustomizationStudio({
     || structuredDescription?.bestFor?.length
     || structuredBulletLabels.length,
   );
-  const usesStandardPreview = previewMode !== "3d" && !(configuration.personalization.supported && previewMode === "2d");
+  const usesStandardPreview = previewMode !== "3d" && previewMode !== "dieline" && !(configuration.personalization.supported && previewMode === "2d");
   const productImageGallery = productImages.length > 1 ? (
     <div className={configuratorStyles.standardPreviewMedia}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -646,9 +669,29 @@ export function CustomizationStudio({
   const missingPhotoKeys = studioPhotoSlots.length ? missingStudioPhotos({ photos: studioPhotoSlots }, activeArtworkLayers) : [];
   const missingPhotoSignature = missingPhotoKeys.join(",");
   // A single "Not specified" placeholder is not a choice; showing it reads as missing data.
-  const hasSizeOptions = configuration.dimensions.presets.length > 1
-    || configuration.dimensions.presets.some((preset) => preset.dimensionsMm !== null);
+  const hasSizeOptions = !packagingSpec && (configuration.dimensions.presets.length > 1
+    || configuration.dimensions.presets.some((preset) => preset.dimensionsMm !== null));
   const selectedPreset = configuration.dimensions.presets.find((preset) => preset.id === dimensionPresetId) ?? defaultPreset;
+  const packagingPrice = useMemo(() => {
+    if (!packagingSpec || !packagingSize) return undefined;
+    try {
+      return pricePackagingConfiguration(packagingSpec, quantity, { selections: packagingSelections, sizeMm: packagingSize });
+    } catch {
+      return undefined;
+    }
+  }, [packagingSelections, packagingSize, packagingSpec, quantity]);
+  // Only what the customer can choose travels to the server; hidden groups are always the default there.
+  const packagingPayload = useMemo(() => packagingSpec && packagingSize ? {
+    selections: Object.fromEntries(packagingSpec.selections
+      .filter((selection) => !selection.hidden)
+      .map((selection) => [selection.id, packagingSelections[selection.id] ?? selection.defaultOptionId])),
+    sizeMm: Object.fromEntries(packagingSpec.sizeAxes.map((axis) => [axis, packagingSize[axis]])) as Partial<PackagingSizeMm>,
+    displayUnit: packagingUnit,
+  } : undefined, [packagingSelections, packagingSize, packagingSpec, packagingUnit]);
+  const packagingSizeLabel = packagingSpec && packagingSize ? formatPackagingSize(packagingSpec, packagingSize, packagingUnit) : undefined;
+  const packagingDimensionsMm = useMemo(() => packagingSize ? packagingPreviewDimensionsMm(packagingSize) : undefined, [packagingSize]);
+  const previewDimensionsMm = packagingDimensionsMm ?? selectedPreset?.dimensionsMm;
+  const selectedPackagingMaterial = packagingPrice?.selections.find((selection) => /material|paper|board|stock/i.test(selection.selectionName))?.optionName;
   const activeSurfaceDefinitions = useMemo(
     () => surfaceDefinitions(configuration, selectedPreset),
     [configuration, selectedPreset],
@@ -658,13 +701,19 @@ export function CustomizationStudio({
       artwork,
       activeSurfaceDefinitions,
       configuration.preview.visualization,
-      selectedPreset?.dimensionsMm,
+      previewDimensionsMm,
     ),
-    [activeSurfaceDefinitions, artwork, configuration.preview.visualization, selectedPreset?.dimensionsMm],
+    [activeSurfaceDefinitions, artwork, configuration.preview.visualization, previewDimensionsMm],
   );
   const productIsWishlisted = isWishlisted(product.id);
   const errors = useMemo(() => validateFields(configuration, fields, templateId), [configuration, fields, templateId]);
-  const estimatedUnitPaise = (selectedVariant?.unitPricePaise ?? 0) + (selectedTemplate?.premiumPricePaise ?? 0);
+  const estimatedUnitPaise = (packagingPrice?.unitPaise ?? selectedVariant?.unitPricePaise ?? 0) + (selectedTemplate?.premiumPricePaise ?? 0);
+  // Source bulk prices ("2+ at ₹175") are stored as per-unit deltas on the catalog price.
+  const bulkOffers = packagingSpec ? [] : configuration.quantity.tiers
+    .filter((tier) => tier.priceDeltaPaise < 0)
+    .map((tier) => ({ minimum: tier.minimum, unitPaise: (selectedVariant?.unitPricePaise ?? 0) + (selectedTemplate?.premiumPricePaise ?? 0) + tier.priceDeltaPaise }))
+    .filter((offer) => offer.unitPaise > 0);
+  const bulkOfferLabel = bulkOffers[0] ? `Buy ${bulkOffers[0].minimum}+ for ${formatPrice(bulkOffers[0].unitPaise / 100)} each` : undefined;
   const quotedLine = quote.status === "ready" ? quote.data.items[0] : undefined;
   const displayUnitPrice = quotedLine?.unitPricePaise ?? estimatedUnitPaise;
   const displaySubtotal = quotedLine?.lineTotalPaise ?? estimatedUnitPaise * quantity;
@@ -700,7 +749,7 @@ export function CustomizationStudio({
         configuration.variants.some((variant) => variant.id === variantId)
       : undefined,
     preview: configuration.artwork.surfaces.length
-      ? previewMode === "2d" || previewReady
+      ? previewMode === "2d" || previewMode === "dieline" || previewReady
       : undefined,
   });
 
@@ -727,6 +776,16 @@ export function CustomizationStudio({
         ? cartItem.variantId ?? ""
         : firstVariant?.id ?? "");
       setQuantity(normalizedQuantity(configuration, cartItem.quantity));
+      if (packagingSpec && cartItem.packaging) {
+        const restored = cartItem.packaging;
+        setPackagingSelections({
+          ...packagingDefaultSelections(packagingSpec),
+          ...Object.fromEntries(Object.entries(restored.selections).filter(([selectionId, optionId]) =>
+            packagingSpec.selections.some((selection) => selection.id === selectionId && selection.options.some((option) => option.id === optionId)))),
+        });
+        setPackagingSize({ ...packagingSpec.referenceSizeMm, ...restored.sizeMm });
+        if (restored.displayUnit) setPackagingUnit(restored.displayUnit);
+      }
       if (cartItem.customization) {
         const custom = cartItem.customization;
         const restoredFields = preserveSupportedArtworkFont(
@@ -756,7 +815,7 @@ export function CustomizationStudio({
     } else if (designId) {
       setSaveMessage("Looking for this saved design in your account...");
     }
-  }, [cart, configuration, defaultPreset?.id, firstTemplate?.id, firstVariant?.id, isHydrated, product.id]);
+  }, [cart, configuration, defaultPreset?.id, firstTemplate?.id, firstVariant?.id, isHydrated, packagingSpec, product.id]);
 
   useEffect(() => {
     setSelectedProductImage(product.image);
@@ -853,6 +912,7 @@ export function CustomizationStudio({
               ...(configuration.personalization.supported ? {
                 customization: { ...(templateId ? { templateId } : {}), fields: customerFieldValues, previewVersion: 1, artwork: persistedArtwork },
               } : {}),
+              ...(packagingPayload ? { packaging: packagingPayload } : {}),
             }],
           }),
         });
@@ -867,7 +927,7 @@ export function CustomizationStudio({
       window.clearTimeout(timer);
       controller.abort();
     };
-  }, [configuration.personalization.supported, configuration.pricing.endpoint, customerFieldValues, errors, missingPhotoSignature, persistedArtwork, product.id, quantity, selectedVariant, templateId, visibleCustomerFields]);
+  }, [configuration.personalization.supported, configuration.pricing.endpoint, customerFieldValues, errors, missingPhotoSignature, packagingPayload, persistedArtwork, product.id, quantity, selectedVariant, templateId, visibleCustomerFields]);
 
   // Switching designs keeps photos for the slots the new design shares and drops the rest.
   useEffect(() => {
@@ -1071,6 +1131,14 @@ export function CustomizationStudio({
     }
   }
 
+  /** The source's "Design in 3D & Buy Now": keep the chosen specification and open the artwork editor. */
+  function openDesignStudio() {
+    const modes = configuration.preview.supportedModes;
+    if (configuration.personalization.supported && modes.includes("2d")) setPreviewMode("2d");
+    else if (modes.includes("3d")) setPreviewMode("3d");
+    designAreaRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  }
+
   function resetConfiguration() {
     setConfigurationId(uniqueId());
     setVariantId(firstVariant?.id ?? "");
@@ -1078,6 +1146,11 @@ export function CustomizationStudio({
     setDimensionPresetId(defaultPreset?.id ?? "");
     setDisplayUnit(configuration.dimensions.supportedDisplayUnits[0] ?? "mm");
     setQuantity(configuration.quantity.default);
+    if (packagingSpec) {
+      setPackagingSelections(packagingDefaultSelections(packagingSpec));
+      setPackagingSize({ ...packagingSpec.referenceSizeMm });
+      setPackagingUnit(packagingSpec.defaultUnit);
+    }
     setFields(initialFields(configuration));
     setArtwork(createInitialArtwork(configuration));
     setFieldErrors({});
@@ -1118,6 +1191,23 @@ export function CustomizationStudio({
       ...(quotedLine.lineTotalPaise !== quotedLine.unitPricePaise * quantity ? { lineAdjustment: (quotedLine.lineTotalPaise - quotedLine.unitPricePaise * quantity) / 100 } : {}),
       quantity,
       visual: product.artwork,
+      ...(packagingPayload && packagingSpec ? {
+        packaging: {
+          ...packagingPayload,
+          summary: [
+            ...(packagingSizeLabel ? [{ label: "Size", value: packagingSizeLabel }] : []),
+            ...(packagingPrice?.selections ?? [])
+              .filter((selection) => packagingSpec.selections.some((group) => group.id === selection.selectionId && !group.hidden))
+              .map((selection) => ({ label: selection.selectionName, value: selection.optionName })),
+          ],
+          quote: {
+            id: quote.data.quoteId,
+            pricingVersion: quote.data.pricingVersion,
+            calculatedAt: quote.data.calculatedAt,
+            unitPricePaise: quotedLine.unitPricePaise,
+          },
+        },
+      } : {}),
       customization: configuration.personalization.supported ? {
         configurationId,
         name: customerFieldValues.name || product.name,
@@ -1129,9 +1219,9 @@ export function CustomizationStudio({
         textColor: personalizationNameLayer?.color ?? selectedTemplate?.preview.foreground ?? neutralPresentationPalette.ink,
         backgroundColor: templateBackground,
         pack: selectedVariant.label,
-        material: selectedVariant.material,
+        material: selectedPackagingMaterial ?? selectedVariant.material,
         dimensionPresetId: selectedPreset?.id,
-        dimensionLabel: selectedPreset?.label ?? configuration.dimensions.catalogDescription,
+        dimensionLabel: packagingSizeLabel ?? selectedPreset?.label ?? configuration.dimensions.catalogDescription,
         displayUnit,
         artwork,
         ...(designPreview ? { designPreview } : {}),
@@ -1142,8 +1232,8 @@ export function CustomizationStudio({
             model: configuration.preview.model,
             configurationVersion: product.configurator?.configurationVersion || `catalog-${configuration.schemaVersion}`,
             dimensionPresetId: selectedPreset?.id ?? configuration.dimensions.defaultPresetId,
-            dimensionsMm: selectedPreset?.dimensionsMm ? { ...selectedPreset.dimensionsMm } : null,
-            material: selectedVariant.material,
+            dimensionsMm: previewDimensionsMm ? { ...previewDimensionsMm } : null,
+            material: selectedPackagingMaterial ?? selectedVariant.material,
             surfaceIds: configuration.artwork.surfaces.map((surface) => surface.id),
             ...(configuration.preview.visualization ? {
                 templateId: configuration.preview.visualization.id,
@@ -1175,6 +1265,15 @@ export function CustomizationStudio({
     setAdded(true);
     window.setTimeout(() => setAdded(false), 3000);
   }
+
+  // ezpac.in shows this claim on every product gallery; it belongs to that catalogue only.
+  const sourceBadge = product.importSource === "ezpac" ? { label: "As seen on Shark Tank India" } : null;
+  const packagingViewPill = packagingSpec && configuration.preview.supportedModes.includes("3d") ? (
+    <div className={configuratorStyles.packagingViewPill} role="group" aria-label="3D or dieline view">
+      <button type="button" aria-pressed={previewMode === "3d"} className={previewMode === "3d" ? configuratorStyles.packagingViewActive : ""} onClick={() => setPreviewMode("3d")}>3D</button>
+      <button type="button" aria-pressed={previewMode === "dieline"} className={previewMode === "dieline" ? configuratorStyles.packagingViewActive : ""} onClick={() => setPreviewMode("dieline")}>Dieline</button>
+    </div>
+  ) : null;
 
   const purchasePanel = (
     <div className={configuratorStyles.purchasePanel}>
@@ -1212,7 +1311,10 @@ export function CustomizationStudio({
           data-scroll-reveal={productHeroReveal.state}
         >
           <div>
-            <span className={configuratorStyles.status}>{product.stockStatus === "out_of_stock" ? "Unavailable" : product.stockStatus === "in_stock" ? "In stock" : "Made to order"}</span>
+            <div className={configuratorStyles.statusRow}>
+              <span className={configuratorStyles.status}>{product.stockStatus === "out_of_stock" ? "Unavailable" : product.stockStatus === "in_stock" || product.stockStatus === "low_stock" ? "In stock" : "Made to order"}</span>
+              {bulkOfferLabel && <span className={configuratorStyles.bulkOffer}>{bulkOfferLabel}</span>}
+            </div>
             <h1>{product.name}</h1>
             <p>{product.shortDescription}</p>
           </div>
@@ -1238,7 +1340,7 @@ export function CustomizationStudio({
             <div className={configuratorStyles.productThumb}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={product.image} alt="" />
-              <div><span>SKU {selectedVariant?.sku ?? product.sku}</span><strong>{selectedVariant?.label ?? product.name}</strong></div>
+              <div><span>SKU {selectedVariant?.sku ?? product.sku}</span><strong>{selectedVariant && !(configuration.variants.length === 1 && /^default title$/i.test(selectedVariant.label)) ? selectedVariant.label : product.name}</strong></div>
             </div>
 
             <div className={configuratorStyles.modeSummary} aria-label="Customization capabilities">
@@ -1252,7 +1354,31 @@ export function CustomizationStudio({
               </label>
             )}
 
-            <fieldset className={configuratorStyles.optionSection}>
+            {packagingSpec && packagingSize && (
+              <fieldset className={configuratorStyles.optionSection}>
+                <legend><span>1</span><div><strong>Specifications</strong><small>Size, material and finish are priced live</small></div></legend>
+                <PackagingSpecPanel
+                  spec={packagingSpec}
+                  selections={packagingSelections}
+                  onSelectionChange={(selectionId, optionId) => setPackagingSelections((current) => ({ ...current, [selectionId]: optionId }))}
+                  sizeMm={packagingSize}
+                  displayUnit={packagingUnit}
+                  onSizeChange={(nextSize, nextUnit) => {
+                    setPackagingSize(nextSize);
+                    setPackagingUnit(nextUnit);
+                  }}
+                  quantity={quantity}
+                  onQuantityChange={(next) => setQuantity(normalizedQuantity(configuration, next))}
+                  bulkQuotePath={buildCustomSizeQuotePath({ productId: product.id, quantity: packagingSpec.quantity.maximum, dimensions: packagingSizeLabel })}
+                  note={packagingSpec.dieline === "stand-up-pouch" || packagingSpec.dieline === "mailer-envelope" ? PACKAGING_POUCH_NOTE : undefined}
+                  onDesign={openDesignStudio}
+                  designLabel={configuration.preview.supportedModes.includes("3d") ? "Click for Design in 3D & Buy Now" : "Click for Design & Buy Now"}
+                />
+              </fieldset>
+            )}
+
+            {/* One imported "Default Title" variant is a Shopify placeholder, not a choice: the sources show no such card. */}
+            {!(configuration.variants.length <= 1 && (packagingSpec || /^default title$/i.test(configuration.variants[0]?.label ?? ""))) && <fieldset className={configuratorStyles.optionSection}>
               <legend><span>1</span><div><strong>Format and material</strong><small>Choose a purchasable catalog option</small></div></legend>
               <div className={configuratorStyles.choiceList}>
                 {configuration.variants.map((variant) => (
@@ -1263,7 +1389,7 @@ export function CustomizationStudio({
                   </button>
                 ))}
               </div>
-            </fieldset>
+            </fieldset>}
 
             {hasSizeOptions && <fieldset className={configuratorStyles.optionSection}>
               <legend><span>2</span><div><strong>Dimensions</strong><small>Physical size stays fixed when units change</small></div></legend>
@@ -1321,26 +1447,36 @@ export function CustomizationStudio({
               </fieldset>
             )}
 
-            <fieldset className={configuratorStyles.optionSection}>
+            {!packagingSpec && <fieldset className={configuratorStyles.optionSection}>
               <legend><span>5</span><div><strong>Quantity</strong><small>{configuration.quantity.minimum}-{configuration.quantity.maximum} per cart line</small></div></legend>
               <div className={configuratorStyles.quantityRow}>
                 <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((value) => Math.max(configuration.quantity.minimum, value - configuration.quantity.increment))} disabled={quantity <= configuration.quantity.minimum}><Minus /></button>
                 <input aria-label="Quantity" type="number" min={configuration.quantity.minimum} max={configuration.quantity.maximum} step={configuration.quantity.increment} value={quantity} onChange={(event) => setQuantity(Math.max(configuration.quantity.minimum, Math.min(configuration.quantity.maximum, Number(event.target.value) || configuration.quantity.minimum)))} />
                 <button type="button" aria-label="Increase quantity" onClick={() => setQuantity((value) => Math.min(configuration.quantity.maximum, value + configuration.quantity.increment))} disabled={quantity >= configuration.quantity.maximum}><Plus /></button>
               </div>
-              {configuration.quantity.tiers.length > 0 && <small>Quantity price breaks: {configuration.quantity.tiers.map((tier) => `${tier.label} ${tier.priceDeltaPaise >= 0 ? "+" : "−"}${formatPrice(Math.abs(tier.priceDeltaPaise) / 100)} each`).join(" · ")}</small>}
-            </fieldset>
+              {bulkOffers.length > 0 ? (
+                <ul className={configuratorStyles.bulkOfferList} aria-label="Bulk pricing">
+                  {bulkOffers.map((offer) => (
+                    <li key={offer.minimum} className={quantity >= offer.minimum ? configuratorStyles.bulkOfferActive : ""}>
+                      {quantity >= offer.minimum ? <Check /> : <Sparkles />}
+                      <span>Buy {offer.minimum}+ for <strong>{formatPrice(offer.unitPaise / 100)}</strong> each</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : configuration.quantity.tiers.length > 0 && <small>Quantity price breaks: {configuration.quantity.tiers.map((tier) => `${tier.label} ${tier.priceDeltaPaise >= 0 ? "+" : "−"}${formatPrice(Math.abs(tier.priceDeltaPaise) / 100)} each`).join(" · ")}</small>}
+            </fieldset>}
 
             <div className={configuratorStyles.productionFacts}>
-              <div><span>Material</span><strong>{selectedVariant?.material}</strong></div>
+              <div><span>Material</span><strong>{selectedPackagingMaterial ?? selectedVariant?.material}</strong></div>
+              {packagingSizeLabel && <div><span>Size</span><strong>{packagingSizeLabel}</strong></div>}
               <div><span>Print area</span><strong>{configuration.artwork.surfaces.map((surface) => surface.label).join(", ") || "Not customizable"}</strong></div>
               <div><span>Production files</span><strong>Preflight required</strong></div>
             </div>
           </aside>
 
-          <main className={configuratorStyles.designArea}>
+          <main ref={designAreaRef} className={configuratorStyles.designArea}>
               <div className={configuratorStyles.designHeading}>
-               <div><Sparkles /><span><strong>{previewMode === "3d" ? "Interactive 3D preview" : previewMode === "2d" && configuration.personalization.supported ? "Live 2D artwork studio" : "Product preview"}</strong><small>{previewMode === "3d" ? "Rotate and inspect your customized product in 3D." : previewMode === "2d" && configuration.personalization.supported ? "Drag elements on the print area. Dashed guides mark the safe zone." : "This product is configured without a customer design preview."}</small></span></div>
+               <div><Sparkles /><span><strong>{previewMode === "3d" ? "Interactive 3D preview" : previewMode === "dieline" ? "Dieline" : previewMode === "2d" && configuration.personalization.supported ? "Live 2D artwork studio" : "Product preview"}</strong><small>{previewMode === "3d" ? (packagingSpec ? "Rotate, open and inspect your packaging in 3D." : "Rotate and inspect your customized product in 3D.") : previewMode === "dieline" ? "The flat die-cut sheet at your size: cut lines, folds and glue areas." : previewMode === "2d" && configuration.personalization.supported ? "Drag elements on the print area. Dashed guides mark the safe zone." : "This product is configured without a customer design preview."}</small></span></div>
               <div className={configuratorStyles.viewModeToggle} role="group" aria-label="Preview mode">
                 {configuration.preview.supportedModes.includes("3d") && <button
                   type="button"
@@ -1360,25 +1496,50 @@ export function CustomizationStudio({
                 >
                   <Layers3 className="w-3.5 h-3.5" /> {configuration.personalization.supported ? "2D Studio" : "2D View"}
                 </button>}
+                {packagingSpec && <button
+                  type="button"
+                  aria-pressed={previewMode === "dieline"}
+                  className={previewMode === "dieline" ? configuratorStyles.viewModeActive : ""}
+                  onClick={() => setPreviewMode("dieline")}
+                  title="Flat dieline"
+                >
+                  <Ruler className="w-3.5 h-3.5" /> Dieline
+                </button>}
               </div>
             </div>
              {previewMode === "3d" ? (
                 <div className={configuratorStyles.preview3dContainer}>
                   <DesignCompletionMeter completion={designCompletion} />
-                  <Product3DPreview
-                    document={visualization3DPreview.document}
-                    surfaces={visualization3DPreview.surfaces}
-                    background={templateBackground}
-                    accent={templateAccent}
-                     structuralDesign={configuration.preview.model ?? product.artwork}
-                    productType={product.categorySlug}
-                    dimensionsMm={selectedPreset?.dimensionsMm}
-                    materialName={selectedVariant?.material || product.material}
-                    packagingBaseColor={configuration.preview.visualization?.baseColor}
-                    mirrorBack={configuration.preview.visualization?.mirrorBack === true}
-                    productName={product.name}
-                    onReadyChange={handlePreviewReadyChange}
-                  />
+                  <div className={configuratorStyles.packagingStage}>
+                    <Product3DPreview
+                      document={visualization3DPreview.document}
+                      surfaces={visualization3DPreview.surfaces}
+                      background={templateBackground}
+                      accent={templateAccent}
+                      structuralDesign={configuration.preview.model ?? product.artwork}
+                      productType={product.categorySlug}
+                      dimensionsMm={previewDimensionsMm}
+                      materialName={selectedPackagingMaterial || selectedVariant?.material || product.material}
+                      mirrorBack={configuration.preview.visualization?.mirrorBack === true}
+                      productName={product.name}
+                      onReadyChange={handlePreviewReadyChange}
+                      sourceBadge={sourceBadge}
+                    />
+                    {packagingViewPill}
+                  </div>
+                  {purchasePanel}
+                </div>
+              ) : previewMode === "dieline" && packagingSpec && packagingSize ? (
+                <div className={configuratorStyles.preview3dContainer}>
+                  <div className={`${configuratorStyles.packagingStage} ${configuratorStyles.dielineStage}`}>
+                    <PackagingDielineView
+                      kind={packagingSpec.dieline}
+                      sizeMm={packagingSize}
+                      unit={packagingUnit}
+                      productName={product.name}
+                    />
+                    {packagingViewPill}
+                  </div>
                   {purchasePanel}
                 </div>
               ) : configuration.personalization.supported && previewMode === "2d" ? (
@@ -1417,7 +1578,7 @@ export function CustomizationStudio({
               <div className={configuratorStyles.capabilityNotice}><CircleAlert /><span><strong>Image upload is unavailable for this product.</strong>{configuration.artwork.uploads.reason}</span></div>
             )}
             <div className={configuratorStyles.readinessGrid}>
-              <div><PackageCheck /><span><strong>Manufacturing review</strong><small>Custom dimensions remain unavailable until approved limits and rates are configured.</small></span></div>
+              <div><PackageCheck /><span><strong>Manufacturing review</strong><small>{packagingSpec?.customSize ? "Custom sizes are priced live and checked against the dieline before printing." : "Custom dimensions remain unavailable until approved limits and rates are configured."}</small></span></div>
               <div><ShieldCheck /><span><strong>Artwork preflight</strong><small>Bleed, resolution, colour and rights must be checked before production.</small></span></div>
               <div><Truck /><span><strong>Checkout revalidation</strong><small>Current catalog price and availability are recalculated on the server.</small></span></div>
             </div>

@@ -13,7 +13,7 @@ import { resolveVisualizationProductModel } from "./visualization-studio-service
 
 const MODELS = [
   "folding-carton", "mailer-box", "square-box", "rectangular-box", "rigid-lid-box",
-  "paper-bag", "stand-up-pouch", "mailer-envelope",
+  "paper-bag", "stand-up-pouch", "mailer-envelope", "pyramid-box",
 ] as const;
 
 test("every shape plan pairs a geometry kind with the dimensions that kind requires", () => {
@@ -111,7 +111,7 @@ test("only template shelves get a plan; built-in and no-3D shelves get none", ()
   }
 });
 
-test("a confident crop paints sides in its edge colour; a lifestyle shot asks for flat artwork", () => {
+test("a confident crop records its edge colour; a lifestyle shot asks for flat artwork", () => {
   const plan = visualizationShapePlan("folding-carton")!;
 
   const confident = visualizationConfirmationFor(plan, { confidence: "high", edgeColor: "#c0392b" });

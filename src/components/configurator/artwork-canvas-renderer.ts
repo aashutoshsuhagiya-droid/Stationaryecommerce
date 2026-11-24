@@ -196,12 +196,30 @@ export function renderLayerToContext(
   ctx.restore();
 }
 
+/** The document surface `renderSurfaceToCanvas` draws for a surface id. */
+function artworkSurfaceFor(document: ArtworkDocument, surfaceId: string) {
+  return document.surfaces.find((surface) => surface.id === surfaceId) ?? document.surfaces[0];
+}
+
+/**
+ * True when drawing this surface would put something on it: visible text or an
+ * image. Packaging models paint a face with nothing on it as bare board.
+ */
+export function surfaceHasArtwork(document: ArtworkDocument, surfaceId: string): boolean {
+  const surface = artworkSurfaceFor(document, surfaceId);
+  return Boolean(surface?.layers.some((layer) =>
+    (layer.opacity ?? 1) > 0
+    && (layer.type === "text" ? Boolean(layer.text?.trim()) : Boolean(layer.src))));
+}
+
 export function renderSurfaceToCanvas(
   canvas: HTMLCanvasElement,
   document: ArtworkDocument,
   surfaceId: string,
   surfaceDef: PrintableSurfaceDefinition,
+  /** Canvas fill. Packaging passes its board colour, so print sits on bare board. */
   background: string,
+  /** A border stroked around the canvas (label and sheet models only). */
   accent?: string,
   resolution: number | { width: number; height: number } = 2,
 ): void {
@@ -245,7 +263,7 @@ export function renderSurfaceToCanvas(
     ctx.restore();
   }
 
-  const surface = document.surfaces.find((s) => s.id === surfaceId) ?? document.surfaces[0];
+  const surface = artworkSurfaceFor(document, surfaceId);
   if (surface) {
     for (const layer of getArtworkLayersInRenderOrder(surface.layers)) {
       renderLayerToContext(ctx, layer);

@@ -290,6 +290,8 @@
 .configuratorHeader > div:first-child { min-width: 0; }
 .configuratorHeader h1 { margin: 8px 0 5px; color: var(--text-heading); font-size: clamp(1.7rem, 3vw, 2.6rem); line-height: 1.08; letter-spacing: 0; }
 .configuratorHeader p { max-width: 760px; margin: 0; color: var(--text-secondary); font-size: .875rem; line-height: 1.6; }
+.statusRow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.bulkOffer { padding: 4px 9px; border-radius: 999px; color: #0f5132; background: #d1f2df; font-size: var(--config-meta-size); font-weight: 800; }
 .status { padding: 4px 7px; border-radius: var(--config-control-radius); color: var(--text-body); background: var(--surface-subtle); font-size: var(--config-meta-size); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
 .headerActions { flex: 0 0 auto; display: flex; gap: 7px; }
 .headerActions button { width: var(--config-icon-control); height: var(--config-icon-control); padding: 0; display: grid; place-items: center; border: 1px solid var(--border-default); border-radius: var(--config-control-radius); color: var(--text-body); background: var(--surface-main); cursor: pointer; }
@@ -638,3 +640,27 @@
   .rotationPresets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .properties { gap: 14px; }
 }
+
+/* Packaging: the 3D / dieline stage carries a source-style view pill at the bottom centre. */
+.packagingStage { position: relative; min-width: 0; }
+.dielineStage { min-height: clamp(320px, 52vw, 560px); padding: 12px 12px 64px; display: grid; border: 1px solid var(--border-default); border-radius: var(--config-panel-radius); background: #eef0f3; }
+.packagingViewPill {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  z-index: 4;
+  padding: 3px;
+  display: flex;
+  gap: 2px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, .16);
+}
+.packagingViewPill button { min-width: 64px; height: 34px; padding: 0 14px; border: 0; border-radius: 999px; color: var(--text-body); background: transparent; cursor: pointer; font-size: var(--config-meta-size); font-weight: 750; }
+.packagingViewPill button.packagingViewActive { color: #fff; background: #000; }
+
+.bulkOfferList { margin: 10px 0 0; padding: 0; display: grid; gap: 6px; list-style: none; }
+.bulkOfferList li { padding: 8px 10px; display: flex; align-items: center; gap: 7px; border: 1px dashed #8fd1ac; border-radius: var(--config-control-radius); color: #0f5132; background: #f0faf4; font-size: var(--config-meta-size); }
+.bulkOfferList li svg { width: 14px; flex: 0 0 auto; }
+.bulkOfferList li.bulkOfferActive { border-style: solid; background: #d1f2df; font-weight: 750; }

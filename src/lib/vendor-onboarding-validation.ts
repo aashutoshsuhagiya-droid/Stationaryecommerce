@@ -17,7 +17,7 @@ export const otpRequestSchema = z.object({ mobile }).strict();
 export const otpVerifySchema = z.object({
   challengeId: z.string().uuid(),
   mobile,
-  code: z.string().trim().regex(/^\d{6}$/, "Enter the 6-digit verification code"),
+  code: z.string().trim().regex(/^\d{5,6}$/, "Enter the verification code"),
 }).strict();
 
 export const loginSchema = z.object({

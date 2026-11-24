@@ -108,7 +108,8 @@ export type VisualizationProductModel =
   | "stand-up-pouch"
   | "product-sleeve"
   | "rigid-lid-box"
-  | "mailer-envelope";
+  | "mailer-envelope"
+  | "pyramid-box";
 
 function plainRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : {};
@@ -137,13 +138,13 @@ export function resolveVisualizationProductModel(template: {
   const explicit = new Set<VisualizationProductModel>([
     "label-pack", "waterproof-sheet", "bottle-label",
     "rectangular-box", "square-box", "folding-carton", "mailer-box", "rigid-lid-box",
-    "paper-bag", "stand-up-pouch", "product-sleeve", "mailer-envelope",
+    "paper-bag", "stand-up-pouch", "product-sleeve", "mailer-envelope", "pyramid-box",
   ]);
   const explicitModel = explicit.has(productType as VisualizationProductModel)
     ? productType as VisualizationProductModel
     : null;
   const boxModels = new Set<VisualizationProductModel>([
-    "rectangular-box", "square-box", "folding-carton", "mailer-box", "rigid-lid-box",
+    "rectangular-box", "square-box", "folding-carton", "mailer-box", "rigid-lid-box", "pyramid-box",
   ]);
   if (explicitModel && (kind !== "box" || boxModels.has(explicitModel))) return explicitModel;
   if (kind !== "box") {

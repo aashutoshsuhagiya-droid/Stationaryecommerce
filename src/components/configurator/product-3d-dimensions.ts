@@ -39,6 +39,8 @@ const DEFAULT_DIMENSIONS_MM: Record<Product3DKind, DimensionDefaults> = {
   "product-sleeve": { width: 180, height: 105, depth: 58 },
   "rigid-lid-box": { width: 200, height: 90, depth: 160 },
   "mailer-envelope": { width: 250, height: 330, depth: 2 },
+  // Base edge × apex height; depth is the base's other two edges (equilateral by default).
+  "pyramid-box": { width: 80, height: 140, depth: 80 },
 };
 
 /** The model's own generic size, used only when neither product nor shelf gives one. */
@@ -88,7 +90,10 @@ export function normalizeProduct3DDimensions(
     : 1;
   let physicalWidth = dimensionValue(source, WIDTH_KEYS) ?? defaults.width;
   let physicalHeight = dimensionValue(source, HEIGHT_KEYS) ?? defaults.height;
-  let physicalDepth = dimensionValue(source, DEPTH_KEYS) ?? defaults.depth;
+  const measuredDepth = dimensionValue(source, DEPTH_KEYS);
+  // A pyramid is sized by its base edge (width) and apex height; a missing or
+  // zero depth means an equilateral base, so it follows the width.
+  let physicalDepth = measuredDepth ?? (kind === "pyramid-box" ? physicalWidth : defaults.depth);
 
   if (!values && (kind === "label-pack" || kind === "waterproof-sheet")) {
     const longEdge = Math.max(defaults.width, defaults.height);
@@ -100,6 +105,8 @@ export function normalizeProduct3DDimensions(
   physicalHeight = clampPhysical(physicalHeight);
   physicalDepth = clampPhysical(physicalDepth);
   if (kind === "square-box") physicalDepth = physicalWidth;
+  // The base's back edges must still close a triangle with the front edge.
+  if (kind === "pyramid-box") physicalDepth = Math.max(physicalDepth, physicalWidth * 0.55);
 
   const physicalDiameter = clampPhysical(
     dimensionValue(source, DIAMETER_KEYS)

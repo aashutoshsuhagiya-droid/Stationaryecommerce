@@ -51,7 +51,7 @@ const PRESET_MODELS: Record<string, PackagingVisualizationModel> = {
   "slider-box-thick-wall": "folding-carton",
   "slider-box-thin-wall": "folding-carton",
   "snack-box": "folding-carton",
-  "paan-box": "folding-carton",
+  "paan-box": "pyramid-box",
   "mithai-box-top-bottom-style": "folding-carton",
   "brownie-box": "folding-carton",
   "chocolate-box": "folding-carton",

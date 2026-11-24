@@ -1,3 +1,5 @@
+import type { PackagingQuoteSpec } from "./packaging-quote";
+
 export type CurrencyCode = "INR";
 
 export type StockStatus =
@@ -85,6 +87,8 @@ export interface CustomizationField {
 export interface Product {
   id: string;
   slug: string;
+  /** Catalog the product was imported from; drives source-specific presentation. */
+  importSource?: "ezpac" | "ranbazaar";
   sku: string;
   name: string;
   categorySlug: string;
@@ -159,6 +163,8 @@ export interface Product {
     productModel?: string;
     configurationVersion?: string;
     visualizationTemplate?: ProductVisualizationTemplate;
+    /** Packaging specification and source-measured price table (EzPac / Pacdora). */
+    packagingQuote?: PackagingQuoteSpec;
   };
 }
 

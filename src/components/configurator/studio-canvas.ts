@@ -54,7 +54,8 @@ const imageCache = new Map<string, Promise<HTMLImageElement>>();
  * next.config, which is exactly the set our catalogue images come from.
  */
 export function canvasSafeImageUrl(url: string): string {
-  if (url.startsWith("/") || url.startsWith("data:image/")) return url;
+  // Same-origin sources never taint the canvas; blob: is a photo picked in this tab (admin listing preview).
+  if (url.startsWith("/") || url.startsWith("data:image/") || url.startsWith("blob:")) return url;
   return `/_next/image?url=${encodeURIComponent(url)}&w=1200&q=75`;
 }
 

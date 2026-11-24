@@ -1,0 +1,2552 @@
+{
+ "generatedAt": "2026-11-23T15:25:06.436Z",
+ "dryRun": false,
+ "applied": 2,
+ "unchanged": 59,
+ "refused": 3,
+ "products": [
+  {
+   "slug": "a4-flyer",
+   "modelCode": "608040",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 210,
+    "width": 297,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 7.4,
+   "tiers": 14,
+   "selections": [
+    "Paper: 100 GSM Paper",
+    "Printing: One Side / Both Side"
+   ],
+   "verificationChecks": 39,
+   "maxErrorPaise": 0,
+   "customSize": false,
+   "notes": [
+    "The source shows no size choice, so custom size is off."
+   ],
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "brand-ziplock-pouch",
+   "outcome": "refused",
+   "reason": "The source sells only 6 listed sizes (0×90×140, 0×100×150, 0×100×170, 0×140×200, 0×160×230, 0×200×300); the spec holds one reference size."
+  },
+  {
+   "slug": "brownie-box",
+   "modelCode": "120252",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 200.6,
+    "width": 200.6,
+    "height": 60.3
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 259.17,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Printing sides: Outside / Outside & Inside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Pasting: Pasting"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 1,
+   "customSize": true,
+   "notes": [
+    "Listed size 101.6×50.8×50 not shown as a choice; orderable as a custom size."
+   ],
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "business-card",
+   "modelCode": "27001001",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 89,
+    "width": 51,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 7.71,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination / No Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "cake-box-with-handle",
+   "modelCode": "11208101",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120.6,
+    "width": 120.6,
+    "height": 121.1
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 250.55,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "cereal-box",
+   "modelCode": "100101",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120.6,
+    "width": 60.6,
+    "height": 161.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 174.84,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "chocolate-box",
+   "modelCode": "100101",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120.6,
+    "width": 60.6,
+    "height": 161.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 174.84,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "chocolate-pack-box",
+   "modelCode": "161013",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 202.6,
+    "width": 201.6,
+    "height": 40.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 519.98,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "chocolate-triangle-box",
+   "modelCode": "181060",
+   "dieline": "pyramid-box",
+   "referenceSizeMm": {
+    "length": 100.6,
+    "width": 0,
+    "height": 199.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 221.31,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "updated"
+  },
+  {
+   "slug": "cosmetic-beauty-box-with-inside-holder",
+   "modelCode": "102680",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 35.6,
+    "width": 35.6,
+    "height": 121.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 56.21,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "cosmetic-beauty-brand-box",
+   "modelCode": "10001006",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 40,
+    "width": 40,
+    "height": 130
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 59.22,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "custom-branded-laminated-carry-bag",
+   "modelCode": "220010",
+   "dieline": "paper-bag",
+   "referenceSizeMm": {
+    "length": 220,
+    "width": 80,
+    "height": 280
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 254.06,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Printing: One Side / Both Side"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "d-cut-paper-bag",
+   "modelCode": "220015",
+   "dieline": "paper-bag",
+   "referenceSizeMm": {
+    "length": 220,
+    "width": 80,
+    "height": 280
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 440.66,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "d2c-mailer-bag",
+   "outcome": "refused",
+   "reason": "The source sells only 2 listed sizes (279.4×355.6×0, 330.2×406.4×0); the spec holds one reference size."
+  },
+  {
+   "slug": "display-tray",
+   "modelCode": "171002",
+   "dieline": "tray",
+   "referenceSizeMm": {
+    "length": 312,
+    "width": 202,
+    "height": 101
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 377.68,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Printing sides: Outside / Outside & Inside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Pasting: Pasting"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "notes": [
+    "Listed size 101.6×50.8×50 not shown as a choice; orderable as a custom size."
+   ],
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "flower-box",
+   "modelCode": "112031",
+   "dieline": "rigid-lid-box",
+   "referenceSizeMm": {
+    "length": 80,
+    "width": 80,
+    "height": 120
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 139.62,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "folded-business-card",
+   "modelCode": "24200001",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 51,
+    "width": 89,
+    "height": 15
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 15.01,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Gloss Lamination / Matte Lamination / Velvett Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Handle Cost: Handle Charges"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "food-delivery-box",
+   "modelCode": "102010",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120.6,
+    "width": 60.6,
+    "height": 161.1
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 158.53,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "food-parcel-box",
+   "modelCode": "11231101",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 302,
+    "width": 152,
+    "height": 182
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 622.89,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "food-tray",
+   "modelCode": "120390",
+   "dieline": "tray",
+   "referenceSizeMm": {
+    "length": 200,
+    "width": 100,
+    "height": 50
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 209.77,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Printing sides: Outside / Outside & Inside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Pasting: Pasting"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "notes": [
+    "Listed size 101.6×50.8×50 not shown as a choice; orderable as a custom size."
+   ],
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "four-fold-brochure",
+   "modelCode": "24203007",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 142,
+    "width": 0,
+    "height": 206
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 161.18,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping"
+   ],
+   "verificationChecks": 84,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "gift-box",
+   "modelCode": "11231101",
+   "dieline": "rigid-lid-box",
+   "referenceSizeMm": {
+    "length": 302,
+    "width": 152,
+    "height": 182
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 622.89,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "gift-box-with-window",
+   "modelCode": "112290",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 300,
+    "width": 150,
+    "height": 180
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 658.27,
+   "tiers": 13,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Printing sides: Outside & Inside / Outside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination / No Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "hang-tags",
+   "modelCode": "261013",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 100,
+    "width": 50,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 8.5,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination / No Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "hanging-box",
+   "modelCode": "101520",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120,
+    "width": 60,
+    "height": 160
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 180.68,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "middle-hanging-box",
+   "modelCode": "110360",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120,
+    "width": 60,
+    "height": 160
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 179.98,
+   "tiers": 10,
+   "selections": [
+    "Printing sides: Outside / Outside & Inside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination / No Lamination",
+    "Print: Full Color",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "mithai-box-top-bottom-style",
+   "modelCode": "161013",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 202.6,
+    "width": 201.6,
+    "height": 40.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 519.98,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "mobile-cover-box",
+   "modelCode": "187000",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 118,
+    "width": 70,
+    "height": 25
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 32.94,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "money-cover-shagun-envelope",
+   "modelCode": "245031",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 180.2,
+    "width": 110.2,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 100.63,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "notes": [
+    "Listed size 180×80×0 not shown as a choice; orderable as a custom size."
+   ],
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "paan-box",
+   "modelCode": "181060",
+   "dieline": "pyramid-box",
+   "referenceSizeMm": {
+    "length": 100.6,
+    "width": 0,
+    "height": 199.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 221.31,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "parcel-bag",
+   "modelCode": "220041",
+   "dieline": "mailer-envelope",
+   "referenceSizeMm": {
+    "length": 220,
+    "width": 80,
+    "height": 280
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 362.74,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "pen-set-box",
+   "modelCode": "187000",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 118,
+    "width": 70,
+    "height": 25
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 32.94,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "perfume-box",
+   "modelCode": "100010",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120,
+    "width": 60,
+    "height": 160
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 172.45,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "pillow-box",
+   "modelCode": "187000",
+   "dieline": "pillow-box",
+   "referenceSizeMm": {
+    "length": 118,
+    "width": 70,
+    "height": 25
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 32.94,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "pooja-box",
+   "modelCode": "102010",
+   "dieline": "rigid-lid-box",
+   "referenceSizeMm": {
+    "length": 120.6,
+    "width": 60.6,
+    "height": 161.1
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 158.53,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "popcorn-box",
+   "modelCode": "112910",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 64,
+    "width": 64,
+    "height": 106
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 80.23,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "rectangle-square-stickers",
+   "modelCode": "24200208",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 150,
+    "width": 54,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 10.54,
+   "tiers": 9,
+   "selections": [
+    "Finishing: No Lamination / Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "sticker cut: Half Cut with sheet / Full Shape Cut",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "round-stickers",
+   "modelCode": "260040",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 50,
+    "width": 0,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 3.25,
+   "tiers": 9,
+   "selections": [
+    "Finishing: No Lamination / Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "sticker cut: Half Cut with sheet / Full Shape Cut",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "sachet-box",
+   "modelCode": "102010",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120.6,
+    "width": 60.6,
+    "height": 161.1
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 158.53,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "side-open-box",
+   "modelCode": "10004002",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120,
+    "width": 15,
+    "height": 50
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 36.34,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "slider-box-thick-wall",
+   "modelCode": "128024",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 200.6,
+    "width": 110.6,
+    "height": 50.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 400.29,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "slider-box-thin-wall",
+   "modelCode": "128030",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 201.6,
+    "width": 101.6,
+    "height": 50.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 416.31,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 1,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "snack-box",
+   "modelCode": "100010",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 120,
+    "width": 60,
+    "height": 160
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 172.45,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "soap-box",
+   "modelCode": "10004006",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 180,
+    "width": 20,
+    "height": 90
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 85.75,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "soap-pillow-box",
+   "modelCode": "187000",
+   "dieline": "pillow-box",
+   "referenceSizeMm": {
+    "length": 118,
+    "width": 70,
+    "height": 25
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 32.94,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "square-box",
+   "modelCode": "10001001",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 60,
+    "width": 60,
+    "height": 60
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 76.93,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "thank-you-card",
+   "modelCode": "270010",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 30,
+    "width": 30,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 1.49,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Gloss Lamination / Matte Lamination / Velvett Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Handle Cost: Handle Charges"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "thank-you-card-folded",
+   "modelCode": "242020",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 210,
+    "width": 148,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 102.75,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Gloss Lamination / Matte Lamination / Velvett Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Handle Cost: Handle Charges"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "thank-you-card-oval",
+   "modelCode": "270070",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 30,
+    "width": 15,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 0.74,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Gloss Lamination / Matte Lamination / Velvett Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Handle Cost: Handle Charges"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "tissue-paper-box",
+   "modelCode": "108000",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 230.6,
+    "width": 121.6,
+    "height": 60.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 198.64,
+   "tiers": 10,
+   "selections": [
+    "Printing sides: Outside / Outside & Inside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination / No Lamination",
+    "Print: Full Color",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "tri-fold-brochure",
+   "modelCode": "24200403",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 142,
+    "width": 206,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 96.03,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping"
+   ],
+   "verificationChecks": 84,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "unboxing-experience-box",
+   "modelCode": "15001201",
+   "dieline": "rigid-lid-box",
+   "referenceSizeMm": {
+    "length": 200,
+    "width": 150,
+    "height": 50
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 269.49,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Printing sides: Outside / Outside & Inside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Pasting: Pasting"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "notes": [
+    "Listed size 101.6×50.8×50 not shown as a choice; orderable as a custom size."
+   ],
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "wedding-bags",
+   "modelCode": "220010",
+   "dieline": "paper-bag",
+   "referenceSizeMm": {
+    "length": 220,
+    "width": 80,
+    "height": 280
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 254.06,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Printing: One Side / Both Side"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "wedding-gift-hamper-box",
+   "modelCode": "15001201",
+   "dieline": "rigid-lid-box",
+   "referenceSizeMm": {
+    "length": 200,
+    "width": 150,
+    "height": 50
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 269.49,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Printing sides: Outside / Outside & Inside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Pasting: Pasting"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "notes": [
+    "Listed size 101.6×50.8×50 not shown as a choice; orderable as a custom size."
+   ],
+   "outcome": "updated"
+  },
+  {
+   "slug": "wedding-internary-card",
+   "modelCode": "242020",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 210,
+    "width": 148,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 102.75,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Gloss Lamination / Matte Lamination / Velvett Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect",
+    "Handle Cost: Handle Charges"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "wedding-ladoo-box",
+   "modelCode": "112031",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 80,
+    "width": 80,
+    "height": 120
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 139.62,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "wedding-luggage-tags",
+   "modelCode": "261013",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 100,
+    "width": 50,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 8.5,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination / No Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "wedding-planner-wardrobe-planner",
+   "modelCode": "608040",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 210,
+    "width": 297,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 7.4,
+   "tiers": 14,
+   "selections": [
+    "Paper: 100 GSM Paper",
+    "Printing: One Side / Both Side"
+   ],
+   "verificationChecks": 39,
+   "maxErrorPaise": 0,
+   "customSize": false,
+   "notes": [
+    "The source shows no size choice, so custom size is off."
+   ],
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "wedding-snacks-packet",
+   "outcome": "refused",
+   "reason": "The source sells only 6 listed sizes (0×90×140, 0×100×150, 0×100×170, 0×140×200, 0×160×230, 0×200×300); the spec holds one reference size."
+  },
+  {
+   "slug": "wedding-stickers",
+   "modelCode": "260040",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 50,
+    "width": 0,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 3.25,
+   "tiers": 9,
+   "selections": [
+    "Finishing: No Lamination / Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "sticker cut: Half Cut with sheet / Full Shape Cut",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "wedding-tissue-paper-box",
+   "modelCode": "108000",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 230.6,
+    "width": 121.6,
+    "height": 60.6
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 198.64,
+   "tiers": 10,
+   "selections": [
+    "Printing sides: Outside / Outside & Inside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination / No Lamination",
+    "Print: Full Color",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "window-box",
+   "modelCode": "102630",
+   "dieline": "mailer-box",
+   "referenceSizeMm": {
+    "length": 120,
+    "width": 60,
+    "height": 180
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 192.5,
+   "tiers": 13,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Printing sides: Outside & Inside / Outside",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination / No Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 114,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "z-fold-brochure",
+   "modelCode": "242001",
+   "dieline": "flat-sheet",
+   "referenceSizeMm": {
+    "length": 93.67,
+    "width": 215.9,
+    "height": 0
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 66.86,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Print Side: Print One Side with Lamination / Print BothSide with Lamination",
+    "Special Effects: No Effect / Gold Foil Stamping"
+   ],
+   "verificationChecks": 84,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  },
+  {
+   "slug": "zipper-box",
+   "modelCode": "10508102",
+   "dieline": "tuck-end-carton",
+   "referenceSizeMm": {
+    "length": 100,
+    "width": 80,
+    "height": 160
+   },
+   "defaultUnit": "in",
+   "quantity": {
+    "options": [
+     10,
+     25,
+     50,
+     75,
+     100,
+     200,
+     300,
+     500,
+     750,
+     1000
+    ],
+    "default": 10,
+    "minimum": 10,
+    "maximum": 1000,
+    "custom": true
+   },
+   "firstUnitRupees": 169.38,
+   "tiers": 10,
+   "selections": [
+    "Material: White card board 220- 300 gsm",
+    "Finishing: Matte Lamination / Gloss Lamination / Velvett Lamination",
+    "Printing sides: Outside / Outside & Inside",
+    "Special Effects: No Effect / Gold Foil Stamping / UV Effect"
+   ],
+   "verificationChecks": 99,
+   "maxErrorPaise": 0,
+   "customSize": true,
+   "outcome": "unchanged"
+  }
+ ]
+}

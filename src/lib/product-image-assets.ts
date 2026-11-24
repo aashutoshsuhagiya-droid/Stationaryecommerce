@@ -275,3 +275,30 @@ export async function getProductImageAssetForServing(input: {
     lastModified,
   };
 }
+
+const HEIC_TYPES = new Set(["image/heic", "image/heif", "image/heic-sequence", "image/heif-sequence"]);
+
+/** iPhone photos: HEIC/HEIF names or types. */
+export function isHeicUpload(file: { name: string; type: string }) {
+  return HEIC_TYPES.has(file.type.toLowerCase()) || /\.(heic|heif)$/i.test(file.name);
+}
+
+/**
+ * Converts an iPhone HEIC/HEIF photo to JPEG with sharp before validation; other
+ * files pass through. sharp builds without an HEVC decoder cannot read every HEIC
+ * file, so failure is reported in plain words rather than as a broken upload.
+ */
+export async function normalizeHeicUpload(file: File): Promise<File> {
+  if (!isHeicUpload(file)) return file;
+  try {
+    const { default: sharp } = await import("sharp");
+    const jpeg = await sharp(Buffer.from(await file.arrayBuffer())).rotate().jpeg({ quality: 88 }).toBuffer();
+    return new File([new Uint8Array(jpeg)], file.name.replace(/\.(heic|heif)$/i, "") + ".jpg", { type: "image/jpeg" });
+  } catch {
+    throw new ProductImageAssetError(
+      422,
+      "PRODUCT_IMAGE_HEIC_UNSUPPORTED",
+      "This iPhone photo (HEIC) couldn't be opened. Share it as a JPG, or set Camera → Formats → Most Compatible, and try again.",
+    );
+  }
+}

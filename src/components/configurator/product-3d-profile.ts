@@ -18,7 +18,8 @@ export type Product3DKind =
   | "stand-up-pouch"
   | "product-sleeve"
   | "rigid-lid-box"
-  | "mailer-envelope";
+  | "mailer-envelope"
+  | "pyramid-box";
 
 export type PackagingProduct3DKind =
   | "rectangular-box"
@@ -29,11 +30,12 @@ export type PackagingProduct3DKind =
   | "stand-up-pouch"
   | "product-sleeve"
   | "rigid-lid-box"
-  | "mailer-envelope";
+  | "mailer-envelope"
+  | "pyramid-box";
 
 const PACKAGING_KINDS = new Set<Product3DKind>([
   "rectangular-box", "square-box", "folding-carton", "mailer-box", "paper-bag",
-  "stand-up-pouch", "product-sleeve", "rigid-lid-box", "mailer-envelope",
+  "stand-up-pouch", "product-sleeve", "rigid-lid-box", "mailer-envelope", "pyramid-box",
 ]);
 
 /** Packaging is printed per panel; label and school models print every face. */
@@ -87,13 +89,9 @@ export interface Product3DProfile {
 }
 
 export interface Product3DProfileOptions {
+  /** Packaging board colour comes from a named stock here, else the model's default. */
   materialName?: string;
   colors?: readonly string[];
-  /**
-   * Board colour sampled from the edge of the packaging's front artwork, so
-   * unprinted panels match the print. A named board material still wins.
-   */
-  sampledBaseColor?: string;
 }
 
 /**
@@ -362,6 +360,24 @@ export const PACKAGING_3D_PROFILES = {
       flags: ["wrapped"],
     },
   },
+  // Paan boxes: a tall three-sided pyramid on a triangular base, in white carton board.
+  "pyramid-box": {
+    kind: "pyramid-box",
+    label: "Pyramid box",
+    cameraDistance: 4.2,
+    categoryTheme: {
+      baseColor: "#f5f3ee",
+      tintColor: "#fffdf8",
+      accentColor: "#6b7280",
+      roughness: 0.55,
+      metalness: 0,
+      clearcoat: 0,
+      clearcoatRoughness: 0.5,
+      iridescence: 0,
+      finish: "matte",
+      flags: ["paper", "hinged"],
+    },
+  },
   "mailer-box": {
     kind: "mailer-box",
     label: "Mailer box",
@@ -558,11 +574,12 @@ const PACKAGING_CATEGORY_OVERRIDES: Readonly<Record<string, {
 
 function applyPackagingMaterial(
   categoryTheme: Product3DTheme,
-  { materialName = "", colors = [], sampledBaseColor }: Product3DProfileOptions,
+  { materialName = "", colors = [] }: Product3DProfileOptions,
 ): Product3DTheme {
   const material = materialName.trim().toLowerCase();
   const resolvedColors = colors.map(resolveColor).filter((color): color is string => Boolean(color));
-  const board = packagingBoardColor(material) ?? resolveColor(sampledBaseColor);
+  // Never a colour sampled from the product photo: that picks up its background.
+  const board = packagingBoardColor(material);
   let theme: Product3DTheme = {
     ...categoryTheme,
     flags: [...categoryTheme.flags],
@@ -653,6 +670,7 @@ const PACKAGING_FALLBACKS: ReadonlyArray<{
   kind: PackagingProduct3DKind;
 }> = [
   { pattern: /(?:^|[-_\s])(?:courier|mailer|poly)[-_\s]+(?:bag|envelope)s?(?:$|[-_\s])/u, kind: "mailer-envelope" },
+  { pattern: /(?:^|[-_\s])(?:pyramid|paan)[-_\s]+box(?:es)?(?:$|[-_\s])/u, kind: "pyramid-box" },
   { pattern: /(?:^|[-_\s])(?:rigid|hamper|lid[-_\s]+and[-_\s]+base)[-_\s]+box(?:$|[-_\s])/u, kind: "rigid-lid-box" },
   { pattern: /(?:^|[-_\s])square[-_\s]+(?:gift[-_\s]+)?box(?:$|[-_\s])/u, kind: "square-box" },
   { pattern: /(?:^|[-_\s])(?:mailer|mailing|shipping)[-_\s]+box(?:$|[-_\s])/u, kind: "mailer-box" },

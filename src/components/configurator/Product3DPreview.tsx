@@ -3,43 +3,61 @@
 import {
   Box,
   Compass,
-  Maximize2,
   Minimize2,
   RefreshCw,
   RotateCw,
+  Search,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import {
   preloadArtworkImages,
   renderSurfaceToCanvas,
+  surfaceHasArtwork,
 } from "./artwork-canvas-renderer";
 import type {
   ArtworkDocument,
   PrintableSurfaceDefinition,
 } from "./artwork-types";
-import { buildProductGeometry } from "./product-3d-model";
-import { resolveProduct3DProfile } from "./product-3d-profile";
+import {
+  buildProductGeometry,
+  clearProductOpenAnimator,
+  getProductOpenAnimator,
+} from "./product-3d-model";
+import { isPackagingProduct3DKind, resolveProduct3DProfile } from "./product-3d-profile";
 import styles from "./product-3d.module.css";
 
 interface Product3DPreviewProps {
   document: ArtworkDocument;
   surfaces: PrintableSurfaceDefinition[];
+  /** Label and sheet models: the printed sheet's colour. Packaging prints on its board. */
   background: string;
+  /** Label and sheet models: the sheet's border; also the trim (handles, caps, rings). */
   accent: string;
   structuralDesign?: string;
   productType?: string;
   dimensionsMm?: Record<string, number> | null;
+  /** Names the stock; packaging takes its board colour from it (kraft, black, white). */
   materialName?: string;
-  /** Packaging: board colour for unprinted panels, sampled from the front artwork. */
-  packagingBaseColor?: string;
   /** Packaging: the back panel repeats the front design (admin opt-in). */
   mirrorBack?: boolean;
   productName: string;
   onReadyChange?: (ready: boolean) => void;
+  /**
+   * Shows the Open-Close slider. Defaults to whether the built model can open
+   * (cartons, boxes, mailers, pyramid); `false` hides it. `true` cannot add a
+   * slider to a model that does not open.
+   */
+  openable?: boolean;
+  /**
+   * An "As seen on ..." badge in the top-left corner, as text (no image).
+   * `label` names the show or source, e.g. "Shark Tank India"; a leading
+   * "As seen on" is accepted and not repeated. Hidden when null or omitted.
+   */
+  sourceBadge?: { label: string } | null;
 }
 
 type CameraView = "front" | "iso" | "back" | "left" | "right" | "top";
@@ -61,6 +79,27 @@ const FALLBACK_SURFACE: PrintableSurfaceDefinition = {
 };
 
 const completedEntranceShines = new Set<string>();
+
+/** Time for the box to travel fully open or fully closed. */
+const OPEN_TRAVEL_MS = 320;
+/** Slider position for a closed box: the knob starts at "Close". */
+const SLIDER_CLOSED = 100;
+/** Openable models aim this share of the way up toward the open pose... */
+const OPEN_FRAMING_LIFT = 0.5;
+/** ...and frame this share of its bounding sphere (the sphere overstates a box). */
+const OPEN_FRAMING_COVER = 0.86;
+
+function sourceBadgeLines(label: string): { lead: string; name: string } {
+  const trimmed = label.trim();
+  const match = /^as\s+seen\s+on\b[\s:,-]*/iu.exec(trimmed);
+  return { lead: "As seen on", name: (match ? trimmed.slice(match[0].length) : trimmed) || trimmed };
+}
+
+function opennessValueText(sliderValue: number): string {
+  if (sliderValue >= SLIDER_CLOSED) return "Closed";
+  if (sliderValue <= 0) return "Fully open";
+  return `${SLIDER_CLOSED - sliderValue}% open`;
+}
 
 function detectRendererQuality(): RendererQuality {
   const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
@@ -108,6 +147,7 @@ function disposeGroupChildren(
   const materials = new Set<THREE.Material>();
   const textures = new Set<THREE.Texture>();
 
+  clearProductOpenAnimator(group);
   for (const child of [...group.children]) {
     child.traverse((object) => {
       const mesh = object as THREE.Mesh;
@@ -155,13 +195,17 @@ function fitCameraToGroup(
   controls: OrbitControls,
   view: CameraView,
   minimumDistance: number,
+  /** Precomputed framing (an openable model leaves room for its open lid). */
+  framing?: THREE.Sphere | null,
 ): number {
   group.updateWorldMatrix(true, true);
   const box = new THREE.Box3().setFromObject(group);
-  const center = box.isEmpty() ? new THREE.Vector3() : box.getCenter(new THREE.Vector3());
-  const sphere = box.isEmpty()
-    ? new THREE.Sphere(center, 1)
-    : box.getBoundingSphere(new THREE.Sphere());
+  const sphere = framing
+    ? framing.clone()
+    : box.isEmpty()
+      ? new THREE.Sphere(new THREE.Vector3(), 1)
+      : box.getBoundingSphere(new THREE.Sphere());
+  const center = sphere.center.clone();
   const verticalFov = THREE.MathUtils.degToRad(camera.fov);
   const horizontalFov = 2 * Math.atan(Math.tan(verticalFov / 2) * Math.max(camera.aspect, 0.25));
   const limitingFov = Math.max(0.2, Math.min(verticalFov, horizontalFov));
@@ -199,10 +243,11 @@ export function Product3DPreview({
   productType,
   dimensionsMm,
   materialName = "Vinyl Matte",
-  packagingBaseColor,
   mirrorBack = false,
   productName,
   onReadyChange,
+  openable,
+  sourceBadge = null,
 }: Product3DPreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -219,9 +264,18 @@ export function Product3DPreview({
   const reducedMotionRef = useRef(false);
   const currentViewRef = useRef<CameraView>("iso");
   const lastGeometrySignatureRef = useRef("");
+  /** Openness on screen (eased each frame) and where the slider asks it to go; 0 closed, 1 open. */
+  const opennessRef = useRef(0);
+  const opennessTargetRef = useRef(0);
+  /** Camera framing measured once per build, with room for the open lid, so opening never refits. */
+  const framingRef = useRef<THREE.Sphere | null>(null);
 
   const [autoRotate, setAutoRotate] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  /** Inspect mode where the Fullscreen API is missing or refused (e.g. iPhone Safari). */
+  const [isPseudoFullscreen, setIsPseudoFullscreen] = useState(false);
+  const [modelOpenable, setModelOpenable] = useState(false);
+  const [sliderValue, setSliderValue] = useState(SLIDER_CLOSED);
   const [isReady, setIsReady] = useState(false);
   const [webGlSupported, setWebGlSupported] = useState(true);
   const [renderError, setRenderError] = useState<string | null>(null);
@@ -230,9 +284,8 @@ export function Product3DPreview({
     () => resolveProduct3DProfile(structuralDesign, productType, {
       materialName,
       colors: [background, accent],
-      sampledBaseColor: packagingBaseColor,
     }),
-    [accent, background, materialName, packagingBaseColor, productType, structuralDesign],
+    [accent, background, materialName, productType, structuralDesign],
   );
 
   const fitModelToView = useCallback((view: CameraView = currentViewRef.current) => {
@@ -241,7 +294,7 @@ export function Product3DPreview({
     const controls = controlsRef.current;
     if (!group || !camera || !controls || group.children.length === 0) return;
     currentViewRef.current = view;
-    fitCameraToGroup(group, camera, controls, view, productProfile.cameraDistance);
+    fitCameraToGroup(group, camera, controls, view, productProfile.cameraDistance, framingRef.current);
   }, [productProfile.cameraDistance]);
 
   const retryRenderer = useCallback(() => {
@@ -260,6 +313,15 @@ export function Product3DPreview({
     return () => window.document.removeEventListener("fullscreenchange", handleFullscreen);
   }, []);
 
+  useEffect(() => {
+    if (!isPseudoFullscreen) return;
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsPseudoFullscreen(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isPseudoFullscreen]);
+
   // Scene, camera, renderer, controls and render scheduling.
   useEffect(() => {
     const container = containerRef.current;
@@ -270,6 +332,7 @@ export function Product3DPreview({
     let pageVisible = !window.document.hidden;
     let inViewport = true;
     let lastRenderedAt = 0;
+    let lastOpennessFrameAt = 0;
     let renderer: THREE.WebGLRenderer | null = null;
     let controls: OrbitControls | null = null;
     let resizeObserver: ResizeObserver | null = null;
@@ -448,6 +511,21 @@ export function Product3DPreview({
           scheduleAnimation();
           return;
         }
+        // Ease the box toward the slider's openness: only hinge pivots move,
+        // the geometry and the camera framing stay as built.
+        const openAnimator = group ? getProductOpenAnimator(group) : null;
+        const openness = opennessRef.current;
+        const opennessTarget = opennessTargetRef.current;
+        if (openAnimator && openness !== opennessTarget) {
+          const elapsed = lastOpennessFrameAt ? Math.min(100, now - lastOpennessFrameAt) : 16;
+          const step = reducedMotionRef.current ? 1 : elapsed / OPEN_TRAVEL_MS;
+          const next = Math.abs(opennessTarget - openness) <= step
+            ? opennessTarget
+            : openness + Math.sign(opennessTarget - openness) * step;
+          opennessRef.current = next;
+          openAnimator.apply(next);
+        }
+        lastOpennessFrameAt = now;
         lastRenderedAt = now;
         if (!entranceShineComplete) {
           const progress = Math.min(1, (now - shineStartedAt) / 1_400);
@@ -566,6 +644,11 @@ export function Product3DPreview({
     if (!group || !renderer || !quality || !webGlSupported) return;
 
     const surfaceDefinitions = surfaces.length ? surfaces : [FALLBACK_SURFACE];
+    // Packaging is a plain model: the customer's print sits straight on the bare
+    // board (no sheet fill, no frame), and a face they left empty is the board.
+    const packaging = isPackagingProduct3DKind(productProfile.kind);
+    const canvasBackground = packaging ? productProfile.categoryTheme.baseColor : background;
+    const canvasAccent = packaging ? undefined : accent;
     const preservedBeforeBuild = new Set<THREE.Texture>(textureRefs.current.values());
     disposeGroupChildren(group, preservedBeforeBuild);
     setIsReady(false);
@@ -593,8 +676,8 @@ export function Product3DPreview({
           document,
           surface.id,
           surface,
-          background,
-          accent,
+          canvasBackground,
+          canvasAccent,
           surfaceTextureResolution(surface, quality),
         );
         let texture = textureRefs.current.get(surface.id);
@@ -613,6 +696,11 @@ export function Product3DPreview({
       const primaryDef = surfaceDefinitions[0] ?? FALLBACK_SURFACE;
       const primaryTexture = textureRefs.current.get(primaryDef.id);
       if (!primaryTexture) throw new Error("The artwork texture could not be prepared.");
+      // Packaging faces without artwork get no texture, so the model paints them
+      // in the board material itself and every blank face matches.
+      const faceTextures = packaging
+        ? new Map([...textureRefs.current].filter(([surfaceId]) => surfaceHasArtwork(document, surfaceId)))
+        : textureRefs.current;
       const textureVariants = buildProductGeometry({
         group,
         kind: productProfile.kind,
@@ -620,12 +708,32 @@ export function Product3DPreview({
         texture: primaryTexture,
         theme: productProfile.categoryTheme,
         surfaces: surfaceDefinitions,
-        textures: textureRefs.current,
+        textures: faceTextures,
         dimensionsMm,
         mirrorBack,
       });
 
-      const bounds = new THREE.Box3().setFromObject(group);
+      // Floor, contact shadow and framing are measured on the closed model.
+      const openAnimator = getProductOpenAnimator(group);
+      openAnimator?.apply(0);
+      const bounds = new THREE.Box3().setFromObject(group, true);
+      const framing = bounds.isEmpty() ? null : bounds.getBoundingSphere(new THREE.Sphere());
+      if (openAnimator) {
+        openAnimator.apply(1);
+        const open = new THREE.Box3().setFromObject(group, true).union(bounds);
+        if (framing && !open.isEmpty()) {
+          // Stay centred on the closed box across the screen, lift the aim
+          // toward the raised lid and widen enough that it stays in view.
+          const openSphere = open.getBoundingSphere(new THREE.Sphere());
+          const lift = (openSphere.center.y - framing.center.y) * OPEN_FRAMING_LIFT;
+          framing.center.y += lift;
+          framing.radius = Math.max(framing.radius + Math.abs(lift) * 0.5, openSphere.radius * OPEN_FRAMING_COVER);
+        }
+        // A rebuild (new text, new size) keeps the box as open as the customer left it.
+        openAnimator.apply(opennessRef.current);
+      }
+      framingRef.current = framing;
+      setModelOpenable(Boolean(openAnimator));
       const floor = floorRef.current;
       if (floor && !bounds.isEmpty()) {
         floor.position.y = bounds.min.y - 0.035;
@@ -666,8 +774,8 @@ export function Product3DPreview({
               document,
               surface.id,
               surface,
-              background,
-              accent,
+              canvasBackground,
+              canvasAccent,
               surfaceTextureResolution(surface, quality),
             );
             texture.needsUpdate = true;
@@ -727,14 +835,35 @@ export function Product3DPreview({
     controls.update();
   };
 
+  const isInspecting = isFullscreen || isPseudoFullscreen;
   const toggleFullscreen = () => {
-    if (!containerRef.current) return;
-    if (!window.document.fullscreenElement) {
-      void containerRef.current.requestFullscreen?.();
-    } else {
+    const container = containerRef.current;
+    if (!container) return;
+    if (isPseudoFullscreen) {
+      setIsPseudoFullscreen(false);
+      return;
+    }
+    if (window.document.fullscreenElement) {
       void window.document.exitFullscreen?.();
+      return;
+    }
+    if (typeof container.requestFullscreen === "function") {
+      container.requestFullscreen().catch(() => setIsPseudoFullscreen(true));
+    } else {
+      setIsPseudoFullscreen(true);
     }
   };
+
+  const handleOpennessChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = Math.min(SLIDER_CLOSED, Math.max(0, Number(event.target.value) || 0));
+    setSliderValue(value);
+    opennessTargetRef.current = 1 - value / SLIDER_CLOSED;
+    // Looking inside is easier on a box that holds still.
+    if (value < SLIDER_CLOSED) setAutoRotate(false);
+  };
+
+  const showOpenSlider = modelOpenable && openable !== false;
+  const badge = sourceBadge?.label?.trim() ? sourceBadgeLines(sourceBadge.label) : null;
 
   if (!webGlSupported) {
     return (
@@ -750,7 +879,7 @@ export function Product3DPreview({
   return (
     <div
       ref={containerRef}
-      className={styles.container + (isFullscreen ? " " + styles.fullscreen : "")}
+      className={styles.container + (isInspecting ? " " + styles.fullscreen : "")}
       aria-label={"Interactive 3D preview for " + productName}
     >
       <canvas ref={canvasRef} className={styles.canvas} />
@@ -766,11 +895,45 @@ export function Product3DPreview({
         </div>
       )}
 
-      <div className={styles.controlsBar}>
-        <div className={styles.viewButtons} role="toolbar" aria-label="Camera angles">
+      <div className={styles.overlay}>
+        {badge && (
+          <p className={styles.sourceBadge}>
+            <span>{badge.lead}</span>{" "}
+            <strong>{badge.name}</strong>
+          </p>
+        )}
+
+        {showOpenSlider && (
+          <div className={styles.openSlider}>
+            <span aria-hidden="true">Open</span>
+            <input
+              type="range"
+              min={0}
+              max={SLIDER_CLOSED}
+              step={1}
+              value={sliderValue}
+              onChange={handleOpennessChange}
+              aria-label="Open or close the box"
+              aria-valuetext={opennessValueText(sliderValue)}
+            />
+            <span aria-hidden="true">Close</span>
+          </div>
+        )}
+
+        <button
+          type="button"
+          className={styles.inspectButton}
+          onClick={toggleFullscreen}
+          aria-label={isInspecting ? "Exit full screen" : "Inspect in full screen"}
+          title={isInspecting ? "Exit full screen" : "Inspect in full screen"}
+        >
+          {isInspecting ? <Minimize2 className={styles.icon} /> : <Search className={styles.icon} />}
+        </button>
+
+        <div className={styles.viewButtons} role="toolbar" aria-label="Camera angles" aria-orientation="vertical">
           <button type="button" onClick={() => setCameraView("front")} title="Front view">Front</button>
-          <button type="button" onClick={() => setCameraView("iso")} title="Perspective view">
-            <Compass className={styles.icon} /> 3D View
+          <button type="button" onClick={() => setCameraView("iso")} title="Perspective view" aria-label="3D View">
+            <Compass className={styles.icon} /> 3D<span className={styles.wideOnly}>View</span>
           </button>
           <button type="button" onClick={() => setCameraView("left")} title="Left view">Left</button>
           <button type="button" onClick={() => setCameraView("right")} title="Right view">Right</button>
@@ -778,7 +941,7 @@ export function Product3DPreview({
           <button type="button" onClick={() => setCameraView("top")} title="Top view">Top</button>
         </div>
 
-        <div className={styles.actionButtons}>
+        <div className={styles.actionButtons} role="toolbar" aria-label="Preview controls" aria-orientation="vertical">
           <button
             type="button"
             onClick={() => setAutoRotate((value) => !value)}
@@ -787,30 +950,19 @@ export function Product3DPreview({
             aria-pressed={autoRotate}
           >
             <RotateCw className={styles.icon} />
-            <span>{autoRotate ? "Rotating" : "Rotate"}</span>
+            <span className={styles.visuallyHidden}>{autoRotate ? "Rotating" : "Rotate"}</span>
           </button>
-          <button type="button" onClick={() => handleZoom(0.85)} title="Zoom in">
+          <button type="button" onClick={() => handleZoom(0.85)} title="Zoom in" aria-label="Zoom in">
             <ZoomIn className={styles.icon} />
           </button>
-          <button type="button" onClick={() => handleZoom(1.15)} title="Zoom out">
+          <button type="button" onClick={() => handleZoom(1.15)} title="Zoom out" aria-label="Zoom out">
             <ZoomOut className={styles.icon} />
           </button>
-          <button type="button" onClick={() => fitModelToView()} title="Fit model to view">
+          <button type="button" onClick={() => fitModelToView()} title="Fit model to view" aria-label="Fit model to view">
             <RefreshCw className={styles.icon} />
           </button>
-          <button
-            type="button"
-            onClick={toggleFullscreen}
-            title={isFullscreen ? "Exit full screen" : "Full screen"}
-          >
-            {isFullscreen
-              ? <Minimize2 className={styles.icon} />
-              : <Maximize2 className={styles.icon} />}
-          </button>
         </div>
-      </div>
 
-      <div className={styles.badgeOverlay}>
         <div className={styles.materialBadge}>
           <Box className={styles.badgeIcon} />
           <div>
@@ -818,10 +970,10 @@ export function Product3DPreview({
             <small>{materialName}</small>
           </div>
         </div>
-      </div>
 
-      <div className={styles.interactionHint}>
-        <span>Drag to orbit &bull; Pinch or scroll to zoom &bull; Two-finger drag to pan</span>
+        <div className={styles.interactionHint}>
+          <span>Drag to orbit &bull; Pinch or scroll to zoom &bull; Two-finger drag to pan</span>
+        </div>
       </div>
     </div>
   );

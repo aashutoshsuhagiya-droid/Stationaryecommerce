@@ -1,735 +1,649 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, ChevronLeft, ChevronRight, FileImage, LoaderCircle, Package, Sparkles, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
+import { autoSku, type RanBazaarStarterDraft } from "@/lib/admin-quick-list";
+import type { ListingPublishResult, ThreeDOutcome } from "@/lib/listing-publish";
 import {
-  autoSku,
-  checkProductPublishReadiness,
-  createRanBazaarStarterDraft,
-  type QuickListConfigurationField,
-  type QuickListPrintArea,
-  type RanBazaarStarterDraft,
-} from "@/lib/admin-quick-list";
-import {
-  getEzpacPackagingFieldPreset,
-  getEzpacPackagingFieldsForProductType,
-  getEzpacPackagingProductType,
-  isEzpacPackagingProductType,
-  listEzpacPackagingProductTypes,
-  type PackagingFieldPresetId,
-} from "@/lib/ezpac-packaging-presets";
-import { ezpacIndustryCollectionCategorySlug } from "@/lib/ezpac-packaging-presets";
-import { formatStructuredDescription } from "@/lib/admin-structured-description";
-import { EZPAC_SHOPIFY_PRODUCT_MAPPING, ezpacMappingCategory } from "@/lib/ezpac-product-mapping";
-import { listRanBazaarCustomizationStarters } from "@/lib/ranbazaar-customization-presets";
-import {
-  buildListingSources,
+  applyPrintOptions,
+  buildCategoryOptions,
   draftFromExistingProduct,
-  essentialsComplete,
-  previewPrice,
+  hasListingInput,
+  listingFieldErrors,
+  missingForPublish,
+  missingSummary,
+  newListingId,
+  parseListingDraft,
+  printOptionsFor,
   quickListProductPayload,
-  recipeForCategorySlug,
-  searchListingSources,
-  unconfiguredOptionLabels,
-  type ListingSource,
+  recipeChangePrompt,
+  recipeDraftFor,
+  serializeListingDraft,
+  sizePresetsFor,
+  suggestCategories,
+  suggestProductName,
+  togglePrintOption,
+  WIZARD_DRAFT_STORAGE_KEY,
+  writeDescription,
+  type CategoryOption,
+  type PersistedListingDraft,
+  type PrintOptionState,
+  type SizeMm,
+  type TextPosition,
 } from "@/lib/listing-wizard";
-import {
-  listableCategories,
-  priceBandHint,
-  priceBandWarning,
-  recipeSummaryChips,
-} from "@/lib/category-listing-playbook";
-import { StatusBadge } from "./AdminUI";
-import { ProductFullDetailsSections, ProductLayoutControls, clampLayoutElementDefaults, type PublishedVisualizationTemplate } from "./ProductFullDetailsSections";
-import { SurfaceCustomerPreview } from "./SurfaceCustomerPreview";
-import { buildFullDetailsPatch, type FullDetailsProductBase } from "./product-details-payload";
-import { defaultDesignPayload } from "@/lib/studio-design";
+import { CategoryPicker } from "./listing/CategoryPicker";
+import { EssentialsForm, type EssentialsValues } from "./listing/EssentialsForm";
+import { ListingPreviewPanel, type PreviewTab } from "./listing/ListingPreviewPanel";
+import { ListingSuccess } from "./listing/ListingSuccess";
+import { PhotoDropzone } from "./listing/PhotoDropzone";
+import { PublishProgress, type PublishStage } from "./listing/PublishProgress";
+import { deleteListingPhoto, MAX_LISTING_PHOTOS, processPhoto, uploadListingPhoto, type ListingPhoto } from "./listing/photo-processing";
+import { StudioDesignEditor } from "./StudioDesignEditor";
 import styles from "./admin.module.css";
 
-type CategoryRecord = { id: string; slug: string; name: string; parentId: string | null; sortOrder: number };
-type StepStatus = "waiting" | "working" | "done" | "failed" | "skipped";
+type CategoryRecord = { id: string; slug: string; name: string; parentId: string | null; sortOrder: number; isActive?: boolean };
+type Step = 1 | 2 | 3;
 
-const readinessLabels = {
-  "mime-types": "Photo uploads: allowed formats",
-  "physical-dimensions": "Photo surface sizes set",
-  "linked-templates": "Design template ready",
-  "packaging-visualization": "3D preview ready (packaging only)",
-} as const;
-
-const sourceKindLabels = { ranbazaar: "Starter", packaging: "Packaging", blank: "Simple", similar: "Copy existing" } as const;
-
-const categoryByStarter: Record<string, string> = {
-  "name-slips": "premium-name-slips", "pen-pencil": "pen-pencil-custom", notebook: "note-books",
-  "bottle-tiffin": "kids-bottle-tiffin-box", "bag-luggage-tag": "bag-luggage-tag",
-  "t-shirt": "t-shirts", "name-plate": "name-plate", "wrapping-paper-vinyl-poster": "wrapping-paper",
+const STEPS: Record<Step, string> = { 1: "Photos", 2: "What is it?", 3: "Name & price" };
+const HEADINGS: Record<Step, string> = {
+  1: "Add photos of your product",
+  2: "What are you selling?",
+  3: "Name it, price it, publish",
 };
 
-const blankDraft = (): RanBazaarStarterDraft => ({
-  id: "blank", name: "Blank product", configurationFields: [],
-  printAreas: [{ id: "primary", label: "Primary print area", widthMm: null, heightMm: null, safeInsetMm: null }],
-  artworkUpload: false, acceptedArtworkTypes: ["image/png", "image/jpeg"],
-  artworkPolicy: createRanBazaarStarterDraft("name-slips")!.artworkPolicy,
+const emptyEssentials = (): EssentialsValues => ({
+  name: "", price: "", description: "", compareAtPrice: "", sku: autoSku(""), skuEdited: false, gstPercent: null,
+  stockOnHand: "", productionDaysMin: "", productionDaysMax: "", quantityMin: "", quantityMax: "", extraCategoryIds: [],
 });
 
-function packagingDraft(productType: string): RanBazaarStarterDraft | undefined {
-  const product = getEzpacPackagingProductType(productType);
-  if (!product) return undefined;
-  const fields: QuickListConfigurationField[] = getEzpacPackagingFieldsForProductType(productType).map((field) => ({
-    key: field.key, label: field.label, inputType: field.inputType, required: field.required,
-    placeholder: field.placeholder ?? "", helpText: field.helpText ?? (field.optionSource === "admin_configured" ? "Configure supported choices, then enable this field for customers." : ""),
-    defaultValue: "", minLength: field.minLength ?? null, maxLength: field.maxLength ?? null, allowedPattern: field.allowedPattern ?? "",
-    options: field.options?.map((option) => ({ label: option.label, value: option.value, priceDelta: option.priceDelta ?? 0 })) ?? [],
-    enabled: field.optionSource !== "admin_configured", customerVisible: field.optionSource !== "admin_configured",
-  }));
-  const base = blankDraft();
-  return { ...base, id: product.id, name: product.name, configurationFields: fields };
+const numberOrUndefined = (value: string) => value.trim() === "" || !Number.isFinite(Number(value)) ? undefined : Number(value);
+const photoId = () => `p${Math.random().toString(36).slice(2, 10)}`;
+const sleep = (ms: number) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+async function postListing<T>(body: Record<string, unknown>): Promise<T> {
+  const response = await fetch("/api/admin/listings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const data = await response.json().catch(() => undefined) as { data?: T; error?: { message?: string } } | undefined;
+  if (!response.ok || !data?.data) throw new Error(data?.error?.message || "Something went wrong. Please try again.");
+  return data.data;
 }
 
-/** Packaging spec fields for a shelf whose recipe names a field preset but no product type. */
-function packagingDraftFromFieldPreset(presetId: PackagingFieldPresetId): RanBazaarStarterDraft {
-  const preset = getEzpacPackagingFieldPreset(presetId);
-  const base = blankDraft();
-  return {
-    ...base,
-    id: preset.id,
-    name: preset.label,
-    configurationFields: preset.fields.map((field) => ({
-      key: field.key, label: field.label, inputType: field.inputType, required: field.required,
-      placeholder: field.placeholder ?? "",
-      helpText: field.helpText ?? (field.optionSource === "admin_configured" ? "Configure supported choices, then enable this field for customers." : ""),
-      defaultValue: "", minLength: field.minLength ?? null, maxLength: field.maxLength ?? null,
-      allowedPattern: field.allowedPattern ?? "",
-      options: field.options?.map((option) => ({ label: option.label, value: option.value, priceDelta: option.priceDelta ?? 0 })) ?? [],
-      enabled: field.optionSource !== "admin_configured",
-      customerVisible: field.optionSource !== "admin_configured",
-    })),
-  };
-}
-
-function previewFile(file: File | null, previous: string) {
-  if (previous) URL.revokeObjectURL(previous);
-  return file ? URL.createObjectURL(file) : "";
-}
-
-/** Storefront-style live preview: what the admin types is what the customer will see. */
-function ListingPreviewCard({
-  photoUrl,
-  name,
-  price,
-  categoryName,
-  basePreview,
-  sampleText,
-  surface,
-  fieldCount,
-}: {
-  photoUrl: string;
-  name: string;
-  price: string;
-  categoryName: string;
-  basePreview: string;
-  sampleText: string;
-  surface?: QuickListPrintArea;
-  fieldCount: number;
-}) {
-  return (
-    <details className={styles.quickListPreviewWrap} open>
-      <summary>Live preview</summary>
-      <div className={styles.quickListPreviewPane}>
-        <div aria-label="Live customer preview" className={styles.quickListPreviewCard}>
-          <div className={styles.quickListPreviewPhoto}>{photoUrl ? <img alt="Product photo preview" src={photoUrl} /> : <FileImage size={22} />}</div>
-          <strong>{name.trim() || "Your product"}</strong>
-          {categoryName && <span className={styles.quickListPreviewChip}>{categoryName}</span>}
-          <em className={styles.quickListPreviewPrice}>{previewPrice(price) || "Set a price"}</em>
-        </div>
-        {fieldCount > 0 && (
-          <SurfaceCustomerPreview
-            baseImageUrl={basePreview}
-            heightMm={surface?.heightMm}
-            productPhotoUrl={photoUrl}
-            sampleText={sampleText}
-            surfaceLabel={surface?.label ?? "Primary surface"}
-            widthMm={surface?.widthMm}
-          />
-        )}
-      </div>
-    </details>
-  );
-}
-
+/**
+ * Add product: photo first, what it is (auto-suggested), name and price, then
+ * one Publish that does everything (photos, 2D design, 3D preview). A live
+ * preview sits beside every step. Work is autosaved on this device.
+ */
 export function QuickListProductWizard({
   categories,
   catalogProducts = [],
+  duplicateFrom = null,
   onClose,
   onSaved,
-  onOpenStudio,
+  onEditDetails,
   onImportRanBazaar,
   onImportPackaging,
 }: {
   categories: CategoryRecord[];
-  /** Existing products offered as "copy this setup" sources in step 1. */
-  catalogProducts?: Array<{ id: string; name: string }>;
+  /** Existing products: the picture on each category card, and the "Similar products" context. */
+  catalogProducts?: Array<{ id: string; name: string; categoryId?: string; imageUrl?: string }>;
+  /** "Duplicate" from the products list: category, fields, options and price come pre-filled, no photos. */
+  duplicateFrom?: { id: string; name: string } | null;
   onClose: () => void;
+  /** The product list should refresh (the wizard stays open on its success screen). */
   onSaved: (productId: string) => void | Promise<void>;
-  onOpenStudio: (productId: string) => void | Promise<void>;
+  /** Opens the advanced editor for a saved product. */
+  onEditDetails: (productId: string) => void | Promise<void>;
   onImportRanBazaar: () => void | Promise<void>;
   onImportPackaging: () => void | Promise<void>;
 }) {
-  const starters = useMemo(() => listRanBazaarCustomizationStarters(), []);
-  const packagingStarters = useMemo(() => listEzpacPackagingProductTypes(), []);
-  const exportPresets = useMemo(() => EZPAC_SHOPIFY_PRODUCT_MAPPING.map((mapping) => ({ value: mapping.shopifyHandle, label: mapping.shopifyTitle, unmapped: mapping.unmapped === true })), []);
-  const [step, setStep] = useState(1);
-  const [draft, setDraft] = useState<RanBazaarStarterDraft>(() => blankDraft());
-  const [starterMode, setStarterMode] = useState<"ranbazaar" | "blank" | "packaging" | "similar" | null>(null);
-  const [productType, setProductType] = useState("");
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
+  const options = useMemo(() => buildCategoryOptions(categories, catalogProducts.flatMap((product) => product.categoryId ? [{ categoryId: product.categoryId, imageUrl: product.imageUrl }] : [])), [categories, catalogProducts]);
+  const optionById = useMemo(() => new Map(options.map((option) => [option.categoryId, option])), [options]);
+
+  const [listingId, setListingId] = useState(() => newListingId());
+  const [productId, setProductId] = useState("");
+  const [step, setStep] = useState<Step>(1);
+  const [photos, setPhotos] = useState<ListingPhoto[]>([]);
+  const [photoMessage, setPhotoMessage] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [sku, setSku] = useState(() => autoSku(""));
-  const [skuEdited, setSkuEdited] = useState(false);
+  const [categoryConfirmed, setCategoryConfirmed] = useState(false);
+  const [draft, setDraft] = useState<RanBazaarStarterDraft>(() => recipeDraftFor(undefined));
+  const [printOptions, setPrintOptions] = useState<PrintOptionState[]>([]);
+  const [values, setValues] = useState<EssentialsValues>(emptyEssentials);
+  const [nameEdited, setNameEdited] = useState(false);
   const [sampleText, setSampleText] = useState("Aarav");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [similarLoadingId, setSimilarLoadingId] = useState("");
-  const [compareAtPrice, setCompareAtPrice] = useState("");
-  const [enable3D, setEnable3D] = useState(true);
-  const [creating3D, setCreating3D] = useState(false);
-  const [created3DModel, setCreated3DModel] = useState("");
-  const [created3DNote, setCreated3DNote] = useState("");
-  const [three3DError, setThree3DError] = useState("");
-  const [suggestedCategoryId, setSuggestedCategoryId] = useState("");
-  const [primaryFile, setPrimaryFile] = useState<File | null>(null);
-  const [baseFile, setBaseFile] = useState<File | null>(null);
-  const [primaryPreview, setPrimaryPreview] = useState("");
-  const [basePreview, setBasePreview] = useState("");
-  const [uploadedPrimaryUrl, setUploadedPrimaryUrl] = useState("");
-  const [publishNow, setPublishNow] = useState(true);
-  const [reusePhotoAsBase, setReusePhotoAsBase] = useState(false);
-  const [savedProduct, setSavedProduct] = useState<{ id: string; slug: string } | null>(null);
+  const [textPosition, setTextPosition] = useState<TextPosition>("middle");
+  const [sizeMm, setSizeMm] = useState<SizeMm | null>(null);
+  const [previewTab, setPreviewTab] = useState<PreviewTab>("card");
+  const [pendingCategory, setPendingCategory] = useState<{ option: CategoryOption; message: string } | null>(null);
+  const [showErrors, setShowErrors] = useState(false);
+  const [stage, setStage] = useState<PublishStage | null>(null);
+  const [savingAsDraft, setSavingAsDraft] = useState(false);
   const [error, setError] = useState("");
-  const [saveStatus, setSaveStatus] = useState<StepStatus>("waiting");
-  const [uploadStatus, setUploadStatus] = useState<StepStatus>("waiting");
-  const [attachStatus, setAttachStatus] = useState<StepStatus>("waiting");
-  const [reusingPhoto, setReusingPhoto] = useState(false);
-  const [fullDetails, setFullDetails] = useState<FullDetailsProductBase | null>(null);
-  const [fullDetailsSaving, setFullDetailsSaving] = useState(false);
-  const [detailUploadingSlots, setDetailUploadingSlots] = useState<number[]>([]);
-  const [publishedTemplates, setPublishedTemplates] = useState<PublishedVisualizationTemplate[]>([]);
+  const [allowNoPhoto, setAllowNoPhoto] = useState(false);
+  const [result, setResult] = useState<ListingPublishResult | null>(null);
+  const [restorePrompt, setRestorePrompt] = useState<PersistedListingDraft | null>(null);
+  const [designEditorOpen, setDesignEditorOpen] = useState(false);
 
-  const previewUrls = useRef(new Set<string>());
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const photosRef = useRef(photos);
+  const productIdRef = useRef(productId);
+  const preparing = useRef<Promise<string> | null>(null);
+  const pumping = useRef<Promise<void> | null>(null);
+  const objectUrls = useRef(new Set<string>());
+  const valuesRef = useRef(values);
+  photosRef.current = photos;
+  productIdRef.current = productId;
+  valuesRef.current = values;
 
-  useEffect(() => () => previewUrls.current.forEach((url) => URL.revokeObjectURL(url)), []);
+  const selected = categoryId ? optionById.get(categoryId) : undefined;
+  const recipe = selected?.recipe;
+  const fileNames = useMemo(() => photos.map((photo) => photo.fileName), [photos]);
+  const suggestions = useMemo(() => suggestCategories(options, { fileNames, text: values.name }), [options, fileNames, values.name]);
+  const sizePresets = useMemo(() => sizePresetsFor(recipe), [recipe]);
+  const size = sizeMm ?? sizePresets.find((preset) => preset.id === "medium") ?? null;
+  const mainPhoto = photos.find((photo) => photo.status !== "processing" && (photo.previewUrl || photo.assetId));
+  const previewPhoto = mainPhoto ? { url: mainPhoto.previewUrl || `/api/product-images/${mainPhoto.assetId}`, width: mainPhoto.width, height: mainPhoto.height } : null;
+  const fieldErrors = listingFieldErrors(values);
+  const missing = missingForPublish({ photoCount: photos.length, categoryId, name: values.name, price: values.price });
+  const busy = stage !== null;
+  const extraCategoryChoices = useMemo(() => {
+    const slugs = new Set(recipe?.collectionSlugs ?? []);
+    return categories.filter((category) => slugs.has(category.slug)).map((category) => ({ id: category.id, name: category.name }));
+  }, [categories, recipe]);
+
+  /* ---- lifecycle -------------------------------------------------------- */
+
+  useEffect(() => () => objectUrls.current.forEach((url) => URL.revokeObjectURL(url)), []);
+  useEffect(() => { headingRef.current?.focus(); }, [step, result]);
+  useEffect(() => { if (!values.skuEdited) setValues((current) => ({ ...current, sku: autoSku(current.name) })); }, [values.name, values.skuEdited]);
+
+  // Offer to continue a saved listing (not when duplicating, which starts from a product).
   useEffect(() => {
-    if (!skuEdited) setSku(autoSku(name));
-  }, [name, skuEdited]);
-  // Import buckets, the collection tree and test shelves are not sellable shelves.
-  const primaryCategories = useMemo(() => listableCategories(categories), [categories]);
-  const categoryById = useMemo(() => new Map(categories.map((category) => [category.id, category])), [categories]);
-  const selectedCategory = categoryId ? categoryById.get(categoryId) : undefined;
-  const recipe = recipeForCategorySlug(selectedCategory?.slug);
-  const collectionCategories = useMemo(() => (recipe?.collectionSlugs ?? [])
-    .flatMap((slug) => categories.filter((category) => category.slug === slug)), [categories, recipe]);
-  const pendingOptionLabels = useMemo(() => unconfiguredOptionLabels(draft), [draft]);
-  /** Shelves with a recipe, shown as the category-first entry on step 1. */
-  const shelfOptions = useMemo(() => primaryCategories.flatMap((category) => {
-    const shelfRecipe = recipeForCategorySlug(category.slug);
-    if (!shelfRecipe) return [];
-    const parent = category.parentId ? categoryById.get(category.parentId) : undefined;
-    return [{ category, recipe: shelfRecipe, label: parent ? `${parent.name} › ${category.name}` : category.name }];
-  }), [primaryCategories, categoryById]);
-  const bandWarning = priceBandWarning(recipe, Number(price));
-  const bandHint = priceBandHint(recipe);
-  const summaryChips = recipeSummaryChips(recipe, collectionCategories.map((category) => category.name));
-  const builtin3DAvailable = recipe?.threeDPath === "builtin" && Boolean(recipe.model3D);
-  const listingSources = useMemo(() => buildListingSources({
-    starters: starters.map((starter) => ({ id: starter.id, name: starter.name, description: starter.description, fieldCount: starter.fields.length })),
-    packagingTypes: packagingStarters.map((starter) => ({ id: starter.id, name: starter.name })),
-    products: catalogProducts,
-  }), [starters, packagingStarters, catalogProducts]);
-  const searchResults = useMemo(() => searchListingSources(listingSources, searchQuery), [listingSources, searchQuery]);
+    if (duplicateFrom) return;
+    const saved = parseListingDraft(window.localStorage.getItem(WIZARD_DRAFT_STORAGE_KEY));
+    if (saved && hasListingInput({ ...saved, photoCount: saved.photos.length })) setRestorePrompt(saved);
+  }, [duplicateFrom]);
 
+  // Duplicate: copy setup, never identity or photos.
   useEffect(() => {
-    if (categoryId || !primaryCategories.length) return;
-    setCategoryId(primaryCategories[0].id);
-  }, [categoryId, primaryCategories]);
-
-  const primarySurface = draft.printAreas[0];
-  const readinessDetails = step === 4 ? fullDetails : null;
-  const readiness = checkProductPublishReadiness({
-    artworkUpload: readinessDetails?.artworkUpload ?? draft.artworkUpload,
-    acceptedArtworkTypes: readinessDetails?.acceptedArtworkTypes ?? draft.acceptedArtworkTypes,
-    printAreas: readinessDetails?.printAreas ?? draft.printAreas,
-    artworkPolicy: readinessDetails?.artworkPolicy ?? draft.artworkPolicy,
-    packagingRequiresVisualization: isEzpacPackagingProductType(readinessDetails?.productType ?? productType),
-    hasPublishedVisualization: publishedTemplates.some((template) => readinessDetails?.previewTemplate === `visualization:${template.id}`),
-  });
-  const essentialsReady = essentialsComplete({ name, price, categoryId, sku });
-  const hasPrimaryPhoto = Boolean(primaryFile || uploadedPrimaryUrl);
-
-  function categoryOptionLabel(category: CategoryRecord) {
-    if (starterMode !== "packaging" || !category.parentId) return category.name;
-    const parent = categories.find((item) => item.id === category.parentId);
-    return parent ? `${parent.name} › ${category.name}` : category.name;
-  }
-
-  function selectDraft(nextDraft: RanBazaarStarterDraft, mode: Exclude<typeof starterMode, null>, suggestedSlug?: string) {
-    const packagingProduct = mode === "packaging" ? getEzpacPackagingProductType(nextDraft.id) : undefined;
-    setDraft(nextDraft); setStarterMode(mode); setStep(2); setError("");
-    setProductType(packagingProduct?.id ?? "");
-    if (packagingProduct) {
-      setName(packagingProduct.name);
-      setSkuEdited(false);
-      setSku(autoSku(packagingProduct.name));
-    }
-    const categorySlug = suggestedSlug ?? packagingProduct?.primarySubcategoryId;
-    const matchingCategory = categorySlug ? primaryCategories.find((category) => category.slug === categorySlug) : undefined;
-    const nextCategoryId = matchingCategory?.id ?? primaryCategories[0]?.id ?? "";
-    setCategoryId(nextCategoryId);
-    setSuggestedCategoryId(matchingCategory?.id ?? "");
-  }
-
-  /** Category-first entry: the shelf's recipe decides the starter, fields and surface. */
-  function selectCategory(category: CategoryRecord) {
-    const categoryRecipe = recipeForCategorySlug(category.slug);
-    const nextDraft = categoryRecipe?.starterId
-      ? createRanBazaarStarterDraft(categoryRecipe.starterId)
-      : categoryRecipe?.packagingFieldPresetId
-        ? packagingDraftFromFieldPreset(categoryRecipe.packagingFieldPresetId)
-        : undefined;
-    setDraft(nextDraft ?? blankDraft());
-    setStarterMode(categoryRecipe?.packagingFieldPresetId ? "packaging" : categoryRecipe?.starterId ? "ranbazaar" : "blank");
-    setProductType("");
-    setCategoryId(category.id);
-    setSuggestedCategoryId("");
-    setCompareAtPrice("");
-    setEnable3D(true);
-    setStep(2);
-    setError("");
-  }
-
-  function choosePrimary(file: File | undefined) {
-    if (!file) return;
-    const url = previewFile(file, primaryPreview);
-    previewUrls.current.add(url); setPrimaryFile(file); setPrimaryPreview(url); setUploadedPrimaryUrl(""); setReusePhotoAsBase(true);
-  }
-
-  function chooseBase(file: File | undefined) {
-    if (!file) return;
-    const url = previewFile(file, basePreview);
-    previewUrls.current.add(url); setBaseFile(file); setBasePreview(url);
-  }
-
-  function selectPackagingStarter(productTypeId: string) {
-    const next = packagingDraft(productTypeId);
-    if (!next) return;
-    selectDraft(next, "packaging");
-  }
-
-  /** "List similar": copy an existing product's configuration — never its identity. */
-  async function selectSimilar(productId: string, sourceName: string) {
-    setSimilarLoadingId(productId);
-    setError("");
-    try {
-      const response = await fetch(`/api/admin/catalog?productId=${encodeURIComponent(productId)}`);
-      const data = await response.json().catch(() => undefined) as { data?: { product?: Record<string, unknown> } } | undefined;
-      const product = data?.data?.product;
-      if (!response.ok || !product) throw new Error("Could not load that product's setup. Try another one.");
-      const result = draftFromExistingProduct(sourceName, product);
-      setDraft(result.draft);
-      setStarterMode("similar");
-      setStep(2);
-      setProductType(result.productType);
-      setName("");
-      setSkuEdited(false);
-      setSku(autoSku(""));
-      setPrice(result.priceText);
-      setDescription(result.description);
-      const matching = categories.find((category) => category.id === result.categoryId);
-      setCategoryId(matching?.id ?? categories[0]?.id ?? "");
-      setSuggestedCategoryId(matching?.id ?? "");
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not load that product's setup.");
-    } finally {
-      setSimilarLoadingId("");
-    }
-  }
-
-  function chooseSource(source: ListingSource) {
-    if (source.kind === "ranbazaar") {
-      const next = createRanBazaarStarterDraft(source.id);
-      if (next) selectDraft(next, "ranbazaar", categoryByStarter[source.id]);
-    } else if (source.kind === "packaging") {
-      selectPackagingStarter(source.id);
-    } else if (source.kind === "blank") {
-      selectDraft(blankDraft(), "blank");
-    } else {
-      void selectSimilar(source.id, source.name);
-    }
-  }
-
-  function payload(published: boolean, imageUrl: string) {
-    return quickListProductPayload({
-      name, sku, categoryId, price, description, productType, draft, published, imageUrl,
-      recipe,
-      categoryName: selectedCategory?.name ?? "",
-      categoryIds: collectionCategories.map((category) => category.id),
-      compareAtPrice,
-      enable3D: builtin3DAvailable && enable3D,
-    });
-  }
-
-  function makeFullDetails(id: string): FullDetailsProductBase {
-    return { id, name: name.trim(), sku: sku.trim(), categoryId, categoryIds: [categoryId], productType, price: Number(price), imageUrl: uploadedPrimaryUrl || primaryPreview || "/api/product-images/pending", material: "", sizes: [], sizeDescription: "", features: [], description: description.trim(), customizable: draft.configurationFields.length > 0, published: publishNow, allow2D: true, allow3D: false, quantityMin: 1, quantityMax: 100, quantityTiers: [], setupCharge: 0, productionDaysMin: 0, productionDaysMax: 0, printAreas: draft.printAreas, previewTemplate: "", productModel: "", artworkUpload: draft.artworkUpload, acceptedArtworkTypes: draft.acceptedArtworkTypes, artworkPolicy: draft.artworkPolicy, templateLinks: [], configurationFields: draft.configurationFields.map((field, index) => ({ ...field, id: `${field.key || "field"}-${index + 1}`, priceDelta: 0, minValue: null, maxValue: null, step: null, unit: "", visibleWhen: null })) };
-  }
-  function applyEzpacExport(handle: string) {
-    const mapping = EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.shopifyHandle === handle);
-    if (!mapping) return;
-
-    const categoryMapping = ezpacMappingCategory(mapping.presetId);
-    const primary = categoryMapping?.primarySubcategoryId ? categories.find((item) => item.slug === categoryMapping.primarySubcategoryId) : undefined;
-    const collectionIds = (categoryMapping?.collectionIds ?? []).flatMap((collectionId) => {
-      const category = categories.find((item) => item.slug === ezpacIndustryCollectionCategorySlug(collectionId));
-      return category ? [category.id] : [];
-    });
-    const structuredDescription = { ...(mapping.prefills.intro ? { intro: mapping.prefills.intro } : {}), ...(mapping.prefills.bestFor?.length ? { bestFor: [...mapping.prefills.bestFor] } : {}), ...(mapping.prefills.featureBullets?.length ? { featureBullets: [...mapping.prefills.featureBullets] } : {}) };
-    const imageUrls = mapping.prefills.imageUrls ?? [];
-    setFullDetails((current) => current ? { ...current, name: mapping.shopifyTitle, sku: autoSku(mapping.shopifyTitle), price: mapping.prefills.priceRupees, productType: mapping.presetId ?? current.productType, categoryId: primary?.id ?? "", categoryIds: [...new Set([primary?.id, ...collectionIds].filter((id): id is string => Boolean(id)))], material: mapping.prefills.materialHint ?? current.material, structuredDescription, description: formatStructuredDescription(structuredDescription), imageUrl: imageUrls[0] ?? current.imageUrl, extraImages: imageUrls.slice(1, 6).map((url) => ({ url })) } : current);
-  }
-
-  function importEzpacUrls(handle: string) {
-    const mapping = EZPAC_SHOPIFY_PRODUCT_MAPPING.find((item) => item.shopifyHandle === handle);
-    if (!mapping) return;
-    const imageUrls = mapping.prefills.imageUrls ?? [];
-    setFullDetails((current) => current ? { ...current, imageUrl: imageUrls[0] ?? current.imageUrl, extraImages: imageUrls.slice(1, 6).map((url) => ({ url })) } : current);
-  }
-
-  function prefillRanBazaarDetails(starterId: string) {
-    const starter = createRanBazaarStarterDraft(starterId);
-    if (!starter) return;
-    setFullDetails((current) => current ? {
-      ...current,
-      customizable: starter.configurationFields.length > 0,
-      configurationFields: starter.configurationFields.map((field, index) => ({
-        ...field,
-        id: `${field.key || "field"}-${index + 1}`,
-        priceDelta: 0,
-        minValue: null,
-        maxValue: null,
-        step: null,
-        unit: "",
-        visibleWhen: null,
-      })),
-      printAreas: starter.printAreas,
-      artworkUpload: starter.artworkUpload,
-      acceptedArtworkTypes: starter.acceptedArtworkTypes,
-      artworkPolicy: starter.artworkPolicy,
-    } : current);
-  }
-
-  function normalizeFullDetails(product: FullDetailsProductBase): FullDetailsProductBase {
-    return {
-      ...product,
-      categoryIds: product.categoryIds?.length ? product.categoryIds : [product.categoryId].filter(Boolean),
-      quantityTiers: (product.quantityTiers ?? []).map((tier, index) => ({ ...tier, id: tier.id || `tier-${index + 1}` })),
-      configurationFields: (product.configurationFields ?? []).map((field, index) => ({ ...field, id: field.id || `${field.key || "field"}-${index + 1}` })),
-    };
-  }
-
-  function continueFullDetails() {
-    if (!savedProduct) return;
-    setFullDetails((current) => current ? { ...current, id: savedProduct.id } : makeFullDetails(savedProduct.id));
-    setStep(4);
-    void fetch(`/api/admin/catalog?productId=${encodeURIComponent(savedProduct.id)}`)
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error("Could not load the saved product.")))
-      .then((data: { data?: { product?: FullDetailsProductBase & { publishedVisualizationTemplates?: PublishedVisualizationTemplate[] } } }) => {
-        const product = data.data?.product;
-        if (product) setFullDetails(normalizeFullDetails(product));
-        setPublishedTemplates(product?.publishedVisualizationTemplates ?? []);
-      })
-      .catch(() => setPublishedTemplates([]));
-  }
-
-  async function uploadFullDetailsSlot(slot: number, file: File) {
-    if (!savedProduct || !fullDetails) return;
-    setDetailUploadingSlots((current) => [...new Set([...current, slot])]); setError("");
-    try {
-      const url = await upload(savedProduct.id, slot === 0 ? "primary" : "gallery", file);
-      setFullDetails((current) => {
-        if (!current) return current;
-        if (!slot) return { ...current, imageUrl: url };
-        const extraImages = Array.from({ length: 5 }, (_, index) => current.extraImages?.[index] ?? { url: "" });
-        extraImages[slot - 1] = { ...extraImages[slot - 1], url };
-        return { ...current, extraImages };
-      });
-      if (!slot) setUploadedPrimaryUrl(url);
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "The image could not be uploaded."); }
-    finally { setDetailUploadingSlots((current) => current.filter((item) => item !== slot)); }
-  }
-
-  async function saveFullDetails(published: boolean) {
-    if (!savedProduct || !fullDetails) return;
-    setFullDetailsSaving(true); setError("");
-    try {
-      const next = { ...fullDetails, id: savedProduct.id, published, artworkPolicy: fullDetails.artworkPolicy ? clampLayoutElementDefaults(fullDetails.artworkPolicy) : null };
-      await request("PATCH", buildFullDetailsPatch(next));
-      setFullDetails(next); setAttachStatus("done");
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "Could not save the full product details."); }
-    finally { setFullDetailsSaving(false); }
-  }
-
-  async function request(method: "POST" | "PATCH", body: Record<string, unknown>) {
-    const response = await fetch("/api/admin/catalog", {
-      method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
-    });
-    const data = await response.json().catch(() => undefined) as { data?: { id?: string; slug?: string }; error?: { message?: string } } | undefined;
-    if (!response.ok) throw new Error(data?.error?.message || "Could not save product.");
-    return data?.data;
-  }
-
-  async function upload(productId: string, kind: "primary" | "surface-base" | "gallery", file: File, surfaceId?: string) {
-    const form = new FormData(); form.set("productId", productId); form.set("kind", kind); form.set("image", file);
-    if (surfaceId) form.set("surfaceId", surfaceId);
-    const response = await fetch("/api/admin/catalog/images", { method: "POST", body: form });
-    const data = await response.json().catch(() => undefined) as { data?: { asset?: { url?: string } }; error?: { message?: string } } | undefined;
-    if (!response.ok) throw new Error(data?.error?.message || "The image could not be uploaded.");
-    return data?.data?.asset?.url ?? "";
-  }
-
-  async function copyPrimaryToBase(productId: string, surfaceId: string) {
-    const response = await fetch("/api/admin/catalog/images/from-source", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId, surfaceId, source: "primary" }),
-    });
-    const data = await response.json().catch(() => undefined) as { data?: { asset?: { url?: string } }; error?: { message?: string } } | undefined;
-    if (!response.ok) throw new Error(data?.error?.message || "The product photo could not be reused.");
-    return data?.data?.asset?.url ?? "";
-  }
-
-  async function save() {
-    setError("");
-    if (!essentialsReady) { setStep(2); setError("Add a name, price and category before saving."); return; }
-    if (publishNow && !hasPrimaryPhoto) { setStep(3); setError("Choose a product photo before publishing."); return; }
-    if (publishNow && !readiness.canPublish) { setStep(2); setError("Finish the publish readiness items before publishing."); return; }
-    let product = savedProduct;
-    let imageUrl = uploadedPrimaryUrl;
-    let phase: "save" | "upload" | "attach" = "save";
-    try {
-      if (!product) {
-        phase = "save";
-        setSaveStatus("working");
-        const created = await request("POST", payload(false, "/api/product-images/pending"));
-        if (!created?.id || !created.slug) throw new Error("The saved product is missing its ID.");
-        product = { id: created.id, slug: created.slug }; setSavedProduct(product); setSaveStatus("done");
+    if (!duplicateFrom) return;
+    let live = true;
+    void (async () => {
+      try {
+        const response = await fetch(`/api/admin/catalog?productId=${encodeURIComponent(duplicateFrom.id)}`, { cache: "no-store" });
+        const data = await response.json().catch(() => undefined) as { data?: { product?: Record<string, unknown> } } | undefined;
+        const product = data?.data?.product;
+        if (!response.ok || !product || !live) throw new Error();
+        const copy = draftFromExistingProduct(duplicateFrom.name, product);
+        const option = optionById.get(copy.categoryId);
+        setDraft(copy.draft);
+        setCategoryId(option ? copy.categoryId : "");
+        setCategoryConfirmed(Boolean(option));
+        setPrintOptions(printOptionsFor(copy.draft, option?.recipe));
+        setValues((current) => ({ ...current, price: copy.priceText, description: copy.description.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim() }));
+      } catch {
+        if (live) setError("Couldn't copy that product's setup. You can still list it from scratch.");
       }
-      // Keep the source-copy in the same retryable upload phase. A primary image may
-      // already have uploaded when its canvas-background copy fails, so a retry must
-      // repeat that copy before the final product PATCH can succeed.
-      const shouldReusePrimaryAsBase = Boolean(reusePhotoAsBase && primarySurface && (primaryFile || imageUrl));
-      if (primaryFile || baseFile || shouldReusePrimaryAsBase) {
-        phase = "upload";
-        setUploadStatus("working");
-        let uploadedPrimaryThisSave = false;
-        if (primaryFile) {
-          imageUrl = await upload(product.id, "primary", primaryFile);
-          uploadedPrimaryThisSave = true;
-          setUploadedPrimaryUrl(imageUrl); setPrimaryFile(null);
-        }
-        if (baseFile && primarySurface && (!reusePhotoAsBase || !primaryFile)) {
-          await upload(product.id, "surface-base", baseFile, primarySurface.id);
-          setBaseFile(null);
-        }
-        if (reusePhotoAsBase && primarySurface && (uploadedPrimaryThisSave || imageUrl)) {
-          const baseImageUrl = await copyPrimaryToBase(product.id, primarySurface.id);
-          if (baseImageUrl) setBasePreview(baseImageUrl);
-          setBaseFile(null);
-        }
-        setUploadStatus("done");
-      } else setUploadStatus("skipped");
-      phase = "attach";
-      setAttachStatus("working");
-      await request("PATCH", { ...payload(publishNow, imageUrl || "/api/product-images/pending"), id: product.id });
-      setAttachStatus("done");
-      await addDefaultDesign(product.id);
-    } catch (cause) {
-      const message = cause instanceof Error ? cause.message : "Could not save the product.";
-      if (phase === "save") setSaveStatus("failed");
-      else if (phase === "upload") setUploadStatus("failed");
-      else setAttachStatus("failed");
-      setError(message); return;
+    })();
+    return () => { live = false; };
+  }, [duplicateFrom, optionById]);
+
+  // Autosave to this device (no photo bytes: uploaded photos are kept by id).
+  useEffect(() => {
+    if (result || restorePrompt) return;
+    const timer = window.setTimeout(() => {
+      const hasInput = hasListingInput({ ...values, categoryId, photoCount: photos.length });
+      if (!hasInput) return;
+      window.localStorage.setItem(WIZARD_DRAFT_STORAGE_KEY, serializeListingDraft({
+        listingId, step, productId, categoryId, name: values.name, nameEdited, price: values.price, description: values.description,
+        compareAtPrice: values.compareAtPrice, sku: values.sku, skuEdited: values.skuEdited, gstPercent: values.gstPercent,
+        stockOnHand: values.stockOnHand, productionDaysMin: values.productionDaysMin, productionDaysMax: values.productionDaysMax,
+        quantityMin: values.quantityMin, quantityMax: values.quantityMax, extraCategoryIds: values.extraCategoryIds,
+        printOptions, sizeMm, textPosition, sampleText,
+        photos: photos.flatMap((photo) => photo.assetId ? [{ id: photo.id, fileName: photo.fileName, width: photo.width, height: photo.height, assetId: photo.assetId }] : []),
+      }));
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [categoryId, listingId, nameEdited, photos, printOptions, productId, restorePrompt, result, sampleText, sizeMm, step, textPosition, values]);
+
+  function restore(saved: PersistedListingDraft) {
+    const option = optionById.get(saved.categoryId);
+    const nextDraft = recipeDraftFor(option?.recipe);
+    setListingId(saved.listingId);
+    setProductId(saved.productId);
+    setStep(saved.step);
+    setCategoryId(option ? saved.categoryId : "");
+    setCategoryConfirmed(Boolean(option));
+    setDraft(nextDraft);
+    setPrintOptions(saved.printOptions.length ? saved.printOptions : printOptionsFor(nextDraft, option?.recipe));
+    setValues({
+      name: saved.name, price: saved.price, description: saved.description, compareAtPrice: saved.compareAtPrice, sku: saved.sku || autoSku(saved.name),
+      skuEdited: saved.skuEdited, gstPercent: saved.gstPercent, stockOnHand: saved.stockOnHand, productionDaysMin: saved.productionDaysMin,
+      productionDaysMax: saved.productionDaysMax, quantityMin: saved.quantityMin, quantityMax: saved.quantityMax, extraCategoryIds: saved.extraCategoryIds,
+    });
+    setNameEdited(saved.nameEdited);
+    setSizeMm(saved.sizeMm);
+    setTextPosition(saved.textPosition);
+    setSampleText(saved.sampleText);
+    setPhotos(saved.photos.map((photo) => ({
+      id: photo.id, fileName: photo.fileName, previewUrl: `/api/product-images/${photo.assetId}`, width: photo.width, height: photo.height,
+      warnings: [], status: "uploaded", progress: 100, assetId: photo.assetId,
+    })));
+    setRestorePrompt(null);
+  }
+
+  async function startOver(saved: PersistedListingDraft) {
+    window.localStorage.removeItem(WIZARD_DRAFT_STORAGE_KEY);
+    setRestorePrompt(null);
+    if (saved.productId) {
+      try { await postListing({ phase: "discard", listingId: saved.listingId }); } catch { /* an orphaned draft is harmless */ }
     }
   }
 
-  /**
-   * A personalised product starts with a 2D design: its photo with the name box in the
-   * middle, fine-tuned later in the design editor. Never replaces existing designs, skips
-   * packaging (it keeps the free-form artwork editor), and never blocks the listing.
-   */
-  async function addDefaultDesign(productId: string) {
-    if (starterMode === "packaging") return;
-    try {
-      const response = await fetch(`/api/admin/studio-designs?productId=${encodeURIComponent(productId)}`, { cache: "no-store" });
-      const current = await response.json() as { data?: { designs: unknown[]; product: { imageUrl: string; imageSize: { width: number; height: number } | null } } };
-      if (!response.ok || !current.data || current.data.designs.length) return;
-      const design = defaultDesignPayload({ productId, imageUrl: current.data.product.imageUrl, imageSize: current.data.product.imageSize, fields: draft.configurationFields });
-      if (!design) return;
-      await fetch("/api/admin/studio-designs", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(design) });
-    } catch {
-      // The design can still be made in the product's design editor.
+  /* ---- photos ----------------------------------------------------------- */
+
+  const updatePhoto = useCallback((id: string, patch: Partial<ListingPhoto>) => {
+    setPhotos((current) => current.map((photo) => photo.id === id ? { ...photo, ...patch } : photo));
+  }, []);
+
+  /** The listing's draft product, created on the first photo so uploads can start right away. */
+  const ensureProduct = useCallback(async (): Promise<string> => {
+    if (productIdRef.current) return productIdRef.current;
+    if (!preparing.current) {
+      preparing.current = (async () => {
+        const top = suggestCategories(options, { fileNames: photosRef.current.map((photo) => photo.fileName) })[0];
+        const current = valuesRef.current;
+        const fallbackName = suggestProductName(top?.label ?? "Product", photosRef.current.map((photo) => photo.fileName));
+        const name = current.name.trim().length >= 2 ? current.name.trim() : fallbackName.length >= 2 ? fallbackName : "New product";
+        const chosenCategory = categoryId || top?.categoryId || "";
+        if (!chosenCategory) throw new Error("Add a category in the advanced editor first.");
+        const prepared = await postListing<{ productId: string }>({
+          phase: "prepare",
+          listingId,
+          product: quickListProductPayload({
+            name, sku: current.sku || autoSku(name), categoryId: chosenCategory, price: 0, description: "", productType: "",
+            draft: recipeDraftFor(undefined), published: false, imageUrl: "/api/product-images/pending",
+          }),
+        });
+        productIdRef.current = prepared.productId;
+        setProductId(prepared.productId);
+        return prepared.productId;
+      })().finally(() => { preparing.current = null; });
+    }
+    return preparing.current;
+  }, [categoryId, listingId, options]);
+
+  /** Uploads every photo waiting for it, one at a time; failures stay retryable. */
+  const pumpUploads = useCallback(async () => {
+    if (pumping.current) return pumping.current;
+    pumping.current = (async () => {
+      try {
+        let target = await ensureProduct();
+        for (;;) {
+          const next = photosRef.current.find((photo) => photo.status === "ready");
+          if (!next) break;
+          updatePhoto(next.id, { status: "uploading", progress: 1, error: undefined });
+          try {
+            const uploaded = await uploadListingPhoto(target, next, (progress) => updatePhoto(next.id, { progress }));
+            updatePhoto(next.id, { status: "uploaded", progress: 100, assetId: uploaded.assetId });
+          } catch (cause) {
+            const message = cause instanceof Error ? cause.message : "Upload failed — retry.";
+            // The draft vanished (e.g. "Start over" elsewhere): make a new one and try again.
+            if (/not found/i.test(message)) { productIdRef.current = ""; setProductId(""); target = await ensureProduct(); updatePhoto(next.id, { status: "ready", progress: 0 }); continue; }
+            updatePhoto(next.id, { status: "failed", progress: 0, error: message });
+          }
+        }
+      } catch (cause) {
+        setPhotoMessage(cause instanceof Error ? cause.message : "Photos couldn't upload yet. They'll upload when you publish.");
+      } finally {
+        pumping.current = null;
+      }
+    })();
+    return pumping.current;
+  }, [ensureProduct, updatePhoto]);
+
+  useEffect(() => {
+    if (photos.some((photo) => photo.status === "ready") && !pumping.current) void pumpUploads();
+  }, [photos, pumpUploads]);
+
+  const addFiles = useCallback((files: File[]) => {
+    setPhotoMessage("");
+    const room = MAX_LISTING_PHOTOS - photosRef.current.length;
+    if (room <= 0) { setPhotoMessage("A product can have up to 8 photos. Remove one to add another."); return; }
+    if (files.length > room) setPhotoMessage(`Only the first ${room} photo${room === 1 ? "" : "s"} were added — 8 is the most.`);
+    for (const file of files.slice(0, room)) {
+      const id = photoId();
+      setPhotos((current) => [...current, { id, fileName: file.name, previewUrl: "", width: 0, height: 0, warnings: [], status: "processing", progress: 0 }]);
+      processPhoto(file)
+        .then((processed) => {
+          if (processed.previewUrl) objectUrls.current.add(processed.previewUrl);
+          updatePhoto(id, { ...processed, status: "ready" });
+        })
+        .catch((cause) => {
+          setPhotos((current) => current.filter((photo) => photo.id !== id));
+          setPhotoMessage(cause instanceof Error ? `${file.name}: ${cause.message}` : `${file.name} couldn't be added.`);
+        });
+    }
+  }, [updatePhoto]);
+
+  function removePhoto(id: string) {
+    const photo = photos.find((item) => item.id === id);
+    if (photo?.assetId && productId) void deleteListingPhoto(productId, photo.assetId);
+    if (photo?.previewUrl.startsWith("blob:")) { URL.revokeObjectURL(photo.previewUrl); objectUrls.current.delete(photo.previewUrl); }
+    setPhotos((current) => current.filter((item) => item.id !== id));
+  }
+
+  function movePhoto(id: string, toIndex: number) {
+    setPhotos((current) => {
+      const from = current.findIndex((photo) => photo.id === id);
+      if (from < 0) return current;
+      const next = [...current];
+      const [moved] = next.splice(from, 1);
+      next.splice(Math.max(0, Math.min(next.length, toIndex)), 0, moved);
+      return next;
+    });
+  }
+
+  /* ---- category --------------------------------------------------------- */
+
+  function applyCategory(option: CategoryOption, nextDraft = recipeDraftFor(option.recipe)) {
+    setCategoryId(option.categoryId);
+    setDraft(nextDraft);
+    setPrintOptions(printOptionsFor(nextDraft, option.recipe));
+    setSizeMm(null);
+    setPendingCategory(null);
+    const collectionIds = categories.filter((category) => option.recipe?.collectionSlugs?.includes(category.slug)).map((category) => category.id);
+    setValues((current) => ({
+      ...current,
+      gstPercent: null,
+      extraCategoryIds: collectionIds,
+      ...(!nameEdited ? { name: suggestProductName(option.label, fileNames) } : {}),
+    }));
+    const hasText = nextDraft.configurationFields.some((field) => field.inputType === "text");
+    setPreviewTab(option.has3D && photos.length ? "3d" : hasText ? "2d" : "card");
+  }
+
+  function pickCategory(option: CategoryOption) {
+    if (option.categoryId === categoryId) return;
+    const nextDraft = recipeDraftFor(option.recipe);
+    const prompt = categoryConfirmed && categoryId ? recipeChangePrompt({ currentDraft: draft, nextDraft, nextLabel: option.label }) : null;
+    if (prompt) { setPendingCategory({ option, message: prompt }); return; }
+    applyCategory(option, nextDraft);
+  }
+
+  /* ---- navigation -------------------------------------------------------- */
+
+  function goTo(next: Step) {
+    setError("");
+    if (next === 2 && !categoryId && suggestions[0]) applyCategory(suggestions[0]);
+    if (step === 2 && next === 3) setCategoryConfirmed(true);
+    setStep(next);
+  }
+
+  function continueStep() {
+    if (step === 1) {
+      if (!photos.length && !allowNoPhoto) { setAllowNoPhoto(true); setPhotoMessage("Add a photo first — customers buy what they can see."); return; }
+      goTo(2);
+    } else if (step === 2) {
+      if (!categoryId) { setError("Pick what you're selling."); return; }
+      goTo(3);
+    } else {
+      void publish(true);
     }
   }
 
-  /** Builds and publishes a packaging product's 3D preview from its own photo. */
-  async function createQuick3D(productId: string) {
-    setCreating3D(true); setThree3DError("");
+  const hasInput = hasListingInput({ ...values, categoryId, photoCount: photos.length });
+  function requestClose() {
+    if (busy) return;
+    if (!result && hasInput && !window.confirm("Close this listing? It stays saved on this device, so you can continue later.")) return;
+    onClose();
+  }
+
+  function onKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (designEditorOpen) return;
+    if (event.key === "Escape") { event.preventDefault(); requestClose(); return; }
+    if (event.key !== "Enter" || event.shiftKey || event.nativeEvent.isComposing) return;
+    const target = event.target as HTMLElement;
+    if (target.closest("textarea, button, a, select, form, summary, [role='tab'], [draggable='true']")) return;
+    if (result || restorePrompt || pendingCategory || busy) return;
+    event.preventDefault();
+    continueStep();
+  }
+
+  /* ---- publish ---------------------------------------------------------- */
+
+  async function waitForPhotos() {
+    for (let waited = 0; photosRef.current.some((photo) => photo.status === "processing") && waited < 20_000; waited += 150) await sleep(150);
+    await pumpUploads();
+    const failed = photosRef.current.filter((photo) => photo.status === "failed" || photo.status === "ready" || photo.status === "uploading");
+    if (failed.length) throw new Error(`${failed.length === 1 ? "One photo" : `${failed.length} photos`} didn't upload. Tap Retry on ${failed.length === 1 ? "it" : "them"}, or remove ${failed.length === 1 ? "it" : "them"}.`);
+    return photosRef.current.flatMap((photo) => photo.assetId ? [photo.assetId] : []);
+  }
+
+  async function publish(live: boolean) {
+    setShowErrors(true);
+    setError("");
+    const blockers = live ? missing : [];
+    if (blockers.length) {
+      setError(missingSummary(blockers));
+      if (blockers.includes("a photo")) setStep(1);
+      else if (blockers.includes("what it is")) setStep(2);
+      return;
+    }
+    setSavingAsDraft(!live);
+    setStage("photos");
+    let threeDTimer = 0;
     try {
-      const response = await fetch("/api/admin/visualization-studio/quick-3d", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId }),
+      await ensureProduct();
+      const assetIds = await waitForPhotos();
+      setStage("details");
+      if (recipe?.threeDPath === "template" && assetIds.length) threeDTimer = window.setTimeout(() => setStage("3d"), 1500);
+      const name = values.name.trim().length >= 2 ? values.name.trim() : suggestProductName(selected?.label ?? "Product", fileNames) || "New product";
+      const product = quickListProductPayload({
+        name,
+        sku: values.sku.trim() || autoSku(name),
+        categoryId,
+        categoryIds: [categoryId, ...values.extraCategoryIds],
+        price: values.price.trim() === "" ? 0 : values.price,
+        compareAtPrice: values.compareAtPrice,
+        description: values.description,
+        productType: "",
+        draft,
+        published: live,
+        imageUrl: "/api/product-images/pending",
+        recipe,
+        categoryName: selected?.categoryName ?? "",
+        printOptions,
+        sizeMm: sizeMm ?? null,
+        ...(values.gstPercent !== null ? { gstPercent: values.gstPercent } : {}),
+        stockOnHand: numberOrUndefined(values.stockOnHand),
+        productionDaysMin: numberOrUndefined(values.productionDaysMin),
+        productionDaysMax: numberOrUndefined(values.productionDaysMax),
+        quantityMin: numberOrUndefined(values.quantityMin),
+        quantityMax: numberOrUndefined(values.quantityMax),
       });
-      const data = await response.json().catch(() => undefined) as { data?: { productModel?: string; alreadyLinked?: boolean; artworkNote?: string }; error?: { message?: string } } | undefined;
-      if (!response.ok) throw new Error(data?.error?.message || "The 3D preview could not be created.");
-      setCreated3DModel(data?.data?.productModel ?? "linked");
-      setCreated3DNote(data?.data?.artworkNote ?? "");
+      const published = await postListing<ListingPublishResult>({
+        phase: "publish", listingId, product, imageAssetIds: assetIds, publish: live, textPosition,
+        ...(productIdRef.current ? { productId: productIdRef.current } : {}),
+      });
+      setStage("finishing");
+      window.localStorage.removeItem(WIZARD_DRAFT_STORAGE_KEY);
+      setResult(published);
+      if (published.threeD.status === "ready" || published.threeD.status === "builtin") setPreviewTab("3d");
+      void onSaved(published.productId);
     } catch (cause) {
-      setThree3DError(cause instanceof Error ? cause.message : "The 3D preview could not be created.");
+      setError(cause instanceof Error ? cause.message : "Couldn't publish. Please try again.");
     } finally {
-      setCreating3D(false);
+      window.clearTimeout(threeDTimer);
+      setStage(null);
     }
   }
 
-  async function reusePhotoForBase() {
-    if (!savedProduct || !primarySurface) return;
-    setReusingPhoto(true); setError("");
-    try {
-      const baseImageUrl = await copyPrimaryToBase(savedProduct.id, primarySurface.id);
-      if (baseImageUrl) setBasePreview(baseImageUrl);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "The product photo could not be reused.");
-    } finally { setReusingPhoto(false); }
+  function addAnother() {
+    const keep = selected;
+    photos.forEach((photo) => { if (photo.previewUrl.startsWith("blob:")) URL.revokeObjectURL(photo.previewUrl); });
+    setListingId(newListingId());
+    setProductId("");
+    productIdRef.current = "";
+    setPhotos([]);
+    setValues(emptyEssentials());
+    setNameEdited(false);
+    setResult(null);
+    setShowErrors(false);
+    setAllowNoPhoto(false);
+    setError("");
+    setStep(1);
+    if (keep) { applyCategory(keep); setCategoryConfirmed(true); }
   }
-  const success = attachStatus === "done" && savedProduct;
-  const supportsFullDetails = starterMode === "packaging" || starterMode === "ranbazaar" || starterMode === "similar";
-  const wizardSteps = supportsFullDetails && step === 4 ? ["What are you selling?", "Name, price & photo", "Review & publish", "Full details"] : ["What are you selling?", "Name, price & photo", "Review & publish"];
-  const selectedCategoryName = categories.find((category) => category.id === categoryId)?.name ?? "";
-  const publishChoice = <fieldset className={styles.quickListPublishChoice}><legend>Save choice</legend><label><input checked={publishNow} name="quick-publish" onChange={() => setPublishNow(true)} type="radio" /> Publish now</label><label><input checked={!publishNow} name="quick-publish" onChange={() => setPublishNow(false)} type="radio" /> Save as draft</label></fieldset>;
-  const reusePhotoChoice = <label className={styles.quickListReuseChoice}><input checked={reusePhotoAsBase} onChange={(event) => setReusePhotoAsBase(event.target.checked)} type="checkbox" /> Use the product photo as the 2D canvas background</label>;
-  // Only unresolved checks are worth the admin's attention; a ready product gets one calm line.
-  const pendingChecks = readiness.items.filter((item) => !item.ready && (item.id !== "packaging-visualization" || isEzpacPackagingProductType(productType)));
-  const readinessChecklist = <div className={styles.quickListChecklist}>
-    <strong>{publishNow ? "Before it goes live" : "Saving as a draft"}</strong>
-    {!publishNow
-      ? <p className={styles.quickListSkipped}><span>–</span><span>Publish checks run later, when you publish it.</span></p>
-      : !hasPrimaryPhoto
-        ? <p className={styles.quickListNotReady}><span>×</span><span><strong>Photo</strong> — go back and add a product photo to publish.</span></p>
-        : pendingChecks.length === 0
-          ? <p className={styles.quickListReady}><span><Check size={13} /></span><span>Everything&apos;s ready — this goes live as soon as you publish.</span></p>
-          : pendingChecks.map((item) => <p className={styles.quickListNotReady} key={item.id}><span>×</span><span><strong>{readinessLabels[item.id]}</strong> — {item.message}{item.blocking ? "" : " (optional)"}</span></p>)}
-  </div>;
+
+  /* ---- render ----------------------------------------------------------- */
+
+  const applyOptions = (next: PrintOptionState[]) => setPrintOptions(next);
+  const fieldsForPreview = useMemo(() => applyPrintOptions(draft.configurationFields, printOptions), [draft, printOptions]);
+  const threeD: ThreeDOutcome = result?.threeD ?? { status: "none" };
+
   return (
     <>
-      <button aria-label="Close add product" className={styles.drawerBackdrop} onClick={onClose} type="button" />
-      <aside aria-label="Add product" className={`${styles.drawer} ${styles.quickListDrawer}`}>
-        <div className={styles.drawerHeader}>
-          <div><h3>Add product</h3><p>Five quick decisions and it&apos;s live — advanced settings can wait until after saving.</p></div>
-          <button aria-label="Close" className={styles.iconButton} onClick={onClose} type="button"><X size={16} /></button>
-        </div>
-        <div className={styles.quickListRail} aria-label="Quick add progress">
-          {wizardSteps.map((label, index) => <button className={step === index + 1 ? styles.quickListStepActive : styles.quickListStep} key={label} onClick={() => { if (index + 1 <= step) setStep(index + 1); }} type="button"><span>{index + 1}</span>{label}</button>)}
-        </div>
-        <div className={styles.drawerBody}>
-          {step === 1 && <div className={styles.quickListContent}>
-            <div className={styles.quickListStarterHeading}><h4>What are you selling? Search, or pick the closest match — everything can be changed later.</h4></div>
-            {!categories.length && <div className={styles.quickListImportCard}><strong>No categories yet — import the RanBazaar category groups first</strong><p>Imports only missing category records; it never creates products.</p><span><button className={styles.buttonSecondary} onClick={() => void onImportRanBazaar()} type="button">Import RanBazaar groups</button><button className={styles.buttonSecondary} onClick={() => void onImportPackaging()} type="button">Import packaging groups</button></span></div>}
-            <label className={styles.quickListSearch}>
-              <span className={styles.fieldLabel}>Search product types, packaging, or your existing products</span>
-              <input autoFocus className={styles.input} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Try “name slip”, “soap box”, or an existing product’s name" type="search" value={searchQuery} />
-            </label>
-            <div className={styles.quickListStarterGrid}>
-              {searchResults.map((source) => (
-                <button className={styles.configCard} disabled={Boolean(similarLoadingId)} key={`${source.kind}-${source.id}`} onClick={() => chooseSource(source)} type="button">
-                  {source.kind === "blank" ? <Package size={18} /> : source.kind === "packaging" ? <Sparkles size={18} /> : null}
-                  <strong>{source.name}</strong>
-                  <small>{source.hint}</small>
-                  <span className={styles.quickListChips}>
-                    <StatusBadge tone={source.kind === "similar" ? "info" : undefined}>{similarLoadingId === source.id ? "Loading…" : sourceKindLabels[source.kind]}</StatusBadge>
-                    {typeof source.fieldCount === "number" && source.fieldCount > 0 && <StatusBadge>{source.fieldCount} customize field{source.fieldCount === 1 ? "" : "s"}</StatusBadge>}
-                  </span>
-                </button>
+      <div aria-hidden className={styles.drawerBackdrop} onClick={requestClose} />
+      <aside aria-labelledby="listing-step-heading" aria-modal="true" className={styles.listingWizard} onKeyDown={onKeyDown} role="dialog">
+        <header className={styles.listingHeader}>
+          <div>
+            <h2>Add product</h2>
+            {!result && <ol aria-label="Steps" className={styles.listingSteps}>
+              {([1, 2, 3] as const).map((item) => (
+                <li key={item}>
+                  <button
+                    aria-current={step === item ? "step" : undefined}
+                    aria-label={`Step ${item}: ${STEPS[item]}`}
+                    className={step === item ? styles.listingStepActive : item < step ? styles.listingStepDone : styles.listingStep}
+                    disabled={item > step || busy}
+                    onClick={() => goTo(item)}
+                    type="button"
+                  ><span aria-hidden>{item}</span><b className={styles.listingStepLabel}>{STEPS[item]}</b></button>
+                </li>
               ))}
-            </div>
-            {Boolean(searchQuery.trim()) && !searchResults.length && <div className={styles.quickListNoResults}><strong>No matches for “{searchQuery.trim()}”.</strong><p>Try another word, or start from a simple product.</p><button className={styles.buttonSecondary} onClick={() => selectDraft(blankDraft(), "blank")} type="button"><Package size={13} /> Start blank</button></div>}
-            {!searchQuery.trim() && shelfOptions.length > 0 && <div className={styles.quickListShelves}>
-              <p className={styles.sectionCaption}>Or pick the shelf it goes on — the rest fills itself in</p>
-              <div className={styles.quickListShelfGrid}>
-                {shelfOptions.map((shelf) => <button className={styles.quickListShelfButton} key={shelf.category.id} onClick={() => selectCategory(shelf.category)} type="button">
-                  <strong>{shelf.label}</strong>
-                  <small>{shelf.recipe.notes ?? (shelf.recipe.gstPercent > 0 ? `GST ${shelf.recipe.gstPercent}%` : "Quote-priced packaging")}</small>
-                </button>)}
+            </ol>}
+          </div>
+          <button aria-label="Close add product" className={styles.iconButton} onClick={requestClose} type="button"><X aria-hidden size={18} /></button>
+        </header>
+
+        <div className={styles.listingMain}>
+          <div className={styles.listingContent}>
+            {restorePrompt ? (
+              <div className={styles.listingRestore} role="alertdialog" aria-labelledby="listing-step-heading">
+                <h3 id="listing-step-heading" ref={headingRef} tabIndex={-1}>Continue where you left off?</h3>
+                <p>{restorePrompt.name.trim() || optionById.get(restorePrompt.categoryId)?.label || "A product"}{restorePrompt.photos.length ? ` · ${restorePrompt.photos.length} photo${restorePrompt.photos.length === 1 ? "" : "s"}` : ""}</p>
+                <div className={styles.listingSuccessActions}>
+                  <button className={styles.buttonPrimary} onClick={() => restore(restorePrompt)} type="button">Continue</button>
+                  <button className={styles.buttonSecondary} onClick={() => void startOver(restorePrompt)} type="button">Start over</button>
+                </div>
               </div>
-            </div>}
-            <p className={styles.quickListStarterHint}>Tip: type an existing product&apos;s name to copy its whole setup — then just add a new name, price and photo.</p>
-          </div>}
-          {step === 2 && <div className={styles.quickListContent}>
-            <div className={styles.quickListForm}>
-              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Name</span><input autoFocus className={styles.input} onChange={(event) => setName(event.target.value)} placeholder={starterMode === "similar" ? "Give the new product its own name" : undefined} required value={name} /></label>
-              <div className={styles.fieldGrid}>
-                <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Price (₹)</span><input className={styles.input} inputMode="decimal" min="0" onChange={(event) => setPrice(event.target.value)} required type="number" value={price} />{bandWarning ? <small className={styles.quickListBandWarning}>{bandWarning}</small> : bandHint ? <small>{bandHint}</small> : null}</label>
-                <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Category</span><select className={styles.select} onChange={(event) => { setCategoryId(event.target.value); setSuggestedCategoryId(""); }} required value={categoryId}><option value="" disabled>Choose a category</option>{primaryCategories.map((item) => <option key={item.id} value={item.id}>{categoryOptionLabel(item)}</option>)}</select>{suggestedCategoryId === categoryId && <span className={styles.quickListAutoCategory}>Auto-picked for you <button className={styles.buttonGhost} onClick={() => setSuggestedCategoryId("")} type="button">Change</button></span>}</label>
-              </div>
-              {recipe?.mrpExpected && <label className={styles.fieldGroup}><span className={styles.fieldLabel}>MRP (₹) <small>Optional</small></span><input className={styles.input} inputMode="decimal" min="0" onChange={(event) => setCompareAtPrice(event.target.value)} type="number" value={compareAtPrice} /><small>Shown struck through next to the price. Products on this shelf usually show one.</small></label>}
-              {summaryChips.length > 0 && <p className={styles.quickListRecipeChips}>{summaryChips.map((chip) => <StatusBadge key={chip}>{chip}</StatusBadge>)}</p>}
-              <div className={styles.assetPicker}><div className={styles.assetPreview}>{primaryPreview ? <img alt="Product photo preview" src={primaryPreview} /> : <FileImage size={20} />}</div><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Photo</span><input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} onChange={(event) => choosePrimary(event.target.files?.[0])} type="file" /><small>Needed before publishing — drafts can wait. It shows up in the live preview instantly.</small></label></div>
-              <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Description <small>Optional</small></span><input className={styles.input} onChange={(event) => setDescription(event.target.value)} value={description} /></label>
-              {draft.configurationFields.length > 0 && <label className={styles.fieldGroup}><span className={styles.fieldLabel}>Sample name for the preview</span><input className={styles.input} onChange={(event) => setSampleText(event.target.value)} value={sampleText} /><small>Only for the live preview — customers type their own.</small></label>}
-              <details className={styles.quickListAdvancedDetails}><summary>Advanced details</summary>
-                <div className={styles.quickListSku}><span>SKU <strong>{sku}</strong></span><button className={styles.buttonGhost} onClick={() => setSkuEdited((current) => !current)} type="button">{skuEdited ? "Auto" : "Edit"}</button>{skuEdited && <input aria-label="SKU" className={styles.input} onChange={(event) => setSku(event.target.value)} value={sku} />}</div>
-                {reusePhotoChoice}
-                <div className={styles.assetPicker}><div className={styles.assetPreview}>{basePreview ? <img alt="Base image preview" src={basePreview} /> : <FileImage size={20} />}</div><label className={styles.fieldGroup}><span className={styles.fieldLabel}>Different canvas background <small>Optional</small></span><input accept="image/jpeg,image/png,image/webp" className={styles.assetFileInput} onChange={(event) => chooseBase(event.target.files?.[0])} type="file" /><small>{reusePhotoAsBase ? "The product photo is reused automatically — add one only to override it." : "Shown underneath customer text and photo layers."}</small></label></div>
-              </details>
-            </div>
-            <ListingPreviewCard basePreview={basePreview} categoryName={selectedCategoryName} fieldCount={draft.configurationFields.length} name={name} photoUrl={primaryPreview} price={price} sampleText={sampleText} surface={primarySurface} />
-          </div>}
-          {step === 3 && <div className={styles.quickListContent}>
-            <div className={styles.quickListForm}>
-              <div className={styles.quickListSummaryCard}><div className={styles.quickListSummaryPhoto}>{primaryPreview ? <img alt="Product photo" src={primaryPreview} /> : <FileImage size={18} />}</div><div><strong>{name.trim() || "Unnamed product"}</strong><small>{[selectedCategoryName, previewPrice(price) || "no price yet", draft.configurationFields.length ? `${draft.configurationFields.length} customize field${draft.configurationFields.length === 1 ? "" : "s"}` : "", starterMode !== "blank" && draft.name ? draft.name : ""].filter(Boolean).join(" · ")}</small></div></div>
-              {publishChoice}
-              {builtin3DAvailable && <label className={styles.quickListReuseChoice}><input checked={enable3D} onChange={(event) => setEnable3D(event.target.checked)} type="checkbox" /> Show a 3D preview on the product page</label>}
-              {recipe?.threeDPath === "template" && <p className={styles.quickListHintLine}>Packaging gets its 3D preview from a photo — use <strong>Create 3D preview</strong> after saving.</p>}
-              {pendingOptionLabels.length > 0 && <p className={styles.quickListHintLine}>Needs your print options once: {pendingOptionLabels.join(", ")}. Add them in the advanced editor — customers won&apos;t see those choices until you do.</p>}
-              {readinessChecklist}
-              {savedProduct && !success && <button className={styles.buttonSecondary} disabled={reusingPhoto} onClick={() => void reusePhotoForBase()} type="button">{reusingPhoto ? <LoaderCircle className={styles.studioSpin} size={13} /> : <FileImage size={13} />} Use this product&apos;s photo</button>}
-              <div className={styles.quickListSequence} aria-live="polite">{[["1", "saving draft", saveStatus], ["2", "uploading images", uploadStatus], ["3", publishNow ? "attaching and publishing" : "attaching", attachStatus]].map(([number, label, status]) => <span className={styles[`quickListSequence${String(status)[0].toUpperCase()}${String(status).slice(1)}` as "quickListSequenceWaiting"]} key={String(number)}>{number}) {label} {status === "done" ? "✓" : status === "working" ? "…" : status === "failed" ? "×" : status === "skipped" ? "skipped" : ""}</span>)}</div>
-              {error && <p className={styles.formError} role="alert">{error}</p>}
-              {success ? <div className={styles.quickListSuccess}><strong>{publishNow ? "Product published" : "Draft saved"}</strong><p>/products/{savedProduct.slug}</p><span className={styles.quickListSuccessActions}><a className={styles.buttonPrimary} href={`/products/${savedProduct.slug}`} onClick={() => void onSaved(savedProduct.id)} rel="noreferrer" target="_blank">See it live</a><button className={styles.buttonSecondary} onClick={continueFullDetails} type="button">Open advanced editor</button>{recipe?.threeDPath === "template" ? <button className={styles.buttonSecondary} disabled={creating3D || Boolean(created3DModel)} onClick={() => void createQuick3D(savedProduct.id)} type="button">{creating3D ? <LoaderCircle className={styles.studioSpin} size={13} /> : null} {created3DModel ? `3D preview ready (${created3DModel})` : creating3D ? "Creating 3D preview…" : "Create 3D preview"}</button> : <button className={styles.buttonSecondary} onClick={() => void onOpenStudio(savedProduct.id)} type="button">Open 3D studio</button>}</span>{created3DNote && <p className={styles.quickListHintLine}>{created3DNote}</p>}{three3DError && <p className={styles.formError} role="alert">{three3DError}</p>}</div> : <button className={styles.buttonPrimary} disabled={saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" || (publishNow && (!hasPrimaryPhoto || !readiness.canPublish))} onClick={() => void save()} type="button">{saveStatus === "working" || uploadStatus === "working" || attachStatus === "working" ? "Saving…" : (saveStatus === "failed" || uploadStatus === "failed" || attachStatus === "failed") ? "Retry failed step" : publishNow ? "Save and publish" : "Save draft"}</button>}
-            </div>
-            <ListingPreviewCard basePreview={basePreview} categoryName={selectedCategoryName} fieldCount={draft.configurationFields.length} name={name} photoUrl={primaryPreview} price={price} sampleText={sampleText} surface={primarySurface} />
-          </div>}
-          {step === 4 && fullDetails && <div className={styles.quickListContent}>
-            <div className={styles.quickListForm}>
-              <ProductFullDetailsSections
-                autoSku={autoSku} categories={categories} exportPresets={starterMode === "packaging" ? exportPresets : undefined}
-                onApplyExport={starterMode === "packaging" ? applyEzpacExport : undefined} onChange={(value) => setFullDetails(value)}
-                onImportExportUrls={starterMode === "packaging" ? importEzpacUrls : undefined} onPrefillRanBazaar={starterMode === "ranbazaar" ? prefillRanBazaarDetails : undefined}
-                onSkuEditedChange={setSkuEdited} onUploadSlot={uploadFullDetailsSlot}
-                skuEdited={skuEdited} uploadingSlots={detailUploadingSlots} value={fullDetails}
+            ) : result ? (
+              <ListingSuccess
+                canAdjustText={result.design2D !== "none"}
+                name={values.name.trim() || "Your product"}
+                onAddAnother={addAnother}
+                onAdjustText={() => setDesignEditorOpen(true)}
+                onEditDetails={() => void onEditDetails(result.productId)}
+                onTryAnotherPhoto={() => { setResult(null); setStep(1); setPhotoMessage("Add a clearer photo of the front, then tap ★ to make it the main photo."); }}
+                photoUrl={previewPhoto?.url ?? ""}
+                published={result.published}
+                slug={result.slug}
+                threeD={threeD}
               />
-              <ProductLayoutControls onChange={(value) => setFullDetails(value)} publishedTemplates={publishedTemplates} value={fullDetails} />
-              <div className={styles.quickListChecklist}><strong>Publish readiness</strong>{readiness.items.map((item) => {
-                const notApplicable = item.id === "packaging-visualization" && !isEzpacPackagingProductType(fullDetails.productType);
-                return <p className={notApplicable || item.ready ? styles.quickListReady : styles.quickListNotReady} key={item.id}><span>{notApplicable || item.ready ? <Check size={13} /> : "×"}</span><span><strong>{readinessLabels[item.id]}</strong>{notApplicable ? " — not applicable" : item.ready ? "" : ` — ${item.message}`}{!notApplicable && !item.blocking && !item.ready ? " (hint)" : ""}</span></p>;
-              })}</div>
-              {error && <p className={styles.formError} role="alert">{error}</p>}
-            </div>
-            <SurfaceCustomerPreview productPhotoUrl={fullDetails.imageUrl} sampleText={sampleText} surfaceLabel={fullDetails.printAreas[0]?.label ?? "Primary surface"} />
-          </div>}
+            ) : (
+              <>
+                <h3 className={styles.listingStepHeading} id="listing-step-heading" ref={headingRef} tabIndex={-1}>{HEADINGS[step]}</h3>
+                {!categories.length && (
+                  <div className={styles.listingSuccessWarning}>
+                    <p>There are no product types yet. Add the standard ones first.</p>
+                    <div className={styles.listingSuccessActions}>
+                      <button className={styles.buttonSecondary} onClick={() => void onImportRanBazaar()} type="button">Add personalised types</button>
+                      <button className={styles.buttonSecondary} onClick={() => void onImportPackaging()} type="button">Add packaging types</button>
+                    </div>
+                  </div>
+                )}
+                {step === 1 && <PhotoDropzone
+                  message={photoMessage}
+                  onAddFiles={addFiles}
+                  onMakeMain={(id) => movePhoto(id, 0)}
+                  onMove={movePhoto}
+                  onRemove={removePhoto}
+                  onRetry={(id) => updatePhoto(id, { status: "ready", progress: 0, error: undefined })}
+                  photos={photos}
+                />}
+                {step === 2 && <CategoryPicker onPick={pickCategory} options={options} selectedId={categoryId} suggestions={suggestions} />}
+                {step === 3 && <EssentialsForm
+                  errors={fieldErrors}
+                  extraCategoryChoices={extraCategoryChoices}
+                  onChange={(patch) => {
+                    if (patch.name !== undefined) setNameEdited(true);
+                    setValues((current) => ({ ...current, ...patch }));
+                  }}
+                  onTogglePrintOption={(key, value) => applyOptions(togglePrintOption(printOptions, key, value))}
+                  onWriteDescription={() => setValues((current) => ({ ...current, description: writeDescription(recipe, current.name, selected?.label) }))}
+                  printOptions={printOptions}
+                  recipe={recipe}
+                  showErrors={showErrors}
+                  values={values}
+                />}
+                {pendingCategory && (
+                  <div aria-labelledby="listing-confirm-title" className={styles.listingConfirm} role="alertdialog">
+                    <p id="listing-confirm-title">{pendingCategory.message}</p>
+                    <div className={styles.listingSuccessActions}>
+                      <button autoFocus className={styles.buttonPrimary} onClick={() => applyCategory(pendingCategory.option)} type="button">Replace</button>
+                      <button className={styles.buttonSecondary} onClick={() => setPendingCategory(null)} type="button">Keep mine</button>
+                    </div>
+                  </div>
+                )}
+                {error && <p className={styles.listingInlineError} role="alert">{error}</p>}
+              </>
+            )}
+          </div>
+
+          <ListingPreviewPanel
+            categoryName={selected?.categoryName ?? ""}
+            compareAtPrice={values.compareAtPrice}
+            fields={fieldsForPreview}
+            name={values.name}
+            onSampleTextChange={setSampleText}
+            onSizeChange={setSizeMm}
+            onTabChange={setPreviewTab}
+            onTextPositionChange={setTextPosition}
+            photo={previewPhoto}
+            price={values.price}
+            printAreas={draft.printAreas}
+            recipe={recipe}
+            sampleText={sampleText}
+            size={size}
+            sizePresets={sizePresets}
+            tab={previewTab}
+            textPosition={textPosition}
+          />
         </div>
 
-        <div className={styles.drawerFooter}>
-          <button className={styles.buttonSecondary} onClick={() => step === 1 ? onClose() : setStep((current) => current - 1)} type="button">{step === 1 ? "Cancel" : <><ChevronLeft size={13} /> Back</>}</button>
-          {step < 3 && <button className={styles.buttonPrimary} disabled={step === 1 ? !starterMode : !essentialsReady} onClick={() => setStep((current) => current + 1)} type="button">Continue <ChevronRight size={13} /></button>}
-          {step === 4 && <span className={styles.fullDetailsSaveActions}><button className={styles.buttonSecondary} disabled={fullDetailsSaving} onClick={() => void saveFullDetails(false)} type="button">Save draft</button><button className={styles.buttonPrimary} disabled={fullDetailsSaving || !readiness.canPublish} onClick={() => void saveFullDetails(true)} type="button">{fullDetailsSaving ? "Saving..." : "Save and publish"}</button></span>}
-        </div>
+        {!result && !restorePrompt && (
+          <footer className={styles.listingFooter}>
+            {busy ? <PublishProgress draft={savingAsDraft} stage={stage!} total={photos.length} uploaded={photos.filter((photo) => photo.status === "uploaded").length} /> : step === 3 && missing.length > 0 && showErrors ? (
+              <p className={styles.listingMissing}>{missingSummary(missing)}</p>
+            ) : null}
+            <div className={styles.listingFooterActions}>
+              <button className={styles.buttonSecondary} disabled={busy} onClick={() => step === 1 ? requestClose() : goTo((step - 1) as Step)} type="button">
+                {step === 1 ? "Cancel" : <><ChevronLeft aria-hidden size={15} /> Back</>}
+              </button>
+              {step === 1 && allowNoPhoto && !photos.length && <button className={styles.buttonGhost} onClick={() => goTo(2)} type="button">Continue without a photo</button>}
+              {step < 3 && <button className={styles.buttonPrimary} disabled={busy} onClick={continueStep} type="button">Continue <ChevronRight aria-hidden size={15} /></button>}
+              {step === 3 && <>
+                <button className={styles.buttonSecondary} disabled={busy} onClick={() => void publish(false)} type="button">Save as draft</button>
+                <button className={styles.buttonPrimary} disabled={busy} onClick={() => void publish(true)} type="button">Publish</button>
+              </>}
+            </div>
+          </footer>
+        )}
       </aside>
+      {designEditorOpen && result && (
+        <StudioDesignEditor onClose={() => setDesignEditorOpen(false)} onSaved={() => undefined} productId={result.productId} productName={values.name.trim() || "Product"} />
+      )}
     </>
   );
 }

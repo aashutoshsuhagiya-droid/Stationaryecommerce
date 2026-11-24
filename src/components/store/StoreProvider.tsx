@@ -46,6 +46,21 @@ export type Customization = {
   };
 };
 
+/** A packaging specification (size, material, finishing…) priced by the server for this line. */
+export type CartPackaging = {
+  selections: Record<string, string>;
+  sizeMm?: Partial<{ length: number; width: number; height: number }>;
+  displayUnit?: "mm" | "cm" | "in";
+  /** Customer-facing lines shown in the cart and checkout, e.g. Size / Finishing. */
+  summary: Array<{ label: string; value: string }>;
+  quote?: {
+    id: string;
+    pricingVersion: string;
+    calculatedAt: string;
+    unitPricePaise: number;
+  };
+};
+
 export type CartItem = {
   key: string;
   productId: string;
@@ -57,6 +72,7 @@ export type CartItem = {
   quantity: number;
   visual: string;
   customization?: Customization;
+  packaging?: CartPackaging;
 };
 
 export function cartLineTotal(item: Pick<CartItem, "price" | "quantity" | "lineAdjustment">) {
@@ -174,7 +190,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     toastSequenceRef.current += 1;
     setCartToast({ id: toastSequenceRef.current, name: item.name });
     setCart((current) => {
-      const match = !item.customization?.quote && !item.lineAdjustment
+      // A priced packaging line is tied to its quantity tier, so it never merges.
+      const match = !item.customization?.quote && !item.lineAdjustment && !item.packaging
         ? current.find((entry) => JSON.stringify([entry.productId, entry.variantId, entry.lineAdjustment ?? 0, entry.customization]) === signature)
         : undefined;
       if (match) {
@@ -189,7 +206,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const updateQuantity = useCallback((key: string, quantity: number) => {
-    setCart((current) => current.map((item) => item.key === key && !item.customization?.quote ? {
+    setCart((current) => current.map((item) => item.key === key && !item.customization?.quote && !item.packaging ? {
       ...item,
       quantity: clampCartItemQuantity(quantity),
     } : item));

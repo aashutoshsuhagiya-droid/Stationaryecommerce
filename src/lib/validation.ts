@@ -232,6 +232,26 @@ export const addressSchema = z.object({
   country: z.literal("IN").default("IN"),
 });
 
+const packagingDimensionSchema = z.number().finite().positive().max(10_000);
+
+/** Packaging specification chosen on the product page (EzPac-style size, material, finishing…). */
+export const packagingSelectionInputSchema = z.object({
+  selections: z
+    .record(z.string().trim().min(1).max(80), z.string().trim().min(1).max(80))
+    .refine((selections) => Object.keys(selections).length <= 16, {
+      message: "A packaging configuration can contain at most 16 selections",
+    })
+    .default({}),
+  sizeMm: z.object({
+    length: packagingDimensionSchema.optional(),
+    width: packagingDimensionSchema.optional(),
+    height: packagingDimensionSchema.optional(),
+  }).strict().optional(),
+  displayUnit: z.enum(["mm", "cm", "in"]).optional(),
+}).strict();
+
+export type PackagingSelectionInputValue = z.infer<typeof packagingSelectionInputSchema>;
+
 export const orderItemInputSchema = z.object({
   productId: z.string().trim().min(1).max(100),
   variantId: z.string().trim().min(1).max(100),
@@ -256,6 +276,7 @@ export const orderItemInputSchema = z.object({
     })
     .strict()
     .optional(),
+  packaging: packagingSelectionInputSchema.optional(),
 }).strict();
 
 export const catalogQuoteSchema = z.object({

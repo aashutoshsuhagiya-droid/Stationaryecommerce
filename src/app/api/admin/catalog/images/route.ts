@@ -15,6 +15,7 @@ import {
   PRODUCT_IMAGE_MAXIMUM_REQUEST_BYTES,
   productImageAssetUrl,
   linkProductSurfaceBaseImage,
+  normalizeHeicUpload,
   ProductImageAssetError,
   type ProductImageAssetKind,
 } from "@/lib/product-image-assets";
@@ -148,7 +149,7 @@ export async function POST(request: Request) {
 
     const form = await readLimitedArtworkFormData(request, PRODUCT_IMAGE_MAXIMUM_REQUEST_BYTES);
     const input = parseUploadForm(form);
-    const prepared = await prepareProductImageAssetUpload(input.file);
+    const prepared = await prepareProductImageAssetUpload(await normalizeHeicUpload(input.file));
     const prisma = getPrisma() as any;
     const result = await prisma.$transaction(async (transaction: any) => {
       const product = await transaction.product.findUnique({
@@ -180,7 +181,8 @@ export async function POST(request: Request) {
         });
       }
       return asset;
-    });
+      // The image bytes are written in this transaction; a slow database link can outlast the 5 s default.
+    }, { maxWait: 15_000, timeout: 30_000 });
 
     revalidatePath("/", "layout");
     return NextResponse.json(

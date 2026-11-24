@@ -16,7 +16,7 @@ export type ListingProductModel =
   | "label-pack" | "waterproof-sheet" | "school-kit" | "notebook" | "bottle-label"
   | "pencil-set" | "tag" | "geometry-box" | "gift-ribbon" | "keychain-duo" | "bulk-grid"
   | "rectangular-box" | "square-box" | "folding-carton" | "mailer-box" | "paper-bag"
-  | "stand-up-pouch" | "product-sleeve" | "rigid-lid-box" | "mailer-envelope";
+  | "stand-up-pouch" | "product-sleeve" | "rigid-lid-box" | "mailer-envelope" | "pyramid-box";
 
 /**
  * "builtin" — `allow3D` + `productModel` is enough (non-packaging product types).
@@ -37,13 +37,34 @@ export interface CategoryListingRecipe {
   /** Industry collection slugs to also list in (ezpac tree, `collection-*`). */
   collectionSlugs?: string[];
   madeToOrder: boolean;
+  /** Internal background for maintainers; never shown in the listing wizard. */
   notes?: string;
+  /** Plain-language name for the listing wizard ("Soap box", "Name slips"). */
+  displayName: string;
+  /** One benefit line for the picker card, written for a shop owner. */
+  benefit: string;
+  /** Words that point at this shelf in a photo file name or typed text. */
+  keywords: readonly string[];
+  /** "Write for me" sentence; `{name}` is replaced with the product name. */
+  descriptionTemplate: string;
+  /** Packaging print options pre-filled as chips (field key → choices). Price deltas are 0. */
+  printOptionDefaults?: Readonly<Record<string, PrintOptionDefault>>;
+  /** Plain-language GST explanation for the info tooltip next to the GST field. */
+  gstNote?: string;
 }
+
+/** Choices a packaging print option starts with; `selected` are switched on for customers. */
+export interface PrintOptionDefault {
+  choices: readonly string[];
+  selected: readonly string[];
+}
+
+type RecipeCore = Omit<CategoryListingRecipe, "displayName" | "benefit" | "keywords" | "descriptionTemplate" | "printOptionDefaults" | "gstNote">;
 
 const PERSONAL = ["collection-personal"];
 const PRODUCT_PACKAGING = ["collection-product-packaging"];
 
-export const CATEGORY_LISTING_PLAYBOOK: readonly CategoryListingRecipe[] = [
+const RECIPE_CORE: readonly RecipeCore[] = [
   // ---- Personalised retail shelves (GST-charged, MRP strikethrough is the norm)
   {
     categorySlug: "customized-name-slips",
@@ -168,7 +189,10 @@ export const CATEGORY_LISTING_PLAYBOOK: readonly CategoryListingRecipe[] = [
     priceBandRupees: { min: 1200, max: 1600 },
     mrpExpected: true,
     model3D: "paper-bag",
-    threeDPath: "builtin",
+    // Built-in bag geometry does not map the personalisation surface onto its
+    // front (verified 2026-11-23: a blank bag), so the bag's own photo is wrapped
+    // on a published template instead; the 2D studio still carries the name.
+    threeDPath: "template",
     collectionSlugs: PERSONAL,
     madeToOrder: true,
     notes: "The retail custom-print bags shelf; the packaging bag subcategories quote per order instead.",
@@ -339,6 +363,94 @@ export const CATEGORY_LISTING_PLAYBOOK: readonly CategoryListingRecipe[] = [
   },
 ];
 
+/** Default print-option chips per packaging field key; every price delta is 0. */
+export const PRINT_OPTION_LIBRARY: Readonly<Record<string, PrintOptionDefault>> = {
+  material: { choices: ["White board 350 GSM", "Kraft board 300 GSM", "Art card 300 GSM"], selected: ["White board 350 GSM"] },
+  "box-construction": { choices: ["Reverse tuck end", "Straight tuck end", "Crash lock bottom"], selected: ["Reverse tuck end"] },
+  "printing-type": { choices: ["Offset CMYK", "Digital print"], selected: ["Offset CMYK"] },
+  "print-colours": { choices: ["4 colour (CMYK)", "1 colour", "2 colour"], selected: ["4 colour (CMYK)"] },
+  lamination: { choices: ["Matte", "Gloss", "No lamination"], selected: ["Matte", "Gloss"] },
+  finishing: { choices: ["None", "Spot UV", "Foil stamping", "Embossing"], selected: ["None", "Spot UV"] },
+  "insert-holder": { choices: ["No insert", "Paper insert"], selected: ["No insert"] },
+  "window-option": { choices: ["No window", "Window with clear film"], selected: ["No window"] },
+  "card-size": { choices: ["Standard 89 × 51 mm", "Square 64 × 64 mm"], selected: ["Standard 89 × 51 mm"] },
+  "paper-type": { choices: ["Art card 350 GSM", "Matte card 300 GSM", "Textured card"], selected: ["Art card 350 GSM", "Matte card 300 GSM"] },
+  "rounded-corners": { choices: ["Square corners", "Rounded corners"], selected: ["Square corners"] },
+  "foil-spot-uv": { choices: ["None", "Gold foil", "Spot UV"], selected: ["None"] },
+  "paper-material": { choices: ["Art paper 130 GSM", "Vinyl sticker", "Art card 300 GSM"], selected: ["Art paper 130 GSM"] },
+  "handle-type": { choices: ["Twisted paper handle", "Flat paper handle", "Ribbon handle"], selected: ["Twisted paper handle"] },
+  "handle-colour": { choices: ["Match the bag", "White", "Black"], selected: ["Match the bag"] },
+  "reinforced-bottom": { choices: ["Standard bottom", "Reinforced bottom"], selected: ["Standard bottom"] },
+  "ziplock-option": { choices: ["Press zip", "No zip"], selected: ["Press zip"] },
+  "tear-notch": { choices: ["With tear notch", "No tear notch"], selected: ["With tear notch"] },
+  "transparent-window": { choices: ["No window", "Clear window"], selected: ["No window"] },
+  "fold-type": { choices: ["Bi-fold", "Tri-fold", "Z-fold"], selected: ["Bi-fold", "Tri-fold"] },
+  "adhesive-type": { choices: ["Permanent seal", "Resealable strip"], selected: ["Permanent seal"] },
+  "tamper-evident-seal": { choices: ["Standard seal", "Tamper-evident seal"], selected: ["Standard seal"] },
+};
+
+const POUCH_MATERIAL: PrintOptionDefault = { choices: ["Metallised PET", "Clear PET", "Kraft paper laminate"], selected: ["Metallised PET"] };
+const BAG_PAPER: PrintOptionDefault = { choices: ["Kraft paper 120 GSM", "White kraft 120 GSM", "Art paper 170 GSM"], selected: ["Kraft paper 120 GSM", "White kraft 120 GSM"] };
+
+type Presentation = Pick<CategoryListingRecipe, "displayName" | "benefit" | "keywords" | "descriptionTemplate" | "printOptionDefaults" | "gstNote">;
+
+const NAME_TEMPLATE = "{name}, printed with your child's name. Waterproof, school-ready and made to order.";
+const BOX_TEMPLATE = "{name}, custom printed with your brand. Pick the material and finish; we print and deliver it ready to pack.";
+const BAG_TEMPLATE = "{name}, printed with your logo. Strong, eco-friendly and made to order for your shop.";
+const POUCH_TEMPLATE = "{name}, printed with your brand artwork. Food-safe, resealable and made to order.";
+const FLAT_TEMPLATE = "{name}, printed sharp and bright with your design. Made to order on quality stock.";
+
+/** The listing wizard's plain-language face of each shelf. */
+const PRESENTATION: Readonly<Record<string, Presentation>> = {
+  "customized-name-slips": { displayName: "Name slips", benefit: "Customer types their name — you print it", keywords: ["name slip", "slip", "slips", "name label", "label"], descriptionTemplate: NAME_TEMPLATE },
+  "waterproof-stickers": { displayName: "Waterproof name stickers", benefit: "Name stickers that survive the wash", keywords: ["waterproof", "sticker", "stickers", "vinyl"], descriptionTemplate: NAME_TEMPLATE },
+  "school-labels": { displayName: "School label sets", benefit: "One pack labels every book and bottle", keywords: ["school label", "label set", "labels", "kit"], descriptionTemplate: NAME_TEMPLATE },
+  "personalized-notebooks": { displayName: "Notebooks", benefit: "Their name printed on the cover", keywords: ["notebook", "note book", "diary", "journal", "copy"], descriptionTemplate: "{name} with the customer's name printed on the cover. Made to order.", gstNote: "Notebooks here are listed with 18% GST. Change it if your printer charges a different rate." },
+  "personalized-pencils-pens": { displayName: "Pens & pencils", benefit: "Their name printed on every pen", keywords: ["pen", "pens", "pencil", "pencils", "stationery"], descriptionTemplate: "{name} with the customer's name printed on each piece. A gift kids love.", gstNote: "Pens and pencils here are listed with 18% GST. Change it if your printer charges a different rate." },
+  "name-plates-keychains": { displayName: "Name plates & keychains", benefit: "A name plate or keychain with their name", keywords: ["name plate", "nameplate", "keychain", "key chain", "door plate"], descriptionTemplate: "{name}, made with the customer's name. Sturdy, bright and made to order." },
+  "bottle-tiffin-labels": { displayName: "Bottle & tiffin labels", benefit: "Labels that stay on bottles and lunch boxes", keywords: ["bottle", "tiffin", "lunch box", "sipper", "flask"], descriptionTemplate: "{name} printed with the customer's name. Dishwasher-safe and waterproof.", gstNote: "Bottle and tiffin labels are usually sold with 5% GST." },
+  "school-accessories": { displayName: "School bags & accessories", benefit: "Bags and kits with the child's name", keywords: ["school bag", "bag tag", "geometry", "accessories", "backpack"], descriptionTemplate: "{name}, personalised with the child's name. Made to order." },
+  "personalized-gifts": { displayName: "Personalised gifts", benefit: "Photo and name gifts for any occasion", keywords: ["gift", "mug", "frame", "cushion", "mouse pad", "topper", "photo"], descriptionTemplate: "{name}, personalised with a name or photo. A thoughtful made-to-order gift." },
+  "bulk-orders": { displayName: "Bulk orders", benefit: "Large orders for schools and companies", keywords: ["bulk", "institution", "corporate", "wholesale"], descriptionTemplate: "{name} for schools and companies. Personalised in bulk and made to order." },
+  "paper-bags": { displayName: "Paper bag", benefit: "A printed paper bag with their name or logo", keywords: ["paper bag", "bag", "carry bag", "shopping bag"], descriptionTemplate: BAG_TEMPLATE },
+  "soap-boxes": { displayName: "Soap box", benefit: "Their brand printed on a soap carton", keywords: ["soap", "soap box", "carton"], descriptionTemplate: BOX_TEMPLATE },
+  "perfume-cosmetic-boxes": { displayName: "Perfume & cosmetic box", benefit: "A tall printed box for bottles and jars", keywords: ["perfume", "cosmetic", "attar", "cream", "serum", "lipstick"], descriptionTemplate: BOX_TEMPLATE },
+  "specialty-boxes": { displayName: "Speciality box", benefit: "Custom printed boxes in any shape", keywords: ["box", "boxes", "speciality", "specialty", "custom box"], descriptionTemplate: BOX_TEMPLATE },
+  "gift-event-boxes": { displayName: "Gift box", benefit: "A rigid lid-and-base box for gifts and events", keywords: ["gift box", "hamper", "wedding", "event", "rigid box", "lid"], descriptionTemplate: BOX_TEMPLATE },
+  "mailer-bags": { displayName: "Courier mailer bag", benefit: "Printed courier bags for online orders", keywords: ["courier", "mailer", "poly bag", "envelope", "shipping bag"], descriptionTemplate: "{name}, printed with your brand. Tamper-evident seal and made to order.", printOptionDefaults: { material: { choices: ["LDPE 60 micron", "Co-extruded 51 micron"], selected: ["LDPE 60 micron"] } } },
+  "shipping-boxes": { displayName: "Shipping box", benefit: "Strong printed cartons for shipping", keywords: ["shipping", "corrugated", "mailer box", "e-commerce", "ecommerce", "courier box"], descriptionTemplate: BOX_TEMPLATE, printOptionDefaults: { material: { choices: ["3-ply corrugated", "5-ply corrugated", "Kraft corrugated"], selected: ["3-ply corrugated"] } } },
+  "branded-carry-bags": { displayName: "Branded carry bag", benefit: "Your logo on a premium carry bag", keywords: ["carry bag", "branded bag", "shopping bag", "boutique bag"], descriptionTemplate: BAG_TEMPLATE, printOptionDefaults: { "paper-type": BAG_PAPER } },
+  "d-cut-paper-bags": { displayName: "D-cut paper bag", benefit: "Budget bags with a punched handle", keywords: ["d cut", "d-cut", "dcut", "punch handle"], descriptionTemplate: BAG_TEMPLATE, printOptionDefaults: { "paper-type": BAG_PAPER } },
+  "branded-ziplock-pouches": { displayName: "Ziplock pouch", benefit: "Resealable printed pouches", keywords: ["ziplock", "zip lock", "pouch", "stand up pouch", "standup"], descriptionTemplate: POUCH_TEMPLATE, printOptionDefaults: { material: POUCH_MATERIAL } },
+  "food-pouches": { displayName: "Food pouch", benefit: "Food-safe printed pouches", keywords: ["food pouch", "snack pouch", "tea", "coffee", "spice", "masala"], descriptionTemplate: POUCH_TEMPLATE, printOptionDefaults: { material: POUCH_MATERIAL } },
+  "snack-confectionery-boxes": { displayName: "Sweet & snack box", benefit: "Printed boxes for sweets and snacks", keywords: ["sweet", "mithai", "snack", "confectionery", "chocolate", "cake", "bakery"], descriptionTemplate: BOX_TEMPLATE },
+  "food-trays-delivery": { displayName: "Food tray / delivery box", benefit: "Printed trays and delivery boxes", keywords: ["tray", "pizza", "delivery", "takeaway", "burger"], descriptionTemplate: BOX_TEMPLATE },
+  stickers: { displayName: "Custom stickers", benefit: "Your logo or art as stickers", keywords: ["sticker", "stickers", "decal", "logo sticker"], descriptionTemplate: FLAT_TEMPLATE },
+  "business-cards": { displayName: "Business cards", benefit: "Crisp printed visiting cards", keywords: ["business card", "visiting card", "card"], descriptionTemplate: FLAT_TEMPLATE },
+  "flyers-brochures": { displayName: "Flyers & brochures", benefit: "Printed flyers and folded brochures", keywords: ["flyer", "brochure", "leaflet", "pamphlet", "menu"], descriptionTemplate: FLAT_TEMPLATE, printOptionDefaults: { "paper-type": { choices: ["Art paper 130 GSM", "Art paper 170 GSM", "Matte paper 130 GSM"], selected: ["Art paper 130 GSM", "Art paper 170 GSM"] } } },
+  "thank-you-hang-tags": { displayName: "Thank-you cards & hang tags", benefit: "Cards and tags that go in every order", keywords: ["thank you", "hang tag", "tag", "insert card"], descriptionTemplate: FLAT_TEMPLATE },
+};
+
+export const CATEGORY_LISTING_PLAYBOOK: readonly CategoryListingRecipe[] = RECIPE_CORE.map((core) => {
+  const presentation = PRESENTATION[core.categorySlug];
+  if (!presentation) throw new Error(`Recipe ${core.categorySlug} needs a listing presentation.`);
+  return { ...core, ...presentation };
+});
+
+/** The GST tooltip: the shelf's own note, else a plain default for its rate. */
+export function gstNoteFor(recipe: CategoryListingRecipe | undefined): string {
+  if (recipe?.gstNote) return recipe.gstNote;
+  if (!recipe) return "Most personalised products carry 18% GST.";
+  return recipe.gstPercent === 0
+    ? "Packaging and print jobs are priced per order, so no GST is added on the listing."
+    : `Products like this are usually sold with ${recipe.gstPercent}% GST.`;
+}
+
+/** The chips a print option starts with: the recipe's override, else the shared library. */
+export function printOptionDefaultFor(recipe: CategoryListingRecipe | undefined, fieldKey: string): PrintOptionDefault | undefined {
+  return recipe?.printOptionDefaults?.[fieldKey] ?? PRINT_OPTION_LIBRARY[fieldKey];
+}
+
 const BY_SLUG = new Map(CATEGORY_LISTING_PLAYBOOK.map((recipe) => [recipe.categorySlug, recipe]));
 
 export function getCategoryListingRecipe(categorySlug: string | undefined | null): CategoryListingRecipe | undefined {
@@ -386,8 +498,8 @@ export function gstTaxCode(gstPercent: 0 | 5 | 18) {
   return gstPercent > 0 ? `IN-GST-${gstPercent}` : null;
 }
 
-/** A price this far outside the shelf's band is probably a typo — warn, never block. */
-const BAND_TOLERANCE = 3;
+/** A price outside 0.5×–2× of the shelf's band is probably a typo — warn, never block. */
+const BAND_TOLERANCE = 2;
 
 export function priceBandWarning(
   recipe: CategoryListingRecipe | undefined,
@@ -396,10 +508,10 @@ export function priceBandWarning(
   const band = recipe?.priceBandRupees;
   if (!band || !Number.isFinite(priceRupees) || priceRupees <= 0) return null;
   if (priceRupees < band.min / BAND_TOLERANCE) {
-    return `That looks low for this shelf — similar products sell for ₹${band.min}–₹${band.max}.`;
+    return `That looks low — similar products sell for ₹${band.min}–₹${band.max}.`;
   }
   if (priceRupees > band.max * BAND_TOLERANCE) {
-    return `That looks high for this shelf — similar products sell for ₹${band.min}–₹${band.max}.`;
+    return `That looks high — similar products sell for ₹${band.min}–₹${band.max}.`;
   }
   return null;
 }

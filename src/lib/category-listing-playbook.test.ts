@@ -84,7 +84,7 @@ test("price band nudges warn far outside the shelf and stay quiet inside it", ()
   const recipe = getCategoryListingRecipe("customized-name-slips");
   assert.equal(priceBandHint(recipe), "Similar products: ₹219–₹499");
   assert.equal(priceBandWarning(recipe, 249), null);
-  assert.equal(priceBandWarning(recipe, 900), null, "3x tolerance keeps ordinary prices quiet");
+  assert.equal(priceBandWarning(recipe, 900), null, "2x tolerance keeps ordinary prices quiet");
   assert.ok(priceBandWarning(recipe, 50)?.includes("low"));
   assert.ok(priceBandWarning(recipe, 5000)?.includes("high"));
   assert.equal(priceBandWarning(getCategoryListingRecipe("soap-boxes"), 10), null, "quote shelves have no band");

@@ -29,6 +29,7 @@ function runtimePricingVersion(products: Product[]) {
       setupCharge: product.configurator?.setupCharge ?? 0,
       configurationVersion: product.configurator?.configurationVersion,
       artworkPolicy: product.configurator?.artworkPolicy,
+      packagingQuote: product.configurator?.packagingQuote,
     },
     templates: resolveProductTemplateLinks(product).map(({ template, isDefault, sortOrder }) => ({
       id: template.id,

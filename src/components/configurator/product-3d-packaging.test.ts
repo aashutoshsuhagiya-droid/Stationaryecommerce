@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import * as THREE from "three";
 
 import { normalizeProduct3DDimensions } from "./product-3d-dimensions";
+import { buildProductGeometry } from "./product-3d-model";
 import {
   isPackagingProduct3DKind,
   PACKAGING_3D_PROFILES,
@@ -107,16 +109,43 @@ test("built-in label and school models keep printing every face from the front",
   }
 });
 
-test("unprinted board takes the named stock colour first, then the artwork's edge colour", () => {
+test("board colour is the named stock, else the model's own default, never the photo", () => {
   assert.equal(packagingBoardColor("Kraft paper 300 GSM"), "#c9a777");
   assert.equal(packagingBoardColor("SBS board"), "#f6f4ee");
   assert.equal(packagingBoardColor("Matte black rigid"), "#23272e");
   assert.equal(packagingBoardColor("Vinyl Matte"), undefined);
 
-  const sampled = resolveProduct3DProfile("folding-carton", "soap-boxes", { sampledBaseColor: "#2e7d4f" });
-  assert.equal(sampled.categoryTheme.baseColor, "#2e7d4f");
-  const named = resolveProduct3DProfile("folding-carton", "soap-boxes", { materialName: "Kraft", sampledBaseColor: "#2e7d4f" });
-  assert.equal(named.categoryTheme.baseColor, "#c9a777", "the material that ships beats a sampled colour");
+  const named = resolveProduct3DProfile("folding-carton", "soap-boxes", { materialName: "Kraft" });
+  assert.equal(named.categoryTheme.baseColor, "#c9a777", "the material that ships sets the board");
+  for (const kind of Object.keys(PACKAGING_3D_PROFILES) as PackagingProduct3DKind[]) {
+    const unnamed = resolveProduct3DProfile(kind, "", { materialName: "Premium finish", colors: ["#dde5c8", "#3a3d42"] });
+    assert.equal(unnamed.categoryTheme.baseColor, PACKAGING_3D_PROFILES[kind].categoryTheme.baseColor, `${kind} keeps its own board colour`);
+  }
+});
+
+test("a paper bag prints only on the outside of each wall, and blank walls are bare board", () => {
+  const front = { id: "front", label: "Front", width: 400, height: 600, safeInset: 24 };
+  const back = { id: "back", label: "Back", width: 400, height: 600, safeInset: 24 };
+  const printed = new THREE.Texture();
+  const theme = resolveProduct3DProfile("paper-bag", "d-cut-paper-bags").categoryTheme;
+  const group = new THREE.Group();
+  // As Product3DPreview does it: only the front has artwork, so only it has a texture.
+  buildProductGeometry({
+    group, kind: "paper-bag", primaryDef: front, texture: printed, theme,
+    surfaces: [front, back], textures: new Map([["front", printed]]),
+  });
+  const walls = group.children.filter((child): child is THREE.Mesh => child instanceof THREE.Mesh && Array.isArray(child.material));
+  const mapsOf = (mesh: THREE.Mesh) => (mesh.material as THREE.MeshPhysicalMaterial[]).map((material) => material.map);
+  const frontWall = walls.find((mesh) => mesh.position.z > 0 && mesh.position.x === 0 && mesh.position.y === 0);
+  assert.ok(frontWall, "front wall exists");
+  // BoxGeometry order: right, left, top, bottom, front (+z, outside), back (-z, inside).
+  assert.deepEqual(mapsOf(frontWall), [null, null, null, null, printed, null], "the inside and the rim are bare board");
+  for (const wall of walls.filter((mesh) => mesh !== frontWall)) {
+    assert.ok(mapsOf(wall).every((map) => map === null), "every other wall, gusset and the base are bare board");
+    for (const material of wall.material as THREE.MeshPhysicalMaterial[]) {
+      assert.equal(material.color.getHexString(), new THREE.Color(theme.baseColor).getHexString(), "board colour");
+    }
+  }
 });
 
 test("carton board is satin, kraft is matte, and only gloss lamination earns a clearcoat", () => {
@@ -159,6 +188,7 @@ test("publishes a complete profile for every requested packaging model", () => {
     "product-sleeve",
     "rigid-lid-box",
     "mailer-envelope",
+    "pyramid-box",
   ];
   assert.deepEqual(Object.keys(PACKAGING_3D_PROFILES).sort(), expected.sort());
   for (const kind of expected) {

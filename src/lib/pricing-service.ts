@@ -5,13 +5,14 @@ import { resolveProductArtworkPolicy, validateArtworkDocumentPolicy } from "./ar
 import { isConfigurationFieldVisible } from "./configuration-field-visibility";
 import { getProductById, products } from "./data";
 import { resolveProductTemplate, resolveProductTemplateLinks } from "./product-template-resolution";
+import { PackagingPriceError, formatPackagingSize, pricePackagingConfiguration, type PackagingDisplayUnit, type PackagingSizeMm } from "./packaging-quote";
 import { missingStudioPhotos } from "./studio-photo";
 import { readStudioConfig } from "./studio-template";
 import type { CurrencyCode, Product } from "./types";
 import type { CatalogQuoteInput, OrderItemInput } from "./validation";
 
 export interface CatalogPriceAdjustment {
-  type: "template_premium" | "field_price_delta" | "option_price_delta" | "artwork_image" | "quantity_tier" | "setup_charge";
+  type: "template_premium" | "field_price_delta" | "option_price_delta" | "artwork_image" | "quantity_tier" | "setup_charge" | "packaging_option";
   scope: "unit" | "line";
   referenceId: string;
   label: string;
@@ -37,6 +38,17 @@ export interface AuthoritativePriceLine {
     material: string;
     dimensions: string;
   };
+  /** The verified packaging specification this line was priced for. */
+  packaging?: PackagingLineSnapshot;
+}
+
+export interface PackagingLineSnapshot {
+  sizeMm: PackagingSizeMm;
+  displayUnit: PackagingDisplayUnit;
+  sizeLabel: string;
+  isCustomSize: boolean;
+  tierMinimum: number;
+  selections: Array<{ selectionId: string; selectionName: string; optionId: string; optionName: string }>;
 }
 
 export interface CatalogQuote {
@@ -72,6 +84,7 @@ export function getCatalogPricingVersion() {
       quantityTiers: product.configurator?.quantityTiers ?? [],
       setupCharge: product.configurator?.setupCharge ?? 0,
       artworkPolicy: product.configurator?.artworkPolicy,
+      packagingQuote: product.configurator?.packagingQuote,
     })),
     templates: products.flatMap((product) => resolveProductTemplateLinks(product).map(({ template, isDefault, sortOrder }) => ({ productId: product.id, id: template.id, active: template.active, premiumPrice: template.premiumPrice, isDefault, sortOrder }))),
   };
@@ -382,8 +395,14 @@ export function priceProductItem(product: Product, input: OrderItemInput): Autho
       productId: input.productId,
     });
   }
-  const minimumQuantity = product.configurator?.quantityMin ?? 1;
-  const maximumQuantity = Math.max(minimumQuantity, product.configurator?.quantityMax ?? 100);
+  const packagingSpec = product.configurator?.packagingQuote;
+  if (input.packaging && !packagingSpec) {
+    throw new CommerceError(422, "PACKAGING_NOT_SUPPORTED", `${product.name} has no packaging specification to choose.`, {
+      productId: product.id,
+    });
+  }
+  const minimumQuantity = packagingSpec?.quantity.minimum ?? product.configurator?.quantityMin ?? 1;
+  const maximumQuantity = packagingSpec?.quantity.maximum ?? Math.max(minimumQuantity, product.configurator?.quantityMax ?? 100);
   if (input.quantity < minimumQuantity || input.quantity > maximumQuantity) {
     throw new CommerceError(
       422,
@@ -407,7 +426,35 @@ export function priceProductItem(product: Product, input: OrderItemInput): Autho
   }
 
   const adjustments = validateCustomization(product, input);
-  const quantityTier = product.configurator?.quantityTiers
+  let packagingBaseUnitPaise: number | undefined;
+  let packagingSnapshot: PackagingLineSnapshot | undefined;
+  if (packagingSpec) {
+    // The source's price table already carries its quantity breaks, so catalog
+    // quantity tiers never stack on top of it.
+    let priced: ReturnType<typeof pricePackagingConfiguration>;
+    try {
+      priced = pricePackagingConfiguration(packagingSpec, input.quantity, input.packaging ?? {});
+    } catch (error) {
+      if (error instanceof PackagingPriceError) {
+        throw new CommerceError(422, `PACKAGING_${error.issue.code}`, error.message, { productId: product.id, ...error.issue });
+      }
+      throw error;
+    }
+    packagingBaseUnitPaise = priced.baseUnitPaise;
+    for (const adjustment of priced.adjustments) {
+      adjustments.push({ type: "packaging_option", scope: "unit", ...adjustment });
+    }
+    const displayUnit = input.packaging?.displayUnit ?? packagingSpec.defaultUnit;
+    packagingSnapshot = {
+      sizeMm: priced.sizeMm,
+      displayUnit,
+      sizeLabel: formatPackagingSize(packagingSpec, priced.sizeMm, displayUnit),
+      isCustomSize: priced.isCustomSize,
+      tierMinimum: priced.tier.minimum,
+      selections: priced.selections,
+    };
+  }
+  const quantityTier = packagingSpec ? undefined : product.configurator?.quantityTiers
     ?.filter((tier) => input.quantity >= tier.minimum)
     .sort((left, right) => right.minimum - left.minimum)[0];
   if (quantityTier) {
@@ -436,7 +483,7 @@ export function priceProductItem(product: Product, input: OrderItemInput): Autho
       amountPaise: setupChargePaise,
     });
   }
-  const baseUnitPricePaise = toPaise(variant.price);
+  const baseUnitPricePaise = packagingBaseUnitPaise ?? toPaise(variant.price);
   const unitPricePaise = adjustments.filter((adjustment) => adjustment.scope === "unit").reduce(
     (total, adjustment) => total + adjustment.amountPaise,
     baseUnitPricePaise,
@@ -465,8 +512,9 @@ export function priceProductItem(product: Product, input: OrderItemInput): Autho
       sku: variant.sku,
       variantName: variant.name,
       material: variant.material ?? product.material,
-      dimensions: product.dimensions,
+      dimensions: packagingSnapshot?.sizeLabel ?? product.dimensions,
     },
+    ...(packagingSnapshot ? { packaging: packagingSnapshot } : {}),
   };
 }
 

@@ -14,7 +14,7 @@ import { defaultProduct3DDimensionsMm } from "../components/configurator/product
  */
 export type PackagingVisualizationModel =
   | "folding-carton" | "mailer-box" | "square-box" | "rectangular-box" | "rigid-lid-box"
-  | "paper-bag" | "stand-up-pouch" | "mailer-envelope";
+  | "paper-bag" | "stand-up-pouch" | "mailer-envelope" | "pyramid-box";
 
 export type VisualizationGeometryKind = "box" | "bag" | "pouch" | "custom";
 
@@ -38,6 +38,8 @@ const MODEL_GEOMETRY: Record<PackagingVisualizationModel, VisualizationGeometryK
   "paper-bag": "bag",
   "stand-up-pouch": "pouch",
   "mailer-envelope": "custom",
+  // Measured as a box (base edge, depth, apex height); the model is the pyramid.
+  "pyramid-box": "box",
 };
 
 const BOX_FACES: readonly PackagingFace[] = ["front", "back", "left", "right", "top", "bottom"];
@@ -132,20 +134,20 @@ export function templateShapePlanForCategory(
 
 export interface ArtworkAssessment {
   confidence: "high" | "low";
-  /** Edge colour of the cropped artwork; unprinted panels are painted to match. */
+  /** Edge colour of the cropped artwork, recorded on the template (the 3D view does not use it). */
   edgeColor?: string;
 }
 
 export const LIFESTYLE_PHOTO_NOTE =
-  "Photo is a lifestyle shot — upload flat front artwork for a sharper 3D preview.";
+  "Photo is a lifestyle shot — a flat front photo looks cleaner behind the 2D design.";
 
 /**
  * Everything the studio needs to confirm a MANUAL analysis for this shape.
  *
  * Only the front is persisted as a surface mapping: the studio requires source
- * bounds for every additional surface, and bounds make that face show a crop of
- * the photo. Unprinted faces are therefore left out and rendered as plain board
- * (see the packaging fallbacks in `product-3d-surfaces.ts`).
+ * bounds for every additional surface, and an admin cannot draw honest bounds
+ * for faces the photo does not show. Every 3D face is plain board unless the
+ * customer prints on it (see the packaging fallbacks in `product-3d-surfaces.ts`).
  */
 export function visualizationConfirmationFor(plan: VisualizationShapePlan, artwork?: ArtworkAssessment) {
   return {
@@ -157,6 +159,7 @@ export function visualizationConfirmationFor(plan: VisualizationShapePlan, artwo
     materialSettings: {
       artworkConfidence: artwork?.confidence ?? "low",
       // A confident crop's edge is the board itself; a lifestyle photo's edge is the room.
+      // Recorded only: the 3D view takes its board colour from the material, never the photo.
       ...(artwork?.confidence === "high" && artwork.edgeColor ? { baseColor: artwork.edgeColor } : {}),
       ...(artwork?.confidence === "high" ? {} : { artworkNote: LIFESTYLE_PHOTO_NOTE }),
     },

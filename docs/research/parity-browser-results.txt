@@ -1,0 +1,28 @@
+paan-box instruction: Click on Size > Select "Custom Size" from the list, pick your unit (mm, inch, or cm), and type in your size.
+paan-box selects: Size=3.9606 x 7.8583 in ; Material=White card board 220- 300 gsm ; Finishing=Matte Lamination ; Printing sides=Outside ; Special Effects=No Effect ; Quantity=10 pcs — ₹221.31/piece
+paan-box default quote: Server-verified catalog price ₹2,213.10 ₹221.31 each x 10
+set effects gold: ok
+set qty 25: ok
+paan-box gold@25 quote (source ₹430.32): Server-verified catalog price ₹10,758 ₹430.32 each x 25
+open slider present: true
+shark tank badge: true
+choose custom size: ok
+dialog values in cm: 10.06 x 19.96
+invalid size error: Use 1–200 cm.
+size after apply: 12 x 25 cm (custom)
+custom size quote: Server-verified catalog price ₹15,924 ₹636.96 each x 25
+dieline svg: true
+cart: Made to order Paan Box Size 12 x 25 cm Material White card board 220- 300 gsm Finishing Matte Lamination Printing sides Outside Special Effects Gold Foil Stamping Edit design 25 ₹15,924
+brownie-box selects: Size=7.8976 x 7.8976 x 2.374 in (2) ; Material=White card board 220- 300 gsm (1) ; Printing sides=Outside (2) ; Finishing=Matte Lamination (3) ; Special Effects=No Effect (3) ; Pasting=Pasting (1) ; Quantity=10 pcs — ₹259.17/piece (11)
+brownie-box quote: Server-verified catalog price ₹2,591.70 ₹259.17 each x 10
+brownie-box slider: true
+d-cut-paper-bag selects: Size=8.6614 x 3.1496 x 11.0236 in (2) ; Material=White card board 220- 300 gsm (1) ; Finishing=Matte Lamination (3) ; Printing sides=Outside (2) ; Special Effects=No Effect (3) ; Quantity=10 pcs — ₹440.66/piece (11)
+d-cut-paper-bag quote: Server-verified catalog price ₹4,406.60 ₹440.66 each x 10
+d-cut-paper-bag slider: false
+name slip quote: timeout
+name slip no packaging panel: true
+luggage tag offer: Buy 2+ for ₹175 each | Buy 2+ for ₹175 each
+luggage tag qty1 quote: Server-verified catalog price ₹230 ₹230 each x 1
+luggage tag qty2 quote (source ₹175 each): Server-verified catalog price ₹350 ₹175 each x 2
+mobile dialog closes on Escape: true
+mobile horizontal overflow px: 0

@@ -3,6 +3,7 @@ import { resolveProductArtworkPolicy } from "./artwork-policy";
 import { buildCustomSizeQuotePath } from "./bulk-quote-prefill";
 import { isEzpacPackagingProductType } from "./ezpac-packaging-presets";
 import { packagingCategoryDimensions } from "./packaging-dimensions";
+import type { PackagingQuoteSpec } from "./packaging-quote";
 import { resolveProductTemplateLinks } from "./product-template-resolution";
 import { readStudioConfig, type StudioConfig } from "./studio-template";
 import type {
@@ -68,6 +69,8 @@ export interface ProductConfigurationSchema {
     currency: CurrencyCode;
   };
   modes: ProductCustomizationMode[];
+  /** Source packaging specification (size, material, finishing…) priced from the source's table. */
+  packaging?: PackagingQuoteSpec;
   dimensions: {
     mode: "fixed_catalog";
     catalogDescription: string;
@@ -204,7 +207,8 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
   );
   const hasNumericDimensions = presets.some((preset) => preset.dimensionsMm !== null);
   const defaultPreset = presets[0];
-  const defaultQuantity = product.configurator?.quantityMin ?? 1;
+  const packaging = product.configurator?.packagingQuote;
+  const defaultQuantity = packaging?.quantity.default ?? product.configurator?.quantityMin ?? 1;
   const configuredBaseImages = Object.fromEntries(
     Object.entries(product.configurator?.baseImages ?? {}).filter(([surfaceId, imageUrl]) =>
       typeof imageUrl === "string" &&
@@ -254,6 +258,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
       currency: "INR",
     },
     modes,
+    ...(packaging ? { packaging } : {}),
     dimensions: {
       mode: "fixed_catalog",
       catalogDescription: product.dimensions,
@@ -289,7 +294,7 @@ export function buildProductConfiguration(product: Product): ProductConfiguratio
       fields: product.customizationFields,
       templates: activeTemplates(product),
     },
-    quantity: { minimum: defaultQuantity, maximum: Math.max(defaultQuantity, product.configurator?.quantityMax ?? 100), increment: 1, default: defaultQuantity, tiers: (product.configurator?.quantityTiers ?? []).map((tier) => ({ minimum: tier.minimum, label: tier.label || `${tier.minimum}+ units`, priceDeltaPaise: toPaise(tier.priceDelta) })).sort((left, right) => left.minimum - right.minimum) },
+    quantity: packaging ? { minimum: packaging.quantity.minimum, maximum: packaging.quantity.maximum, increment: 1, default: packaging.quantity.default, tiers: [] } : { minimum: defaultQuantity, maximum: Math.max(defaultQuantity, product.configurator?.quantityMax ?? 100), increment: 1, default: defaultQuantity, tiers: (product.configurator?.quantityTiers ?? []).map((tier) => ({ minimum: tier.minimum, label: tier.label || `${tier.minimum}+ units`, priceDeltaPaise: toPaise(tier.priceDelta) })).sort((left, right) => left.minimum - right.minimum) },
     artwork: {
       mode: product.customizable ? "template_fields" : "none",
       surfaces: product.customizable ? (product.configurator?.printAreas ?? [{ id: "primary", label: "Primary print area" }]) : [],

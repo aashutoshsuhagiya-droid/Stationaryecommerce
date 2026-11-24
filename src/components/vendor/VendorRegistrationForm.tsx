@@ -197,7 +197,7 @@ export default function VendorRegistrationForm({ categoryGroups, serviceOptions,
         verifiedMobile: normalized,
         expiresAt: body.data.expiresAt,
         developmentCode: body.data.developmentCode,
-        message: `A 6-digit code was sent to +91 ${normalized}.`,
+        message: `A verification code was sent to +91 ${normalized}.`,
         tone: "success",
       });
       requestAnimationFrame(() => otpInputRef.current?.focus());
@@ -213,11 +213,11 @@ export default function VendorRegistrationForm({ categoryGroups, serviceOptions,
   }
 
   async function verifyOtp() {
-    if (!otp.challengeId || !/^\d{6}$/.test(otpCode.trim())) {
+    if (!otp.challengeId || !/^\d{5,6}$/.test(otpCode.trim())) {
       setOtp((current) => ({
         ...current,
         phase: "sent",
-        message: "Enter the 6-digit code sent to your mobile.",
+        message: "Enter the verification code sent to your mobile.",
         tone: "error",
       }));
       return;
@@ -557,8 +557,8 @@ export default function VendorRegistrationForm({ categoryGroups, serviceOptions,
           {(otp.phase === "sent" || otp.phase === "verifying") && (
             <div className={styles.otpPanel}>
               <div className={styles.field}>
-                <label htmlFor="otpCode">6-digit verification code</label>
-                <input ref={otpInputRef} id="otpCode" value={otpCode} onChange={(event) => setOtpCode(event.target.value.replace(/\D/g, "").slice(0, 6))} inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required aria-invalid={otp.tone === "error"} aria-describedby={otp.message ? "mobile-verification-status" : undefined} />
+                <label htmlFor="otpCode">Verification code</label>
+                <input ref={otpInputRef} id="otpCode" value={otpCode} onChange={(event) => setOtpCode(event.target.value.replace(/\D/g, "").slice(0, 6))} inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{5,6}" maxLength={6} required aria-invalid={otp.tone === "error"} aria-describedby={otp.message ? "mobile-verification-status" : undefined} />
               </div>
               <button className={styles.secondaryButton} type="button" onClick={verifyOtp} disabled={otp.phase === "verifying" || submitting}>
                 {otp.phase === "verifying" ? <><LoaderCircle className={styles.spin} aria-hidden="true" /> Checking…</> : "Verify mobile"}

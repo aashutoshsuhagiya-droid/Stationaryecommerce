@@ -1,0 +1,128 @@
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: #334155;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.canvas {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 180px;
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  user-select: none;
+}
+
+.sheet {
+  fill: #ffffff;
+  filter: drop-shadow(0 1px 1.5px rgb(15 23 42 / 0.16));
+}
+
+.cut {
+  fill: none;
+  stroke: #1f2937;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.fold {
+  fill: none;
+  stroke: #2563eb;
+  stroke-linecap: butt;
+}
+
+.label {
+  fill: #334155;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: #ffffff;
+  stroke-linejoin: round;
+}
+
+.labelSecondary {
+  fill: #64748b;
+  font-weight: 500;
+}
+
+.dimLine {
+  fill: none;
+  stroke: #475569;
+}
+
+.dimArrow {
+  fill: #475569;
+}
+
+.extensionLine {
+  fill: none;
+  stroke: #94a3b8;
+}
+
+.dimText {
+  fill: #1e293b;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.legend {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+  margin: 0;
+  padding: 7px 12px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.35;
+  list-style: none;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.swatch {
+  flex: none;
+  width: 22px;
+  height: 10px;
+  overflow: visible;
+}
+
+.sheetSize {
+  margin-left: auto;
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 360px) {
+  .legend {
+    gap: 3px 10px;
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .sheetSize {
+    margin-left: 0;
+  }
+}

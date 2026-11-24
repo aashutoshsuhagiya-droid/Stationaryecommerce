@@ -249,9 +249,10 @@
       "handle": "paan-box",
       "presetId": "paan-box",
       "outcome": "published",
-      "model": "folding-carton",
-      "templateId": "cmwrg53oa001kl4vg07y7yv2e",
-      "artworkConfidence": "low"
+      "model": "pyramid-box",
+      "templateId": "cmwtf049m0002f0vgc7t25lg0",
+      "artworkConfidence": "low",
+      "note": "Regenerated 2026-11-23 as pyramid-box (--regenerate --only=paan-box)"
     },
     {
       "slug": "parcel-bag",

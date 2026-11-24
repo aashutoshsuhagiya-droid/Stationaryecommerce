@@ -1,0 +1,266 @@
+[
+  {
+    "tag": "desktop-name-slips",
+    "viewport": "desktop",
+    "product": "name-slips",
+    "expect": "2D only",
+    "clicks": 8,
+    "secondsToPublished": 67.5,
+    "secondsToLivePage": 95.6,
+    "href": "/products/custom-name-slips-mwsxk1hy",
+    "title": "🎉 Custom Name Slips is live",
+    "notes": [
+      "Customers can find it, personalise it and order it now.",
+      " Customers can turn it in 3D."
+    ],
+    "has2D": true,
+    "has3D": true,
+    "pageErrors": [],
+    "timings": {
+      "photoUploaded": 19.1,
+      "step2": 21.7,
+      "step3": 43.6,
+      "beforePublish": 51.6,
+      "published": 67.5,
+      "live": 95.6
+    },
+    "apiTimes": [
+      "GET /api/admin/catalog 200 5117ms",
+      "POST /api/admin/listings 200 5391ms [findByListingId;dur=227;desc=\"1x\", createProduct;dur=2033;desc=\"1x\", load;dur=1745;desc=\"1x\"]",
+      "POST /api/admin/catalog/images 201 3104ms",
+      "POST /api/admin/listings 200 14144ms [findByListingId;dur=2068;desc=\"1x\", categorySlugFor;dur=219;desc=\"1x\", recipeFor;dur=0;desc=\"1x\", updateProduct;dur=4896;desc=\"1x\", createDefaultDesign;dur=3185;desc=\"1x\", setPublished;dur=228;desc=\"1x\"]",
+      "GET /api/admin/catalog 200 7310ms"
+    ]
+  },
+  {
+    "tag": "desktop-pen",
+    "viewport": "desktop",
+    "product": "pen",
+    "expect": "2D + built-in 3D",
+    "clicks": 8,
+    "secondsToPublished": 60.7,
+    "secondsToLivePage": 92.1,
+    "href": "/products/pencil-box-set-mwsxme1d",
+    "title": "🎉 Pencil Box Set is live",
+    "notes": [
+      "Customers can find it, personalise it and order it now.",
+      " Customers can turn it in 3D."
+    ],
+    "has2D": true,
+    "has3D": true,
+    "pageErrors": [],
+    "timings": {
+      "photoUploaded": 18.2,
+      "step2": 20.5,
+      "step3": 37.8,
+      "beforePublish": 45,
+      "published": 60.7,
+      "live": 92.1
+    },
+    "apiTimes": [
+      "GET /api/admin/catalog 200 5671ms",
+      "POST /api/admin/listings 200 5204ms [findByListingId;dur=220;desc=\"1x\", createProduct;dur=1971;desc=\"1x\", load;dur=1746;desc=\"1x\"]",
+      "POST /api/admin/catalog/images 201 2667ms",
+      "POST /api/admin/listings 200 14001ms [findByListingId;dur=2033;desc=\"1x\", categorySlugFor;dur=220;desc=\"1x\", recipeFor;dur=0;desc=\"1x\", updateProduct;dur=4751;desc=\"1x\", createDefaultDesign;dur=3242;desc=\"1x\", setPublished;dur=231;desc=\"1x\"]",
+      "GET /api/admin/catalog 200 7740ms"
+    ]
+  },
+  {
+    "tag": "desktop-soap-box",
+    "viewport": "desktop",
+    "product": "soap-box",
+    "expect": "3D template",
+    "clicks": 8,
+    "secondsToPublished": 81.6,
+    "secondsToLivePage": 109.1,
+    "href": "/products/soap-box-mwsxomor",
+    "title": "🎉 Soap Box is live",
+    "notes": [
+      "Customers can find it, personalise it and order it now.",
+      " 3D preview is on the product page."
+    ],
+    "has2D": true,
+    "has3D": true,
+    "pageErrors": [],
+    "timings": {
+      "photoUploaded": 16.1,
+      "step2": 18.3,
+      "step3": 39.1,
+      "beforePublish": 47.2,
+      "published": 81.6,
+      "live": 109.1
+    },
+    "apiTimes": [
+      "GET /api/admin/catalog 200 4574ms",
+      "POST /api/admin/listings 200 4141ms [findByListingId;dur=221;desc=\"1x\", createProduct;dur=1964;desc=\"1x\", load;dur=659;desc=\"1x\"]",
+      "POST /api/admin/catalog/images 201 2972ms",
+      "POST /api/admin/listings 200 32735ms [findByListingId;dur=2060;desc=\"1x\", categorySlugFor;dur=227;desc=\"1x\", recipeFor;dur=0;desc=\"1x\", updateProduct;dur=4796;desc=\"1x\", create3D;dur=21838;desc=\"1x\", setPublished;dur=232;desc=\"1x\"]",
+      "GET /api/admin/catalog 200 7264ms"
+    ]
+  },
+  {
+    "tag": "desktop-paper-bag",
+    "viewport": "desktop",
+    "product": "paper-bag",
+    "expect": "3D",
+    "clicks": 10,
+    "secondsToPublished": 79.6,
+    "secondsToLivePage": 106.5,
+    "href": "/products/custom-paper-bag-mwsxra4s",
+    "title": "🎉 Custom Paper Bag is live",
+    "notes": [
+      "Customers can find it, personalise it and order it now.",
+      " 3D preview is on the product page."
+    ],
+    "has2D": true,
+    "has3D": true,
+    "pageErrors": [],
+    "timings": {
+      "photoUploaded": 15.9,
+      "step2": 18.4,
+      "step3": 41.9,
+      "beforePublish": 49.9,
+      "published": 79.6,
+      "live": 106.5
+    },
+    "apiTimes": [
+      "GET /api/admin/catalog 200 4703ms",
+      "POST /api/admin/listings 200 4324ms [findByListingId;dur=224;desc=\"1x\", createProduct;dur=2000;desc=\"1x\", load;dur=756;desc=\"1x\"]",
+      "POST /api/admin/catalog/images 201 2995ms",
+      "POST /api/admin/listings 200 28112ms [findByListingId;dur=2053;desc=\"1x\", categorySlugFor;dur=220;desc=\"1x\", recipeFor;dur=0;desc=\"1x\", updateProduct;dur=4733;desc=\"1x\", createDefaultDesign;dur=3259;desc=\"1x\", create3D;dur=13789;desc=\"1x\", setPublished;dur=233;desc=\"1x\"]",
+      "GET /api/admin/catalog 200 7254ms"
+    ]
+  },
+  {
+    "tag": "mobile-name-slips",
+    "viewport": "mobile",
+    "product": "name-slips",
+    "expect": "2D only",
+    "clicks": 8,
+    "secondsToPublished": 35.1,
+    "secondsToLivePage": 109.1,
+    "href": "/products/custom-name-slips-mwsy8xnr",
+    "title": "🎉 Custom Name Slips is live",
+    "notes": [
+      "Customers can find it, personalise it and order it now.",
+      " Customers can turn it in 3D."
+    ],
+    "has2D": true,
+    "has3D": true,
+    "pageErrors": [],
+    "timings": {
+      "photoUploaded": 16.5,
+      "step2": 19,
+      "step3": 22,
+      "beforePublish": 22.7,
+      "published": 35.1,
+      "live": 109.1
+    },
+    "apiTimes": [
+      "GET /api/admin/catalog 200 4312ms",
+      "POST /api/admin/listings 200 4324ms [findByListingId;dur=228;desc=\"1x\", createProduct;dur=2062;desc=\"1x\", load;dur=665;desc=\"1x\"]",
+      "POST /api/admin/catalog/images 201 3023ms",
+      "POST /api/admin/listings 200 12093ms [findByListingId;dur=2071;desc=\"1x\", categorySlugFor;dur=228;desc=\"1x\", recipeFor;dur=0;desc=\"1x\", updateProduct;dur=4931;desc=\"1x\", createDefaultDesign;dur=3300;desc=\"1x\", setPublished;dur=238;desc=\"1x\"]",
+      "GET /api/admin/catalog 200 6500ms"
+    ]
+  },
+  {
+    "tag": "mobile-pen",
+    "viewport": "mobile",
+    "product": "pen",
+    "expect": "2D + built-in 3D",
+    "clicks": 8,
+    "secondsToPublished": 30.8,
+    "secondsToLivePage": 47.5,
+    "href": "/products/pencil-box-set-mwsxwcw0",
+    "title": "🎉 Pencil Box Set is live",
+    "notes": [
+      "Customers can find it, personalise it and order it now.",
+      " Customers can turn it in 3D."
+    ],
+    "has2D": true,
+    "has3D": true,
+    "pageErrors": [],
+    "timings": {
+      "photoUploaded": 13,
+      "step2": 14.9,
+      "step3": 18,
+      "beforePublish": 18.7,
+      "published": 30.8,
+      "live": 47.5
+    },
+    "apiTimes": [
+      "GET /api/admin/catalog 200 3304ms",
+      "POST /api/admin/listings 200 4169ms [findByListingId;dur=220;desc=\"1x\", createProduct;dur=1960;desc=\"1x\", load;dur=668;desc=\"1x\"]",
+      "POST /api/admin/catalog/images 201 2583ms",
+      "POST /api/admin/listings 200 11780ms [findByListingId;dur=2024;desc=\"1x\", categorySlugFor;dur=218;desc=\"1x\", recipeFor;dur=0;desc=\"1x\", updateProduct;dur=4770;desc=\"1x\", createDefaultDesign;dur=3183;desc=\"1x\", setPublished;dur=228;desc=\"1x\"]",
+      "GET /api/admin/catalog 200 5725ms"
+    ]
+  },
+  {
+    "tag": "mobile-soap-box",
+    "viewport": "mobile",
+    "product": "soap-box",
+    "expect": "3D template",
+    "clicks": 8,
+    "secondsToPublished": 47,
+    "secondsToLivePage": 62.1,
+    "href": "/products/soap-box-mwsxxmvv",
+    "title": "🎉 Soap Box is live",
+    "notes": [
+      "Customers can find it, personalise it and order it now.",
+      " 3D preview is on the product page."
+    ],
+    "has2D": true,
+    "has3D": true,
+    "pageErrors": [],
+    "timings": {
+      "photoUploaded": 15.7,
+      "step2": 17.8,
+      "step3": 20.8,
+      "beforePublish": 21.4,
+      "published": 47,
+      "live": 62.1
+    },
+    "apiTimes": [
+      "GET /api/admin/catalog 200 5134ms",
+      "POST /api/admin/listings 200 4266ms [findByListingId;dur=232;desc=\"1x\", createProduct;dur=2016;desc=\"1x\", load;dur=677;desc=\"1x\"]",
+      "POST /api/admin/catalog/images 201 3001ms",
+      "POST /api/admin/listings 200 25178ms [findByListingId;dur=2067;desc=\"1x\", categorySlugFor;dur=229;desc=\"1x\", recipeFor;dur=0;desc=\"1x\", updateProduct;dur=4657;desc=\"1x\", create3D;dur=16621;desc=\"1x\", setPublished;dur=233;desc=\"1x\"]",
+      "GET /api/admin/catalog 200 7242ms"
+    ]
+  },
+  {
+    "tag": "mobile-paper-bag",
+    "viewport": "mobile",
+    "product": "paper-bag",
+    "expect": "3D",
+    "clicks": 10,
+    "secondsToPublished": 46.1,
+    "secondsToLivePage": 118.8,
+    "href": "/products/custom-paper-bag-mwsxz6e8",
+    "title": "🎉 Custom Paper Bag is live",
+    "notes": [
+      "Customers can find it, personalise it and order it now.",
+      " 3D preview is on the product page."
+    ],
+    "has2D": true,
+    "has3D": true,
+    "pageErrors": [],
+    "timings": {
+      "photoUploaded": 15.6,
+      "step2": 17.5,
+      "step3": 21.5,
+      "beforePublish": 22.3,
+      "published": 46.1,
+      "live": 118.8
+    },
+    "apiTimes": [
+      "GET /api/admin/catalog 200 4790ms",
+      "POST /api/admin/listings 200 4374ms [findByListingId;dur=238;desc=\"1x\", createProduct;dur=2076;desc=\"1x\", load;dur=677;desc=\"1x\"]",
+      "POST /api/admin/catalog/images 201 2948ms",
+      "POST /api/admin/listings 200 23357ms [findByListingId;dur=2015;desc=\"1x\", categorySlugFor;dur=225;desc=\"1x\", recipeFor;dur=0;desc=\"1x\", updateProduct;dur=4676;desc=\"1x\", createDefaultDesign;dur=3251;desc=\"1x\", create3D;dur=11597;desc=\"1x\", setPublished;dur=235;desc=\"1x\"]",
+      "GET /api/admin/catalog 200 6559ms"
+    ]
+  }
+]

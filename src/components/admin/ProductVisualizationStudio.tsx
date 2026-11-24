@@ -360,39 +360,16 @@ export function ProductVisualizationStudio({ productId, productName, productType
     ? selectedAnalysis.warnings.flatMap((warning) => text(warning) ?? [])
     : [];
   const readyForTemplate = configurationMatchesConfirmation && (selectedStatus === 'SUCCEEDED' || selectedStatus === 'READY');
+  // The plain model customers see: shape, size and mapped faces, never the photo
+  // (that is shown in the upload box above and behind the 2D studio).
   const studioPreview = useMemo(() => {
-    if (!activePreviewUrl || !configurationValid) return undefined;
+    if (!configurationValid) return undefined;
     const dimensionsMm = dimensionsInPreviewMillimetres(dimensions, geometryKind);
     const previewSurfaces = mappings.map((mapping) => previewSurfaceDefinition(mapping, dimensionsMm));
     const document: ArtworkDocument = {
       version: 1,
       activeSurfaceId: previewSurfaces[0].id,
-      surfaces: previewSurfaces.map((surface, index) => {
-        const mapping = mappings[index];
-        const bounds = mapping.sourceBounds
-          ? Object.fromEntries(sourceBoundKeys.map((key) => [key, Number(mapping.sourceBounds![key])])) as Record<typeof sourceBoundKeys[number], number>
-          : { x: 0, y: 0, width: 1, height: 1 };
-        const layerWidth = surface.width / Math.max(bounds.width, Number.EPSILON);
-        const layerHeight = surface.height / Math.max(bounds.height, Number.EPSILON);
-        return {
-          id: surface.id,
-          label: mapping.label.trim(),
-          layers: [{
-            id: `studio-source-${mapping.key}`,
-            type: 'image',
-            name: `${mapping.label.trim()} source panel`,
-            x: -bounds.x * layerWidth,
-            y: -bounds.y * layerHeight,
-            width: layerWidth,
-            height: layerHeight,
-            rotation: 0,
-            opacity: 1,
-            src: activePreviewUrl,
-            imageFit: 'stretch',
-            aspectLocked: false,
-          }],
-        };
-      }),
+      surfaces: previewSurfaces.map((surface, index) => ({ id: surface.id, label: mappings[index].label.trim(), layers: [] })),
       updatedAt: new Date().toISOString(),
     };
     return {
@@ -401,7 +378,7 @@ export function ProductVisualizationStudio({ productId, productName, productType
       model: previewModelForGeometry(geometryKind, productType),
       surfaces: previewSurfaces,
     };
-  }, [activePreviewUrl, configurationValid, dimensions, geometryKind, mappings, productType]);
+  }, [configurationValid, dimensions, geometryKind, mappings, productType]);
 
   function chooseFile(file: File | undefined) {
     setError(''); setMessage('');
@@ -735,7 +712,7 @@ export function ProductVisualizationStudio({ productId, productName, productType
 
       <div className={styles.studioPanel}>
         <div className={styles.studioPanelHeading}>
-          <div><strong>Visual preview only</strong><small>Current source panels and dimensions; not a production proof</small></div>
+          <div><strong>Visual preview only</strong><small>The plain shape at these dimensions, as customers see it in 3D; not a production proof</small></div>
         </div>
         {studioPreview ? (
           <div className={styles.studioVisualPreview}>
@@ -752,7 +729,7 @@ export function ProductVisualizationStudio({ productId, productName, productType
             />
           </div>
         ) : (
-          <p className={styles.configHint}>Choose a supported image and complete valid geometry, dimensions and surface mappings to inspect the visual preview.</p>
+          <p className={styles.configHint}>Complete valid geometry, dimensions and surface mappings to inspect the visual preview.</p>
         )}
       </div>
 

@@ -7,6 +7,8 @@ import { productSummaryText } from "./html-text";
 import { normalizeProductCategoryIds } from "./product-category-links";
 import { productArtworkPolicySchema } from "./artwork-policy-schema";
 import { normalizeTemplateProduction } from "./template-production";
+import { isPackagingDielineKind } from "./packaging-dieline";
+import { readPackagingQuoteSpec } from "./packaging-quote";
 import { visualizationSurfaceMappingsSchema } from "./visualization-studio-domain";
 import { publicVisualizationAssetUrl } from "./visualization-studio-service-policy";
 import { groupVendorCategories } from "./vendor-category-options";
@@ -330,7 +332,8 @@ function mappedTemplateLink(link: any, productId: string): ProductTemplateLink |
 function stockStatus(variant: { isActive: boolean; inventoryPolicy: string; inventory: { quantityOnHand: number } | null }): StockStatus {
   if (!variant.isActive) return "out_of_stock";
   if (variant.inventoryPolicy === "MADE_TO_ORDER") return "made_to_order";
-  if ((variant.inventory?.quantityOnHand ?? 0) <= 0) return "out_of_stock";
+  // CONTINUE keeps selling once tracked stock runs out: custom items are then simply made to order.
+  if ((variant.inventory?.quantityOnHand ?? 0) <= 0) return variant.inventoryPolicy === "CONTINUE" ? "made_to_order" : "out_of_stock";
   return (variant.inventory?.quantityOnHand ?? 0) <= 5 ? "low_stock" : "in_stock";
 }
 
@@ -400,7 +403,7 @@ function mapProduct(product: any): Product {
   });
   const images = product.images.map((image: any) => ({ id: image.id, src: image.url, alt: image.altText, width: image.width ?? 800, height: image.height ?? 800 }));
   return {
-    id: product.id, slug: product.slug, sku: product.baseSku, name: product.name, categorySlug: product.category.slug, category: product.category.name, categoryIds, categorySlugs,
+    id: product.id, slug: product.slug, ...(metadata.importSource === "ezpac" || metadata.importSource === "ranbazaar" ? { importSource: metadata.importSource } : {}), sku: product.baseSku, name: product.name, categorySlug: product.category.slug, category: product.category.name, categoryIds, categorySlugs,
     price: product.basePricePaise / 100, compareAtPrice: product.compareAtPricePaise ? product.compareAtPricePaise / 100 : undefined, customizable: product.customizable,
     description: product.description ?? product.shortDescription ?? "", shortDescription: productSummaryText(product.shortDescription, product.description), material: product.material ?? "Not specified", dimensions: typeof dimensions.display === "string" ? dimensions.display : "Not specified", packSize: product.packSize,
     artwork: typeof metadata.artwork === "string" ? metadata.artwork : "labels", image: images[0]?.src ?? "", images, stockStatus: variantList[0]?.stockStatus ?? "made_to_order", featured: Boolean(metadata.featured), newArrival: Boolean(metadata.newArrival), tags: product.tags, features: stringList(metadata.features), careInstructions: typeof metadata.careInstructions === "string" ? metadata.careInstructions : undefined,
@@ -421,6 +424,7 @@ function mapProduct(product: any): Product {
       const printedAreas = areas.length ? areas : [{ id: "primary", label: "Primary print area" }];
       const mimeTypes = stringList(configurator.acceptedMimeTypes);
       const baseImages = mappedBaseImages(configurator, areas);
+      const packagingQuote = readPackagingQuoteSpec(configurator.packagingQuote, isPackagingDielineKind);
       return {
         allow2D: configurator.allow2D !== false,
         allow3D: configurator.allow3D === true,
@@ -441,6 +445,7 @@ function mapProduct(product: any): Product {
         productModel: typeof configurator.productModel === "string" ? configurator.productModel : undefined,
         configurationVersion: typeof configurator.configurationVersion === "string" ? configurator.configurationVersion : undefined,
         ...(visualizationTemplate ? { visualizationTemplate } : {}),
+        ...(packagingQuote ? { packagingQuote } : {}),
       };
     })(),
   };

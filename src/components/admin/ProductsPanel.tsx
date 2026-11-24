@@ -7,6 +7,7 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronUp,
+  Copy,
   Download,
   Folder,
   LayoutTemplate,
@@ -138,6 +139,7 @@ const packagingProductModels = [
   ['stand-up-pouch', 'Stand-up pouch'],
   ['product-sleeve', 'Product sleeve'],
   ['mailer-envelope', 'Courier mailer envelope'],
+  ['pyramid-box', 'Pyramid box'],
 ] as const;
 
 function policyPrintAreas(areas: PrintAreaInput[]) {
@@ -194,6 +196,7 @@ export function ProductsPanel() {
   const [category, setCategory] = useState("All categories");
   const [adding, setAdding] = useState(false);
   const [quickAdding, setQuickAdding] = useState(false);
+  const [duplicateFrom, setDuplicateFrom] = useState<{ id: string; name: string } | null>(null);
   const [statusFilter, setStatusFilter] = useState("All statuses");
   const [visualizationOpen, setVisualizationOpen] = useState(false);
   const [layoutProductId, setLayoutProductId] = useState<string | null>(null);
@@ -1063,7 +1066,7 @@ export function ProductsPanel() {
         actions={
           <>
             <button className={styles.buttonSecondary} disabled={!catalogControlsAvailable} onClick={exportFilteredProducts} type="button"><Download size={14} /> Export</button>
-            <button className={styles.buttonPrimary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setQuickAddNotice(""); setQuickAdding(true); }} type="button"><Plus size={14} /> Add product</button>
+            <button className={styles.buttonPrimary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setQuickAddNotice(""); setDuplicateFrom(null); setQuickAdding(true); }} type="button"><Plus size={14} /> Add product</button>
             <button className={styles.buttonPrimary} disabled={!catalogControlsAvailable} onClick={() => { setError(""); setCategoryNotice(""); setCategoryAddMode("root"); setManagingCategories(true); focusRootCategoryInput(); }} type="button"><Sparkles size={14} /> Manage / Add Categories</button>
           </>
         }
@@ -1103,7 +1106,7 @@ export function ProductsPanel() {
           <button className={styles.buttonSecondary} onClick={() => setStatusFilter("All statuses")} type="button"><SlidersHorizontal size={13} /> Filters</button>
           <span className={styles.resultCount}>{filtered.length} products</span>
         </div>
-        <p className={styles.catalogQuickAddHint}>New product? <strong>Add product</strong> lists it in under a minute — search a type, or type an existing product&apos;s name to copy its setup. Advanced settings open from a product&apos;s row (<strong>Configure</strong>) after saving.</p>
+        <p className={styles.catalogQuickAddHint}>New product? <strong>Add product</strong> — drop a photo, pick what it is, add a price and publish. To copy a product, use <strong>Duplicate</strong> in its row menu.</p>
 
         {filtered.length ? (
           <div className={styles.tableWrap}>
@@ -1131,7 +1134,7 @@ export function ProductsPanel() {
                       <td>{product.personalized ? <StatusBadge tone="violet">Enabled</StatusBadge> : <StatusBadge>Standard</StatusBadge>}</td>
                       <td><div className={styles.fullDetailsRowActions}>
                         <button aria-label={`Configure ${product.name}`} className={styles.buttonGhost} onClick={() => void editProduct(product.id)} type="button"><Pencil size={14} /> Configure</button>
-                        <details className={styles.productRowMenu}><summary aria-label={`More actions for ${product.name}`}><MoreHorizontal size={15} /></summary><div><button aria-label={`Open 3D and layout editor for ${product.name}`} className={styles.buttonGhost} onClick={() => setLayoutProductId(product.id)} type="button"><LayoutTemplate size={14} /> 3D &amp; Layout</button></div></details>
+                        <details className={styles.productRowMenu}><summary aria-label={`More actions for ${product.name}`}><MoreHorizontal size={15} /></summary><div><button aria-label={`Duplicate ${product.name}`} className={styles.buttonGhost} onClick={(event) => { (event.currentTarget.closest("details") as HTMLDetailsElement | null)?.removeAttribute("open"); setError(""); setQuickAddNotice(""); setDuplicateFrom({ id: product.id, name: product.name }); setQuickAdding(true); }} type="button"><Copy size={14} /> Duplicate</button><button aria-label={`Open 3D and layout editor for ${product.name}`} className={styles.buttonGhost} onClick={() => setLayoutProductId(product.id)} type="button"><LayoutTemplate size={14} /> 3D &amp; Layout</button></div></details>
                       </div></td>
                     </tr>
                   );
@@ -1618,21 +1621,20 @@ export function ProductsPanel() {
       )}
 
       {quickAdding && <QuickListProductWizard
-        catalogProducts={catalog.map((product) => ({ id: product.id, name: product.name }))}
+        catalogProducts={catalog.map((product) => ({ id: product.id, name: product.name, categoryId: product.categoryId, imageUrl: product.imageUrl }))}
         categories={categoryRecords}
-        onClose={() => { setQuickAdding(false); void loadCatalog(); }}
+        duplicateFrom={duplicateFrom}
+        onClose={() => { setQuickAdding(false); setDuplicateFrom(null); void loadCatalog(); }}
+        onEditDetails={async (productId) => {
+          setQuickAdding(false);
+          setDuplicateFrom(null);
+          await loadCatalog();
+          await editProduct(productId);
+        }}
         onImportPackaging={() => importPackagingCategoryStarters(packagingCategoryStarters.map((starter) => starter.id), "all packaging groups")}
         onImportRanBazaar={() => importRanBazaarCategoryStarters(ranBazaarCategoryStarters.map((starter) => starter.id), "all RanBazaar category groups")}
         onSaved={async () => {
-          setQuickAdding(false);
           await loadCatalog();
-          setQuickAddNotice("Product saved");
-        }}
-        onOpenStudio={async (productId) => {
-          setQuickAdding(false);
-          setVisualizationOpen(true);
-          await loadCatalog();
-          await editProduct(productId);
           setQuickAddNotice("Product saved");
         }}
       />}

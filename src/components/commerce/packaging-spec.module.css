@@ -1,0 +1,141 @@
+.panel { display: grid; gap: 14px; }
+
+/* The source shows this instruction in red directly above its selectors. */
+.instruction { margin: 0; color: #d40b0b; font-size: .875rem; font-weight: 600; line-height: 1.5; }
+.note { margin: 0; color: var(--text-body); font-size: var(--config-meta-size); line-height: 1.5; white-space: pre-line; }
+
+.fields { display: grid; gap: 12px; }
+.field { min-width: 0; display: grid; gap: 6px; }
+.field > span { color: var(--text-heading); font-size: var(--config-label-size); font-weight: 750; }
+.field select,
+.customQuantity input {
+  width: 100%;
+  min-width: 0;
+  height: var(--config-control-height);
+  padding: 0 34px 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--config-control-radius);
+  outline: 0;
+  color: var(--text-body);
+  background-color: var(--surface-main);
+  font-size: var(--config-label-size);
+}
+.field select:disabled { opacity: 1; color: var(--text-body); background-color: var(--surface-alt); cursor: default; }
+.field select:focus, .customQuantity input:focus { border-color: var(--border-focus); }
+.field > small { color: var(--text-secondary); font-size: var(--config-meta-size); line-height: 1.4; }
+
+.sizeRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.sizeEdit {
+  width: var(--config-control-height);
+  height: var(--config-control-height);
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--config-control-radius);
+  color: var(--text-body);
+  background: var(--surface-main);
+  cursor: pointer;
+}
+.sizeEdit:hover { background: var(--surface-hover); }
+.sizeEdit svg { width: 16px; }
+
+.customQuantity { display: flex; align-items: center; gap: 8px; }
+.customQuantity input { max-width: 140px; padding-right: 10px; }
+.customQuantity span { color: var(--text-secondary); font-size: var(--config-meta-size); }
+
+.unitPrice { display: grid; gap: 2px; }
+.unitPrice strong { color: var(--text-heading); font-size: 1.25rem; }
+.unitPrice small { color: var(--text-secondary); font-size: var(--config-meta-size); }
+
+.tiers { border: 1px solid var(--border-default); border-radius: var(--config-control-radius); background: var(--surface-alt); }
+.tiers summary { padding: 10px 12px; color: var(--text-body); cursor: pointer; font-size: var(--config-meta-size); font-weight: 750; }
+.tiers table { width: 100%; border-collapse: collapse; font-size: var(--config-meta-size); }
+.tiers th, .tiers td { padding: 7px 12px; border-top: 1px solid var(--border-divider); text-align: left; }
+.tiers th { color: var(--text-secondary); font-weight: 650; }
+.tiers td:last-child, .tiers th:last-child { text-align: right; }
+.activeTier td { color: var(--text-heading); background: var(--surface-main); font-weight: 800; }
+
+.designButton {
+  min-height: 48px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #000;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.designButton:hover { background: #222; }
+.designButton svg { width: 18px; }
+.bulkLink {
+  justify-self: stretch;
+  padding: 6px 10px;
+  border: 1px dashed #000;
+  border-radius: 999px;
+  color: #000;
+  background: #f4f4f4;
+  font-size: var(--config-meta-size);
+  text-align: center;
+}
+.bulkLink:hover { background: var(--surface-hover); }
+
+/* Custom size dialog: centred on desktop, a bottom sheet on phones. */
+.dialogBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(15, 23, 42, .45);
+}
+.dialog {
+  width: min(420px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  border-radius: 12px;
+  background: var(--surface-main);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, .28);
+}
+.dialogHeader { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.dialogHeader > div { display: grid; gap: 3px; }
+.dialogHeader strong { color: var(--text-heading); font-size: 1.05rem; }
+.dialogHeader small { color: var(--text-secondary); font-size: var(--config-meta-size); }
+.iconButton { width: 36px; height: 36px; flex: 0 0 auto; display: grid; place-items: center; border: 0; border-radius: 999px; color: var(--text-body); background: var(--surface-alt); cursor: pointer; }
+.iconButton svg { width: 16px; }
+
+.unitPills { width: fit-content; padding: 3px; display: flex; gap: 3px; border: 1px solid var(--border-strong); border-radius: 999px; background: var(--surface-subtle); }
+.unitPills button { min-width: 64px; height: 36px; padding: 0 12px; border: 0; border-radius: 999px; color: var(--text-secondary); background: transparent; cursor: pointer; font-size: var(--config-meta-size); font-weight: 800; }
+.unitPills button.unitActive { color: #fff; background: #000; }
+
+.dimensionInputs { display: grid; gap: 10px; }
+.dimensionInputs label { display: grid; gap: 5px; }
+.dimensionInputs label > span { color: var(--text-body); font-size: var(--config-meta-size); font-weight: 750; }
+.dimensionInputs label > div { height: var(--config-control-height); display: grid; grid-template-columns: 38px minmax(0, 1fr) auto; align-items: center; border: 1px solid var(--border-strong); border-radius: var(--config-control-radius); background: var(--surface-main); }
+.dimensionInputs label > div:focus-within { border-color: var(--border-focus); }
+.dimensionInputs b { height: 100%; display: grid; place-items: center; border-right: 1px solid var(--border-divider); color: var(--text-secondary); font-size: var(--config-meta-size); }
+.dimensionInputs input { min-width: 0; height: 100%; padding: 0 10px; border: 0; outline: 0; color: var(--text-body); background: transparent; font-size: 1rem; }
+.dimensionInputs em { padding: 0 12px; color: var(--text-secondary); font-size: var(--config-meta-size); font-style: normal; }
+.dimensionInputs label > small { color: var(--danger); font-size: var(--config-meta-size); }
+.inputInvalid > div { border-color: var(--danger) !important; }
+.dialogHint { margin: 0; color: var(--text-secondary); font-size: var(--config-meta-size); line-height: 1.45; }
+.dialogActions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dialogActions button { min-height: 44px; border: 1px solid var(--border-strong); border-radius: 999px; color: var(--text-body); background: var(--surface-main); cursor: pointer; font-size: var(--config-label-size); font-weight: 800; }
+.dialogActions button:hover { background: var(--surface-hover); }
+.dialogActions button.applyButton { border-color: #000; color: #fff; background: #000; }
+.dialogActions button.applyButton:hover { background: #222; }
+
+@media (max-width: 560px) {
+  .dialogBackdrop { place-items: end stretch; padding: 0; }
+  .dialog { width: 100%; max-height: 90dvh; padding: 18px 16px calc(18px + env(safe-area-inset-bottom)); border-radius: 16px 16px 0 0; }
+  .unitPills { width: 100%; }
+  .unitPills button { flex: 1; }
+}

@@ -3110,3 +3110,207 @@ button.configCard:hover { border-color: var(--border-focus); background: var(--s
 .productRowMenu > summary::-webkit-details-marker { display: none; }
 .productRowMenu > div { position: absolute; z-index: 3; right: 0; top: calc(100% + 5px); min-width: 142px; padding: 5px; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); background: var(--surface-main); box-shadow: var(--shadow-menu); }
 .productRowMenu > div .buttonGhost { width: 100%; justify-content: flex-start; }
+
+/* ---- Easy listing wizard (Add product) ------------------------------------
+   Muted copy uses --text-secondary (4.8:1 on white) so every line meets WCAG AA;
+   every control is at least 44 px tall. */
+.listingWizard {
+  position: fixed;
+  z-index: 80;
+  inset: 12px 12px 12px auto;
+  display: flex;
+  width: min(1120px, calc(100vw - 24px));
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: var(--admin-card-radius);
+  background: var(--surface-main);
+  box-shadow: var(--shadow-menu);
+  color: var(--text-heading);
+  font-size: 14px;
+}
+.listingHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 20px 12px; border-bottom: 1px solid var(--border-default); }
+.listingHeader h2 { margin: 0 0 10px; font-size: 18px; }
+.listingHeader .iconButton { width: 44px; height: 44px; }
+.listingSteps { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.listingStep, .listingStepActive, .listingStepDone {
+  display: inline-flex; min-height: 44px; align-items: center; gap: 8px; padding: 0 14px;
+  border: 1px solid var(--border-strong); border-radius: 999px; background: var(--surface-main);
+  color: var(--text-secondary); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.listingStep span, .listingStepActive span, .listingStepDone span { display: grid; width: 22px; height: 22px; place-items: center; border-radius: 50%; background: var(--surface-subtle); font-size: 12px; }
+.listingStepActive { border-color: var(--text-heading); background: var(--text-heading); color: var(--text-inverse); }
+.listingStepActive span { background: var(--surface-main); color: var(--text-heading); }
+.listingStepLabel { font-weight: inherit; }
+.listingStepDone { color: var(--text-body); }
+.listingStep:disabled { cursor: default; opacity: 1; }
+.listingMain { display: grid; flex: 1; min-height: 0; grid-template-columns: minmax(0, 1fr) minmax(340px, 420px); }
+.listingContent { min-height: 0; overflow-y: auto; padding: 20px; }
+.listingStepHeading { margin: 0 0 16px; font-size: 20px; outline: none; }
+.listingFooter { display: grid; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--border-default); background: var(--surface-main); }
+.listingFooterActions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.listingFooterActions > button { min-height: 44px; font-size: 14px; }
+.listingFooterActions > button:first-child { margin-right: auto; }
+.listingMissing { margin: 0; color: var(--warning); font-size: 13px; font-weight: 700; text-align: right; }
+.listingMuted { margin: 0; color: var(--text-secondary); font-size: 13px; }
+.listingInlineError { margin: 8px 0 0; color: var(--danger); font-size: 13px; font-weight: 700; }
+.listingWarningText { color: var(--warning); font-size: 13px; font-weight: 700; }
+.visuallyHiddenInput { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Step 1: photos */
+.listingPhotos { display: grid; gap: 14px; }
+.listingDropzone {
+  display: grid; min-height: 260px; place-items: center; align-content: center; gap: 8px; padding: 24px;
+  border: 2px dashed var(--border-card-hover); border-radius: var(--admin-card-radius);
+  background: var(--surface-alt); color: var(--text-body); text-align: center; transition: 160ms ease;
+}
+.listingDropzone strong { color: var(--text-heading); font-size: 17px; }
+.listingDropzone > span { color: var(--text-secondary); font-size: 13px; }
+.listingDropzoneActive { border-color: var(--text-heading); background: var(--surface-subtle); }
+.listingDropzoneCompact { min-height: 150px; }
+.listingDropActions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 6px; }
+.listingDropActions button { min-height: 44px; font-size: 14px; }
+.listingThumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.listingThumb { position: relative; display: grid; gap: 6px; padding: 6px; border: 1px solid var(--border-default); border-radius: var(--admin-control-radius); background: var(--surface-main); cursor: grab; }
+.listingThumb:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.listingThumbMain { border-color: var(--text-heading); }
+.listingThumbImage { position: relative; display: grid; aspect-ratio: 1; place-items: center; overflow: hidden; border-radius: calc(var(--admin-control-radius) - 2px); background: var(--surface-subtle); color: var(--text-secondary); }
+.listingThumbImage img { width: 100%; height: 100%; object-fit: cover; }
+.listingThumbOverlay { position: absolute; inset: 0; display: grid; place-items: center; background: var(--visual-highlight); }
+.listingMainBadge { position: absolute; top: 10px; left: 10px; display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; border-radius: 999px; background: var(--text-heading); color: var(--text-inverse); font-size: 11px; font-weight: 800; }
+.listingThumbButton { position: absolute; top: 8px; left: 8px; display: grid; width: 44px; height: 44px; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--text-heading); cursor: pointer; }
+.listingThumbButton::before { position: absolute; inset: 8px; z-index: -1; border: 1px solid var(--border-strong); border-radius: 50%; background: var(--surface-main); content: ""; }
+.listingThumbRemove { right: 8px; left: auto; }
+.listingProgress { width: 100%; height: 6px; accent-color: var(--success); }
+.listingRetry { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 5px; border: 1px solid var(--danger-border); border-radius: var(--admin-control-radius); background: var(--danger-bg); color: var(--danger); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.listingWarnings { display: grid; gap: 3px; margin: 0; padding: 0; list-style: none; color: var(--warning); font-size: 12px; font-weight: 600; line-height: 1.35; }
+
+/* Step 2: what is it */
+.listingPicker { display: grid; gap: 16px; }
+.listingCategoryGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.listingCategoryList { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin-top: 12px; }
+.listingCategoryCard, .listingCategoryCardActive {
+  display: grid; align-content: start; gap: 6px; padding: 10px; border: 1px solid var(--border-strong);
+  border-radius: var(--admin-card-radius); background: var(--surface-main); color: var(--text-heading);
+  font: inherit; text-align: left; cursor: pointer; transition: 160ms ease;
+}
+.listingCategoryCard:hover { border-color: var(--border-card-hover); box-shadow: var(--shadow-card-hover); }
+.listingCategoryCardActive { border: 2px solid var(--text-heading); padding: 9px; box-shadow: var(--shadow-card-hover); }
+.listingCategoryCard strong, .listingCategoryCardActive strong { font-size: 15px; }
+.listingCategoryCard small, .listingCategoryCardActive small { color: var(--text-secondary); font-size: 13px; line-height: 1.35; }
+.listingCategoryImage { position: relative; display: grid; aspect-ratio: 4 / 3; place-items: center; overflow: hidden; border-radius: var(--admin-control-radius); background: var(--surface-subtle); color: var(--text-body); }
+.listingCategoryImage img { width: 100%; height: 100%; object-fit: cover; }
+.listingCategoryCheck { position: absolute; top: 8px; right: 8px; display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: var(--text-heading); color: var(--text-inverse); }
+.listingBadges { display: flex; flex-wrap: wrap; gap: 6px; }
+.listingBadge3D, .listingBadge2D, .listingBadgeBest { padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+.listingBadge3D { border: 1px solid var(--success-border); background: var(--success-bg); color: var(--success); }
+.listingBadge2D { border: 1px solid var(--border-strong); background: var(--surface-subtle); color: var(--text-body); }
+.listingBadgeBest { background: var(--text-heading); color: var(--text-inverse); }
+.listingSearch { position: relative; display: flex; align-items: center; }
+.listingSearch svg { position: absolute; left: 12px; color: var(--text-secondary); }
+.listingSearch .input { height: 44px; padding-left: 36px; font-size: 14px; }
+.listingAllTypes > summary { min-height: 44px; display: flex; align-items: center; color: var(--text-body); font-weight: 700; cursor: pointer; }
+.listingConfirm { margin-top: 16px; padding: 14px; border: 1px solid var(--warning-border); border-radius: var(--admin-card-radius); background: var(--warning-bg); }
+.listingConfirm p { margin: 0 0 10px; font-weight: 700; }
+
+/* Step 3: essentials */
+.listingForm { display: grid; gap: 16px; max-width: 620px; }
+.listingForm .input, .listingForm .select, .listingForm .textarea { min-height: 44px; font-size: 14px; }
+.listingForm .fieldLabel { font-size: 13px; }
+.listingForm .fieldLabel small { color: var(--text-secondary); font-weight: 600; }
+.listingForm .buttonGhost { min-height: 36px; font-size: 13px; }
+.listingPrintOptions { display: grid; gap: 14px; margin: 0; padding: 14px; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); }
+.listingPrintOptions legend { padding: 0 4px; font-weight: 800; }
+.listingPrintOption { display: grid; gap: 6px; }
+.listingChipRow, .listingSizeRow { display: flex; flex-wrap: wrap; gap: 8px; }
+.listingChip, .listingChipActive {
+  display: inline-flex; min-height: 44px; align-items: center; gap: 4px; padding: 0 14px;
+  border: 1px solid var(--border-strong); border-radius: 999px; background: var(--surface-main);
+  color: var(--text-body); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.listingChipActive { border-color: var(--text-heading); background: var(--text-heading); color: var(--text-inverse); }
+.listingChipAdd { display: inline-flex; min-height: 44px; align-items: center; overflow: hidden; border: 1px dashed var(--border-card-hover); border-radius: 999px; }
+.listingChipAdd input { width: 96px; height: 42px; padding: 0 0 0 12px; border: 0; outline: none; background: transparent; font: inherit; font-size: 13px; }
+.listingChipAdd button { display: grid; width: 44px; height: 42px; place-items: center; border: 0; background: transparent; color: var(--text-heading); cursor: pointer; }
+.listingMore > summary { min-height: 44px; display: flex; align-items: center; font-weight: 800; cursor: pointer; }
+.listingMoreGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding-top: 8px; }
+.listingPair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.listingExtraCategories { grid-column: 1 / -1; display: grid; gap: 6px; margin: 0; padding: 0; border: 0; }
+.listingExtraCategories label { display: flex; min-height: 44px; align-items: center; gap: 8px; font-size: 14px; }
+.listingTooltip { position: relative; display: inline-grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; color: var(--text-secondary); cursor: help; }
+.listingTooltip [role="tooltip"] { position: absolute; bottom: calc(100% + 6px); left: 50%; z-index: 5; width: 240px; padding: 8px 10px; border-radius: var(--admin-control-radius); background: var(--surface-inverse); color: var(--text-inverse); font-size: 12px; font-weight: 500; line-height: 1.4; opacity: 0; pointer-events: none; transform: translateX(-50%); transition: opacity 120ms ease; }
+.listingTooltip:hover [role="tooltip"], .listingTooltip:focus [role="tooltip"] { opacity: 1; }
+
+/* Live preview */
+.listingPreview { display: flex; min-height: 0; flex-direction: column; border-left: 1px solid var(--border-default); background: var(--surface-alt); }
+.listingSheetToggle { display: none; }
+.listingPreviewBody { display: grid; align-content: start; gap: 12px; min-height: 0; overflow-y: auto; padding: 16px; }
+.listingTabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border: 1px solid var(--border-default); border-radius: 999px; background: var(--surface-main); }
+.listingTab, .listingTabActive { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 999px; background: transparent; color: var(--text-body); font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+.listingTabActive { background: var(--text-heading); color: var(--text-inverse); }
+.listingTabPanel { display: grid; gap: 10px; }
+.listingCardFrame { width: min(260px, 100%); margin: 0 auto; }
+.listingPreviewEmpty { display: grid; min-height: 260px; place-items: center; align-content: center; gap: 8px; padding: 20px; border: 1px dashed var(--border-card-hover); border-radius: var(--admin-card-radius); background: var(--surface-main); color: var(--text-secondary); text-align: center; }
+.listingStudioFigure { display: grid; gap: 6px; margin: 0; }
+.listingStudioFigure img { width: 100%; max-height: 420px; object-fit: contain; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); background: var(--surface-main); }
+.listingStudioFigure figcaption { color: var(--text-secondary); font-size: 13px; }
+.listingNo3D { display: grid; gap: 10px; }
+.listingNo3D > p { margin: 0; padding: 10px 12px; border-radius: var(--admin-control-radius); background: var(--surface-subtle); color: var(--text-body); font-size: 13px; font-weight: 700; }
+.listing3D { display: grid; gap: 10px; }
+.listing3DStage { height: 420px; overflow: hidden; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); background: var(--surface-main); }
+.listing3DStage > div { height: 100% !important; min-height: 0 !important; }
+.listingSizeInputs { display: flex; align-items: center; gap: 8px; }
+.listingSizeInputs label { display: flex; flex: 1; align-items: center; gap: 4px; font-size: 13px; font-weight: 800; }
+.listingSizeInputs .input { height: 44px; min-width: 0; font-size: 14px; }
+.listingTryName { display: grid; gap: 10px; }
+.listingTryName label { display: grid; gap: 6px; }
+.listingTryName .input { height: 44px; font-size: 14px; }
+
+/* Publishing and success */
+.listingPublishing { display: flex; align-items: center; justify-content: flex-end; gap: 8px; color: var(--text-heading); font-size: 14px; font-weight: 700; }
+.listingSuccess { display: grid; gap: 16px; }
+.listingSuccessHero { display: flex; align-items: center; gap: 16px; }
+.listingSuccessHero > img { width: 112px; height: 112px; flex: none; object-fit: cover; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); }
+.listingSuccessHero h3 { margin: 0 0 6px; font-size: 22px; outline: none; }
+.listingSuccessHero p { margin: 0; color: var(--text-body); }
+.listingSuccessCheck { display: grid; width: 64px; height: 64px; place-items: center; border-radius: 50%; background: var(--success-bg); color: var(--success); }
+.listingSuccessNote { display: flex; align-items: center; gap: 6px; margin-top: 8px !important; color: var(--success) !important; font-weight: 700; }
+.listingSuccessWarning { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--warning-border); border-radius: var(--admin-card-radius); background: var(--warning-bg); }
+.listingSuccessWarning p { margin: 0; color: var(--text-heading); font-weight: 600; }
+.listingSuccessActions { display: flex; flex-wrap: wrap; gap: 10px; }
+.listingSuccessActions > a, .listingSuccessActions > button { min-height: 44px; font-size: 14px; }
+.listingRestore { display: grid; gap: 10px; max-width: 520px; padding: 18px; border: 1px solid var(--border-default); border-radius: var(--admin-card-radius); background: var(--surface-alt); }
+.listingRestore h3 { margin: 0; outline: none; }
+.listingRestore p { margin: 0; color: var(--text-body); }
+
+@media (max-width: 900px) {
+  .listingWizard { inset: 0; width: 100vw; border: 0; border-radius: 0; }
+  .listingMain { display: flex; flex-direction: column; }
+  .listingContent { flex: 1; padding: 16px 14px 24px; }
+  .listingHeader { padding: 12px 14px 10px; }
+  .listingSteps { flex-wrap: nowrap; overflow-x: auto; }
+  .listingStep, .listingStepActive, .listingStepDone { white-space: nowrap; }
+  .listingPreview { max-height: 72px; flex: none; overflow: hidden; border-top: 1px solid var(--border-default); border-left: 0; transition: max-height 200ms ease; }
+  .listingPreviewOpen { max-height: 70svh; }
+  .listingSheetToggle { display: flex; min-height: 56px; flex: none; align-items: center; justify-content: space-between; padding: 0 16px; border: 0; background: var(--surface-main); color: var(--text-heading); font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; }
+  .listingPreviewOpen .listingSheetToggle svg { transform: rotate(180deg); }
+  .listingPreviewBody { padding: 12px 14px 16px; }
+  .listing3DStage { height: 340px; }
+  .listingMoreGrid { grid-template-columns: 1fr; }
+  .listingCategoryGrid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .listingFooter { padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); }
+  .listingFooterActions > button { flex: 1 1 auto; }
+  .listingFooterActions > button:first-child { flex: 0 0 auto; margin-right: 0; }
+  .listingMissing, .listingPublishing { justify-content: flex-start; text-align: left; }
+}
+@media (max-width: 420px) {
+  .listingStep, .listingStepActive, .listingStepDone { gap: 5px; padding: 0 10px; font-size: 12px; }
+  .listingStep span, .listingStepActive span, .listingStepDone span { width: 20px; height: 20px; font-size: 11px; }
+  .listingHeader h2 { margin-bottom: 8px; }
+  /* Phones: the current step keeps its words, the others show their number (44 px targets). */
+  .listingStep .listingStepLabel, .listingStepDone .listingStepLabel { display: none; }
+  .listingStep, .listingStepDone { min-width: 44px; justify-content: center; padding: 0 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .listingPreview, .listingDropzone, .listingCategoryCard { transition: none; }
+}
